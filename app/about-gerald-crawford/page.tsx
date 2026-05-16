@@ -1,16 +1,25 @@
 ﻿import { CTASection } from "@/components/CTASection";
 import { Disclaimer } from "@/components/Disclaimer";
 import { Hero } from "@/components/Hero";
+import { RevealDiv } from "@/components/MotionReveal";
 import { SchemaMarkup } from "@/components/SchemaMarkup";
+import { WatercolorArtwork } from "@/components/WatercolorArtwork";
+import { artGalleryById } from "@/content/artGallery";
 import { seoPages } from "@/content/seo";
 import { createPageMetadata } from "@/lib/seo";
 import { breadcrumbSchema, professionalServiceSchema, webPageSchema } from "@/lib/schema";
 
 const pageSeo = seoPages.about;
 
+const qualificationsArt = artGalleryById.get("about-qualifications");
+const approachArt = artGalleryById.get("about-approach");
+const whatToExpectArt = artGalleryById.get("about-what-to-expect");
+
 export const metadata = createPageMetadata(pageSeo);
 
 export default function AboutGeraldPage() {
+  const geraldPortrait = artGalleryById.get("gerald-crawford");
+
   return (
     <>
       <SchemaMarkup
@@ -30,36 +39,56 @@ export default function AboutGeraldPage() {
         primaryCta="Start Your Confidential Enquiry"
         secondaryCta="View Programmes"
         secondaryHref="/addiction-healing-programmes/"
+        heroArtId="gerald-crawford"
       />
 
-      <section className="section" aria-labelledby="who-heading">
-        <div className="container split-grid">
-          <div>
+      <section className="section about-section" aria-labelledby="who-heading">
+        <div className="container split-grid about-intro-grid">
+          <RevealDiv>
             <p className="eyebrow">Who Gerald is</p>
             <h2 id="who-heading">Support that starts with understanding, not judgement</h2>
-          </div>
-          <div className="prose">
-            <p>
-              Gerald Crawford is presented through Healing From Your Addiction as a Certified Clinical Hypnosis Practitioner, healer, guide and educator. His work focuses on the emotional, subconscious and behavioural patterns that can keep addiction loops active.
-            </p>
-            <p>
-              The site positions his support carefully: this is not a rehab clinic, medical detox service or emergency service. It is confidential hypnotherapy, EFT, coaching-style support and education for people ready to explore the pattern behind the behaviour.
-            </p>
-          </div>
+            <div className="prose about-intro-copy">
+              <p>
+                Gerald Crawford is presented through Healing From Your Addiction as a Certified Clinical Hypnosis Practitioner, healer, guide and educator. His work focuses on the emotional, subconscious and behavioural patterns that can keep addiction loops active.
+              </p>
+              <p>
+                The site positions his support carefully: this is not a rehab clinic, medical detox service or emergency service. It is confidential hypnotherapy, EFT, coaching-style support and education for people ready to explore the pattern behind the behaviour.
+              </p>
+            </div>
+          </RevealDiv>
+          {geraldPortrait ? (
+            <RevealDiv className="about-portrait-wrap" delay={0.08}>
+              <WatercolorArtwork
+                item={geraldPortrait}
+                className="about-portrait-art"
+                fill
+                sizes="(min-width: 900px) 34vw, 92vw"
+              />
+            </RevealDiv>
+          ) : null}
         </div>
       </section>
 
       <section className="section section-muted" aria-labelledby="qualifications-heading">
         <div className="container three-grid">
           <article className="info-card">
+            {qualificationsArt ? (
+              <WatercolorArtwork item={qualificationsArt} className="card-artwork" fill sizes="(min-width: 900px) 28vw, 92vw" />
+            ) : null}
             <h2 id="qualifications-heading">Qualifications</h2>
             <p>Clinical hypnosis practitioner positioning, EFT-informed support, healing education and pattern-focused work.</p>
           </article>
           <article className="info-card">
+            {approachArt ? (
+              <WatercolorArtwork item={approachArt} className="card-artwork" fill sizes="(min-width: 900px) 28vw, 92vw" />
+            ) : null}
             <h2>Approach</h2>
             <p>Understand the loop, calm the emotional trigger, rehearse a new response and reinforce change between sessions.</p>
           </article>
           <article className="info-card">
+            {whatToExpectArt ? (
+              <WatercolorArtwork item={whatToExpectArt} className="card-artwork" fill sizes="(min-width: 900px) 28vw, 92vw" />
+            ) : null}
             <h2>What to expect</h2>
             <p>A private conversation, clear boundaries, structured support and respectful language without cure claims or guarantees.</p>
           </article>

@@ -131,8 +131,8 @@ export const seoPages = {
     searchIntent: "Evaluate the practitioner, approach, and professional boundaries.",
     pageType: "about",
     conversionGoal: "Build trust before a confidential enquiry.",
-    ogImage: defaultOgImage,
-    ogImageAlt: "Gerald Crawford addiction pattern support approach",
+    ogImage: "/art/watercolor/art-watercolor-gerald-crawford.png",
+    ogImageAlt: "Watercolor portrait of Gerald Crawford, hypnotherapist, in calm professional attire.",
   },
   contact: {
     path: "/contact/",

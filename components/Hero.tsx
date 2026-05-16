@@ -12,6 +12,7 @@ type HeroProps = {
   primaryHref?: string;
   secondaryCta?: string;
   secondaryHref?: string;
+  heroArtId?: string;
   children?: ReactNode;
 };
 
@@ -23,6 +24,7 @@ export function Hero({
   primaryHref = "#enquiry",
   secondaryCta,
   secondaryHref = "/addiction-healing-programmes/",
+  heroArtId,
   children,
 }: HeroProps) {
   return (
@@ -61,15 +63,18 @@ export function Hero({
           </div>
         </RevealDiv>
         <RevealDiv className="hero-side" delay={0.08}>
-          {children || <HeroVisual />}
+          {children || <HeroVisual artId={heroArtId} />}
         </RevealDiv>
       </div>
     </section>
   );
 }
 
-function HeroVisual() {
-  const artwork = artGalleryById.get("home-hero") ?? artGalleryById.get("pattern-loop");
+function HeroVisual({ artId }: { artId?: string }) {
+  const artwork =
+    (artId ? artGalleryById.get(artId) : undefined) ??
+    artGalleryById.get("home-hero") ??
+    artGalleryById.get("pattern-loop");
 
   if (!artwork) {
     return null;

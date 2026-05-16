@@ -22,12 +22,12 @@ export const foodContent: LandingPageContent = {
     intro:
       "Food patterns can become linked to stress, comfort, boredom, shame, reward and restriction. The aim is not punishment. The aim is understanding and change.",
     points: [
-      { text: "Eating when you are not physically hungry" },
-      { text: "Sugar cravings or processed-food urges" },
-      { text: "Late-night eating or secret eating" },
-      { text: "Binge episodes followed by shame" },
-      { text: "All-or-nothing dieting cycles" },
-      { text: "Feeling a loss of control around certain foods" },
+      { text: "Eating when you are not physically hungry", artId: "food-pain-not-hungry" },
+      { text: "Sugar cravings or processed-food urges", artId: "food-pain-sugar-cravings" },
+      { text: "Late-night eating or secret eating", artId: "food-pain-late-night" },
+      { text: "Binge episodes followed by shame", artId: "food-pain-binge-shame" },
+      { text: "All-or-nothing dieting cycles", artId: "food-pain-dieting-cycles" },
+      { text: "Feeling a loss of control around certain foods", artId: "food-pain-loss-of-control" },
     ],
   },
   programme: {

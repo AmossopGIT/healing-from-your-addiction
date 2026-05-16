@@ -3,12 +3,18 @@ import { Hero } from "@/components/Hero";
 import { LeadForm } from "@/components/LeadForm";
 import { SchemaMarkup } from "@/components/SchemaMarkup";
 import { TrackedLink } from "@/components/TrackedLink";
+import { WatercolorArtwork } from "@/components/WatercolorArtwork";
+import { artGalleryById } from "@/content/artGallery";
 import { seoPages } from "@/content/seo";
 import { emailHref, phoneHref, siteConfig, whatsappHref } from "@/lib/constants";
 import { createPageMetadata } from "@/lib/seo";
 import { breadcrumbSchema, professionalServiceSchema, webPageSchema } from "@/lib/schema";
 
 const pageSeo = seoPages.contact;
+
+const whatsappArt = artGalleryById.get("contact-whatsapp");
+const emailArt = artGalleryById.get("contact-email");
+const phoneArt = artGalleryById.get("contact-phone");
 
 export const metadata = createPageMetadata(pageSeo);
 
@@ -39,6 +45,9 @@ export default function ContactPage() {
       <section className="section" id="contact-options" aria-labelledby="contact-options-heading">
         <div className="container three-grid">
           <article className="contact-card">
+            {whatsappArt ? (
+              <WatercolorArtwork item={whatsappArt} className="card-artwork" fill sizes="(min-width: 900px) 28vw, 92vw" />
+            ) : null}
             <h2 id="contact-options-heading">WhatsApp</h2>
             <p>Use WhatsApp if you prefer a direct, private first message.</p>
             <TrackedLink
@@ -50,6 +59,9 @@ export default function ContactPage() {
             </TrackedLink>
           </article>
           <article className="contact-card">
+            {emailArt ? (
+              <WatercolorArtwork item={emailArt} className="card-artwork" fill sizes="(min-width: 900px) 28vw, 92vw" />
+            ) : null}
             <h2>Email</h2>
             <p>Send a confidential enquiry by email.</p>
             <TrackedLink
@@ -61,6 +73,9 @@ export default function ContactPage() {
             </TrackedLink>
           </article>
           <article className="contact-card">
+            {phoneArt ? (
+              <WatercolorArtwork item={phoneArt} className="card-artwork" fill sizes="(min-width: 900px) 28vw, 92vw" />
+            ) : null}
             <h2>Phone</h2>
             <p>{siteConfig.phone ? "Tap to call directly." : "Add a public phone number in the environment variables when ready."}</p>
             <TrackedLink

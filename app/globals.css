@@ -562,14 +562,25 @@ body.no-scroll {
   margin: 0;
 }
 
-.pain-card .card-artwork {
+.pain-card .card-artwork,
+.contact-card .card-artwork {
   aspect-ratio: 16 / 10;
   margin: 0;
 }
 
-.pain-card .card-artwork img {
+.pain-card .card-artwork img,
+.contact-card .card-artwork img {
   height: 100%;
   object-fit: cover;
+}
+
+.contact-card {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.contact-card .card-artwork {
+  margin-bottom: 0;
 }
 
 .programme-grid,
@@ -2149,7 +2160,8 @@ textarea:focus {
 .programme-card .card-artwork,
 .step-card .card-artwork,
 .info-card .card-artwork,
-.pain-card .card-artwork {
+.pain-card .card-artwork,
+.contact-card .card-artwork {
   aspect-ratio: 16 / 10;
 }
 
@@ -2212,6 +2224,51 @@ textarea:focus {
 .pattern-section-hero-art.watercolor-art .watercolor-art-image {
   object-fit: cover;
   object-position: center;
+}
+
+.about-intro-grid {
+  align-items: start;
+}
+
+.about-intro-copy {
+  margin-top: 0.5rem;
+}
+
+.about-portrait-wrap {
+  min-width: 0;
+}
+
+.about-portrait-art {
+  aspect-ratio: 4 / 5;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  margin: 0;
+  max-width: 420px;
+  overflow: hidden;
+  position: relative;
+}
+
+.about-portrait-art .watercolor-art-image {
+  object-fit: cover;
+  object-position: center top;
+}
+
+.hero-visual.about-portrait-art,
+.about-section .hero-visual {
+  aspect-ratio: 4 / 5;
+}
+
+@media (max-width: 1040px) {
+  .about-intro-grid {
+    gap: 1.5rem;
+    grid-template-columns: 1fr;
+  }
+
+  .about-portrait-art {
+    margin: 0 auto;
+    max-width: 360px;
+    width: 100%;
+  }
 }
 
 /* Mobile-first responsive grids */
