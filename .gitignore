@@ -3,6 +3,7 @@
 node_modules
 .next
 out
+*.tsbuildinfo
 .cursor/projects
 build
 .vercel
