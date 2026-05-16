@@ -9,5 +9,9 @@ export function withBasePath(path: string) {
     return normalizedPath;
   }
 
+  if (normalizedPath === basePath || normalizedPath.startsWith(`${basePath}/`)) {
+    return normalizedPath;
+  }
+
   return `${basePath}${normalizedPath}`;
 }
