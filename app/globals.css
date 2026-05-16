@@ -444,10 +444,10 @@ body.no-scroll {
 .split-grid,
 .form-layout,
 .cta-inner {
+  align-items: center;
   display: grid;
   gap: 3rem;
-  grid-template-columns: minmax(0, 1fr) minmax(460px, 520px);
-  align-items: center;
+  grid-template-columns: minmax(0, 1fr) minmax(min(100%, 380px), 520px);
 }
 
 .hero-copy {
@@ -1747,14 +1747,16 @@ button.button-secondary:hover {
   min-width: 168px;
 }
 
-.hero-grid,
-.split-grid,
-.form-layout,
-.cta-inner {
-  align-items: center;
-  display: grid;
-  gap: clamp(1.75rem, 4vw, 3.25rem);
-  grid-template-columns: minmax(0, 1fr) minmax(380px, 500px);
+@media (min-width: 1041px) {
+  .hero-grid,
+  .split-grid,
+  .form-layout,
+  .cta-inner {
+    align-items: center;
+    display: grid;
+    gap: clamp(1.75rem, 4vw, 3.25rem);
+    grid-template-columns: minmax(0, 1fr) minmax(min(100%, 380px), 500px);
+  }
 }
 
 .hero-copy {
@@ -3038,5 +3040,114 @@ main:not(:has(.page-hero-flush)) {
 
   .site-header.is-hidden:not(.is-open) {
     transform: none;
+  }
+}
+
+/* Mobile overflow guards — programme landing pages and site-wide */
+html {
+  overflow-x: clip;
+}
+
+body {
+  overflow-x: clip;
+  width: 100%;
+}
+
+main,
+.site-header,
+.site-footer-wrap,
+.container,
+.hero-grid,
+.split-grid,
+.hero-copy,
+.hero-side,
+.pain-grid,
+.pain-card,
+.session-grid,
+.info-grid,
+.lead-form {
+  max-width: 100%;
+}
+
+@media (max-width: 1040px) {
+  .hero-grid,
+  .split-grid,
+  .form-layout,
+  .cta-inner {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  .pain-grid,
+  .session-grid,
+  .info-grid,
+  .programme-grid,
+  .programme-grid.two-col,
+  .steps-grid,
+  .compact-grid,
+  .three-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+}
+
+@media (max-width: 720px) {
+  h1 {
+    max-width: 100%;
+    overflow-wrap: anywhere;
+    text-wrap: balance;
+  }
+
+  .brand {
+    min-width: 0;
+  }
+
+  .header-inner {
+    gap: 0.75rem;
+    min-width: 0;
+  }
+
+  .brand-text strong {
+    overflow-wrap: anywhere;
+  }
+
+  .hero .button-row .button,
+  .button-row .button {
+    min-width: 0;
+    max-width: 100%;
+    white-space: normal;
+    text-wrap: balance;
+  }
+
+  .form-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  .hero-side .lead-form {
+    margin-left: 0;
+    max-width: 100%;
+  }
+
+  .lead-form,
+  .hero-copy,
+  .hero-side,
+  .mini-card,
+  .pain-card,
+  .session-card,
+  .info-card,
+  .split-grid > * {
+    min-width: 0;
+  }
+
+  .pain-card {
+    max-width: 100%;
+  }
+
+  .watercolor-art,
+  .watercolor-art img,
+  .watercolor-art-image {
+    max-width: 100%;
+  }
+
+  .chat-widget {
+    max-width: calc(100vw - 1rem);
   }
 }
