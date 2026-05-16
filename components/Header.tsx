@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import { SiteLink } from "@/components/SiteLink";
 import { TrackedLink } from "@/components/TrackedLink";
+import { withBasePath } from "@/lib/basePath";
 
 type NavLink = {
   href: string;
@@ -11,10 +12,12 @@ type NavLink = {
 };
 
 const navLinks: NavLink[] = [
-  { href: "/gambling-addiction-help/", label: "Gambling" },
-  { href: "/food-addiction-binge-eating-help/", label: "Food" },
-  { href: "/addiction-healing-programmes/", label: "Programmes" },
-  { href: "/about-gerald-crawford/", label: "About" },
+  { href: "/", label: "Home" },
+  { href: "/addictions/", label: "Addictions" },
+  { href: "/programs/", label: "Programs" },
+  { href: "/hypnotherapy-for-addiction/", label: "Hypnotherapy" },
+  { href: "/about-gerald-crawford/", label: "About Gerald" },
+  { href: "/blog/", label: "Resources" },
   { href: "/contact/", label: "Contact" },
 ];
 
@@ -102,7 +105,7 @@ export function Header() {
           <div className="header-inner">
             <SiteLink className="brand" href="/" aria-label="Healing From Your Addiction home" onClick={close}>
               <span className="brand-mark" aria-hidden="true">
-                <img className="brand-mark-image" src="/icon.png" alt="" width={38} height={38} />
+                <img className="brand-mark-image" src={withBasePath("/icon.png")} alt="" width={38} height={38} />
               </span>
               <span className="brand-text">
                 <strong>Healing From Your Addiction</strong>

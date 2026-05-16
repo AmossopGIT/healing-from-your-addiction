@@ -48,6 +48,7 @@ function getAttribution() {
 
 export function ChatLeadWidget() {
   const [open, setOpen] = useState(false);
+  const [isHiddenForLayout, setIsHiddenForLayout] = useState(false);
   const [step, setStep] = useState<ChatStep>("welcome");
   const [lead, setLead] = useState<ChatLeadState>(initialLead);
   const [inputValue, setInputValue] = useState("");
@@ -211,10 +212,44 @@ export function ChatLeadWidget() {
     inputRef.current?.focus();
   }, [open, step]);
 
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const header = document.querySelector(".site-header");
+    const footer = document.querySelector(".site-footer-wrap");
+    if (!header && !footer) return;
+
+    const intersections = {
+      header: false,
+      footer: false,
+    };
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.target === header) intersections.header = entry.isIntersecting;
+          if (entry.target === footer) intersections.footer = entry.isIntersecting;
+        });
+
+        const shouldHide = intersections.header || intersections.footer;
+        setIsHiddenForLayout(shouldHide);
+        if (shouldHide) {
+          setOpen(false);
+        }
+      },
+      { threshold: 0.01 },
+    );
+
+    if (header) observer.observe(header);
+    if (footer) observer.observe(footer);
+
+    return () => observer.disconnect();
+  }, []);
+
   const showTextInput = step === "fullName" || step === "email" || step === "phone" || step === "message";
 
   return (
-    <div className="chat-widget" aria-live="polite">
+    <div className={`chat-widget${isHiddenForLayout ? " is-hidden" : ""}`} aria-live="polite">
       {open ? (
         <section
           className="chat-widget-panel"
@@ -414,8 +449,13 @@ export function ChatLeadWidget() {
         onClick={open ? closeWidget : openWidget}
         ref={launcherRef}
       >
-        <span>Chat</span>
-        <small>Private enquiry</small>
+        <svg className="chat-widget-icon" viewBox="0 0 24 24" role="presentation" aria-hidden="true" focusable="false">
+          <path
+            d="M12 4C7.03 4 3 7.13 3 11c0 3.87 4.03 7 9 7 0.65 0 1.28-0.06 1.89-0.17 1.1 0.84 2.5 1.4 4.11 1.55-0.54-0.71-0.92-1.67-1.04-2.71C19.42 15.39 21 13.34 21 11c0-3.87-4.03-7-9-7z"
+            fill="currentColor"
+          />
+        </svg>
+        <span className="visually-hidden">Open private enquiry chat</span>
       </button>
     </div>
   );

@@ -7,10 +7,12 @@ import { RevealArticle, RevealDiv } from "@/components/MotionReveal";
 import { ProcessSteps } from "@/components/ProcessSteps";
 import { ProgrammeCard } from "@/components/ProgrammeCard";
 import { SchemaMarkup } from "@/components/SchemaMarkup";
+import { SiteLink } from "@/components/SiteLink";
 import { TrustSection } from "@/components/TrustSection";
 import { WatercolorArtwork } from "@/components/WatercolorArtwork";
 import { artGalleryById } from "@/content/artGallery";
 import { homeFaqs } from "@/content/faqs";
+import { addictionMoneyLinks } from "@/content/phase1Pages";
 import { programmes } from "@/content/programmes";
 import { seoPages } from "@/content/seo";
 import { processSteps } from "@/content/site";
@@ -64,9 +66,10 @@ export default function HomePage() {
       <Hero
         eyebrow="Confidential addiction pattern support in South Africa"
         title="Heal the pattern behind the addiction"
-        description="Addiction is often more than the behaviour itself. It can become a loop of stress, emotion, craving, relief and repetition. Healing From Your Addiction helps you work with these patterns through hypnotherapy, EFT and structured support."
-        primaryCta="Start Your Confidential Enquiry"
-        secondaryCta="Explore the Programmes"
+        description="Addiction is often a loop of trigger, craving, behaviour, relief and repetition. Healing From Your Addiction helps you work with that pattern through a structured 4-week, 8-session programme, hypnotherapy, EFT-informed support and daily reinforcement."
+        primaryCta="Start Your Healing Program"
+        secondaryCta="Explore Addiction Support"
+        secondaryHref="/addictions/"
       />
 
       <section className="section pattern-section" aria-labelledby="pattern-heading">
@@ -107,8 +110,8 @@ export default function HomePage() {
         <div className="container">
           <div className="section-heading">
             <p className="eyebrow">Programmes</p>
-            <h2 id="programmes-heading">Current addiction support programmes</h2>
-            <p>Start with the programme that matches the pattern you want support with. More categories can be added using the same landing-page system.</p>
+            <h2 id="programmes-heading">What Healing From Your Addiction helps with</h2>
+            <p>Start with the addiction type that matches the pattern you want support with. The strongest current programmes are gambling addiction and food addiction / binge eating.</p>
           </div>
           <div className="programme-grid two-col">
             {activeProgrammes.map((programme, index) => (
@@ -122,6 +125,30 @@ export default function HomePage() {
 
       <TrustSection />
       <ProcessSteps steps={processSteps} />
+
+      <section className="section" aria-labelledby="addiction-types-heading">
+        <div className="container">
+          <div className="section-heading">
+            <p className="eyebrow">Addiction types</p>
+            <h2 id="addiction-types-heading">One addiction type, one page, one clear enquiry path</h2>
+            <p>Each addiction page is structured for search intent, Google Ads relevance and confidential lead capture.</p>
+          </div>
+          <div className="programme-grid">
+            {addictionMoneyLinks.map((link) => (
+              <article className="programme-card" key={link.href}>
+                <div>
+                  <p className="status">Support page</p>
+                  <h3>{link.label}</h3>
+                  <p>Learn how the trigger, craving and behaviour loop can be mapped for this concern.</p>
+                </div>
+                <SiteLink className="card-link" href={link.href}>
+                  View support
+                </SiteLink>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
 
       <section className="section section-muted" aria-labelledby="approach-heading">
         <div className="container split-grid">
@@ -161,7 +188,7 @@ export default function HomePage() {
           </RevealDiv>
         </div>
       </section>
-      <CTASection title="Prefer to start with a programme page?" body="The gambling and food addiction pages are built for search intent, Google Ads relevance and confidential enquiry capture." button="View Addiction Programmes" href="/addiction-healing-programmes/" />
+      <CTASection title="Prefer to start with the programme structure?" body="The 4-week, 8-session programme explains the support rhythm, daily reinforcement and safety boundaries before you enquire." button="View the 4-Week Program" href="/programs/4-week-addiction-healing-program/" />
     </>
   );
 }

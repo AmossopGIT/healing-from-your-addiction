@@ -11,6 +11,11 @@ export type SeoPageType =
   | "home"
   | "programme"
   | "programme-overview"
+  | "addiction-hub"
+  | "support"
+  | "method"
+  | "cravings"
+  | "trust"
   | "about"
   | "contact"
   | "conversion"
@@ -57,8 +62,8 @@ export const seoPages = {
     ogImageAlt: "Healing From Your Addiction confidential addiction support in South Africa",
   },
   gambling: {
-    path: "/gambling-addiction-help/",
-    title: "Gambling Addiction Help South Africa | Healing From Your Addiction",
+    path: "/addictions/gambling-addiction-help/",
+    title: "Gambling Addiction Healing Program South Africa | Healing From Your Addiction",
     description:
       "Confidential gambling addiction support using hypnotherapy, EFT and behavioural pattern work. Get help for betting urges, chasing losses and gambling triggers.",
     primaryKeyword: "gambling addiction help South Africa",
@@ -77,8 +82,8 @@ export const seoPages = {
     ogImageAlt: "Private gambling addiction help focused on triggers and betting urges",
   },
   food: {
-    path: "/food-addiction-binge-eating-help/",
-    title: "Food Addiction & Binge Eating Help South Africa | Healing From Your Addiction",
+    path: "/addictions/food-addiction-binge-eating-help/",
+    title: "Food Addiction & Binge Eating Healing Program South Africa | Healing From Your Addiction",
     description:
       "Support for food addiction, binge eating, emotional eating and cravings through hypnotherapy, EFT and subconscious pattern work.",
     primaryKeyword: "food addiction and binge eating help South Africa",
@@ -98,8 +103,8 @@ export const seoPages = {
     ogImageAlt: "Food addiction and binge eating support for emotional eating patterns",
   },
   programmes: {
-    path: "/addiction-healing-programmes/",
-    title: "Addiction Healing Programmes | Healing From Your Addiction",
+    path: "/programs/",
+    title: "Addiction Healing Programs | Healing From Your Addiction",
     description:
       "Explore confidential hypnotherapy and EFT-based support programmes for gambling addiction, food addiction, binge eating and future addiction support categories.",
     primaryKeyword: "addiction healing programmes South Africa",
@@ -115,6 +120,43 @@ export const seoPages = {
     conversionGoal: "Move to a programme landing page or submit a general enquiry.",
     ogImage: defaultOgImage,
     ogImageAlt: "Addiction healing programme options for confidential support",
+  },
+  fourWeekProgram: {
+    path: "/programs/4-week-addiction-healing-program/",
+    title: "4-Week Addiction Healing Program South Africa | Healing From Your Addiction",
+    description:
+      "Learn how the structured 4-week, 8-session addiction healing program works, including hypnotherapy, EFT, daily reinforcement and confidential enquiry steps.",
+    primaryKeyword: "4 week addiction healing program South Africa",
+    secondaryKeywords: [
+      "8 session hypnotherapy program",
+      "addiction support program South Africa",
+      "custom addiction recovery program",
+      "hypnotherapy addiction program",
+    ],
+    searchIntent: "Understand the structure, pricing and fit of the 4-week addiction support program.",
+    pageType: "programme-overview",
+    conversionGoal: "Start a confidential programme enquiry.",
+    ogImage: defaultOgImage,
+    ogImageAlt: "4-week addiction healing program with structured sessions and daily support",
+  },
+  addictions: {
+    path: "/addictions/",
+    title: "Addiction Help South Africa | Types of Addiction Support",
+    description:
+      "Explore confidential support for gambling, food, alcohol, cannabis, nicotine, pornography, social media and gaming addiction patterns in South Africa.",
+    primaryKeyword: "addiction help South Africa",
+    secondaryKeywords: [
+      "types of addiction",
+      "behavioural addiction help",
+      "substance addiction support",
+      "hypnotherapy addiction support",
+      "addiction treatment support",
+    ],
+    searchIntent: "Compare addiction types and choose the most relevant support page.",
+    pageType: "addiction-hub",
+    conversionGoal: "Move visitors into a matching addiction money page or enquiry.",
+    ogImage: defaultOgImage,
+    ogImageAlt: "Addiction help overview for substance and behavioural addiction patterns",
   },
   about: {
     path: "/about-gerald-crawford/",
@@ -184,7 +226,7 @@ export const seoPages = {
     ogImageAlt: "Blog and educational resources for addiction recovery support",
   },
   alcohol: {
-    path: "/addiction-help/alcohol/",
+    path: "/addictions/alcohol-addiction-help/",
     title: "Alcohol Addiction Support South Africa | Healing From Your Addiction",
     description:
       "Pattern-focused support for alcohol cravings and emotional triggers with confidential hypnotherapy and EFT-informed methods in South Africa.",
@@ -202,7 +244,7 @@ export const seoPages = {
     ogImageAlt: "Alcohol addiction support for cravings and emotional triggers",
   },
   cannabis: {
-    path: "/addiction-help/cannabis/",
+    path: "/addictions/cannabis-addiction-help/",
     title: "Cannabis Addiction Support South Africa | Healing From Your Addiction",
     description:
       "Support for cannabis habit loops, emotional dependence, routines and trigger awareness through confidential pattern-focused support.",
@@ -220,7 +262,7 @@ export const seoPages = {
     ogImageAlt: "Cannabis addiction support for habit loops and triggers",
   },
   nicotine: {
-    path: "/addiction-help/nicotine/",
+    path: "/addictions/nicotine-addiction-help/",
     title: "Nicotine Addiction Support South Africa | Healing From Your Addiction",
     description:
       "Support for smoking or vaping patterns, nicotine cravings, identity shifts and daily reinforcement with confidential pattern-focused care.",
@@ -238,7 +280,7 @@ export const seoPages = {
     ogImageAlt: "Nicotine addiction support for smoking and vaping patterns",
   },
   pornography: {
-    path: "/addiction-help/pornography/",
+    path: "/addictions/pornography-addiction-help/",
     title: "Pornography Addiction Support South Africa | Healing From Your Addiction",
     description:
       "Confidential support for compulsive pornography patterns, triggers and emotional regulation through hypnotherapy and EFT-informed methods.",
@@ -256,7 +298,7 @@ export const seoPages = {
     ogImageAlt: "Private pornography addiction support for triggers and emotional regulation",
   },
   socialMedia: {
-    path: "/addiction-help/social-media/",
+    path: "/addictions/social-media-addiction-help/",
     title: "Social Media Addiction Support South Africa | Healing From Your Addiction",
     description:
       "Support for scrolling patterns, dopamine loops, avoidance and healthier digital boundaries through confidential pattern-focused care.",
@@ -275,7 +317,7 @@ export const seoPages = {
     ogImageAlt: "Social media addiction support for scrolling patterns and digital boundaries",
   },
   gaming: {
-    path: "/addiction-help/gaming/",
+    path: "/addictions/gaming-addiction-help/",
     title: "Gaming Addiction Support South Africa | Healing From Your Addiction",
     description:
       "Support for gaming habit loops, escape patterns, routine change and emotional triggers through confidential pattern-focused care.",
@@ -292,6 +334,163 @@ export const seoPages = {
     noIndex: true,
     ogImage: defaultOgImage,
     ogImageAlt: "Gaming addiction support for habit loops and emotional triggers",
+  },
+  howToStopGambling: {
+    path: "/addictions/gambling-addiction-help/how-to-stop-gambling/",
+    title: "How to Stop Gambling | Gambling Addiction Support South Africa",
+    description:
+      "Learn practical steps to interrupt gambling urges, block high-risk access, stop chasing losses and start a confidential recovery enquiry.",
+    primaryKeyword: "how to stop gambling",
+    secondaryKeywords: ["stop gambling help", "quit gambling", "help me stop gambling", "gambling addiction support"],
+    searchIntent: "Find practical help for stopping gambling behaviour.",
+    pageType: "support",
+    conversionGoal: "Move readers into the gambling recovery enquiry.",
+    ogImage: defaultOgImage,
+    ogImageAlt: "How to stop gambling support with pause and trigger awareness",
+  },
+  stopChasingLosses: {
+    path: "/addictions/gambling-addiction-help/stop-chasing-losses/",
+    title: "Stop Chasing Losses | Gambling Addiction Help",
+    description:
+      "Understand why chasing losses keeps gambling loops active and how pattern-focused support can help create a pause before the next bet.",
+    primaryKeyword: "stop chasing losses",
+    secondaryKeywords: ["chasing losses gambling", "gambling debt pressure", "why do I keep chasing losses", "betting loss chasing"],
+    searchIntent: "Understand and interrupt the loss-chasing gambling loop.",
+    pageType: "support",
+    conversionGoal: "Move readers into gambling programme support.",
+    ogImage: defaultOgImage,
+    ogImageAlt: "Gambling loss chasing loop with a clear pause point",
+  },
+  gamblingUrges: {
+    path: "/addictions/gambling-addiction-help/gambling-urges/",
+    title: "Gambling Urges Help | Manage Betting Cravings",
+    description:
+      "Learn how gambling urges build, why betting cravings can feel automatic and how hypnotherapy and EFT-informed support may help.",
+    primaryKeyword: "gambling urges",
+    secondaryKeywords: ["betting cravings", "gambling craving support", "urge to gamble", "gambling trigger help"],
+    searchIntent: "Find help understanding and managing gambling urges.",
+    pageType: "support",
+    conversionGoal: "Move readers into a gambling support enquiry.",
+    ogImage: defaultOgImage,
+    ogImageAlt: "Gambling urge support with a trigger craving pause loop",
+  },
+  howToStopBingeEating: {
+    path: "/addictions/food-addiction-binge-eating-help/how-to-stop-binge-eating/",
+    title: "How to Stop Binge Eating | Food Addiction Support",
+    description:
+      "Learn how binge eating patterns can be supported with trigger awareness, craving control and a balanced non-restrictive approach.",
+    primaryKeyword: "how to stop binge eating",
+    secondaryKeywords: ["binge eating help", "stop binge eating support", "food addiction help", "loss of control eating"],
+    searchIntent: "Find practical, non-shaming support for binge eating patterns.",
+    pageType: "support",
+    conversionGoal: "Move readers into a food addiction enquiry.",
+    ogImage: defaultOgImage,
+    ogImageAlt: "Binge eating support with a calm pause before eating",
+  },
+  emotionalEatingHelp: {
+    path: "/addictions/food-addiction-binge-eating-help/emotional-eating-help/",
+    title: "Emotional Eating Help South Africa | Food Addiction Support",
+    description:
+      "Understand emotional eating triggers and how hypnotherapy and EFT-informed support may help create more choice around food.",
+    primaryKeyword: "emotional eating help",
+    secondaryKeywords: ["emotional eating support", "comfort eating help", "how to stop emotional eating", "stress eating support"],
+    searchIntent: "Find support for eating linked to emotion, stress and comfort.",
+    pageType: "support",
+    conversionGoal: "Move readers into the food addiction programme enquiry.",
+    ogImage: defaultOgImage,
+    ogImageAlt: "Emotional eating support with calm food trigger awareness",
+  },
+  sugarCravingsHelp: {
+    path: "/addictions/food-addiction-binge-eating-help/sugar-cravings-help/",
+    title: "Sugar Cravings Help | Food Addiction and Craving Support",
+    description:
+      "Learn why sugar cravings and processed-food urges can feel automatic and how pattern-focused support may help build more control.",
+    primaryKeyword: "sugar cravings help",
+    secondaryKeywords: ["food cravings help", "processed food cravings", "hypnotherapy for food cravings", "craving control support"],
+    searchIntent: "Find help for sugar cravings and processed-food urges.",
+    pageType: "support",
+    conversionGoal: "Move readers into food craving and programme support.",
+    ogImage: defaultOgImage,
+    ogImageAlt: "Sugar craving support with a spoon and pause point",
+  },
+  hypnotherapyForAddiction: {
+    path: "/hypnotherapy-for-addiction/",
+    title: "Hypnotherapy for Addiction South Africa | Cravings and Habit Loops",
+    description:
+      "Learn how hypnotherapy may support addiction recovery by working with cravings, emotional triggers, subconscious patterns and behaviour loops.",
+    primaryKeyword: "hypnotherapy for addiction South Africa",
+    secondaryKeywords: ["hypnotherapy for cravings", "subconscious addiction patterns", "hypnotherapy addiction support", "hypnotherapy for gambling addiction"],
+    searchIntent: "Understand whether hypnotherapy may support addiction patterns.",
+    pageType: "method",
+    conversionGoal: "Move readers into a relevant addiction page or enquiry.",
+    ogImage: defaultOgImage,
+    ogImageAlt: "Hypnotherapy for addiction support and subconscious pattern change",
+  },
+  eftTappingForCravings: {
+    path: "/eft-tapping-for-cravings/",
+    title: "EFT Tapping for Addiction Cravings | Healing From Your Addiction",
+    description:
+      "Learn how EFT tapping may support calmer responses to addiction cravings, emotional triggers, gambling urges and food cravings.",
+    primaryKeyword: "EFT tapping for addiction cravings",
+    secondaryKeywords: ["EFT for cravings", "EFT for gambling urges", "EFT for food cravings", "emotional trigger support"],
+    searchIntent: "Understand EFT tapping as support for cravings and emotional triggers.",
+    pageType: "method",
+    conversionGoal: "Move readers into addiction support pages or enquiry.",
+    ogImage: defaultOgImage,
+    ogImageAlt: "EFT tapping support for cravings and emotional triggers",
+  },
+  urgeSurfing: {
+    path: "/cravings/urge-surfing/",
+    title: "Urge Surfing for Addiction Cravings | Pause Before Acting",
+    description:
+      "Learn the idea of urge surfing, how cravings rise and fall, and how a pause can support gambling, food and other addiction patterns.",
+    primaryKeyword: "urge surfing",
+    secondaryKeywords: ["how to control cravings", "pause before acting", "addiction cravings", "trigger craving behaviour reward loop"],
+    searchIntent: "Learn a practical craving-control concept before seeking support.",
+    pageType: "cravings",
+    conversionGoal: "Move readers into a relevant addiction or method page.",
+    ogImage: defaultOgImage,
+    ogImageAlt: "Urge surfing support with a craving wave and pause point",
+  },
+  faqs: {
+    path: "/faqs/",
+    title: "Addiction Hypnotherapy FAQs | Healing From Your Addiction",
+    description:
+      "Answers to common questions about addiction hypnotherapy, EFT, the 4-week program, confidentiality, medical safety and enquiries.",
+    primaryKeyword: "addiction hypnotherapy FAQs",
+    secondaryKeywords: ["gambling addiction FAQs", "food addiction FAQs", "hypnotherapy safety", "addiction program FAQs"],
+    searchIntent: "Answer trust, safety and programme questions before enquiry.",
+    pageType: "trust",
+    conversionGoal: "Reduce uncertainty and move visitors into enquiry.",
+    ogImage: defaultOgImage,
+    ogImageAlt: "Frequently asked questions about addiction support",
+  },
+  medicalDisclaimer: {
+    path: "/medical-disclaimer/",
+    title: "Medical Disclaimer | Healing From Your Addiction",
+    description:
+      "Important medical and safety boundaries for Healing From Your Addiction, including when emergency, psychiatric, detox or rehab care may be required.",
+    primaryKeyword: "addiction support medical disclaimer",
+    secondaryKeywords: ["addiction emergency support", "medical detox warning", "hypnotherapy disclaimer", "addiction safety guidance"],
+    searchIntent: "Understand professional boundaries and urgent-care situations.",
+    pageType: "trust",
+    conversionGoal: "Set safe expectations and direct urgent cases to appropriate care.",
+    noIndex: false,
+    ogImage: defaultOgImage,
+    ogImageAlt: "Medical disclaimer and safety boundaries for addiction support",
+  },
+  privacyPolicy: {
+    path: "/privacy-policy/",
+    title: "Privacy Policy | Healing From Your Addiction",
+    description:
+      "Read how Healing From Your Addiction handles confidential enquiry information, contact details and privacy for addiction support enquiries.",
+    primaryKeyword: "Healing From Your Addiction privacy policy",
+    secondaryKeywords: ["private addiction enquiry", "confidential enquiry privacy", "POPIA addiction support"],
+    searchIntent: "Understand privacy before submitting an enquiry.",
+    pageType: "trust",
+    conversionGoal: "Build trust around confidential enquiries.",
+    ogImage: defaultOgImage,
+    ogImageAlt: "Privacy policy for confidential addiction support enquiries",
   },
 } satisfies Record<string, SeoPageRecord>;
 

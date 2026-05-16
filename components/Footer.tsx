@@ -1,6 +1,7 @@
 ﻿import { SiteLink } from "@/components/SiteLink";
 import { siteConfig, standardDisclaimer } from "@/lib/constants";
 import { TrackedLink } from "@/components/TrackedLink";
+import { withBasePath } from "@/lib/basePath";
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
@@ -12,7 +13,7 @@ export function Footer() {
           <div className="footer-col footer-col-brand">
             <div className="footer-brand-row">
               <span className="footer-mark" aria-hidden="true">
-                <img className="footer-mark-image" src="/icon.png" alt="" width={38} height={38} />
+                <img className="footer-mark-image" src={withBasePath("/icon.png")} alt="" width={38} height={38} />
               </span>
               <p className="footer-brand">Healing From Your Addiction</p>
             </div>
@@ -20,16 +21,17 @@ export function Footer() {
               {siteConfig.owner} provides confidential hypnotherapy, EFT and pattern-focused addiction support in South Africa.
             </p>
             <p className="footer-resource-link">
-              <SiteLink href="/blog/">Recovery blog &amp; articles</SiteLink>
+              <SiteLink href="/blog/">Resources &amp; articles</SiteLink>
             </p>
           </div>
 
           <div className="footer-col">
-            <h2 className="footer-heading">Programmes</h2>
+            <h2 className="footer-heading">Addictions</h2>
             <ul className="footer-links">
-              <li><SiteLink href="/gambling-addiction-help/">Gambling Addiction</SiteLink></li>
-              <li><SiteLink href="/food-addiction-binge-eating-help/">Food Addiction / Binge Eating</SiteLink></li>
-              <li><SiteLink href="/addiction-healing-programmes/">All Programmes</SiteLink></li>
+              <li><SiteLink href="/addictions/gambling-addiction-help/">Gambling Addiction</SiteLink></li>
+              <li><SiteLink href="/addictions/food-addiction-binge-eating-help/">Food Addiction / Binge Eating</SiteLink></li>
+              <li><SiteLink href="/addictions/">All Addiction Support</SiteLink></li>
+              <li><SiteLink href="/programs/">Programs</SiteLink></li>
             </ul>
           </div>
 
@@ -55,6 +57,8 @@ export function Footer() {
               <li>Confidential, judgement-free sessions</li>
               <li>Hypnotherapy &amp; EFT-based support</li>
               <li>Online or in-person, South Africa</li>
+              <li><SiteLink href="/medical-disclaimer/">Medical disclaimer</SiteLink></li>
+              <li><SiteLink href="/privacy-policy/">Privacy policy</SiteLink></li>
             </ul>
           </div>
         </div>

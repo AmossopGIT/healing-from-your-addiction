@@ -1,10 +1,5 @@
-﻿import { ProgrammeLandingPage } from "@/components/ProgrammeLandingPage";
-import { foodContent } from "@/content/food";
-import { seoPages } from "@/content/seo";
-import { createPageMetadata } from "@/lib/seo";
+﻿import { permanentRedirect } from "next/navigation";
 
-export const metadata = createPageMetadata(seoPages.food);
-
-export default function FoodAddictionHelpPage() {
-  return <ProgrammeLandingPage content={foodContent} />;
+export default function FoodAddictionHelpRedirectPage() {
+  permanentRedirect("/addictions/food-addiction-binge-eating-help/");
 }

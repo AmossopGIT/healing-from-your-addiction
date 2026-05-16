@@ -1,10 +1,5 @@
-﻿import { ProgrammeLandingPage } from "@/components/ProgrammeLandingPage";
-import { gamblingContent } from "@/content/gambling";
-import { seoPages } from "@/content/seo";
-import { createPageMetadata } from "@/lib/seo";
+﻿import { permanentRedirect } from "next/navigation";
 
-export const metadata = createPageMetadata(seoPages.gambling);
-
-export default function GamblingAddictionHelpPage() {
-  return <ProgrammeLandingPage content={gamblingContent} />;
+export default function GamblingAddictionHelpRedirectPage() {
+  permanentRedirect("/addictions/gambling-addiction-help/");
 }

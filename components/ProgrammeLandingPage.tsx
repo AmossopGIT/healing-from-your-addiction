@@ -7,6 +7,7 @@ import { SchemaMarkup } from "@/components/SchemaMarkup";
 import { TrustSection } from "@/components/TrustSection";
 import { WatercolorArtwork } from "@/components/WatercolorArtwork";
 import { artGalleryById } from "@/content/artGallery";
+import { foodSupportLinks, gamblingSupportLinks } from "@/content/phase1Pages";
 import { getSeoByPath } from "@/content/seo";
 import type { LandingPageContent } from "@/content/types";
 import { breadcrumbSchema, faqSchema, professionalServiceSchema, serviceSchema, webPageSchema } from "@/lib/schema";
@@ -19,6 +20,7 @@ export function ProgrammeLandingPage({ content }: ProgrammeLandingPageProps) {
   const programmeArtwork = artGalleryById.get("programme-overview");
   const dailyArtwork = artGalleryById.get("process-integration");
   const pageSeo = getSeoByPath(content.path);
+  const relatedLinks = content.defaultConcern === "Gambling" ? gamblingSupportLinks : content.defaultConcern === "Food / binge eating" ? foodSupportLinks : [];
   const schema = [
     professionalServiceSchema(),
     pageSeo ? webPageSchema(pageSeo) : webPageSchema(content.seo.title, content.seo.description, content.path),
@@ -86,6 +88,12 @@ export function ProgrammeLandingPage({ content }: ProgrammeLandingPageProps) {
         </div>
       </section>
 
+      <CTASection
+        title="4 weeks. 8 sessions. R12,000."
+        body="The programme is structured to map the pattern, work with cravings and triggers, reinforce daily change and prepare for high-risk moments."
+        button={content.hero.primaryCta}
+      />
+
       <section className="section" aria-labelledby="education-heading">
         <div className="container">
           <div className="section-heading">
@@ -144,9 +152,45 @@ export function ProgrammeLandingPage({ content }: ProgrammeLandingPageProps) {
         </div>
       </section>
 
+      {relatedLinks.length ? (
+        <section className="section section-muted" aria-labelledby="related-support-heading">
+          <div className="container">
+            <div className="section-heading">
+              <p className="eyebrow">Support pages</p>
+              <h2 id="related-support-heading">Go deeper into this pattern</h2>
+              <p>These pages support the main programme page and match the searches people often make before they enquire.</p>
+            </div>
+            <div className="programme-grid two-col">
+              {relatedLinks.map((link) => (
+                <article className="programme-card" key={link.href}>
+                  <div>
+                    <p className="status">Related topic</p>
+                    <h3>{link.label}</h3>
+                    <p>Read the connected support page and return to the programme enquiry when ready.</p>
+                  </div>
+                  <a className="card-link" href={link.href}>
+                    Read more
+                  </a>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+      ) : null}
+
       <TrustSection title={content.trust.title} body={content.trust.body} />
       <FAQSection faqs={content.faqs} />
       <Disclaimer />
+      <section className="section form-section" aria-labelledby="programme-bottom-form-heading">
+        <div className="container form-layout">
+          <div>
+            <p className="eyebrow">Confidential next step</p>
+            <h2 id="programme-bottom-form-heading">{content.finalCta.title}</h2>
+            <p>{content.finalCta.body}</p>
+          </div>
+          <LeadForm defaultConcern={content.defaultConcern} formTitle={content.finalCta.title} submitLabel={content.finalCta.button} />
+        </div>
+      </section>
       <CTASection title={content.finalCta.title} body={content.finalCta.body} button={content.finalCta.button} />
     </>
   );
