@@ -1,0 +1,300 @@
+{
+  "meta": {
+    "id": "search-food-addiction-za",
+    "version": "1.0.0",
+    "status": "ready_for_build",
+    "owner": "Healing From Your Addiction",
+    "region": "ZA",
+    "channel": "search",
+    "campaignSubtype": "standard",
+    "lastUpdated": "2026-05-13",
+    "sourceOfTruth": {
+      "campaignBriefPath": "docs/marketing/campaigns/search/food-addiction.md",
+      "guardrailsPath": "docs/marketing/governance/messaging-guardrails.md"
+    }
+  },
+  "campaign": {
+    "name": "HFYA | Search | Food Addiction | ZA",
+    "topic": "Food Addiction / Binge Eating",
+    "objective": "leads",
+    "type": "search",
+    "settings": {
+      "location": [
+        "South Africa"
+      ],
+      "language": [
+        "English"
+      ],
+      "network": {
+        "googleSearch": true,
+        "searchPartners": false,
+        "displayExpansion": false
+      },
+      "bidding": {
+        "strategy": "Maximize Clicks",
+        "targetCpa": null
+      },
+      "dailyBudgetZAR": {
+        "min": 100,
+        "max": 150
+      }
+    }
+  },
+  "landingPage": {
+    "url": "https://healingfromyouraddiction.co.za/food-addiction-binge-eating-healing-program/",
+    "messageMatchSummary": "8-session support programme for emotional eating, binge patterns, cravings, and trigger mastery.",
+    "offerPositioning": "Pattern-focused behavioural support with hypnotherapy.",
+    "complianceNotes": [
+      "Do not imply guaranteed cure or guaranteed outcomes.",
+      "Avoid shame-based language and exaggerated claims."
+    ]
+  },
+  "adGroups": [
+    {
+      "name": "Emotional Eating Support",
+      "intent": "User seeks help with emotional eating patterns.",
+      "launchPriority": "high",
+      "keywords": [
+        { "text": "emotional eating", "matchType": "phrase" },
+        { "text": "emotional eating help", "matchType": "phrase" },
+        { "text": "emotional eating support", "matchType": "phrase" },
+        { "text": "how to stop emotional eating", "matchType": "phrase" },
+        { "text": "emotional eating therapy", "matchType": "phrase" },
+        { "text": "comfort eating help", "matchType": "phrase" },
+        { "text": "food and emotion", "matchType": "phrase" },
+        { "text": "emotions and eating", "matchType": "phrase" }
+      ],
+      "ads": [
+        {
+          "format": "rsa",
+          "name": "Food Main Ad",
+          "isLaunchMain": true,
+          "headlines": [
+            "Emotional Eating Support",
+            "Binge Eating Support",
+            "Break The Food Loop",
+            "Food Craving Support",
+            "Rebuild Control With Food",
+            "8-Session Healing Program",
+            "Hypnotherapy Support",
+            "Private Eating Support",
+            "Change Eating Patterns",
+            "Regain Food Balance",
+            "Understand Food Triggers",
+            "Healing From Your Addiction"
+          ],
+          "descriptions": [
+            "Structured support for emotional eating, binge patterns, food cravings and automatic eating behaviour.",
+            "Rebuild awareness, control and a healthier relationship with food through guided support.",
+            "Support for food urges, emotional triggers and compulsive eating patterns.",
+            "Start with a private enquiry and take the first step toward food balance."
+          ],
+          "pinning": {
+            "headline1": "Emotional Eating Support",
+            "headline2": "Binge Eating Support",
+            "headline3": "8-Session Healing Program"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Stress Eating Support",
+      "intent": "User wants support for stress or comfort eating.",
+      "launchPriority": "medium",
+      "keywords": [
+        { "text": "stress eating", "matchType": "phrase" },
+        { "text": "stress eating help", "matchType": "phrase" },
+        { "text": "how to stop stress eating", "matchType": "phrase" },
+        { "text": "eating when stressed", "matchType": "phrase" },
+        { "text": "stress and overeating", "matchType": "phrase" },
+        { "text": "comfort eating", "matchType": "phrase" },
+        { "text": "comfort eating help", "matchType": "phrase" },
+        { "text": "eating and stress", "matchType": "phrase" }
+      ],
+      "ads": [
+        {
+          "format": "rsa",
+          "name": "Stress Eating Ad",
+          "headlines": [
+            "Stress Eating Support",
+            "Break Stress Eating Habits",
+            "Support For Stress Eating",
+            "Stop Eating From Stress",
+            "Food Craving Support",
+            "Regain Control With Food",
+            "Calm Eating Support",
+            "Hypnotherapy Support",
+            "Private Eating Help",
+            "8-Session Healing Program",
+            "Change The Eating Pattern",
+            "Understand The Trigger",
+            "Start With One Enquiry",
+            "Healing From Your Addiction",
+            "Support In South Africa"
+          ],
+          "descriptions": [
+            "Support for stress eating, comfort eating and cravings linked to pressure, emotion and habit loops.",
+            "A structured programme focused on awareness, emotional regulation and food-control support.",
+            "Work on the pattern behind stress eating with guided hypnotherapy and practical awareness.",
+            "Private support for people wanting to rebuild balance and control with food."
+          ],
+          "pinning": {
+            "headline1": null,
+            "headline2": null,
+            "headline3": null
+          }
+        }
+      ]
+    },
+    {
+      "name": "Binge Eating Support",
+      "intent": "User seeks support for binge episodes and compulsive urges.",
+      "launchPriority": "medium",
+      "keywords": [
+        { "text": "binge eating help", "matchType": "phrase" },
+        { "text": "binge eating support", "matchType": "phrase" },
+        { "text": "how to stop binge eating", "matchType": "phrase" },
+        { "text": "stop binge eating", "matchType": "phrase" },
+        { "text": "binge eating and how to stop", "matchType": "phrase" },
+        { "text": "binge eating treatment", "matchType": "phrase" },
+        { "text": "compulsive binge eating", "matchType": "phrase" },
+        { "text": "food binge disorder", "matchType": "phrase" },
+        { "text": "binge overeating disorder", "matchType": "phrase" }
+      ],
+      "ads": [
+        {
+          "format": "rsa",
+          "name": "Binge Eating Ad",
+          "headlines": [
+            "Binge Eating Support",
+            "Break The Binge Pattern",
+            "Support For Binge Urges",
+            "Food Urge Support",
+            "Rebuild Eating Control",
+            "Private Eating Support",
+            "Hypnotherapy Support",
+            "8-Session Healing Program",
+            "Change Food Patterns",
+            "Regain Balance With Food",
+            "Understand The Craving",
+            "Start With One Enquiry",
+            "Confidential Support",
+            "Healing From Your Addiction",
+            "Support In South Africa"
+          ],
+          "descriptions": [
+            "Structured support for binge eating patterns, food urges, emotional triggers and automatic behaviour.",
+            "Rebuild awareness, control and a healthier relationship with food through guided support.",
+            "Support for cravings, emotional eating and binge patterns through an 8-session programme.",
+            "Start with a private enquiry and take the first step toward changing the pattern."
+          ],
+          "pinning": {
+            "headline1": null,
+            "headline2": null,
+            "headline3": null
+          }
+        }
+      ]
+    },
+    {
+      "name": "Food Addiction Support",
+      "intent": "User seeks support framed as food addiction or compulsive eating.",
+      "launchPriority": "medium",
+      "keywords": [
+        { "text": "food addiction help", "matchType": "phrase" },
+        { "text": "food addiction support", "matchType": "phrase" },
+        { "text": "food addiction treatment", "matchType": "phrase" },
+        { "text": "eating addiction", "matchType": "phrase" },
+        { "text": "food and addiction", "matchType": "phrase" },
+        { "text": "compulsive eating help", "matchType": "phrase" },
+        { "text": "compulsive overeating help", "matchType": "phrase" },
+        { "text": "addicted to food", "matchType": "phrase" },
+        { "text": "food cravings help", "matchType": "phrase" },
+        { "text": "hypnotherapy for food addiction", "matchType": "phrase" }
+      ],
+      "ads": [
+        {
+          "format": "rsa",
+          "name": "Food Addiction Ad",
+          "headlines": [
+            "Food Addiction Support",
+            "Support For Food Cravings",
+            "Compulsive Eating Support",
+            "Break Food Patterns",
+            "Rebuild Food Control",
+            "Private Eating Support",
+            "Hypnotherapy For Food",
+            "8-Session Healing Program",
+            "Change Eating Habits",
+            "Understand The Craving",
+            "Support For Food Urges",
+            "Regain Food Balance",
+            "Start With One Enquiry",
+            "Healing From Your Addiction",
+            "South African Support"
+          ],
+          "descriptions": [
+            "Support for food addiction patterns, compulsive eating, cravings and emotional reward loops.",
+            "A structured 8-session programme focused on awareness, control, balance and healthier choices.",
+            "Work on the subconscious and emotional patterns behind food cravings and compulsive eating.",
+            "Private support for people wanting to change their relationship with food."
+          ],
+          "pinning": {
+            "headline1": null,
+            "headline2": null,
+            "headline3": null
+          }
+        }
+      ]
+    }
+  ],
+  "assetsRefs": {
+    "doc": "docs/marketing/assets/shared-assets.md",
+    "data": "docs/marketing/data/assets/shared.json"
+  },
+  "negatives": {
+    "sharedListRefs": [
+      "docs/marketing/data/negatives/shared.json"
+    ],
+    "campaignSpecificRef": "docs/marketing/data/negatives/food.json"
+  },
+  "tracking": {
+    "utmTemplate": {
+      "source": "google",
+      "medium": "cpc",
+      "campaign": "{campaignid}",
+      "content": "{adgroupid}",
+      "term": "{keyword}"
+    },
+    "conversionEvents": [
+      "form_submit",
+      "phone_click",
+      "whatsapp_click"
+    ],
+    "primaryConversion": "form_submit"
+  },
+  "results": {
+    "reportingCadence": "monthly",
+    "snapshots": []
+  },
+  "channelExtensions": {
+    "search": {
+      "rsaPolicy": {
+        "maxHeadlines": 15,
+        "maxDescriptions": 4
+      }
+    },
+    "pmax": {
+      "assetGroups": [],
+      "audienceSignals": [],
+      "listingGroupFilters": [],
+      "merchantCenterFeedRef": null
+    },
+    "shopping": {
+      "feedRef": null,
+      "listingGroups": [],
+      "priority": null,
+      "productFilters": []
+    }
+  }
+}

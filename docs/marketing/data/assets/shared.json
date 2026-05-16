@@ -1,0 +1,52 @@
+{
+  "meta": {
+    "id": "shared-assets",
+    "version": "1.0.0",
+    "status": "active",
+    "lastUpdated": "2026-05-13",
+    "sourceDoc": "docs/marketing/assets/shared-assets.md"
+  },
+  "callouts": [
+    "Private Support",
+    "Confidential Enquiries",
+    "Online Support Available",
+    "8-Session Programme",
+    "Hypnotherapy Support",
+    "EFT Tapping Support",
+    "Support For Cravings",
+    "South African Therapist",
+    "Custom Healing Program",
+    "Behaviour Pattern Support"
+  ],
+  "structuredSnippets": [
+    {
+      "header": "Services",
+      "values": [
+        "Hypnotherapy",
+        "EFT Tapping",
+        "Addiction Support",
+        "Craving Support",
+        "Custom Programs",
+        "Behavioural Support"
+      ]
+    }
+  ],
+  "sitelinks": [
+    {
+      "text": "About Gerald Crawford",
+      "url": "https://healingfromyouraddiction.co.za/about-the-therapist/"
+    },
+    {
+      "text": "Addiction Programs",
+      "url": "https://healingfromyouraddiction.co.za/addiction-healing-programs/"
+    },
+    {
+      "text": "FAQs",
+      "url": "https://healingfromyouraddiction.co.za/faqs/"
+    },
+    {
+      "text": "Contact Gerald",
+      "url": "https://healingfromyouraddiction.co.za/contact/"
+    }
+  ]
+}

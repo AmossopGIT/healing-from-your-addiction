@@ -1,0 +1,19 @@
+---
+description: Keep SEO metadata, keyword tracking, schema, tracing, and artwork aligned
+alwaysApply: true
+---
+
+# SEO Page System
+
+When creating or changing pages, blog content, programme content, routes, CTAs, or artwork, keep the SEO system in sync.
+
+- Treat `content/seo.ts` as the code source of truth for page SEO records: title, description, canonical path, index/noindex, primary keyword, secondary keywords, page type, conversion goal, and OG image alt.
+- Treat `docs/SEO_KEYWORDS.md` as the human-readable SEO tracker. Add or update one row for every public page, blog post, blog category, blog tag, programme page, or launch-ready route.
+- Page metadata should use `createPageMetadata(...)` where a SEO record exists. Only use `createMetadata(...)` directly for not-found/noindex fallbacks or one-off generated records.
+- Keep schema aligned with the SEO record using `webPageSchema(pageSeo)` and add service/FAQ/breadcrumb schema where useful. Do not make cure guarantees or medical claims.
+- Keep tracing keyword-aware. CTA, contact, form, and thank-you events should preserve `page_type`, `primary_keyword`, `landing_page`, and `conversion_goal` via `lib/tracking.ts`.
+- Keep `app/sitemap.ts` and robots/noindex behavior aligned with canonical SEO records. Do not include noindex pages in the sitemap.
+- Image paths in `content/artGallery.ts` must point to real generated files under `public/art/watercolor/`. Do not replace multiple artwork items with one shared fallback image.
+- Alt text must be calm, descriptive, and human-first. Use page topics naturally only when they describe the image.
+
+Before finishing SEO-related work, run TypeScript or build verification and check lints for edited files. If `next build` is blocked by a running dev server, run `npx tsc --noEmit` and report the build blocker clearly.

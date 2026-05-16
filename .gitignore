@@ -1,0 +1,16 @@
+﻿# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+node_modules
+.next
+out
+.cursor/projects
+build
+.vercel
+.env*.local
+.env
+.DS_Store
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*

@@ -1,0 +1,31 @@
+{
+  "meta": {
+    "id": "shared-negatives",
+    "version": "1.0.0",
+    "status": "active",
+    "lastUpdated": "2026-05-13",
+    "sourceDoc": "docs/marketing/negatives/shared-negative-keywords.md"
+  },
+  "keywords": [
+    "free",
+    "pdf",
+    "download",
+    "jobs",
+    "career",
+    "salary",
+    "course",
+    "degree",
+    "university",
+    "research paper",
+    "definition",
+    "meaning",
+    "reddit",
+    "youtube",
+    "movie",
+    "song",
+    "games",
+    "school project",
+    "books",
+    "book"
+  ]
+}

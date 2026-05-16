@@ -1,0 +1,30 @@
+{
+  "meta": {
+    "id": "food-negatives",
+    "version": "1.0.0",
+    "status": "active",
+    "lastUpdated": "2026-05-13",
+    "sourceDoc": "docs/marketing/negatives/shared-negative-keywords.md"
+  },
+  "keywords": [
+    "recipe",
+    "recipes",
+    "restaurant",
+    "takeaway",
+    "delivery",
+    "menu",
+    "meal plan",
+    "diet plan",
+    "calorie calculator",
+    "weight loss pills",
+    "fat burner",
+    "appetite suppressant",
+    "keto",
+    "banting",
+    "bodybuilding",
+    "gym diet",
+    "mukbang",
+    "eating competition",
+    "food challenge"
+  ]
+}

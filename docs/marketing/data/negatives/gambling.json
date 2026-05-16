@@ -1,0 +1,32 @@
+{
+  "meta": {
+    "id": "gambling-negatives",
+    "version": "1.0.0",
+    "status": "active",
+    "lastUpdated": "2026-05-13",
+    "sourceDoc": "docs/marketing/negatives/shared-negative-keywords.md"
+  },
+  "keywords": [
+    "casino",
+    "online casino",
+    "casino bonus",
+    "free spins",
+    "jackpot",
+    "lotto",
+    "lottery",
+    "odds",
+    "betting tips",
+    "predictions",
+    "soccer predictions",
+    "horse racing",
+    "bookmaker",
+    "roulette",
+    "blackjack",
+    "poker",
+    "slots",
+    "slot machine",
+    "gambling app",
+    "betting app",
+    "how to win"
+  ]
+}

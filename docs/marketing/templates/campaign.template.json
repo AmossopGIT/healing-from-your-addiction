@@ -1,0 +1,142 @@
+{
+  "meta": {
+    "id": "replace-with-campaign-id",
+    "version": "1.0.0",
+    "status": "draft",
+    "owner": "Healing From Your Addiction",
+    "region": "ZA",
+    "channel": "search",
+    "campaignSubtype": "standard",
+    "lastUpdated": "2026-05-13",
+    "sourceOfTruth": {
+      "campaignBriefPath": "docs/marketing/campaigns/search/replace-with-campaign.md",
+      "governancePath": "docs/marketing/governance/messaging-guardrails.md"
+    }
+  },
+  "campaign": {
+    "name": "HFYA | Search | Topic | ZA",
+    "topic": "Topic",
+    "objective": "leads",
+    "type": "search",
+    "settings": {
+      "location": [
+        "South Africa"
+      ],
+      "language": [
+        "English"
+      ],
+      "network": {
+        "googleSearch": true,
+        "searchPartners": false,
+        "displayExpansion": false
+      },
+      "bidding": {
+        "strategy": "Maximize Clicks",
+        "targetCpa": null
+      },
+      "dailyBudgetZAR": 100
+    }
+  },
+  "landingPage": {
+    "url": "https://example.com",
+    "messageMatchSummary": "Aligned to ad group intent and support-focused language.",
+    "offerPositioning": "Structured support programme without cure guarantees.",
+    "complianceNotes": [
+      "Avoid cure or guaranteed outcome language.",
+      "Use support-oriented wording."
+    ]
+  },
+  "adGroups": [
+    {
+      "name": "Ad Group Name",
+      "intent": "Describe user intent",
+      "keywords": [
+        {
+          "text": "example keyword",
+          "matchType": "phrase"
+        }
+      ],
+      "ads": [
+        {
+          "format": "rsa",
+          "name": "Main RSA",
+          "headlines": [
+            "Example headline"
+          ],
+          "descriptions": [
+            "Example description"
+          ],
+          "pinning": {
+            "headline1": null,
+            "headline2": null,
+            "headline3": null
+          }
+        }
+      ]
+    }
+  ],
+  "assets": {
+    "callouts": [
+      "Private Support"
+    ],
+    "structuredSnippets": [
+      {
+        "header": "Services",
+        "values": [
+          "Hypnotherapy"
+        ]
+      }
+    ],
+    "sitelinks": [
+      {
+        "text": "Contact",
+        "url": "https://example.com/contact"
+      }
+    ]
+  },
+  "negatives": {
+    "sharedListRefs": [
+      "docs/marketing/data/negatives/shared.json"
+    ],
+    "campaignSpecificRef": "docs/marketing/data/negatives/topic.json"
+  },
+  "tracking": {
+    "utmTemplate": {
+      "source": "google",
+      "medium": "cpc",
+      "campaign": "{campaignid}",
+      "content": "{adgroupid}",
+      "term": "{keyword}"
+    },
+    "conversionEvents": [
+      "form_submit",
+      "phone_click",
+      "whatsapp_click"
+    ],
+    "primaryConversion": "form_submit"
+  },
+  "results": {
+    "reportingCadence": "monthly",
+    "snapshots": []
+  },
+  "channelExtensions": {
+    "search": {
+      "rsaPolicy": {
+        "maxHeadlines": 15,
+        "maxDescriptions": 4
+      }
+    },
+    "pmax": {
+      "assetGroups": [],
+      "audienceSignals": [],
+      "listingGroupFilters": [],
+      "merchantCenterFeedRef": null
+    },
+    "shopping": {
+      "feedRef": null,
+      "listingGroups": [],
+      "priority": null,
+      "productFilters": []
+    }
+  }
+}

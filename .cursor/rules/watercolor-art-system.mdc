@@ -1,0 +1,24 @@
+---
+description: Keep Healing From Your Addiction watercolor artwork consistent
+alwaysApply: true
+---
+
+# Watercolor Art System
+
+When creating, editing, or selecting artwork for this project, follow `docs/art-style-guide.md` and keep metadata in `content/artGallery.ts`.
+
+- Use minimal watercolor artwork on warm cream paper with black or near-black ink linework.
+- Keep the palette restrained: `#f7f3ea`, `#fffdfa`, `#17231f`, `#0a3f39`, `#0f5b52`, `#e2eeea`, `#a87727`, and `#f1e4cb`.
+- Prefer symbolic, non-stigmatizing subjects: loops, pauses, paths, stones, hands, forms, phones, cards, bowls, glasses, or anonymous figures.
+- Avoid photorealism, neon colors, logos, readable text inside images, medical scenes, shame, crisis imagery, explicit content, casino scenes, or brand-specific platform/game references.
+- Store site-ready images under `public/art/watercolor/` and use stable `/art/watercolor/...` paths.
+- Add every reusable image to `content/artGallery.ts` with `id`, `title`, `category`, `src`, `alt`, `prompt`, `palette`, and `usage`.
+- Alt text must be calm and descriptive, for example: `Minimal watercolor illustration of a black figure beside a gentle loop, suggesting a pause in an addiction pattern.`
+- Whenever creating a new page, blog post, article, lead-capture section, campaign landing page, or social media asset, create or select a matching watercolor image from this system.
+- First try to reuse an existing `content/artGallery.ts` item if it matches the page or campaign topic.
+- When generating new artwork, choose the closest existing image in `public/art/watercolor/` as the visual reference where the image tool supports reference images.
+- Prefer reference images that match the intended use: `home-hero` for hero art, `pattern-map` for loop/education sections, `process-*` for step-by-step content, `approach-*` for support-method content, and category images for addiction-specific pages.
+- If the image tool cannot use a reference image, copy the closest gallery item's prompt structure, palette, composition, and alt-text style before generating.
+- Use keyword-aware image filenames and IDs, for example `art-watercolor-gambling-addiction-support.png`, while keeping them short, lowercase, and hyphenated.
+- Include SEO/accessibility metadata for each image: descriptive `alt`, target keyword or topic in `title`/`usage` when natural, and a prompt that records the intended visual concept.
+- Do not keyword-stuff alt text. Write for humans first, using the page topic naturally when it describes the image.

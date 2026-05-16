@@ -1,0 +1,64 @@
+{
+  "meta": {
+    "id": "monthly-performance-template",
+    "version": "1.0.0",
+    "status": "template",
+    "owner": "Healing From Your Addiction",
+    "lastUpdated": "2026-05-13"
+  },
+  "reportingPeriod": {
+    "month": "YYYY-MM",
+    "startDate": "YYYY-MM-01",
+    "endDate": "YYYY-MM-30"
+  },
+  "accountSummary": {
+    "currency": "ZAR",
+    "impressions": 0,
+    "clicks": 0,
+    "ctr": 0,
+    "avgCpc": 0,
+    "cost": 0,
+    "conversions": 0,
+    "conversionRate": 0,
+    "cpa": 0
+  },
+  "campaignResults": [
+    {
+      "campaignId": "search-gambling-addiction-za",
+      "campaignName": "HFYA | Search | Gambling Addiction | ZA",
+      "channel": "search",
+      "status": "active",
+      "metrics": {
+        "impressions": 0,
+        "clicks": 0,
+        "ctr": 0,
+        "avgCpc": 0,
+        "cost": 0,
+        "conversions": 0,
+        "conversionRate": 0,
+        "cpa": 0
+      },
+      "adGroupBreakdown": [],
+      "topSearchTerms": [],
+      "negativeKeywordAdds": [],
+      "notes": []
+    }
+  ],
+  "changeLog": [
+    {
+      "date": "YYYY-MM-DD",
+      "campaignId": "search-gambling-addiction-za",
+      "changeType": "bidding|budget|keyword|negative|adcopy|asset|targeting",
+      "summary": "Describe the change",
+      "expectedImpact": "Describe expected result"
+    }
+  ],
+  "nextActions": [
+    {
+      "priority": "high|medium|low",
+      "owner": "name",
+      "action": "Describe action",
+      "dueDate": "YYYY-MM-DD"
+    }
+  ]
+}

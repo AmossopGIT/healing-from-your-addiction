@@ -1,0 +1,24 @@
+{
+  "name": "healing-from-your-addiction",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "build:pages": "next build",
+    "start": "next start",
+    "archive:site": "npm --prefix \"tools/site-archiver\" run start --"
+  },
+  "dependencies": {
+    "framer-motion": "^12.38.0",
+    "next": "latest",
+    "react": "latest",
+    "react-dom": "latest"
+  },
+  "devDependencies": {
+    "@types/node": "latest",
+    "@types/react": "latest",
+    "@types/react-dom": "latest",
+    "typescript": "latest"
+  }
+}
