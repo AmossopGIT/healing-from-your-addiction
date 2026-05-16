@@ -125,7 +125,8 @@ export function Header() {
                 className="button button-primary button-small header-cta"
                 tracking={{ ctaName: "need_help", linkLocation: "header" }}
               >
-                Need help?
+                <span className="header-cta-label-full">Need help?</span>
+                <span className="header-cta-label-short">Help</span>
               </TrackedLink>
               <button
                 type="button"

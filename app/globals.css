@@ -1597,7 +1597,7 @@ p {
   align-items: center;
   display: flex;
   gap: 0.7rem;
-  min-width: max-content;
+  min-width: 0;
 }
 
 .brand-mark,
@@ -3022,11 +3022,48 @@ main:not(:has(.page-hero-flush)) {
 
 @media (max-width: 1100px) {
   .site-header .header-inner {
+    gap: 0.5rem 0.65rem;
     grid-template-columns: minmax(0, 1fr) auto;
   }
 
+  .site-header .nav-links {
+    display: none;
+  }
+
+  .site-header .brand {
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  .site-header .brand-text {
+    min-width: 0;
+    overflow: hidden;
+  }
+
   .site-header .brand-text strong {
-    max-width: 14rem;
+    max-width: 100%;
+  }
+
+  .site-header .header-cta-label-short {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .site-header .brand-text {
+    display: none;
+  }
+
+  .site-header .header-cta-label-full {
+    display: none;
+  }
+
+  .site-header .header-cta-label-short {
+    display: inline;
+  }
+
+  .site-header .header-cta {
+    padding-inline: 0.75rem;
   }
 }
 
@@ -3096,17 +3133,24 @@ main,
     text-wrap: balance;
   }
 
+  .site-header .brand,
   .brand {
     min-width: 0;
+    overflow: hidden;
   }
 
-  .header-inner {
-    gap: 0.75rem;
+  .header-inner,
+  .site-header .header-inner {
+    gap: 0.5rem 0.65rem;
     min-width: 0;
   }
 
+  .site-header .brand-text strong,
   .brand-text strong {
-    overflow-wrap: anywhere;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   .hero .button-row .button,
