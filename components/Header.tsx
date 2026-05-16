@@ -1,8 +1,8 @@
 ﻿"use client";
 
-import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
+import { SiteLink } from "@/components/SiteLink";
 import { TrackedLink } from "@/components/TrackedLink";
 
 type NavLink = {
@@ -100,23 +100,23 @@ export function Header() {
       <div className="header-shell">
         <div className="header-bar">
           <div className="header-inner">
-            <Link className="brand" href="/" aria-label="Healing From Your Addiction home" onClick={close}>
+            <SiteLink className="brand" href="/" aria-label="Healing From Your Addiction home" onClick={close}>
               <span className="brand-mark" aria-hidden="true">HFYA</span>
               <span className="brand-text">
                 <strong>Healing From Your Addiction</strong>
                 <small>Gerald Crawford</small>
               </span>
-            </Link>
+            </SiteLink>
             <nav className="nav-links" aria-label="Main navigation">
               {navLinks.map((link) => (
-                <Link
+                <SiteLink
                   key={link.href}
                   href={link.href}
                   className={isActive(pathname, link.href) ? "is-active" : undefined}
                   aria-current={isActive(pathname, link.href) ? "page" : undefined}
                 >
                   {link.label}
-                </Link>
+                </SiteLink>
               ))}
             </nav>
             <div className="header-actions">
@@ -151,7 +151,7 @@ export function Header() {
             <div className="mobile-menu-inner">
               <nav className="mobile-menu-links" aria-label="Mobile navigation">
                 {navLinks.map((link) => (
-                  <Link
+                  <SiteLink
                     key={link.href}
                     href={link.href}
                     className={isActive(pathname, link.href) ? "is-active" : undefined}
@@ -159,7 +159,7 @@ export function Header() {
                     onClick={close}
                   >
                     {link.label}
-                  </Link>
+                  </SiteLink>
                 ))}
               </nav>
               <div className="mobile-menu-actions">

@@ -1,4 +1,5 @@
 import { SchemaMarkup } from "@/components/SchemaMarkup";
+import { SiteLink } from "@/components/SiteLink";
 import { WatercolorArtwork } from "@/components/WatercolorArtwork";
 import { artGalleryById } from "@/content/artGallery";
 import {
@@ -65,9 +66,9 @@ export default function BlogIndexPage() {
                   <p className="status">{category?.title ?? "Category"}</p>
                   <h3>{post.title}</h3>
                   <p>{post.excerpt}</p>
-                  <a className="card-link" href={blogPath(post.slug)}>
+                  <SiteLink className="card-link" href={blogPath(post.slug)}>
                     Read article
-                  </a>
+                  </SiteLink>
                 </article>
               );
             })}
@@ -89,9 +90,9 @@ export default function BlogIndexPage() {
                   {art ? <WatercolorArtwork item={art} className="card-artwork" sizes="(min-width: 900px) 28vw, 94vw" /> : null}
                   <h3>{category.title}</h3>
                   <p>{category.description}</p>
-                  <a className="card-link" href={blogCategoryPath(category.slug)}>
+                  <SiteLink className="card-link" href={blogCategoryPath(category.slug)}>
                     View category
-                  </a>
+                  </SiteLink>
                 </article>
               );
             })}
@@ -107,9 +108,9 @@ export default function BlogIndexPage() {
           </div>
           <div className="blog-tag-list">
             {blogTags.map((tag) => (
-              <a key={tag.slug} href={blogTagPath(tag.slug)} className="card-link">
+              <SiteLink key={tag.slug} href={blogTagPath(tag.slug)} className="card-link">
                 #{tag.label}
-              </a>
+              </SiteLink>
             ))}
           </div>
         </div>

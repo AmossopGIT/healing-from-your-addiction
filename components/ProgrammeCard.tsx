@@ -14,7 +14,7 @@ export function ProgrammeCard({ programme }: ProgrammeCardProps) {
 
   return (
     <article className="programme-card">
-      {artwork ? <WatercolorArtwork item={artwork} className="card-artwork" sizes="(min-width: 900px) 24vw, 92vw" /> : null}
+      {artwork ? <WatercolorArtwork item={artwork} className="card-artwork" fill sizes="(min-width: 900px) 24vw, 92vw" /> : null}
       <div>
         <p className={`status status-${programme.status}`}>{statusLabel}</p>
         <h3>{programme.title}</h3>

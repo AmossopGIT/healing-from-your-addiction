@@ -1,7 +1,7 @@
 ﻿"use client";
 
-import Link from "next/link";
 import type { AnchorHTMLAttributes, MouseEvent } from "react";
+import { SiteLink } from "@/components/SiteLink";
 import {
   pushDataLayer,
   trackCtaClick,
@@ -47,9 +47,9 @@ export function TrackedLink({ tracking, onClick, children, href, ...props }: Tra
 
   if (isInternalPath(href)) {
     return (
-      <Link href={href} {...props} onClick={handleClick}>
+      <SiteLink href={href!} {...props} onClick={handleClick}>
         {children}
-      </Link>
+      </SiteLink>
     );
   }
 

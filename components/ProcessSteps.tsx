@@ -35,6 +35,7 @@ export function ProcessSteps({ steps, title = "How the process works", intro }: 
                   <WatercolorArtwork
                     item={artwork}
                     className="card-artwork"
+                    fill
                     sizes="(min-width: 900px) 22vw, 92vw"
                   />
                 ) : null}

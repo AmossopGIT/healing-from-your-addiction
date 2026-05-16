@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
+import { withBasePath } from "@/lib/basePath";
 import { addictionOptions, contactMethods } from "@/lib/constants";
 import { submitLead } from "@/lib/leads";
 import { getCurrentSeoContext, pushDataLayer } from "@/lib/tracking";
@@ -108,7 +109,7 @@ export function LeadForm({
       });
 
       if (submitMode === "api") {
-        router.push("/thank-you/");
+        router.push(withBasePath("/thank-you/"));
       } else {
         setStatus("success");
       }

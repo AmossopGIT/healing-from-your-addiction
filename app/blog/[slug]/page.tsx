@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { SchemaMarkup } from "@/components/SchemaMarkup";
+import { SiteLink } from "@/components/SiteLink";
 import { WatercolorArtwork } from "@/components/WatercolorArtwork";
 import { artGalleryById } from "@/content/artGallery";
 import {
@@ -111,7 +112,7 @@ export default async function BlogPostPage({ params }: PageProps) {
             {category ? (
               <>
                 <span aria-hidden="true">•</span>
-                <a href={blogCategoryPath(category.slug)}>{category.title}</a>
+                <SiteLink href={blogCategoryPath(category.slug)}>{category.title}</SiteLink>
               </>
             ) : null}
           </p>
@@ -144,9 +145,9 @@ export default async function BlogPostPage({ params }: PageProps) {
             {post.tagSlugs.map((tagSlug) => {
               const tag = blogTagBySlug.get(tagSlug);
               return (
-                <a className="card-link" key={tagSlug} href={blogTagPath(tagSlug)}>
+                <SiteLink className="card-link" key={tagSlug} href={blogTagPath(tagSlug)}>
                   #{tag?.label ?? tagSlug}
-                </a>
+                </SiteLink>
               );
             })}
           </div>

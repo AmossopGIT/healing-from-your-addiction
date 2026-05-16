@@ -2,12 +2,11 @@
 
 const githubRepo = "healing-from-your-addiction";
 const isGithubPages = process.env.GITHUB_PAGES === "true";
-const basePath = isGithubPages ? `/${githubRepo}` : "";
+const pagesAssetPrefix = isGithubPages ? `/${githubRepo}` : "";
 
 const nextConfig: NextConfig = {
   output: isGithubPages ? "export" : undefined,
-  basePath: basePath || undefined,
-  assetPrefix: basePath ? `${basePath}/` : undefined,
+  assetPrefix: pagesAssetPrefix ? `${pagesAssetPrefix}/` : undefined,
   trailingSlash: true,
   poweredByHeader: false,
   images: {

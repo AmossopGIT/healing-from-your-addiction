@@ -1,4 +1,4 @@
-﻿import Link from "next/link";
+﻿import { SiteLink } from "@/components/SiteLink";
 import { siteConfig, standardDisclaimer } from "@/lib/constants";
 import { TrackedLink } from "@/components/TrackedLink";
 
@@ -18,16 +18,16 @@ export function Footer() {
               {siteConfig.owner} provides confidential hypnotherapy, EFT and pattern-focused addiction support in South Africa.
             </p>
             <p className="footer-resource-link">
-              <Link href="/blog/">Recovery blog &amp; articles</Link>
+              <SiteLink href="/blog/">Recovery blog &amp; articles</SiteLink>
             </p>
           </div>
 
           <div className="footer-col">
             <h2 className="footer-heading">Programmes</h2>
             <ul className="footer-links">
-              <li><Link href="/gambling-addiction-help/">Gambling Addiction</Link></li>
-              <li><Link href="/food-addiction-binge-eating-help/">Food Addiction / Binge Eating</Link></li>
-              <li><Link href="/addiction-healing-programmes/">All Programmes</Link></li>
+              <li><SiteLink href="/gambling-addiction-help/">Gambling Addiction</SiteLink></li>
+              <li><SiteLink href="/food-addiction-binge-eating-help/">Food Addiction / Binge Eating</SiteLink></li>
+              <li><SiteLink href="/addiction-healing-programmes/">All Programmes</SiteLink></li>
             </ul>
           </div>
 
@@ -41,9 +41,9 @@ export function Footer() {
               >
                 Need help?
               </TrackedLink>
-              <Link className="footer-chip" href="/contact/">
+              <SiteLink className="footer-chip" href="/contact/">
                 Confidential enquiry form
-              </Link>
+              </SiteLink>
             </div>
           </div>
 

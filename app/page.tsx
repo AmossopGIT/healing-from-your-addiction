@@ -69,7 +69,7 @@ export default function HomePage() {
         secondaryCta="Explore the Programmes"
       />
 
-      <section className="section" aria-labelledby="pattern-heading">
+      <section className="section pattern-section" aria-labelledby="pattern-heading">
         <div className="container split-grid">
           <RevealDiv>
             <p className="eyebrow">Addiction as a pattern</p>
@@ -78,15 +78,22 @@ export default function HomePage() {
               Many addictive behaviours become automatic because the mind links a trigger to relief, reward or escape. The work begins by making that loop visible.
             </p>
           </RevealDiv>
-          <RevealDiv className="section-art-stack" delay={0.08}>
-            {patternArtwork ? <WatercolorArtwork item={patternArtwork} className="section-artwork" /> : null}
+          <RevealDiv className="section-art-stack pattern-section-visual" delay={0.08}>
+            {patternArtwork ? (
+              <WatercolorArtwork
+                item={patternArtwork}
+                className="section-artwork pattern-section-hero-art"
+                fill
+                sizes="(min-width: 900px) 42vw, 92vw"
+              />
+            ) : null}
             <div className="loop-row" aria-label="Addiction pattern loop">
               {patternSteps.map((step) => {
                 const artwork = artGalleryById.get(step.artId);
 
                 return (
                   <article className="loop-step" key={step.artId}>
-                    {artwork ? <WatercolorArtwork item={artwork} className="loop-step-art" sizes="(min-width: 900px) 18vw, 88vw" /> : null}
+                    {artwork ? <WatercolorArtwork item={artwork} className="loop-step-art" fill sizes="(min-width: 900px) 18vw, 88vw" /> : null}
                     <p>{step.label}</p>
                   </article>
                 );
@@ -128,7 +135,7 @@ export default function HomePage() {
 
               return (
                 <RevealArticle className="info-card" key={card.title}>
-                  {artwork ? <WatercolorArtwork item={artwork} className="card-artwork" /> : null}
+                  {artwork ? <WatercolorArtwork item={artwork} className="card-artwork" fill /> : null}
                   <h3>{card.title}</h3>
                   <p>{card.body}</p>
                 </RevealArticle>

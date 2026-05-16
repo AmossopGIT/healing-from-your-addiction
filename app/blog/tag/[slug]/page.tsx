@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { SchemaMarkup } from "@/components/SchemaMarkup";
+import { SiteLink } from "@/components/SiteLink";
 import {
   blogPath,
   blogTagBySlug,
@@ -100,9 +101,9 @@ export default async function BlogTagPage({ params }: PageProps) {
               <article key={post.slug} className="programme-card">
                 <h3>{post.title}</h3>
                 <p>{post.excerpt}</p>
-                <a className="card-link" href={blogPath(post.slug)}>
+                <SiteLink className="card-link" href={blogPath(post.slug)}>
                   Read article
-                </a>
+                </SiteLink>
               </article>
             ))}
           </div>

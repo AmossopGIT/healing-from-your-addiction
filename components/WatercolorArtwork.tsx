@@ -7,6 +7,7 @@ type WatercolorArtworkProps = {
   className?: string;
   priority?: boolean;
   sizes?: string;
+  fill?: boolean;
 };
 
 export function WatercolorArtwork({
@@ -14,9 +15,27 @@ export function WatercolorArtwork({
   className = "",
   priority = false,
   sizes = "(min-width: 900px) 38vw, 92vw",
+  fill = false,
 }: WatercolorArtworkProps) {
+  const figureClass = `watercolor-art ${className}`.trim();
+
+  if (fill) {
+    return (
+      <figure className={figureClass}>
+        <Image
+          src={withBasePath(item.src)}
+          alt={item.alt}
+          fill
+          priority={priority}
+          sizes={sizes}
+          className="watercolor-art-image"
+        />
+      </figure>
+    );
+  }
+
   return (
-    <figure className={`watercolor-art ${className}`.trim()}>
+    <figure className={figureClass}>
       <Image
         src={withBasePath(item.src)}
         alt={item.alt}
@@ -24,6 +43,7 @@ export function WatercolorArtwork({
         height={640}
         priority={priority}
         sizes={sizes}
+        className="watercolor-art-image"
       />
     </figure>
   );

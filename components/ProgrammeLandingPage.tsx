@@ -57,7 +57,7 @@ export function ProgrammeLandingPage({ content }: ProgrammeLandingPageProps) {
 
               return (
                 <div className="mini-card pain-card" key={point.text}>
-                  {artwork ? <WatercolorArtwork item={artwork} className="card-artwork" sizes="(min-width: 900px) 22vw, 88vw" /> : null}
+                  {artwork ? <WatercolorArtwork item={artwork} className="card-artwork" fill sizes="(min-width: 900px) 22vw, 88vw" /> : null}
                   <p>{point.text}</p>
                 </div>
               );
