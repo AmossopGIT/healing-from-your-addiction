@@ -66,6 +66,36 @@ const nextConfig: NextConfig = {
           "/blog/addictions-develop-from-a-combination-of-biological-psychological-and-environmental-factors/",
         permanent: true,
       },
+      {
+        source: "/cross-addictions/",
+        destination: "/blog/cross-addictions/",
+        permanent: true,
+      },
+      {
+        source: "/hypnotherapy-addiction-healing-model-hahm-model/",
+        destination: "/blog/hypnotherapy-addiction-healing-model-hahm-model/",
+        permanent: true,
+      },
+      {
+        source: "/hypnotherapy-addiction-teaching-and-education-model-htem-model/",
+        destination: "/blog/hypnotherapy-addiction-teaching-and-education-model-htem-model/",
+        permanent: true,
+      },
+      {
+        source: "/core-themes-in-website-healing-from-your-addiction-using-hypnotherapy/",
+        destination: "/blog/core-themes-in-website-healing-from-your-addiction-using-hypnotherapy/",
+        permanent: true,
+      },
+      {
+        source: "/core-topics-covered-in-the-website-healing-from-your-addiction-using-hypnotherapy/",
+        destination: "/blog/core-topics-covered-in-the-website-healing-from-your-addiction-using-hypnotherapy/",
+        permanent: true,
+      },
+      {
+        source: "/gambling-addiction-gambling-disorder-healing-program/",
+        destination: "/blog/gambling-addiction-gambling-disorder-healing-program/",
+        permanent: true,
+      },
     ];
   },
 };

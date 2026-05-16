@@ -81,6 +81,17 @@ export const artGallery: readonly ArtGalleryItem[] = [
     usage: "About Gerald Crawford page hero and practitioner introduction sections.",
   },
   {
+    id: "hfya-logo",
+    title: "HFYA Brand Logo",
+    category: "brand",
+    src: "/art/watercolor/art-watercolor-hfya-logo.png",
+    alt: "Watercolor Healing From Your Addiction logo with a profile outline, soft teal washes, and muted gold accent on warm cream paper.",
+    prompt:
+      "Existing watercolor logo asset for Healing From Your Addiction with profile outline, HFYA letterform, and calm botanical elements on warm cream paper.",
+    palette: sharedPalette,
+    usage: "Brand-led hero artwork where the logo should appear instead of a practitioner portrait.",
+  },
+  {
     id: "contact-whatsapp",
     title: "WhatsApp Contact",
     category: "shared",

@@ -101,7 +101,9 @@ export function Header() {
         <div className="header-bar">
           <div className="header-inner">
             <SiteLink className="brand" href="/" aria-label="Healing From Your Addiction home" onClick={close}>
-              <span className="brand-mark" aria-hidden="true">HFYA</span>
+              <span className="brand-mark" aria-hidden="true">
+                <img className="brand-mark-image" src="/icon.png" alt="" width={38} height={38} />
+              </span>
               <span className="brand-text">
                 <strong>Healing From Your Addiction</strong>
                 <small>Gerald Crawford</small>

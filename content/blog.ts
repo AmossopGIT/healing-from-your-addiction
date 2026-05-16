@@ -1,4 +1,5 @@
 import { blogPostsChunk2 } from "@/content/blogArchiveChunk2";
+import { blogPostsChunk3 } from "@/content/blogArchiveChunk3";
 
 export type BlogCategory = {
   slug: string;
@@ -83,6 +84,10 @@ export const blogTags: BlogTag[] = [
   { slug: "substance-addictions", label: "Substance addictions" },
   { slug: "addiction-model", label: "Addiction model" },
   { slug: "core-pattern", label: "Core pattern" },
+  { slug: "cross-addictions", label: "Cross addictions" },
+  { slug: "hahm-model", label: "HAHM model" },
+  { slug: "htem-model", label: "HTEM model" },
+  { slug: "gambling-program", label: "Gambling program" },
 ];
 
 const blogPostsInitial: BlogPost[] = [
@@ -293,7 +298,7 @@ const blogPostsInitial: BlogPost[] = [
   },
 ];
 
-export const blogPosts: BlogPost[] = [...blogPostsInitial, ...blogPostsChunk2].sort((a, b) =>
+export const blogPosts: BlogPost[] = [...blogPostsInitial, ...blogPostsChunk2, ...blogPostsChunk3].sort((a, b) =>
   a.publishedAt < b.publishedAt ? 1 : -1
 );
 

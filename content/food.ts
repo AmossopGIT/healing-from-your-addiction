@@ -3,8 +3,8 @@ import { seoPages } from "@/content/seo";
 import type { LandingPageContent } from "@/content/types";
 
 export const foodContent: LandingPageContent = {
-  path: "/food-addiction-binge-eating-help/",
-  breadcrumbLabel: "Food Addiction and Binge Eating Help",
+  path: "/addictions/food-addiction-binge-eating-help/",
+  breadcrumbLabel: "Food Addiction and Binge Eating Healing Program",
   defaultConcern: "Food / binge eating",
   seo: {
     title: seoPages.food.title,
@@ -12,10 +12,10 @@ export const foodContent: LandingPageContent = {
   },
   hero: {
     eyebrow: "Confidential food addiction and binge eating support",
-    title: "Food addiction and binge eating support for emotional eating patterns",
+    title: "Food Addiction and Binge Eating Healing Program",
     description:
       "Support for emotional eating, sugar cravings, late-night eating and the feeling of losing control around food, using a calm pattern-focused approach.",
-    primaryCta: "Book a Confidential Food Addiction Enquiry",
+    primaryCta: "Start Your Food Recovery Enquiry",
   },
   painSection: {
     title: "When eating becomes emotional relief, willpower can feel unreliable",
@@ -33,7 +33,7 @@ export const foodContent: LandingPageContent = {
   programme: {
     title: "A structured 8-session support process over 4 weeks",
     body:
-      "The food addiction and binge eating programme is designed to support craving awareness, emotional regulation, subconscious pattern work and a healthier relationship with food. It is not a diet plan and it does not replace specialist eating disorder or medical care.",
+      "The food addiction and binge eating programme is a 4-week, 8-session support process at R12,000. It is designed to support craving awareness, emotional regulation, subconscious pattern work and a healthier relationship with food. The goal is not restriction. The goal is control, balance and rebuilding a healthier relationship with food. It is not a diet plan and it does not replace specialist eating disorder or medical care.",
     points: [
       "Separate physical hunger from emotional urge",
       "Work with cravings and trigger foods",
@@ -99,6 +99,6 @@ export const foodContent: LandingPageContent = {
   finalCta: {
     title: "Start with a confidential food addiction enquiry",
     body: "If food, cravings or binge eating patterns feel difficult to control, you can begin with a private enquiry and choose how Gerald should respond.",
-    button: "Book a Confidential Food Addiction Enquiry",
+    button: "Start Your Food Recovery Enquiry",
   },
 };

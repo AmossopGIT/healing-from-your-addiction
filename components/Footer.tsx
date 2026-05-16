@@ -11,7 +11,9 @@ export function Footer() {
         <div className="container footer-grid">
           <div className="footer-col footer-col-brand">
             <div className="footer-brand-row">
-              <span className="footer-mark" aria-hidden="true">HFYA</span>
+              <span className="footer-mark" aria-hidden="true">
+                <img className="footer-mark-image" src="/icon.png" alt="" width={38} height={38} />
+              </span>
               <p className="footer-brand">Healing From Your Addiction</p>
             </div>
             <p className="footer-tagline">

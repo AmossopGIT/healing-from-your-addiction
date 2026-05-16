@@ -2,20 +2,16 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import * as cheerio from "cheerio";
+import { blogChunkPages } from "./blog-chunk-pages.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const archiveDir = path.resolve(__dirname, "../archives/healingfromyouraddiction-co-za/pages");
+const chunk = process.env.BLOG_CHUNK || "3";
+const pages = blogChunkPages[chunk];
 
-const pages = [
-  { id: "ae56ba5b69ca6dfe", slug: "signs-of-behavioral-addictions" },
-  { id: "4d479aa4c05c69d0", slug: "signs-of-substance-addictions" },
-  { id: "b943aa6cf0ce774a", slug: "one-unified-model-of-addiction" },
-  { id: "e6620aa65ae4c66b", slug: "the-core-pattern-behind-all-addictions" },
-  {
-    id: "1bc556c8bba94687",
-    slug: "addictions-develop-from-a-combination-of-biological-psychological-and-environmental-factors",
-  },
-];
+if (!pages?.length) {
+  throw new Error(`Unknown BLOG_CHUNK "${chunk}". Add pages to blog-chunk-pages.mjs.`);
+}
 
 function cleanTitle(raw) {
   return raw.replace(/\s*–\s*Healing from Your Addiction.*/i, "").trim();
@@ -33,10 +29,7 @@ function extractSections(html) {
     const text = $(el).text().replace(/\s+/g, " ").trim();
     if (!text || tag === "hr" || tag === "table") return;
 
-    if (tag === "h1") {
-      if (current) sections.push(current);
-      current = { h2: text, paragraphs: [], h3Items: [], bullets: [] };
-    } else if (tag === "h2") {
+    if (tag === "h1" || tag === "h2") {
       if (current) sections.push(current);
       current = { h2: text, paragraphs: [], h3Items: [], bullets: [] };
     } else if (tag === "h3" && current) {
@@ -100,10 +93,10 @@ for (const page of pages) {
     description: meta.metaDescription,
     h1: title,
     sections: allSections,
-    publishedAt: "2026-04-20",
+    publishedAt: meta.fetchedAt?.slice(0, 10) ?? "2026-04-01",
   });
 }
 
-const outPath = path.resolve(__dirname, "../chunk2-blog-data.json");
+const outPath = path.resolve(__dirname, `../chunk${chunk}-blog-data.json`);
 fs.writeFileSync(outPath, JSON.stringify(output, null, 2));
 console.log(`Wrote ${outPath} (${output.length} posts)`);

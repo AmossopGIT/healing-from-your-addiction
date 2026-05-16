@@ -39,7 +39,7 @@ export default function AboutGeraldPage() {
         primaryCta="Start Your Confidential Enquiry"
         secondaryCta="View Programmes"
         secondaryHref="/addiction-healing-programmes/"
-        heroArtId="gerald-crawford"
+        heroArtId="hfya-logo"
       />
 
       <section className="section about-section" aria-labelledby="who-heading">

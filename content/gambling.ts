@@ -3,8 +3,8 @@ import { seoPages } from "@/content/seo";
 import type { LandingPageContent } from "@/content/types";
 
 export const gamblingContent: LandingPageContent = {
-  path: "/gambling-addiction-help/",
-  breadcrumbLabel: "Gambling Addiction Help",
+  path: "/addictions/gambling-addiction-help/",
+  breadcrumbLabel: "Gambling Addiction Healing Program",
   defaultConcern: "Gambling",
   seo: {
     title: seoPages.gambling.title,
@@ -12,10 +12,10 @@ export const gamblingContent: LandingPageContent = {
   },
   hero: {
     eyebrow: "Confidential gambling addiction support in South Africa",
-    title: "Gambling addiction help that focuses on the pattern behind the urge",
+    title: "Gambling Addiction Healing Program",
     description:
       "Support for betting urges, chasing losses, online gambling triggers, financial pressure and the emotional loop that keeps the behaviour repeating.",
-    primaryCta: "Book a Confidential Gambling Addiction Enquiry",
+    primaryCta: "Start Your Gambling Recovery Enquiry",
   },
   painSection: {
     title: "When gambling becomes a loop, logic alone may not feel strong enough",
@@ -33,7 +33,7 @@ export const gamblingContent: LandingPageContent = {
   programme: {
     title: "A structured 8-session support process over 4 weeks",
     body:
-      "The gambling programme is designed to help you understand the urge cycle, interrupt automatic responses and build practical reinforcement between sessions. It is supportive, confidential and focused on behaviour patterns rather than judgement.",
+      "The gambling programme is a 4-week, 8-session support process at R12,000. It is designed to help you understand the urge cycle, interrupt automatic responses and build practical reinforcement between sessions. It is supportive, confidential and focused on behaviour patterns rather than judgement.",
     points: [
       "Identify the trigger-to-bet loop",
       "Create pause before action",
@@ -93,6 +93,6 @@ export const gamblingContent: LandingPageContent = {
   finalCta: {
     title: "Start with a confidential gambling addiction enquiry",
     body: "If gambling, betting apps or chasing losses have started taking more from your life, you can begin with a private enquiry.",
-    button: "Book a Confidential Gambling Addiction Enquiry",
+    button: "Start Your Gambling Recovery Enquiry",
   },
 };

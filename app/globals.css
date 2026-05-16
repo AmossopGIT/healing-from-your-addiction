@@ -265,6 +265,15 @@ button.button-secondary {
   width: 38px;
 }
 
+.brand-mark-image,
+.footer-mark-image {
+  border-radius: inherit;
+  display: block;
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
+}
+
 .brand-text {
   display: flex;
   flex-direction: column;
