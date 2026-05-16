@@ -1,5 +1,6 @@
 ﻿"use client";
 
+import Link from "next/link";
 import type { AnchorHTMLAttributes, MouseEvent } from "react";
 import {
   pushDataLayer,
@@ -20,7 +21,11 @@ type TrackedLinkProps = AnchorHTMLAttributes<HTMLAnchorElement> & {
   tracking?: TrackingConfig;
 };
 
-export function TrackedLink({ tracking, onClick, children, ...props }: TrackedLinkProps) {
+function isInternalPath(href: string | undefined) {
+  return Boolean(href && href.startsWith("/") && !href.startsWith("//"));
+}
+
+export function TrackedLink({ tracking, onClick, children, href, ...props }: TrackedLinkProps) {
   function handleClick(event: MouseEvent<HTMLAnchorElement>) {
     if (tracking?.eventName === "whatsapp_click") {
       trackWhatsAppClick(tracking.linkLocation || tracking.ctaName || "link");
@@ -40,8 +45,16 @@ export function TrackedLink({ tracking, onClick, children, ...props }: TrackedLi
     onClick?.(event);
   }
 
+  if (isInternalPath(href)) {
+    return (
+      <Link href={href} {...props} onClick={handleClick}>
+        {children}
+      </Link>
+    );
+  }
+
   return (
-    <a {...props} onClick={handleClick}>
+    <a {...props} href={href} onClick={handleClick}>
       {children}
     </a>
   );

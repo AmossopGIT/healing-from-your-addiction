@@ -1,4 +1,6 @@
-﻿export const siteConfig = {
+﻿import { withBasePath } from "@/lib/basePath";
+
+export const siteConfig = {
   name: "Healing From Your Addiction",
   owner: "Gerald Crawford",
   siteUrl: process.env.NEXT_PUBLIC_SITE_URL || "https://healingfromyouraddiction.co.za",
@@ -35,7 +37,7 @@ export function absoluteUrl(path = "/") {
 
 export function whatsappHref(message = "Hello Gerald, I would like to make a confidential enquiry about addiction support.") {
   if (!siteConfig.whatsappNumber) {
-    return "/contact/#enquiry";
+    return withBasePath("/contact/#enquiry");
   }
 
   return `https://wa.me/${siteConfig.whatsappNumber}?text=${encodeURIComponent(message)}`;
@@ -46,5 +48,5 @@ export function emailHref(subject = "Confidential addiction support enquiry") {
 }
 
 export function phoneHref() {
-  return siteConfig.phone ? `tel:${siteConfig.phone}` : "/contact/#enquiry";
+  return siteConfig.phone ? `tel:${siteConfig.phone}` : withBasePath("/contact/#enquiry");
 }

@@ -1,5 +1,6 @@
 ﻿"use client";
 
+import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import { TrackedLink } from "@/components/TrackedLink";
@@ -99,23 +100,23 @@ export function Header() {
       <div className="header-shell">
         <div className="header-bar">
           <div className="header-inner">
-            <a className="brand" href="/" aria-label="Healing From Your Addiction home" onClick={close}>
+            <Link className="brand" href="/" aria-label="Healing From Your Addiction home" onClick={close}>
               <span className="brand-mark" aria-hidden="true">HFYA</span>
               <span className="brand-text">
                 <strong>Healing From Your Addiction</strong>
                 <small>Gerald Crawford</small>
               </span>
-            </a>
+            </Link>
             <nav className="nav-links" aria-label="Main navigation">
               {navLinks.map((link) => (
-                <a
+                <Link
                   key={link.href}
                   href={link.href}
                   className={isActive(pathname, link.href) ? "is-active" : undefined}
                   aria-current={isActive(pathname, link.href) ? "page" : undefined}
                 >
                   {link.label}
-                </a>
+                </Link>
               ))}
             </nav>
             <div className="header-actions">
@@ -150,7 +151,7 @@ export function Header() {
             <div className="mobile-menu-inner">
               <nav className="mobile-menu-links" aria-label="Mobile navigation">
                 {navLinks.map((link) => (
-                  <a
+                  <Link
                     key={link.href}
                     href={link.href}
                     className={isActive(pathname, link.href) ? "is-active" : undefined}
@@ -158,7 +159,7 @@ export function Header() {
                     onClick={close}
                   >
                     {link.label}
-                  </a>
+                  </Link>
                 ))}
               </nav>
               <div className="mobile-menu-actions">
