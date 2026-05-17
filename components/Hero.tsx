@@ -23,7 +23,7 @@ export function Hero({
   primaryCta,
   primaryHref = "#enquiry",
   secondaryCta,
-  secondaryHref = "/addiction-healing-programmes/",
+  secondaryHref = "/addictions/",
   heroArtId,
   children,
 }: HeroProps) {

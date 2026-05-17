@@ -3,10 +3,16 @@
 ## Sitemap
 
 - `/` - Home
-- `/gambling-addiction-help/` - Gambling addiction landing page
-- `/food-addiction-binge-eating-help/` - Food addiction and binge eating landing page
+- `/addictions/` - Addiction support hub
+- `/addictions/gambling-addiction-help/` - Gambling addiction landing page
+- `/addictions/food-addiction-binge-eating-help/` - Food addiction and binge eating landing page
 - `/about-gerald-crawford/` - About Gerald Crawford
-- `/addiction-healing-programmes/` - Programme overview
+- `/programs/` - Programme overview
+- `/programs/4-week-addiction-healing-program/` - 4-week programme detail
+- `/hypnotherapy-for-addiction/` - Treatment method authority page
+- `/eft-tapping-for-cravings/` - EFT/cravings method page
+- `/cravings/urge-surfing/` - Craving support page
+- `/faqs/` - FAQ hub
 - `/contact/` - Contact and enquiry
 - `/thank-you/` - Form conversion destination
 

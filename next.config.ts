@@ -21,11 +21,6 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       {
-        source: "/hypnotherapy-for-addiction/",
-        destination: "/blog/how-hypnotherapy-works-in-addiction-support/",
-        permanent: true,
-      },
-      {
         source: "/addiction-recovery-south-africa/",
         destination: "/blog/addiction-recovery-south-africa-core-approaches/",
         permanent: true,
@@ -93,7 +88,67 @@ const nextConfig: NextConfig = {
       },
       {
         source: "/gambling-addiction-gambling-disorder-healing-program/",
-        destination: "/blog/gambling-addiction-gambling-disorder-healing-program/",
+        destination: "/addictions/gambling-addiction-help/",
+        permanent: true,
+      },
+      {
+        source: "/gambling-addiction-help/",
+        destination: "/addictions/gambling-addiction-help/",
+        permanent: true,
+      },
+      {
+        source: "/food-addiction-binge-eating-help/",
+        destination: "/addictions/food-addiction-binge-eating-help/",
+        permanent: true,
+      },
+      {
+        source: "/food-addiction-binge-eating-healing-program/",
+        destination: "/addictions/food-addiction-binge-eating-help/",
+        permanent: true,
+      },
+      {
+        source: "/addiction-healing-programmes/",
+        destination: "/programs/",
+        permanent: true,
+      },
+      {
+        source: "/addiction-help/gambling/",
+        destination: "/addictions/gambling-addiction-help/",
+        permanent: true,
+      },
+      {
+        source: "/addiction-help/food-binge-eating/",
+        destination: "/addictions/food-addiction-binge-eating-help/",
+        permanent: true,
+      },
+      {
+        source: "/addiction-help/alcohol/",
+        destination: "/addictions/alcohol-addiction-help/",
+        permanent: true,
+      },
+      {
+        source: "/addiction-help/cannabis/",
+        destination: "/addictions/cannabis-addiction-help/",
+        permanent: true,
+      },
+      {
+        source: "/addiction-help/nicotine/",
+        destination: "/addictions/nicotine-addiction-help/",
+        permanent: true,
+      },
+      {
+        source: "/addiction-help/pornography/",
+        destination: "/addictions/pornography-addiction-help/",
+        permanent: true,
+      },
+      {
+        source: "/addiction-help/social-media/",
+        destination: "/addictions/social-media-addiction-help/",
+        permanent: true,
+      },
+      {
+        source: "/addiction-help/gaming/",
+        destination: "/addictions/gaming-addiction-help/",
         permanent: true,
       },
     ];

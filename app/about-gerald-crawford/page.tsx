@@ -38,7 +38,7 @@ export default function AboutGeraldPage() {
         description="Gerald Crawford works with hypnotherapy, EFT, healing-focused education and subconscious pattern support for people who want help with cravings, emotional triggers and addictive loops."
         primaryCta="Start Your Confidential Enquiry"
         secondaryCta="View Programmes"
-        secondaryHref="/addiction-healing-programmes/"
+        secondaryHref="/programs/"
         heroArtId="hfya-logo"
       />
 

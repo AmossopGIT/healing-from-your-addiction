@@ -20,20 +20,25 @@ Primary users are people in South Africa searching for confidential addiction he
 ## Core journeys
 
 1. User searches for gambling addiction help.
-2. User lands on `/gambling-addiction-help/`.
+2. User lands on `/addictions/gambling-addiction-help/`.
 3. Page matches the search intent, shows a form above the fold, builds trust and explains the programme.
 4. User submits a form or clicks WhatsApp/email/phone.
-5. Form redirects to `/thank-you/` for conversion tracking.
+5. Form redirects to a thank-you page such as `/thank-you/gambling-addiction/` for conversion tracking.
 
 The same pattern applies to food addiction and future addiction pages.
 
 ## Required pages
 
 - `/`
-- `/gambling-addiction-help/`
-- `/food-addiction-binge-eating-help/`
+- `/addictions/`
+- `/addictions/gambling-addiction-help/`
+- `/addictions/food-addiction-binge-eating-help/`
 - `/about-gerald-crawford/`
-- `/addiction-healing-programmes/`
+- `/programs/`
+- `/programs/4-week-addiction-healing-program/`
+- `/hypnotherapy-for-addiction/`
+- `/eft-tapping-for-cravings/`
+- `/faqs/`
 - `/contact/`
 - `/thank-you/`
 

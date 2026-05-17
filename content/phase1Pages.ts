@@ -3,6 +3,8 @@ import { seoPages, type SeoPageRecord } from "@/content/seo";
 export type PageLink = {
   label: string;
   href: string;
+  artSlug?: string;
+  linkArtId?: string;
 };
 
 export type ContentSection = {
@@ -10,6 +12,7 @@ export type ContentSection = {
   title: string;
   body: string;
   bullets?: string[];
+  artId?: string;
 };
 
 export type Phase1Page = {
@@ -24,6 +27,7 @@ export type Phase1Page = {
   };
   defaultConcern?: string;
   artId?: string;
+  heroArtId?: string;
   sections: ContentSection[];
   links: PageLink[];
   showLeadForm?: boolean;
@@ -36,14 +40,14 @@ export type Phase1Page = {
 };
 
 export const addictionMoneyLinks: PageLink[] = [
-  { label: "Gambling Addiction Healing Program", href: seoPages.gambling.path },
-  { label: "Food Addiction / Binge Eating Healing Program", href: seoPages.food.path },
-  { label: "Alcohol Addiction Support", href: seoPages.alcohol.path },
-  { label: "Cannabis Addiction Support", href: seoPages.cannabis.path },
-  { label: "Nicotine Addiction Support", href: seoPages.nicotine.path },
-  { label: "Pornography Addiction Support", href: seoPages.pornography.path },
-  { label: "Social Media Addiction Support", href: seoPages.socialMedia.path },
-  { label: "Gaming Addiction Support", href: seoPages.gaming.path },
+  { label: "Gambling Addiction Healing Program", href: seoPages.gambling.path, artSlug: "gambling" },
+  { label: "Food Addiction / Binge Eating Healing Program", href: seoPages.food.path, artSlug: "food-binge-eating" },
+  { label: "Alcohol Addiction Support", href: seoPages.alcohol.path, artSlug: "alcohol" },
+  { label: "Cannabis Addiction Support", href: seoPages.cannabis.path, artSlug: "cannabis" },
+  { label: "Nicotine Addiction Support", href: seoPages.nicotine.path, artSlug: "nicotine" },
+  { label: "Pornography Addiction Support", href: seoPages.pornography.path, artSlug: "pornography" },
+  { label: "Social Media Addiction Support", href: seoPages.socialMedia.path, artSlug: "social-media" },
+  { label: "Gaming Addiction Support", href: seoPages.gaming.path, artSlug: "gaming" },
 ];
 
 export const gamblingSupportLinks: PageLink[] = [
@@ -74,11 +78,13 @@ export const phase1Pages: Record<string, Phase1Page> = {
       secondaryCta: "View the 4-Week Program",
       secondaryHref: seoPages.fourWeekProgram.path,
     },
+    heroArtId: "pattern-map",
     artId: "pattern-map",
     sections: [
       {
         eyebrow: "How addiction is framed here",
         title: "Trigger, craving, behaviour, relief and repetition",
+        artId: "pattern-loop",
         body:
           "Healing From Your Addiction treats addiction as a repeated pattern that can involve stress, anticipation, emotional relief, reward and automatic response. The goal is to understand the loop and build more choice before action.",
       },
@@ -125,10 +131,12 @@ export const phase1Pages: Record<string, Phase1Page> = {
           "The current 4-week, 8-session programme is positioned at R12,000. The enquiry step is confidential and helps clarify whether the programme is appropriate before starting.",
       },
     ],
-    links: [seoPages.gambling, seoPages.food, seoPages.hypnotherapyForAddiction, seoPages.eftTappingForCravings].map((page) => ({
-      label: page.title.replace(" | Healing From Your Addiction", ""),
-      href: page.path,
-    })),
+    links: [
+      { label: seoPages.gambling.title.replace(" | Healing From Your Addiction", ""), href: seoPages.gambling.path, artSlug: "gambling" },
+      { label: seoPages.food.title.replace(" | Healing From Your Addiction", ""), href: seoPages.food.path, artSlug: "food-binge-eating" },
+      { label: seoPages.hypnotherapyForAddiction.title.replace(" | Healing From Your Addiction", ""), href: seoPages.hypnotherapyForAddiction.path, linkArtId: "approach-subconscious" },
+      { label: seoPages.eftTappingForCravings.title.replace(" | Healing From Your Addiction", ""), href: seoPages.eftTappingForCravings.path, linkArtId: "approach-emotional" },
+    ],
     showLeadForm: true,
   },
   hypnotherapyForAddiction: {
@@ -142,23 +150,29 @@ export const phase1Pages: Record<string, Phase1Page> = {
       secondaryCta: "View Addiction Pages",
       secondaryHref: seoPages.addictions.path,
     },
+    heroArtId: "approach-subconscious",
     artId: "approach-subconscious",
     sections: [
       {
         title: "Why subconscious pattern work matters",
         body:
           "Many addiction loops happen quickly. A trigger activates emotion, expectation or discomfort, and the familiar behaviour can feel automatic. Hypnotherapy is used here to support calmer response states and rehearse different choices.",
+        artId: "approach-subconscious",
       },
       {
         title: "Where hypnotherapy fits",
         body:
           "This support is most relevant for cravings, habits, emotional triggers and behavioural loops. It does not replace medical detox, psychiatric treatment, emergency care or licensed rehabilitation where those are required.",
+        artId: "approach-emotional",
       },
     ],
-    links: [seoPages.gambling, seoPages.food, seoPages.nicotine, seoPages.alcohol, seoPages.urgeSurfing].map((page) => ({
-      label: page.title.replace(" | Healing From Your Addiction", ""),
-      href: page.path,
-    })),
+    links: [
+      { label: seoPages.gambling.title.replace(" | Healing From Your Addiction", ""), href: seoPages.gambling.path, artSlug: "gambling" },
+      { label: seoPages.food.title.replace(" | Healing From Your Addiction", ""), href: seoPages.food.path, artSlug: "food-binge-eating" },
+      { label: seoPages.nicotine.title.replace(" | Healing From Your Addiction", ""), href: seoPages.nicotine.path, artSlug: "nicotine" },
+      { label: seoPages.alcohol.title.replace(" | Healing From Your Addiction", ""), href: seoPages.alcohol.path, artSlug: "alcohol" },
+      { label: seoPages.urgeSurfing.title.replace(" | Healing From Your Addiction", ""), href: seoPages.urgeSurfing.path, linkArtId: "pattern-craving" },
+    ],
     showLeadForm: true,
   },
   eftTappingForCravings: {

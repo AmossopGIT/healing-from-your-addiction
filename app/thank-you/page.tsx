@@ -56,7 +56,7 @@ export default function ThankYouPage() {
         title="Return to the programmes"
         body="You can continue reading about the current gambling and food addiction support pages while you wait for a response."
         button="View Programmes"
-        href="/addiction-healing-programmes/"
+        href="/programs/"
       />
     </>
   );

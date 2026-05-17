@@ -155,7 +155,7 @@ export const seoPages = {
     searchIntent: "Compare addiction types and choose the most relevant support page.",
     pageType: "addiction-hub",
     conversionGoal: "Move visitors into a matching addiction money page or enquiry.",
-    ogImage: defaultOgImage,
+    ogImage: "/art/watercolor/art-watercolor-pattern-map.png",
     ogImageAlt: "Addiction help overview for substance and behavioural addiction patterns",
   },
   about: {
@@ -423,7 +423,7 @@ export const seoPages = {
     searchIntent: "Understand whether hypnotherapy may support addiction patterns.",
     pageType: "method",
     conversionGoal: "Move readers into a relevant addiction page or enquiry.",
-    ogImage: defaultOgImage,
+    ogImage: "/art/watercolor/art-watercolor-approach-subconscious.png",
     ogImageAlt: "Hypnotherapy for addiction support and subconscious pattern change",
   },
   eftTappingForCravings: {

@@ -20,13 +20,17 @@ Description: Healing From Your Addiction offers confidential hypnotherapy and EF
 
 ## Gambling metadata
 
-Title: Gambling Addiction Help South Africa | Healing From Your Addiction
+Canonical: `/addictions/gambling-addiction-help/`
+
+Title: Gambling Addiction Healing Program South Africa | Healing From Your Addiction
 
 Description: Confidential gambling addiction support using hypnotherapy, EFT and behavioural pattern work. Get help for betting urges, chasing losses and gambling triggers.
 
 ## Food metadata
 
-Title: Food Addiction & Binge Eating Help South Africa | Healing From Your Addiction
+Canonical: `/addictions/food-addiction-binge-eating-help/`
+
+Title: Food Addiction & Binge Eating Healing Program South Africa | Healing From Your Addiction
 
 Description: Support for food addiction, binge eating, emotional eating and cravings through hypnotherapy, EFT and subconscious pattern work.
 
@@ -42,4 +46,4 @@ Description: Support for food addiction, binge eating, emotional eating and crav
 
 ## Google Ads reminder
 
-Do not send gambling ads to a generic homepage when `/gambling-addiction-help/` exists. Do not send food addiction ads to a generic homepage when `/food-addiction-binge-eating-help/` exists.
+Do not send gambling ads to a generic homepage when `/addictions/gambling-addiction-help/` exists. Do not send food addiction ads to a generic homepage when `/addictions/food-addiction-binge-eating-help/` exists.

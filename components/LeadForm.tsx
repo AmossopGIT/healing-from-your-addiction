@@ -27,6 +27,12 @@ type LeadFormState = {
 
 const initialConcern = addictionOptions[0];
 
+function thankYouPathForConcern(concern: string) {
+  if (concern === "Gambling") return "/thank-you/gambling-addiction/";
+  if (concern === "Food / binge eating") return "/thank-you/food-addiction/";
+  return "/thank-you/general-enquiry/";
+}
+
 export function LeadForm({
   defaultConcern = initialConcern,
   formTitle = "Start your confidential enquiry",
@@ -109,7 +115,7 @@ export function LeadForm({
       });
 
       if (submitMode === "api") {
-        router.push(withBasePath("/thank-you/"));
+        router.push(withBasePath(thankYouPathForConcern(form.addictionConcern)));
       } else {
         setStatus("success");
       }
