@@ -1,6 +1,6 @@
 ﻿"use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { SiteLink } from "@/components/SiteLink";
 import { TrackedLink } from "@/components/TrackedLink";
@@ -30,9 +30,7 @@ function isActive(pathname: string | null, href: string) {
 export function Header() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [hidden, setHidden] = useState(false);
   const pathname = usePathname();
-  const lastScrollY = useRef(0);
 
   const close = useCallback(() => setOpen(false), []);
 
@@ -41,35 +39,15 @@ export function Header() {
   }, [pathname, close]);
 
   useEffect(() => {
-    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
     function onScroll() {
-      const y = window.scrollY;
-      setScrolled(y > 20);
-
-      if (!open && !reducedMotion) {
-        const delta = y - lastScrollY.current;
-        if (y > 100 && delta > 8) {
-          setHidden(true);
-        } else if (delta < -8 || y < 72) {
-          setHidden(false);
-        }
-      }
-
-      lastScrollY.current = y;
+      setScrolled(window.scrollY > 20);
     }
 
     window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();
 
     return () => window.removeEventListener("scroll", onScroll);
-  }, [open]);
-
-  useEffect(() => {
-    if (open) {
-      setHidden(false);
-    }
-  }, [open]);
+  }, []);
 
   useEffect(() => {
     if (!open) return;
@@ -93,7 +71,6 @@ export function Header() {
     "site-header",
     open && "is-open",
     scrolled && "is-scrolled",
-    hidden && "is-hidden",
   ]
     .filter(Boolean)
     .join(" ");

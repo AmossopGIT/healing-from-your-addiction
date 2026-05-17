@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { BlogPostCard } from "@/components/BlogPostCard";
 import { SchemaMarkup } from "@/components/SchemaMarkup";
 import { SiteLink } from "@/components/SiteLink";
 import { WatercolorArtwork } from "@/components/WatercolorArtwork";
@@ -8,7 +9,6 @@ import {
   blogCategories,
   blogCategoryBySlug,
   blogCategoryPath,
-  blogPath,
   getPostsByCategory,
 } from "@/content/blog";
 import { getSeoByPath } from "@/content/seo";
@@ -103,20 +103,20 @@ export default async function BlogCategoryPage({ params }: PageProps) {
 
       <section className="section" aria-labelledby="blog-category-posts-heading">
         <div className="container">
-          <div className="section-heading">
+          <div className="section-heading blog-hub-section-heading">
             <h2 id="blog-category-posts-heading">Articles in this category</h2>
+            <p className="blog-hub-count">{posts.length} articles</p>
           </div>
           <div className="blog-grid">
             {posts.map((post) => (
-              <article key={post.slug} className="programme-card">
-                <h3>{post.title}</h3>
-                <p>{post.excerpt}</p>
-                <SiteLink className="card-link" href={blogPath(post.slug)}>
-                  Read article
-                </SiteLink>
-              </article>
+              <BlogPostCard key={post.slug} post={post} />
             ))}
           </div>
+          <p className="blog-hub-back">
+            <SiteLink className="card-link" href="/blog/">
+              Back to all resources
+            </SiteLink>
+          </p>
         </div>
       </section>
     </>

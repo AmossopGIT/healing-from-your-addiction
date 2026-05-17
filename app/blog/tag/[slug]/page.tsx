@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { BlogPostCard } from "@/components/BlogPostCard";
 import { SchemaMarkup } from "@/components/SchemaMarkup";
 import { SiteLink } from "@/components/SiteLink";
 import {
-  blogPath,
   blogTagBySlug,
   blogTagPath,
   blogTags,
@@ -96,17 +96,17 @@ export default async function BlogTagPage({ params }: PageProps) {
           <div className="section-heading">
             <h2 id="blog-tag-posts-heading">Articles with this tag</h2>
           </div>
+          <p className="blog-hub-count">{posts.length} articles with this tag</p>
           <div className="blog-grid">
             {posts.map((post) => (
-              <article key={post.slug} className="programme-card">
-                <h3>{post.title}</h3>
-                <p>{post.excerpt}</p>
-                <SiteLink className="card-link" href={blogPath(post.slug)}>
-                  Read article
-                </SiteLink>
-              </article>
+              <BlogPostCard key={post.slug} post={post} />
             ))}
           </div>
+          <p className="blog-hub-back">
+            <SiteLink className="card-link" href="/blog/">
+              Back to all resources
+            </SiteLink>
+          </p>
         </div>
       </section>
     </>
