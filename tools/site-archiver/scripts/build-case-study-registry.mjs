@@ -1,0 +1,188 @@
+﻿/**
+ * Build caseStudyPages registry from case-study-slugs.json and archive page JSON.
+ * Run: node tools/site-archiver/scripts/build-case-study-registry.mjs
+ */
+import fs from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+import { caseStudySeoById } from "./case-study-seo-metadata.mjs";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const ROOT = path.resolve(__dirname, "..");
+const ARCHIVE_PAGES = path.join(
+  ROOT,
+  "archives/healingfromyouraddiction-co-za/pages",
+);
+const SLUGS_PATH = path.join(ROOT, "case-study-slugs.json");
+const OUT_PATH = path.join(__dirname, "case-study-pages.mjs");
+
+const ADDICTION_RULES = [
+  ["food-binge-eating", /food-addiction|binge-eating/i],
+  ["gambling", /gambling/i],
+  ["alcohol", /alcohol/i],
+  ["cannabis", /cannabis/i],
+  ["pornography", /pornography/i],
+  ["sex", /sex-addiction/i],
+  ["shopping", /shopping-addiction|compulsive-buying/i],
+  ["gaming", /gaming-addiction|internet-gaming/i],
+  ["nicotine", /nicotine|cigarettes-vaping/i],
+  ["social-media", /social-media/i],
+  ["internet", /internet-addiction/i],
+];
+
+const KIND_SUFFIX = {
+  outcome: "outcome",
+  script: "script",
+  questions: "questions",
+  affirmations: "affirmations",
+  programme: "programme",
+};
+
+function parseAddictionSlug(text) {
+  for (const [slug, pattern] of ADDICTION_RULES) {
+    if (pattern.test(text)) return slug;
+  }
+  return "unknown";
+}
+
+function classifyKind(legacySlug, archive) {
+  const hay = `${legacySlug}\n${archive?.title ?? ""}\n${archive?.metaDescription ?? ""}`;
+  if (/30-affirmation/i.test(hay)) return "affirmations";
+  if (/30-questions/i.test(hay)) return "questions";
+  if (/4-week-custom-healing-program/i.test(hay)) return "programme";
+  if (
+    /week-1-custom-healing-hypnotherapy-script|eft-tapping|emotionally-focused-therapy-script/i.test(
+      hay,
+    )
+  ) {
+    return "script";
+  }
+  if (
+    /more-peace-and-calm|profound-changes-after-undergoing/i.test(hay)
+  ) {
+    return "outcome";
+  }
+  return "unknown";
+}
+
+function caseNumberFromSlug(legacySlug) {
+  const match = legacySlug.match(/^case-study-(\d+)/i);
+  return match ? match[1] : "000";
+}
+
+function batchForKind(kind) {
+  if (kind === "outcome") return "a";
+  if (kind === "script" || kind === "programme") return "b";
+  if (kind === "questions" || kind === "affirmations") return "c";
+  return null;
+}
+
+function loadArchive(id) {
+  const file = path.join(ARCHIVE_PAGES, `${id}.json`);
+  if (!fs.existsSync(file)) {
+    throw new Error(`Missing archive JSON for id ${id}: ${file}`);
+  }
+  return JSON.parse(fs.readFileSync(file, "utf8"));
+}
+
+function escapeString(value) {
+  return JSON.stringify(value);
+}
+
+function formatEntry(entry) {
+  const lines = [
+    "  {",
+    `    id: ${escapeString(entry.id)},`,
+    `    legacySlug: ${escapeString(entry.legacySlug)},`,
+    `    canonicalSlug: ${escapeString(entry.canonicalSlug)},`,
+    `    addictionSlug: ${escapeString(entry.addictionSlug)},`,
+    `    kind: ${escapeString(entry.kind)},`,
+    `    caseNumber: ${escapeString(entry.caseNumber)},`,
+    `    seoTitle: ${escapeString(entry.seoTitle)},`,
+    `    seoDescription: ${escapeString(entry.seoDescription)},`,
+    "  }",
+  ];
+  return lines.join("\n");
+}
+
+const slugEntries = JSON.parse(fs.readFileSync(SLUGS_PATH, "utf8"));
+const usedCanonical = new Set();
+const entries = [];
+
+for (const { id, slug: legacySlug } of slugEntries) {
+  const archive = loadArchive(id);
+  const addictionSlug = parseAddictionSlug(`${legacySlug} ${archive.title ?? ""}`);
+  const kind = classifyKind(legacySlug, archive);
+  if (kind === "unknown") {
+    throw new Error(`Could not classify kind for ${legacySlug} (${id})`);
+  }
+  if (addictionSlug === "unknown") {
+    throw new Error(`Could not parse addiction for ${legacySlug} (${id})`);
+  }
+
+  const caseNumber = caseNumberFromSlug(legacySlug);
+  const seo = caseStudySeoById[id];
+  if (!seo?.slug || !seo?.title) {
+    throw new Error(`Missing SEO metadata for archive id ${id} (${legacySlug})`);
+  }
+
+  let canonicalSlug = seo.slug;
+  if (usedCanonical.has(canonicalSlug)) {
+    throw new Error(`Duplicate canonicalSlug "${canonicalSlug}" for ${id}`);
+  }
+  usedCanonical.add(canonicalSlug);
+
+  if (canonicalSlug.length > 80) {
+    throw new Error(`canonicalSlug exceeds 80 chars: ${canonicalSlug}`);
+  }
+
+  const batch = batchForKind(kind);
+  if (!batch) {
+    throw new Error(`No batch mapping for kind ${kind} (${id})`);
+  }
+
+  entries.push({
+    id,
+    legacySlug,
+    canonicalSlug,
+    addictionSlug,
+    kind,
+    caseNumber,
+    seoTitle: seo.title,
+    seoDescription: seo.description ?? "",
+    batch,
+  });
+}
+
+const caseStudyPages = {
+  a: entries.filter((e) => e.batch === "a").map(({ batch: _b, ...rest }) => rest),
+  b: entries.filter((e) => e.batch === "b").map(({ batch: _b, ...rest }) => rest),
+  c: entries.filter((e) => e.batch === "c").map(({ batch: _b, ...rest }) => rest),
+};
+
+const header = `/** Auto-generated by build-case-study-registry.mjs — do not edit by hand. */\nexport const caseStudyPages = {\n`;
+const body = ["a", "b", "c"]
+  .map((key) => {
+    const block = caseStudyPages[key].map(formatEntry).join(",\n");
+    return `  ${key}: [\n${block}\n  ]`;
+  })
+  .join(",\n");
+const footer = `\n};\n`;
+
+fs.writeFileSync(OUT_PATH, header + body + footer, "utf8");
+
+console.log(
+  JSON.stringify({
+    total: entries.length,
+    batches: {
+      a: caseStudyPages.a.length,
+      b: caseStudyPages.b.length,
+      c: caseStudyPages.c.length,
+    },
+    kinds: entries.reduce((acc, e) => {
+      acc[e.kind] = (acc[e.kind] ?? 0) + 1;
+      return acc;
+    }, {}),
+    out: path.relative(ROOT, OUT_PATH),
+  }),
+);

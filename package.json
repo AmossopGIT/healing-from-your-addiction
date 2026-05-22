@@ -6,6 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "build:pages": "next build",
+    "prebuild": "node tools/site-archiver/scripts/generate-case-study-static-redirects.mjs",
+    "redirects:case-studies": "node tools/site-archiver/scripts/export-case-study-slug-migration.mjs && node tools/site-archiver/scripts/apply-case-study-redirects.mjs && node tools/site-archiver/scripts/generate-case-study-static-redirects.mjs",
     "start": "next start",
     "archive:site": "npm --prefix \"tools/site-archiver\" run start --"
   },
@@ -13,7 +15,8 @@
     "framer-motion": "^12.38.0",
     "next": "latest",
     "react": "latest",
-    "react-dom": "latest"
+    "react-dom": "latest",
+    "resend": "^6.12.3"
   },
   "devDependencies": {
     "@types/node": "latest",

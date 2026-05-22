@@ -37,6 +37,7 @@ jobs:
           NEXT_PUBLIC_STATIC_EXPORT: "true"
           NEXT_PUBLIC_BASE_PATH: /healing-from-your-addiction
           NEXT_PUBLIC_SITE_URL: https://amossopgit.github.io/healing-from-your-addiction
+          # prebuild uses these for static redirect HTML targets on GitHub Pages
 
       - name: Add Jekyll bypass
         run: touch out/.nojekyll

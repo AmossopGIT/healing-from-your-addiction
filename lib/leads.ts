@@ -1,7 +1,8 @@
 import { withBasePath } from "@/lib/basePath";
 import { siteConfig } from "@/lib/constants";
+import type { LeadPayload } from "@/lib/leads/types";
 
-type LeadPayload = Record<string, unknown>;
+export type { LeadPayload };
 
 export function getLeadSubmitUrl() {
   const customEndpoint = process.env.NEXT_PUBLIC_LEAD_ENDPOINT?.trim();

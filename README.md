@@ -36,9 +36,11 @@ npm run build
 
 The static output is written to `out/`.
 
-## Lead forms on GitHub Pages
+## Lead forms and Resend
 
-Static hosting cannot run Next.js API routes. On GitHub Pages, enquiry forms open the visitor's email client with a pre-filled message. For server-side lead capture, set `NEXT_PUBLIC_LEAD_ENDPOINT` to your form provider or backend URL in the deployment environment.
+Enquiry forms POST to `/api/leads/`. Configure Resend on Node/Vercel hosting — see [`docs/RESEND_SETUP.md`](docs/RESEND_SETUP.md).
+
+**GitHub Pages:** static export cannot run API routes in production. Forms fall back to mailto unless you set `NEXT_PUBLIC_LEAD_ENDPOINT` to a hosted `/api/leads/` URL (for example a Vercel deployment of this repo).
 
 ## First-time GitHub setup
 

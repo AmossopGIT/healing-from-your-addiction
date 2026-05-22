@@ -1,5 +1,6 @@
 ﻿import type { MetadataRoute } from "next";
 import { blogCategories, blogCategoryPath, blogPath, blogPosts, blogTagPath, blogTags } from "@/content/blog";
+import { caseStudies, caseStudyPath } from "@/content/caseStudies";
 import { seoPageList } from "@/content/seo";
 import { absoluteUrl } from "@/lib/constants";
 
@@ -13,7 +14,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...blogCategories.map((category) => blogCategoryPath(category.slug)),
     ...blogTags.map((tag) => blogTagPath(tag.slug)),
   ];
-  const allRoutes = [...new Set([...seoRoutes, ...blogRoutes])];
+  const caseStudyRoutes = [
+    "/case-studies/",
+    ...caseStudies.map((study) => caseStudyPath(study.slug)),
+  ];
+  const allRoutes = [...new Set([...seoRoutes, ...blogRoutes, ...caseStudyRoutes])];
 
   return allRoutes.map((route) => ({
     url: absoluteUrl(route),

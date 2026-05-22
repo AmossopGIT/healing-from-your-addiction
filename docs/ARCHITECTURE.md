@@ -36,7 +36,7 @@ Gambling and food pages use `LandingPageContent`. Future addiction categories sh
 
 Current implementation posts to `/api/leads/`, validates basic fields, ignores honeypot spam and redirects client-side to `/thank-you/` after success.
 
-Before launch, connect the API route to secure email, CRM, Supabase or another protected lead destination.
+Lead notifications are sent with [Resend](https://resend.com) when `RESEND_API_KEY` and related server env vars are set. See `docs/RESEND_SETUP.md`.
 
 ## Environment variables
 
@@ -45,6 +45,11 @@ Before launch, connect the API route to secure email, CRM, Supabase or another p
 - `NEXT_PUBLIC_WHATSAPP_NUMBER`
 - `NEXT_PUBLIC_CONTACT_EMAIL`
 - `NEXT_PUBLIC_CONTACT_PHONE`
+- `RESEND_API_KEY` (server only)
+- `RESEND_FROM_EMAIL` (server only)
+- `LEAD_NOTIFICATION_EMAIL` (server only)
+- `NEXT_PUBLIC_LEAD_ENDPOINT` (optional, for static sites calling a remote API)
+- `LEAD_API_ALLOWED_ORIGINS` (optional CORS allowlist)
 
 ## SEO architecture
 

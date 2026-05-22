@@ -1,4 +1,5 @@
 import { blogCategoryBySlug, blogPosts } from "@/content/blog";
+import { caseStudies } from "@/content/caseStudies";
 
 export type ArtGalleryItem = {
   id: string;
@@ -52,6 +53,58 @@ function blogAltText(categorySlug: string) {
   return "Minimal watercolor illustration of a winding path and pause point, suggesting steady addiction recovery progress.";
 }
 
+const caseStudyTypeSymbol: Record<string, string> = {
+  outcome: "stepping stones on a path with a calm pause point",
+  script: "two calm hands near a gentle loop suggesting EFT or script work",
+  questions: "a small stack of cards or list shapes suggesting intake questions",
+  affirmations: "a single figure beside a soft upward path and pause marker",
+  programme: "a folder-like shape with stepping stones suggesting a structured programme",
+};
+
+const caseStudyAddictionSymbol: Record<string, string> = {
+  gambling: "a subtle card or chip shape without logos",
+  "food-binge-eating": "a bowl and glass outline",
+  alcohol: "a glass outline with a pause loop",
+  cannabis: "a simple leaf silhouette with a loop",
+  pornography: "a privacy screen shape with a loop",
+  sex: "two abstract figures with space between them",
+  shopping: "a small bag shape with a loop",
+  gaming: "a simple controller outline",
+  nicotine: "a small cigarette-shaped line with loop",
+  "social-media": "a phone rectangle with looping dots",
+  internet: "a browser window shape with a loop",
+  unknown: "a calm loop and pathway",
+};
+
+function caseStudyAltText(study: (typeof caseStudies)[number]) {
+  const topic = study.addictionSlug.replace(/-/g, " ");
+  const type = study.caseStudyType;
+  if (type === "outcome") {
+    return `Minimal watercolor illustration of a gentle path and pause point, suggesting ${topic} addiction recovery progress.`;
+  }
+  if (type === "script") {
+    return `Minimal watercolor illustration of calm hands near a loop, suggesting an EFT or hypnotherapy script for ${topic} patterns.`;
+  }
+  return `Minimal watercolor illustration with symbolic shapes, suggesting a ${topic} addiction support resource.`;
+}
+
+const caseStudyArtEntries: ArtGalleryItem[] = caseStudies.map((study) => {
+  const typeSymbol = caseStudyTypeSymbol[study.caseStudyType] ?? caseStudyTypeSymbol.outcome;
+  const addictionSymbol =
+    caseStudyAddictionSymbol[study.addictionSlug] ?? caseStudyAddictionSymbol.unknown;
+
+  return {
+    id: study.heroArtId,
+    title: `Case Study - ${study.title}`,
+    category: `case-study-${study.addictionSlug}`,
+    src: `/art/watercolor/art-watercolor-${study.heroArtId}.png`,
+    alt: caseStudyAltText(study),
+    prompt: `${basePrompt} Create artwork for case study "${study.title}" (${study.caseStudyType}). Show ${typeSymbol} and ${addictionSymbol}. Keep symbolic, calm, and non-stigmatizing.`,
+    palette: sharedPalette,
+    usage: `Hero artwork for case study: ${study.title}.`,
+  };
+});
+
 const blogArtEntries: ArtGalleryItem[] = blogPosts.map((post) => {
   const category = blogCategoryBySlug.get(post.categorySlug);
   const symbol = blogCategorySymbolBySlug[post.categorySlug] ?? "a calm loop, pathway, and pause point";
@@ -71,14 +124,47 @@ const blogArtEntries: ArtGalleryItem[] = blogPosts.map((post) => {
 export const artGallery: readonly ArtGalleryItem[] = [
   {
     id: "gerald-crawford",
-    title: "Gerald Crawford Portrait",
+    title: "Gerald Crawford Portrait — Teal and Gold",
     category: "about",
     src: "/art/watercolor/art-watercolor-gerald-crawford.png",
-    alt: "Watercolor portrait of Gerald Crawford, hypnotherapist, in calm professional attire with soft teal and gold background washes.",
+    alt: "Watercolor portrait of Gerald Crawford, hypnotherapist, in calm professional attire with soft teal washes and a muted gold sun accent.",
     prompt:
-      "Warm watercolor portrait of Gerald Crawford, hypnotherapist with salt-and-pepper beard and blue glasses, navy suit and blue tie, gentle professional smile, soft teal and gold background washes on warm cream paper, calm confidential mood, no text, no logos.",
+      "Warm watercolor portrait of Gerald Crawford, hypnotherapist with salt-and-pepper beard and blue glasses, navy suit and blue tie, gentle professional smile, soft teal and muted gold sun background washes on warm cream paper, calm confidential mood, no text, no logos.",
     palette: sharedPalette,
-    usage: "About Gerald Crawford page hero and practitioner introduction sections.",
+    usage: "Default About Gerald Crawford portrait, OG image, and primary practitioner introduction.",
+  },
+  {
+    id: "gerald-crawford-pattern-loop",
+    title: "Gerald Crawford Portrait — Pattern Loop",
+    category: "about",
+    src: "/art/watercolor/art-watercolor-gerald-crawford-pattern-loop.png",
+    alt: "Watercolor portrait of Gerald Crawford with a soft teal habit loop and gold pause point behind him, suggesting pattern-focused support.",
+    prompt:
+      "Watercolor portrait of Gerald Crawford with salt-and-pepper beard, blue glasses, navy suit and blue tie, gentle smile, large soft teal habit loop circle behind shoulders and one muted gold pause dot, warm cream paper, calm pattern-focused mood, no text, no logos.",
+    palette: sharedPalette,
+    usage: "Approach, programmes, and education sections where pattern-loop language fits.",
+  },
+  {
+    id: "gerald-crawford-recovery-path",
+    title: "Gerald Crawford Portrait — Recovery Path",
+    category: "about",
+    src: "/art/watercolor/art-watercolor-gerald-crawford-recovery-path.png",
+    alt: "Watercolor portrait of Gerald Crawford with soft teal pathway washes and stepping stones, suggesting steady recovery progress.",
+    prompt:
+      "Watercolor portrait of Gerald Crawford with blue glasses, navy suit and blue tie, gentle smile, soft horizontal teal washes and subtle stepping-stone path motif with muted gold sun accent on warm cream paper, recovery peace aesthetic, no text, no logos.",
+    palette: sharedPalette,
+    usage: "Recovery stories, case studies, blog addiction-recovery category, and progress-themed CTAs.",
+  },
+  {
+    id: "gerald-crawford-warm-gold",
+    title: "Gerald Crawford Portrait — Warm Gold",
+    category: "about",
+    src: "/art/watercolor/art-watercolor-gerald-crawford-warm-gold.png",
+    alt: "Watercolor portrait of Gerald Crawford on a warm cream and gold wash background, suggesting trust and understanding.",
+    prompt:
+      "Watercolor portrait of Gerald Crawford with salt-and-pepper beard, blue glasses, navy suit and blue tie, warm approachable smile, predominantly cream and gold wash background with only whisper of teal at edges, trust and understanding mood, no text, no logos.",
+    palette: sharedPalette,
+    usage: "Contact, thank-you, enquiry, and trust-building sections where warmth should lead.",
   },
   {
     id: "hfya-logo",
@@ -522,7 +608,16 @@ export const artGallery: readonly ArtGalleryItem[] = [
     usage: "Use on gaming habit support pages and future programme artwork cards.",
   },
   ...blogArtEntries,
+  ...caseStudyArtEntries,
 ];
+
+/** Gerald portrait backgrounds — swap `artId` on a page to match context. */
+export const geraldPortraitArtIds = [
+  "gerald-crawford",
+  "gerald-crawford-pattern-loop",
+  "gerald-crawford-recovery-path",
+  "gerald-crawford-warm-gold",
+] as const;
 
 export const artGalleryById: ReadonlyMap<string, ArtGalleryItem> = new Map(artGallery.map((item) => [item.id, item]));
 export const artGalleryByCategory: ReadonlyMap<string, ArtGalleryItem> = new Map(artGallery.map((item) => [item.category, item]));
@@ -530,4 +625,11 @@ export const artGalleryByCategory: ReadonlyMap<string, ArtGalleryItem> = new Map
 const missingBlogArtwork = blogPosts.filter((post) => !artGalleryById.has(post.heroArtId)).map((post) => post.slug);
 if (missingBlogArtwork.length) {
   throw new Error(`Missing watercolor artwork metadata for blog posts: ${missingBlogArtwork.join(", ")}`);
+}
+
+const missingCaseStudyArtwork = caseStudies
+  .filter((study) => !artGalleryById.has(study.heroArtId))
+  .map((study) => study.slug);
+if (missingCaseStudyArtwork.length) {
+  throw new Error(`Missing watercolor artwork metadata for case studies: ${missingCaseStudyArtwork.join(", ")}`);
 }

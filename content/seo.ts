@@ -6,6 +6,7 @@ import {
   blogTagBySlug,
   blogTagPath,
 } from "@/content/blog";
+import { caseStudyBySlug, caseStudyPath } from "@/content/caseStudies";
 
 export type SeoPageType =
   | "home"
@@ -22,7 +23,9 @@ export type SeoPageType =
   | "blog"
   | "blog-category"
   | "blog-tag"
-  | "blog-post";
+  | "blog-post"
+  | "case-study-hub"
+  | "case-study";
 
 export type SeoPageRecord = {
   path: string;
@@ -207,11 +210,29 @@ export const seoPages = {
     ogImage: defaultOgImage,
     ogImageAlt: "Healing From Your Addiction confidential enquiry received",
   },
+  caseStudies: {
+    path: "/case-studies/",
+    title: "Addiction Case Studies and Programme Resources | Healing From Your Addiction",
+    description:
+      "Browse anonymized outcome stories, EFT scripts, programme outlines, intake questions, and affirmations from Healing From Your Addiction support work.",
+    primaryKeyword: "addiction hypnotherapy case studies South Africa",
+    secondaryKeywords: [
+      "addiction recovery case studies",
+      "EFT tapping scripts addiction",
+      "hypnotherapy programme examples",
+      "addiction support resources",
+    ],
+    searchIntent: "Explore real-world style examples and structured programme resources by addiction topic.",
+    pageType: "case-study-hub",
+    conversionGoal: "Move readers into relevant programme pages or a confidential enquiry.",
+    ogImage: defaultOgImage,
+    ogImageAlt: "Case studies and programme resources for addiction pattern support",
+  },
   blog: {
     path: "/blog/",
-    title: "Addiction Recovery Blog | Healing From Your Addiction",
+    title: "Addiction Recovery Resources | Healing From Your Addiction",
     description:
-      "Read addiction recovery and hypnotherapy blog articles from Healing From Your Addiction, with category pillars and tagged educational content for better indexing.",
+      "Browse addiction recovery articles, case studies, EFT scripts, and programme resources from Healing From Your Addiction — organised by topic for clearer discovery.",
     primaryKeyword: "addiction recovery blog South Africa",
     secondaryKeywords: [
       "hypnotherapy blog addiction support",
@@ -559,6 +580,25 @@ export function getSeoByPath(path: string) {
         conversionGoal: "Move readers from a tag archive into an article or programme page.",
         ogImage: defaultOgImage,
         ogImageAlt: `${tag.label} tagged addiction recovery articles`,
+      } satisfies SeoPageRecord;
+    }
+  }
+
+  const caseStudySlug = path.match(/^\/case-studies\/([^/]+)\/$/)?.[1];
+  if (caseStudySlug) {
+    const study = caseStudyBySlug.get(caseStudySlug);
+    if (study) {
+      return {
+        path: caseStudyPath(study.slug),
+        title: `${study.title} | Healing From Your Addiction`,
+        description: study.description,
+        primaryKeyword: study.primaryKeyword,
+        secondaryKeywords: study.secondaryKeywords,
+        searchIntent: "Read an educational addiction case study or programme resource.",
+        pageType: "case-study",
+        conversionGoal: "Move readers toward a relevant programme page or confidential enquiry.",
+        ogImage: defaultOgImage,
+        ogImageAlt: study.title,
       } satisfies SeoPageRecord;
     }
   }
