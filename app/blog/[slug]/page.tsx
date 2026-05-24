@@ -1,22 +1,28 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { ContentArticleBody } from "@/components/ContentArticleBody";
+import { PageSeoContextScript } from "@/components/PageSeoContextScript";
 import { SchemaMarkup } from "@/components/SchemaMarkup";
 import { SiteLink } from "@/components/SiteLink";
 import { WatercolorArtwork } from "@/components/WatercolorArtwork";
-import { artGalleryById } from "@/content/artGallery";
 import {
   blogCategoryBySlug,
   blogCategoryPath,
   blogPath,
-  blogPostBySlug,
   blogPosts,
   blogTagBySlug,
   blogTagPath,
 } from "@/content/blog";
 import { getSeoByPath } from "@/content/seo";
+import { getMergedBlogPostBySlug } from "@/lib/cms/contentSource";
+import { isCmsContentEnabled } from "@/lib/cms/featureFlag";
+import { resolveContentArt } from "@/lib/cms/mappers";
+import { cmsBlogPostToSeoRecord } from "@/lib/cms/seo";
 import { createMetadata, createPageMetadata } from "@/lib/seo";
 import { absoluteUrl, siteConfig } from "@/lib/constants";
 import { breadcrumbSchema, webPageSchema } from "@/lib/schema";
+
+export const revalidate = isCmsContentEnabled() ? 300 : false;
 
 type PageProps = {
   params: Promise<{ slug: string }>;
@@ -28,8 +34,8 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
-  const post = blogPostBySlug.get(slug);
-  if (!post) {
+  const result = await getMergedBlogPostBySlug(slug);
+  if (!result) {
     return createMetadata({
       title: "Blog Article Not Found | Healing From Your Addiction",
       description: "The requested blog article could not be found.",
@@ -38,8 +44,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     });
   }
 
-  const art = artGalleryById.get(post.heroArtId);
-  const pageSeo = getSeoByPath(blogPath(post.slug));
+  const { post, cmsRow } = result;
+  const art = resolveContentArt(post.heroArtId, cmsRow, "blog");
+  const pageSeo = cmsRow ? cmsBlogPostToSeoRecord(cmsRow) : getSeoByPath(blogPath(post.slug));
 
   if (pageSeo) {
     return createPageMetadata(pageSeo, {
@@ -60,15 +67,17 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function BlogPostPage({ params }: PageProps) {
   const { slug } = await params;
-  const post = blogPostBySlug.get(slug);
-  if (!post) notFound();
+  const result = await getMergedBlogPostBySlug(slug);
+  if (!result) notFound();
 
+  const { post, cmsRow } = result;
   const category = blogCategoryBySlug.get(post.categorySlug);
-  const art = artGalleryById.get(post.heroArtId);
-  const pageSeo = getSeoByPath(blogPath(post.slug));
+  const art = resolveContentArt(post.heroArtId, cmsRow, "blog");
+  const pageSeo = cmsRow ? cmsBlogPostToSeoRecord(cmsRow) : getSeoByPath(blogPath(post.slug));
 
   return (
     <>
+      {pageSeo ? <PageSeoContextScript pageSeo={pageSeo} /> : null}
       <SchemaMarkup
         data={[
           pageSeo ? webPageSchema(pageSeo) : webPageSchema(post.title, post.description, blogPath(post.slug)),
@@ -117,29 +126,7 @@ export default async function BlogPostPage({ params }: PageProps) {
             ) : null}
           </p>
           {art ? <WatercolorArtwork item={art} className="section-artwork blog-hero-art" priority /> : null}
-          <div className="blog-prose">
-            {post.sections.map((section) => (
-              <section key={section.h2} className="blog-section">
-                <h2>{section.h2}</h2>
-                {section.paragraphs.map((paragraph) => (
-                  <p key={paragraph}>{paragraph}</p>
-                ))}
-                {section.h3Items?.map((item) => (
-                  <div key={item.h3}>
-                    <h3>{item.h3}</h3>
-                    <p>{item.body}</p>
-                  </div>
-                ))}
-                {section.bullets ? (
-                  <ul>
-                    {section.bullets.map((bullet) => (
-                      <li key={bullet}>{bullet}</li>
-                    ))}
-                  </ul>
-                ) : null}
-              </section>
-            ))}
-          </div>
+          <ContentArticleBody sections={post.sections} />
 
           <div className="blog-tag-list">
             {post.tagSlugs.map((tagSlug) => {
@@ -156,4 +143,3 @@ export default async function BlogPostPage({ params }: PageProps) {
     </>
   );
 }
-

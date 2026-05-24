@@ -3,6 +3,7 @@ import { Disclaimer } from "@/components/Disclaimer";
 import { Hero } from "@/components/Hero";
 import { RevealDiv } from "@/components/MotionReveal";
 import { SchemaMarkup } from "@/components/SchemaMarkup";
+import { TrackedLink } from "@/components/TrackedLink";
 import { WatercolorArtwork } from "@/components/WatercolorArtwork";
 import { artGalleryById } from "@/content/artGallery";
 import { seoPages } from "@/content/seo";
@@ -54,6 +55,36 @@ export default function AboutTherapistPage() {
               <p>
                 The site positions his support carefully: this is not a rehab clinic, medical detox service or emergency service. It is confidential hypnotherapy, EFT, coaching-style support and education for people ready to explore the pattern behind the behaviour.
               </p>
+              <p>Connect with Healing From Your Addiction and Gerald online:</p>
+              <div className="button-row">
+                <TrackedLink
+                  href="https://www.facebook.com/profile.php?id=61590084852348"
+                  className="button button-secondary button-small"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  tracking={{ ctaName: "facebook_about", linkLocation: "about_page" }}
+                >
+                  🔵 Facebook
+                </TrackedLink>
+                <TrackedLink
+                  href="https://www.instagram.com/healingfromyouraddiction/"
+                  className="button button-secondary button-small"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  tracking={{ ctaName: "instagram_about", linkLocation: "about_page" }}
+                >
+                  📸 Instagram
+                </TrackedLink>
+                <TrackedLink
+                  href="https://www.linkedin.com/in/gerald-crawford-4a563a178/"
+                  className="button button-secondary button-small"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  tracking={{ ctaName: "gerald_linkedin_about", linkLocation: "about_page" }}
+                >
+                  💼 Gerald on LinkedIn
+                </TrackedLink>
+              </div>
             </div>
           </RevealDiv>
           {geraldPortrait ? (

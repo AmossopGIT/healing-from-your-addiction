@@ -6,7 +6,7 @@ import { TrackedLink } from "@/components/TrackedLink";
 import { WatercolorArtwork } from "@/components/WatercolorArtwork";
 import { artGalleryById } from "@/content/artGallery";
 import { seoPages } from "@/content/seo";
-import { emailHref, phoneHref, siteConfig, whatsappHref } from "@/lib/constants";
+import { emailHref, formatSouthAfricanPhone, phoneHref, siteConfig, whatsappHref } from "@/lib/constants";
 import { createPageMetadata } from "@/lib/seo";
 import { breadcrumbSchema, professionalServiceSchema, webPageSchema } from "@/lib/schema";
 
@@ -15,6 +15,7 @@ const pageSeo = seoPages.contact;
 const whatsappArt = artGalleryById.get("contact-whatsapp");
 const emailArt = artGalleryById.get("contact-email");
 const phoneArt = artGalleryById.get("contact-phone");
+const displayPhone = formatSouthAfricanPhone(siteConfig.phone);
 
 export const metadata = createPageMetadata(pageSeo);
 
@@ -45,10 +46,34 @@ export default function ContactPage() {
       <section className="section" id="contact-options" aria-labelledby="contact-options-heading">
         <div className="container three-grid">
           <article className="contact-card">
+            <h2 id="contact-options-heading">Follow Healing From Your Addiction</h2>
+            <p>Stay connected for updates, guidance and new resources.</p>
+            <div className="button-row">
+              <TrackedLink
+                href="https://www.facebook.com/profile.php?id=61590084852348"
+                className="button button-secondary button-small"
+                target="_blank"
+                rel="noopener noreferrer"
+                tracking={{ ctaName: "facebook_contact", linkLocation: "contact_page" }}
+              >
+                🔵 Facebook
+              </TrackedLink>
+              <TrackedLink
+                href="https://www.instagram.com/healingfromyouraddiction/"
+                className="button button-secondary button-small"
+                target="_blank"
+                rel="noopener noreferrer"
+                tracking={{ ctaName: "instagram_contact", linkLocation: "contact_page" }}
+              >
+                📸 Instagram
+              </TrackedLink>
+            </div>
+          </article>
+          <article className="contact-card">
             {whatsappArt ? (
               <WatercolorArtwork item={whatsappArt} className="card-artwork" fill sizes="(min-width: 900px) 28vw, 92vw" />
             ) : null}
-            <h2 id="contact-options-heading">WhatsApp</h2>
+            <h2>WhatsApp</h2>
             <p>Use WhatsApp if you prefer a direct, private first message.</p>
             <TrackedLink
               href={whatsappHref()}
@@ -77,13 +102,13 @@ export default function ContactPage() {
               <WatercolorArtwork item={phoneArt} className="card-artwork" fill sizes="(min-width: 900px) 28vw, 92vw" />
             ) : null}
             <h2>Phone</h2>
-            <p>{siteConfig.phone ? "Tap to call directly." : "Add a public phone number in the environment variables when ready."}</p>
+            <p>Tap to call directly.</p>
             <TrackedLink
               href={phoneHref()}
               className="button button-secondary"
               tracking={{ eventName: "phone_click", linkLocation: "contact_page" }}
             >
-              {siteConfig.phone || "Phone enquiry"}
+              {displayPhone || "Phone enquiry"}
             </TrackedLink>
           </article>
         </div>

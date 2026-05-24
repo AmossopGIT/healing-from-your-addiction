@@ -1,12 +1,16 @@
 ﻿import type { MetadataRoute } from "next";
-import { blogCategories, blogCategoryPath, blogPath, blogPosts, blogTagPath, blogTags } from "@/content/blog";
-import { caseStudies, caseStudyPath } from "@/content/caseStudies";
+import { blogCategories, blogCategoryPath, blogPath, blogTagPath, blogTags } from "@/content/blog";
+import { caseStudyPath } from "@/content/caseStudies";
 import { seoPageList } from "@/content/seo";
+import { getMergedBlogPosts, getMergedCaseStudies } from "@/lib/cms/contentSource";
+import { isCmsContentEnabled } from "@/lib/cms/featureFlag";
 import { absoluteUrl } from "@/lib/constants";
 
-export const dynamic = "force-static";
+export const revalidate = isCmsContentEnabled() ? 300 : false;
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const [blogPosts, caseStudies] = await Promise.all([getMergedBlogPosts(), getMergedCaseStudies()]);
+
   const seoRoutes = seoPageList.filter((page) => !page.noIndex).map((page) => page.path);
   const blogRoutes = [
     "/blog/",
@@ -14,10 +18,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...blogCategories.map((category) => blogCategoryPath(category.slug)),
     ...blogTags.map((tag) => blogTagPath(tag.slug)),
   ];
-  const caseStudyRoutes = [
-    "/case-studies/",
-    ...caseStudies.map((study) => caseStudyPath(study.slug)),
-  ];
+  const caseStudyRoutes = ["/case-studies/", ...caseStudies.map((study) => caseStudyPath(study.slug))];
   const allRoutes = [...new Set([...seoRoutes, ...blogRoutes, ...caseStudyRoutes])];
 
   return allRoutes.map((route) => ({

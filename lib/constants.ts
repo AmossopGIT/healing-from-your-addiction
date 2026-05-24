@@ -7,7 +7,7 @@ export const siteConfig = {
   description:
     "Confidential hypnotherapy and EFT-based support for addiction patterns, cravings, gambling addiction, food addiction and emotional triggers in South Africa.",
   email: process.env.NEXT_PUBLIC_CONTACT_EMAIL || "start@healingfromyouraddiction.co.za",
-  phone: process.env.NEXT_PUBLIC_CONTACT_PHONE || "",
+  phone: process.env.NEXT_PUBLIC_CONTACT_PHONE || "087 379 7668",
   whatsappNumber: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "",
   locale: "en_ZA",
 };
@@ -48,5 +48,45 @@ export function emailHref(subject = "Confidential addiction support enquiry") {
 }
 
 export function phoneHref() {
-  return siteConfig.phone ? `tel:${siteConfig.phone}` : withBasePath("/contact/#enquiry");
+  const normalized = normalizeSouthAfricanPhone(siteConfig.phone);
+  return normalized ? `tel:${normalized}` : withBasePath("/contact/#enquiry");
+}
+
+function digitsOnly(value: string) {
+  return value.replace(/\D+/g, "");
+}
+
+export function normalizeSouthAfricanPhone(phone: string) {
+  const trimmed = phone.trim();
+  if (!trimmed) return "";
+
+  const hasPlus = trimmed.startsWith("+");
+  const rawDigits = digitsOnly(trimmed);
+
+  if (hasPlus && rawDigits.startsWith("27") && rawDigits.length >= 11) {
+    return `+${rawDigits}`;
+  }
+
+  if (rawDigits.startsWith("27") && rawDigits.length >= 11) {
+    return `+${rawDigits}`;
+  }
+
+  if (rawDigits.startsWith("0") && rawDigits.length >= 10) {
+    return `+27${rawDigits.slice(1)}`;
+  }
+
+  return hasPlus ? `+${rawDigits}` : rawDigits;
+}
+
+export function formatSouthAfricanPhone(phone: string) {
+  const normalized = normalizeSouthAfricanPhone(phone);
+  if (!normalized.startsWith("+27")) return normalized;
+
+  const localDigits = normalized.slice(3);
+  const area = localDigits.slice(0, 2);
+  const first = localDigits.slice(2, 5);
+  const last = localDigits.slice(5, 9);
+  if (!area || !first || !last) return normalized;
+
+  return `+27 ${area} ${first} ${last}`;
 }

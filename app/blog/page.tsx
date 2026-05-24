@@ -3,25 +3,30 @@ import { BlogPostCard } from "@/components/BlogPostCard";
 import { CaseStudyCard } from "@/components/CaseStudyCard";
 import { SchemaMarkup } from "@/components/SchemaMarkup";
 import { SiteLink } from "@/components/SiteLink";
-import {
-  blogCategories,
-  blogCategoryPath,
-  blogPosts,
-  blogTagPath,
-  blogTags,
-  getPostsByCategory,
-} from "@/content/blog";
-import { caseStudies, getFeaturedCaseStudies } from "@/content/caseStudies";
+import { blogCategories, blogCategoryPath, blogTagPath, blogTags } from "@/content/blog";
 import { seoPages } from "@/content/seo";
+import { getMergedBlogPosts, getMergedCaseStudies, getMergedFeaturedCaseStudies, getMergedPostsByCategory } from "@/lib/cms/contentSource";
+import { isCmsContentEnabled } from "@/lib/cms/featureFlag";
 import { createPageMetadata } from "@/lib/seo";
 import { breadcrumbSchema, webPageSchema } from "@/lib/schema";
 
+export const revalidate = isCmsContentEnabled() ? 300 : false;
+
 const pageSeo = seoPages.blog;
-const featuredCaseStudies = getFeaturedCaseStudies(3);
 
 export const metadata = createPageMetadata(pageSeo);
 
-export default function BlogIndexPage() {
+export default async function BlogIndexPage() {
+  const blogPosts = await getMergedBlogPosts();
+  const caseStudies = await getMergedCaseStudies();
+  const featuredCaseStudies = await getMergedFeaturedCaseStudies(3);
+  const categorySections = await Promise.all(
+    blogCategories.map(async (category) => ({
+      category,
+      posts: await getMergedPostsByCategory(category.slug),
+    })),
+  );
+
   return (
     <>
       <SchemaMarkup
@@ -76,19 +81,14 @@ export default function BlogIndexPage() {
             </p>
           </div>
           <div className="blog-category-grid">
-            {blogCategories.map((category) => (
-              <BlogCategoryCard
-                key={category.slug}
-                category={category}
-                postCount={getPostsByCategory(category.slug).length}
-              />
+            {categorySections.map(({ category, posts }) => (
+              <BlogCategoryCard key={category.slug} category={category} postCount={posts.length} />
             ))}
           </div>
         </div>
       </section>
 
-      {blogCategories.map((category, index) => {
-        const posts = getPostsByCategory(category.slug);
+      {categorySections.map(({ category, posts }, index) => {
         if (posts.length === 0) return null;
 
         return (

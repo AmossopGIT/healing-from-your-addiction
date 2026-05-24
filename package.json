@@ -8,6 +8,7 @@
     "build:pages": "next build",
     "prebuild": "node tools/site-archiver/scripts/generate-case-study-static-redirects.mjs",
     "redirects:case-studies": "node tools/site-archiver/scripts/export-case-study-slug-migration.mjs && node tools/site-archiver/scripts/apply-case-study-redirects.mjs && node tools/site-archiver/scripts/generate-case-study-static-redirects.mjs",
+    "cms:sync-seo-keywords": "node tools/cms/sync-seo-keywords.mjs",
     "start": "next start",
     "archive:site": "npm --prefix \"tools/site-archiver\" run start --"
   },

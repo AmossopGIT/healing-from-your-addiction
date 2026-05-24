@@ -3,18 +3,22 @@ import { CaseStudyGrid } from "@/components/CaseStudyGrid";
 import { CaseStudyHubFilters } from "@/components/CaseStudyHubFilters";
 import { SchemaMarkup } from "@/components/SchemaMarkup";
 import { SiteLink } from "@/components/SiteLink";
-import { caseStudies } from "@/content/caseStudies";
 import { seoPages } from "@/content/seo";
+import { getMergedCaseStudies } from "@/lib/cms/contentSource";
+import { isCmsContentEnabled } from "@/lib/cms/featureFlag";
 import { createPageMetadata } from "@/lib/seo";
 import { breadcrumbSchema, webPageSchema } from "@/lib/schema";
 
-const pageSeo = seoPages.caseStudies;
+export const revalidate = isCmsContentEnabled() ? 300 : false;
 
-const addictionOptions = [...new Set(caseStudies.map((study) => study.addictionSlug))].sort();
+const pageSeo = seoPages.caseStudies;
 
 export const metadata = createPageMetadata(pageSeo);
 
-export default function CaseStudiesHubPage() {
+export default async function CaseStudiesHubPage() {
+  const caseStudies = await getMergedCaseStudies();
+  const addictionOptions = [...new Set(caseStudies.map((study) => study.addictionSlug))].sort();
+
   return (
     <>
       <SchemaMarkup
@@ -72,7 +76,7 @@ export default function CaseStudiesHubPage() {
             Case study library
           </h2>
           <Suspense fallback={<p className="section-intro">Loading case studies…</p>}>
-            <CaseStudyGrid />
+            <CaseStudyGrid studies={caseStudies} />
           </Suspense>
         </div>
       </section>

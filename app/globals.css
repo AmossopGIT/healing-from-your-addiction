@@ -4186,3 +4186,69 @@ main,
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
+
+.cms-fieldset {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  padding: 1rem;
+  display: grid;
+  gap: 1rem;
+}
+
+.cms-field-help,
+.cms-inline-status,
+.cms-feature-flag,
+.cms-art-preview-path {
+  color: var(--ink-muted);
+  font-size: 0.95rem;
+}
+
+.cms-section-card {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  padding: 0.85rem;
+  display: grid;
+  gap: 0.75rem;
+  background: var(--surface-strong);
+}
+
+.cms-section-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.cms-json-editor {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 0.85rem;
+}
+
+.cms-form-actions,
+.cms-list-actions,
+.cms-workflow-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: end;
+}
+
+.cms-workflow-form {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.cms-status-badge {
+  display: inline-block;
+  border-radius: 999px;
+  padding: 0.15rem 0.55rem;
+  font-size: 0.82rem;
+  border: 1px solid var(--line);
+}
+
+.cms-status-draft { background: #f7f3ea; }
+.cms-status-in_review { background: #f1e4cb; }
+.cms-status-approved { background: #e2eeea; }
+.cms-status-scheduled { background: #fffdfa; }
+.cms-status-published { background: #0f5b52; color: #fff; border-color: #0a3f39; }
+.cms-status-archived { background: #ececec; }

@@ -23,6 +23,26 @@ export function Footer() {
             <p className="footer-resource-link">
               <SiteLink href="/blog/">Resources &amp; articles</SiteLink>
             </p>
+            <div className="footer-chips" aria-label="Social media links">
+              <TrackedLink
+                href="https://www.facebook.com/profile.php?id=61590084852348"
+                className="footer-chip"
+                target="_blank"
+                rel="noopener noreferrer"
+                tracking={{ ctaName: "facebook_footer", linkLocation: "footer_left" }}
+              >
+                🔵 Facebook
+              </TrackedLink>
+              <TrackedLink
+                href="https://www.instagram.com/healingfromyouraddiction/"
+                className="footer-chip"
+                target="_blank"
+                rel="noopener noreferrer"
+                tracking={{ ctaName: "instagram_footer", linkLocation: "footer_left" }}
+              >
+                📸 Instagram
+              </TrackedLink>
+            </div>
           </div>
 
           <div className="footer-col">

@@ -3,16 +3,15 @@ import { notFound } from "next/navigation";
 import { BlogPostCard } from "@/components/BlogPostCard";
 import { SchemaMarkup } from "@/components/SchemaMarkup";
 import { SiteLink } from "@/components/SiteLink";
-import {
-  blogTagBySlug,
-  blogTagPath,
-  blogTags,
-  getPostsByTag,
-} from "@/content/blog";
+import { blogTagBySlug, blogTagPath, blogTags } from "@/content/blog";
+import { getMergedPostsByTag } from "@/lib/cms/contentSource";
+import { isCmsContentEnabled } from "@/lib/cms/featureFlag";
 import { getSeoByPath } from "@/content/seo";
 import { createMetadata, createPageMetadata } from "@/lib/seo";
 import { absoluteUrl } from "@/lib/constants";
 import { breadcrumbSchema, webPageSchema } from "@/lib/schema";
+
+export const revalidate = isCmsContentEnabled() ? 300 : false;
 
 type PageProps = {
   params: Promise<{ slug: string }>;
@@ -56,7 +55,7 @@ export default async function BlogTagPage({ params }: PageProps) {
   const tag = blogTagBySlug.get(slug);
   if (!tag) notFound();
 
-  const posts = getPostsByTag(tag.slug);
+  const posts = await getMergedPostsByTag(tag.slug);
   const pageSeo = getSeoByPath(blogTagPath(tag.slug));
 
   return (

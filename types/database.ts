@@ -1,3 +1,10 @@
+import type {
+  CmsBlogPostRow,
+  CmsCaseStudyRow,
+  CmsWorkflowEventRow,
+  CmsWorkflowStatus,
+} from "@/types/cms";
+
 export type UserRole = "admin" | "client";
 
 export type LeadStatus = "new" | "contacted" | "qualified" | "enrolled" | "closed";
@@ -135,6 +142,8 @@ export type AuditLog = {
   created_at: string;
 };
 
+export type { CmsBlogPostRow, CmsCaseStudyRow, CmsWorkflowEventRow, CmsWorkflowStatus };
+
 type TableDef<Row, Insert, Update> = {
   Row: Row;
   Insert: Insert;
@@ -234,6 +243,91 @@ export type Database = {
         AuditLog,
         { user_id?: string | null; action: string; resource_type: string; resource_id?: string | null; metadata?: Record<string, unknown> | null },
         Partial<AuditLog>
+      >;
+      cms_blog_posts: TableDef<
+        CmsBlogPostRow,
+        {
+          slug: string;
+          title: string;
+          description: string;
+          excerpt: string;
+          h1: string;
+          primary_keyword: string;
+          category_slug: string;
+          hero_art_id: string;
+          hero_art_src: string;
+          hero_art_alt: string;
+          meta_title?: string | null;
+          meta_description?: string | null;
+          secondary_keywords?: string[];
+          search_intent?: string | null;
+          conversion_goal?: string | null;
+          canonical_path?: string | null;
+          noindex?: boolean;
+          og_image_alt?: string | null;
+          tag_slugs?: string[];
+          sections?: CmsBlogPostRow["sections"];
+          hero_art_prompt?: string | null;
+          hero_art_palette?: string[];
+          workflow_status?: CmsWorkflowStatus;
+          published_at?: string | null;
+          scheduled_for?: string | null;
+          review_notes?: string | null;
+          created_by?: string | null;
+          updated_by?: string | null;
+          approved_by?: string | null;
+        },
+        Partial<CmsBlogPostRow>
+      >;
+      cms_case_studies: TableDef<
+        CmsCaseStudyRow,
+        {
+          slug: string;
+          title: string;
+          description: string;
+          excerpt: string;
+          h1: string;
+          primary_keyword: string;
+          case_study_type: CmsCaseStudyRow["case_study_type"];
+          addiction_slug: string;
+          hero_art_id: string;
+          hero_art_src: string;
+          hero_art_alt: string;
+          legacy_slug?: string;
+          archive_page_id?: string | null;
+          meta_title?: string | null;
+          meta_description?: string | null;
+          secondary_keywords?: string[];
+          search_intent?: string | null;
+          conversion_goal?: string | null;
+          canonical_path?: string | null;
+          noindex?: boolean;
+          og_image_alt?: string | null;
+          tag_slugs?: string[];
+          sections?: CmsCaseStudyRow["sections"];
+          hero_art_prompt?: string | null;
+          hero_art_palette?: string[];
+          workflow_status?: CmsWorkflowStatus;
+          published_at?: string | null;
+          scheduled_for?: string | null;
+          review_notes?: string | null;
+          created_by?: string | null;
+          updated_by?: string | null;
+          approved_by?: string | null;
+        },
+        Partial<CmsCaseStudyRow>
+      >;
+      cms_workflow_events: TableDef<
+        CmsWorkflowEventRow,
+        {
+          content_type: CmsWorkflowEventRow["content_type"];
+          content_id: string;
+          to_status: CmsWorkflowStatus;
+          from_status?: CmsWorkflowStatus | null;
+          notes?: string | null;
+          actor_id?: string | null;
+        },
+        Partial<CmsWorkflowEventRow>
       >;
     };
     Views: Record<string, never>;

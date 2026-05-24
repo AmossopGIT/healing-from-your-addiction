@@ -124,3 +124,15 @@ This tracker keeps page targets, intent, and conversion goals in one human-reada
 - Keep Google Ads keyword files under `docs/marketing/data/campaigns/` as the paid media build source. This file tracks organic page intent and shared message match.
 - `/thank-you/`, social media, and gaming pages are intentionally noindex until they are conversion-only or launch-ready.
 - Gambling and food addiction paid-search terms should continue to point to their dedicated landing pages, not the homepage.
+
+<!-- cms-seo-sync:start -->
+### CMS blog posts
+
+| Page | Canonical URL | Primary keyword | Secondary keywords | Intent | Conversion goal |
+| --- | --- | --- | --- | --- | --- |
+
+### CMS case studies
+
+| Page | Canonical URL | Primary keyword | Secondary keywords | Intent | Conversion goal |
+| --- | --- | --- | --- | --- | --- |
+<!-- cms-seo-sync:end -->

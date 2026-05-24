@@ -19,6 +19,28 @@ function normalizePath(path: string) {
 export function getCurrentSeoContext() {
   if (typeof window === "undefined") return {};
 
+  const embedded = document.getElementById("page-seo-context");
+  if (embedded?.textContent) {
+    try {
+      const parsed = JSON.parse(embedded.textContent) as {
+        path?: string;
+        pageType?: string;
+        primaryKeyword?: string;
+        conversionGoal?: string;
+      };
+      if (parsed.path) {
+        return {
+          landing_page: parsed.path,
+          page_type: parsed.pageType,
+          primary_keyword: parsed.primaryKeyword,
+          conversion_goal: parsed.conversionGoal,
+        };
+      }
+    } catch {
+      // Fall back to static SEO lookup.
+    }
+  }
+
   const page = getSeoByPath(normalizePath(window.location.pathname));
   if (!page) {
     return {

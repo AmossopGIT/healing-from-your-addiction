@@ -1,22 +1,24 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { CaseStudyDisclaimer } from "@/components/CaseStudyDisclaimer";
+import { ContentArticleBody } from "@/components/ContentArticleBody";
+import { PageSeoContextScript } from "@/components/PageSeoContextScript";
 import { SchemaMarkup } from "@/components/SchemaMarkup";
 import { SiteLink } from "@/components/SiteLink";
 import { WatercolorArtwork } from "@/components/WatercolorArtwork";
-import { artGalleryById } from "@/content/artGallery";
-import {
-  caseStudies,
-  caseStudyBySlug,
-  caseStudyPath,
-  caseStudyTypeLabels,
-} from "@/content/caseStudies";
+import { caseStudies, caseStudyPath, caseStudyTypeLabels } from "@/content/caseStudies";
 import { getSeoByPath } from "@/content/seo";
+import { getMergedCaseStudyBySlug } from "@/lib/cms/contentSource";
+import { isCmsContentEnabled } from "@/lib/cms/featureFlag";
+import { resolveContentArt } from "@/lib/cms/mappers";
+import { cmsCaseStudyToSeoRecord } from "@/lib/cms/seo";
 import { absoluteUrl, siteConfig } from "@/lib/constants";
 import { programmeLinkForCaseStudy } from "@/lib/caseStudyProgrammeLink";
 import { formatBlogDate } from "@/lib/formatBlogDate";
 import { createMetadata, createPageMetadata } from "@/lib/seo";
 import { breadcrumbSchema, webPageSchema } from "@/lib/schema";
+
+export const revalidate = isCmsContentEnabled() ? 300 : false;
 
 type PageProps = {
   params: Promise<{ slug: string }>;
@@ -28,8 +30,8 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
-  const study = caseStudyBySlug.get(slug);
-  if (!study) {
+  const result = await getMergedCaseStudyBySlug(slug);
+  if (!result) {
     return createMetadata({
       title: "Case Study Not Found | Healing From Your Addiction",
       description: "The requested case study could not be found.",
@@ -38,8 +40,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     });
   }
 
-  const art = artGalleryById.get(study.heroArtId);
-  const pageSeo = getSeoByPath(caseStudyPath(study.slug));
+  const { study, cmsRow } = result;
+  const art = resolveContentArt(study.heroArtId, cmsRow, "case-study");
+  const pageSeo = cmsRow ? cmsCaseStudyToSeoRecord(cmsRow) : getSeoByPath(caseStudyPath(study.slug));
 
   if (pageSeo) {
     return createPageMetadata(pageSeo, {
@@ -60,15 +63,17 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function CaseStudyPage({ params }: PageProps) {
   const { slug } = await params;
-  const study = caseStudyBySlug.get(slug);
-  if (!study) notFound();
+  const result = await getMergedCaseStudyBySlug(slug);
+  if (!result) notFound();
 
-  const art = artGalleryById.get(study.heroArtId);
-  const pageSeo = getSeoByPath(caseStudyPath(study.slug));
+  const { study, cmsRow } = result;
+  const art = resolveContentArt(study.heroArtId, cmsRow, "case-study");
+  const pageSeo = cmsRow ? cmsCaseStudyToSeoRecord(cmsRow) : getSeoByPath(caseStudyPath(study.slug));
   const programme = programmeLinkForCaseStudy(study.addictionSlug);
 
   return (
     <>
+      {pageSeo ? <PageSeoContextScript pageSeo={pageSeo} /> : null}
       <SchemaMarkup
         data={[
           pageSeo
@@ -116,29 +121,7 @@ export default async function CaseStudyPage({ params }: PageProps) {
             <time dateTime={study.publishedAt}>{formatBlogDate(study.publishedAt)}</time>
           </p>
           {art ? <WatercolorArtwork item={art} className="section-artwork blog-hero-art" priority /> : null}
-          <div className="blog-prose">
-            {study.sections.map((section) => (
-              <section key={section.h2} className="blog-section">
-                <h2>{section.h2}</h2>
-                {section.paragraphs.map((paragraph) => (
-                  <p key={paragraph}>{paragraph}</p>
-                ))}
-                {section.h3Items?.map((item) => (
-                  <div key={item.h3}>
-                    <h3>{item.h3}</h3>
-                    <p>{item.body}</p>
-                  </div>
-                ))}
-                {section.bullets ? (
-                  <ul>
-                    {section.bullets.map((bullet) => (
-                      <li key={bullet}>{bullet}</li>
-                    ))}
-                  </ul>
-                ) : null}
-              </section>
-            ))}
-          </div>
+          <ContentArticleBody sections={study.sections} />
 
           <CaseStudyDisclaimer />
 

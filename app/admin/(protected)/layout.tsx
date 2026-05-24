@@ -9,7 +9,7 @@ export default async function AdminProtectedLayout({ children }: { children: Rea
   return (
     <DashboardShell
       title="Admin dashboard"
-      subtitle="Lead and client management"
+      subtitle="Lead, client, and content management"
       navItems={adminNavItems}
       variant="admin"
     >

@@ -9,11 +9,11 @@ import "./globals.css";
 export const metadata: Metadata = createPageMetadata(seoPages.home);
 
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
-  const gtmId = process.env.NEXT_PUBLIC_GTM_ID;
+  const gtmId = process.env.NEXT_PUBLIC_GTM_ID?.trim() || "GTM-KN8WMGXR";
 
   return (
     <html lang="en-ZA">
-      <body>
+      <head>
         {gtmId ? (
           <Script id="gtm" strategy="afterInteractive">
             {`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -23,6 +23,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 })(window,document,'script','dataLayer','${gtmId}');`}
           </Script>
         ) : null}
+      </head>
+      <body>
         {gtmId ? (
           <noscript>
             <iframe
