@@ -15,14 +15,13 @@ import {
 } from "@/content/blog";
 import { getSeoByPath } from "@/content/seo";
 import { getMergedBlogPostBySlug } from "@/lib/cms/contentSource";
-import { isCmsContentEnabled } from "@/lib/cms/featureFlag";
 import { resolveContentArt } from "@/lib/cms/mappers";
 import { cmsBlogPostToSeoRecord } from "@/lib/cms/seo";
 import { createMetadata, createPageMetadata } from "@/lib/seo";
 import { absoluteUrl, siteConfig } from "@/lib/constants";
 import { breadcrumbSchema, webPageSchema } from "@/lib/schema";
 
-export const revalidate = isCmsContentEnabled() ? 300 : false;
+export const revalidate = 300;
 
 type PageProps = {
   params: Promise<{ slug: string }>;
@@ -143,3 +142,5 @@ export default async function BlogPostPage({ params }: PageProps) {
     </>
   );
 }
+
+

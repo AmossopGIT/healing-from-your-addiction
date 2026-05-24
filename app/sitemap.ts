@@ -1,12 +1,11 @@
-﻿import type { MetadataRoute } from "next";
+import type { MetadataRoute } from "next";
 import { blogCategories, blogCategoryPath, blogPath, blogTagPath, blogTags } from "@/content/blog";
 import { caseStudyPath } from "@/content/caseStudies";
 import { seoPageList } from "@/content/seo";
 import { getMergedBlogPosts, getMergedCaseStudies } from "@/lib/cms/contentSource";
-import { isCmsContentEnabled } from "@/lib/cms/featureFlag";
 import { absoluteUrl } from "@/lib/constants";
 
-export const revalidate = isCmsContentEnabled() ? 300 : false;
+export const revalidate = 300;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const [blogPosts, caseStudies] = await Promise.all([getMergedBlogPosts(), getMergedCaseStudies()]);
@@ -28,3 +27,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: route === "/" ? 1 : 0.8,
   }));
 }
+
+

@@ -9,7 +9,6 @@ import { WatercolorArtwork } from "@/components/WatercolorArtwork";
 import { caseStudies, caseStudyPath, caseStudyTypeLabels } from "@/content/caseStudies";
 import { getSeoByPath } from "@/content/seo";
 import { getMergedCaseStudyBySlug } from "@/lib/cms/contentSource";
-import { isCmsContentEnabled } from "@/lib/cms/featureFlag";
 import { resolveContentArt } from "@/lib/cms/mappers";
 import { cmsCaseStudyToSeoRecord } from "@/lib/cms/seo";
 import { absoluteUrl, siteConfig } from "@/lib/constants";
@@ -18,7 +17,7 @@ import { formatBlogDate } from "@/lib/formatBlogDate";
 import { createMetadata, createPageMetadata } from "@/lib/seo";
 import { breadcrumbSchema, webPageSchema } from "@/lib/schema";
 
-export const revalidate = isCmsContentEnabled() ? 300 : false;
+export const revalidate = 300;
 
 type PageProps = {
   params: Promise<{ slug: string }>;
@@ -143,3 +142,5 @@ export default async function CaseStudyPage({ params }: PageProps) {
     </>
   );
 }
+
+

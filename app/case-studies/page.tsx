@@ -5,11 +5,10 @@ import { SchemaMarkup } from "@/components/SchemaMarkup";
 import { SiteLink } from "@/components/SiteLink";
 import { seoPages } from "@/content/seo";
 import { getMergedCaseStudies } from "@/lib/cms/contentSource";
-import { isCmsContentEnabled } from "@/lib/cms/featureFlag";
 import { createPageMetadata } from "@/lib/seo";
 import { breadcrumbSchema, webPageSchema } from "@/lib/schema";
 
-export const revalidate = isCmsContentEnabled() ? 300 : false;
+export const revalidate = 300;
 
 const pageSeo = seoPages.caseStudies;
 
@@ -83,3 +82,5 @@ export default async function CaseStudiesHubPage() {
     </>
   );
 }
+
+

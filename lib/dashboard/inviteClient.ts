@@ -1,26 +1,10 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { programmes } from "@/content/programmes";
 import { logAuditEvent } from "@/lib/supabase/audit";
 import { createServiceClient } from "@/lib/supabase/service";
 import { isSupabaseServiceConfigured } from "@/lib/supabase/env";
 import { createClient } from "@/lib/supabase/server";
-
-function addictionSlugFromConcern(concern: string) {
-  const match = programmes.find((programme) => programme.concern.toLowerCase() === concern.toLowerCase());
-  if (match) return match.slug;
-  const normalized = concern.toLowerCase();
-  if (normalized.includes("gambling")) return "gambling";
-  if (normalized.includes("food") || normalized.includes("binge")) return "food-binge-eating";
-  if (normalized.includes("alcohol")) return "alcohol";
-  if (normalized.includes("cannabis")) return "cannabis";
-  if (normalized.includes("nicotine")) return "nicotine";
-  if (normalized.includes("porn")) return "pornography";
-  if (normalized.includes("social")) return "social-media";
-  if (normalized.includes("gaming")) return "gaming";
-  return null;
-}
 
 export async function inviteClient(formData: FormData) {
   const leadId = String(formData.get("leadId") ?? "").trim();
@@ -73,5 +57,3 @@ export async function inviteClient(formData: FormData) {
 
   redirect(`/admin/clients/${clientProfile!.id}/`);
 }
-
-export { addictionSlugFromConcern };

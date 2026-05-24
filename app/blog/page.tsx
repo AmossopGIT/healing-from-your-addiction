@@ -6,11 +6,10 @@ import { SiteLink } from "@/components/SiteLink";
 import { blogCategories, blogCategoryPath, blogTagPath, blogTags } from "@/content/blog";
 import { seoPages } from "@/content/seo";
 import { getMergedBlogPosts, getMergedCaseStudies, getMergedFeaturedCaseStudies, getMergedPostsByCategory } from "@/lib/cms/contentSource";
-import { isCmsContentEnabled } from "@/lib/cms/featureFlag";
 import { createPageMetadata } from "@/lib/seo";
 import { breadcrumbSchema, webPageSchema } from "@/lib/schema";
 
-export const revalidate = isCmsContentEnabled() ? 300 : false;
+export const revalidate = 300;
 
 const pageSeo = seoPages.blog;
 
@@ -184,3 +183,5 @@ export default async function BlogIndexPage() {
     </>
   );
 }
+
+
