@@ -31,9 +31,7 @@ const programmeSlugs = new Set(
   [...programmes.matchAll(/slug: "([^"]+)"/g)].map((m) => m[1]),
 );
 
-const skip = new Set([
-  "hello-world",
-  "keywords",
+const builtSiteSlugs = new Set([
   "privacy-policy",
   "terms-and-conditions-of-use",
   "about-the-therapist",
@@ -42,6 +40,12 @@ const skip = new Set([
   "faqs",
   "testimonies",
   "contact",
+]);
+
+const skip = new Set([
+  "hello-world",
+  "keywords",
+  ...builtSiteSlugs,
   "sitemap",
   "feed",
   "comments",

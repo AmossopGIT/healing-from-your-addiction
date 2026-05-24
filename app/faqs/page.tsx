@@ -29,8 +29,8 @@ export default function FaqsPage() {
         title="Addiction hypnotherapy FAQs"
         description="Answers about confidentiality, safety, gambling addiction support, food addiction support, the 4-week programme and when medical care may be required."
         primaryCta="Start a Confidential Enquiry"
-        secondaryCta="Read the Medical Disclaimer"
-        secondaryHref="/medical-disclaimer/"
+        secondaryCta="Terms and Medical Disclaimer"
+        secondaryHref="/terms-and-conditions-of-use/"
       />
       <FAQSection title="Common questions" faqs={faqs} />
     </>

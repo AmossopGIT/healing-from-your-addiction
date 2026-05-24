@@ -57,6 +57,10 @@ export function Footer() {
               <li>Confidential, judgement-free sessions</li>
               <li>Hypnotherapy &amp; EFT-based support</li>
               <li>Online or in-person, South Africa</li>
+              <li><SiteLink href="/about-the-therapist/">About Gerald</SiteLink></li>
+              <li><SiteLink href="/testimonies/">Testimonies</SiteLink></li>
+              <li><SiteLink href="/other-books-written-by-gerald-crawford/">Other books</SiteLink></li>
+              <li><SiteLink href="/terms-and-conditions-of-use/">Terms of use</SiteLink></li>
               <li><SiteLink href="/medical-disclaimer/">Medical disclaimer</SiteLink></li>
               <li><SiteLink href="/privacy-policy/">Privacy policy</SiteLink></li>
             </ul>

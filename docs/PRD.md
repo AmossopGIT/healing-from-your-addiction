@@ -1,4 +1,4 @@
-﻿# PRD - Healing From Your Addiction Lead Capture Website
+# PRD - Healing From Your Addiction Lead Capture Website
 
 ## Product
 
@@ -33,7 +33,7 @@ The same pattern applies to food addiction and future addiction pages.
 - `/addictions/`
 - `/addictions/gambling-addiction-help/`
 - `/addictions/food-addiction-binge-eating-help/`
-- `/about-gerald-crawford/`
+- `/about-the-therapist/`
 - `/programs/`
 - `/programs/4-week-addiction-healing-program/`
 - `/hypnotherapy-for-addiction/`

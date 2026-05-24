@@ -215,33 +215,28 @@ export function ChatLeadWidget() {
   useEffect(() => {
     if (typeof window === "undefined") return;
 
-    const header = document.querySelector(".site-header");
     const footer = document.querySelector(".site-footer-wrap");
-    if (!header && !footer) return;
-
-    const intersections = {
-      header: false,
-      footer: false,
-    };
+    if (!footer) return;
 
     const observer = new IntersectionObserver(
       (entries) => {
-        entries.forEach((entry) => {
-          if (entry.target === header) intersections.header = entry.isIntersecting;
-          if (entry.target === footer) intersections.footer = entry.isIntersecting;
-        });
+        const footerEntry = entries.find((entry) => entry.target === footer);
+        if (!footerEntry) return;
 
-        const shouldHide = intersections.header || intersections.footer;
+        const shouldHide = footerEntry.isIntersecting;
         setIsHiddenForLayout(shouldHide);
         if (shouldHide) {
           setOpen(false);
         }
       },
-      { threshold: 0.01 },
+      {
+        // Hide only when the footer enters the lower viewport (fixed header is always "intersecting").
+        rootMargin: "0px 0px -12% 0px",
+        threshold: 0,
+      },
     );
 
-    if (header) observer.observe(header);
-    if (footer) observer.observe(footer);
+    observer.observe(footer);
 
     return () => observer.disconnect();
   }, []);
@@ -278,7 +273,7 @@ export function ChatLeadWidget() {
                 <button type="button" className="chat-chip chat-chip-primary" onClick={startGuidedChat}>
                   Start quick chat
                 </button>
-                <a className="chat-chip" href={whatsappLink} onClick={() => goToHandoff("whatsapp")}>
+                <a className="chat-chip chat-chip-whatsapp" href={whatsappLink} onClick={() => goToHandoff("whatsapp")}>
                   WhatsApp now
                 </a>
                 <a className="chat-chip" href={emailHref()} onClick={() => goToHandoff("email")}>
@@ -374,7 +369,7 @@ export function ChatLeadWidget() {
                   Thank you. Your enquiry has been sent. You can also continue through WhatsApp or email.
                 </div>
                 <div className="chat-actions">
-                  <a className="button button-primary" href={whatsappLink} onClick={() => goToHandoff("whatsapp")}>
+                  <a className="button button-whatsapp" href={whatsappLink} onClick={() => goToHandoff("whatsapp")}>
                     Continue on WhatsApp
                   </a>
                   <a className="button button-secondary" href={emailHref()} onClick={() => goToHandoff("email")}>
@@ -391,7 +386,7 @@ export function ChatLeadWidget() {
                   <button type="button" className="button button-secondary" onClick={() => setStep("consent")}>
                     Try again
                   </button>
-                  <a className="button button-primary" href={whatsappLink} onClick={() => goToHandoff("whatsapp")}>
+                  <a className="button button-whatsapp" href={whatsappLink} onClick={() => goToHandoff("whatsapp")}>
                     WhatsApp Gerald
                   </a>
                 </div>

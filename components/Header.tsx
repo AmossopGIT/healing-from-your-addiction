@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useCallback, useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
@@ -16,7 +16,7 @@ const navLinks: NavLink[] = [
   { href: "/addictions/", label: "Addictions" },
   { href: "/programs/", label: "Programs" },
   { href: "/hypnotherapy-for-addiction/", label: "Hypnotherapy" },
-  { href: "/about-gerald-crawford/", label: "About Gerald" },
+  { href: "/about-the-therapist/", label: "About Gerald" },
   { href: "/blog/", label: "Resources" },
   { href: "/contact/", label: "Contact" },
 ];

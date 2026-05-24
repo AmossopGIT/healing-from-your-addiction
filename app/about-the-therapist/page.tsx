@@ -1,4 +1,4 @@
-﻿import { CTASection } from "@/components/CTASection";
+import { CTASection } from "@/components/CTASection";
 import { Disclaimer } from "@/components/Disclaimer";
 import { Hero } from "@/components/Hero";
 import { RevealDiv } from "@/components/MotionReveal";
@@ -17,7 +17,7 @@ const whatToExpectArt = artGalleryById.get("about-what-to-expect");
 
 export const metadata = createPageMetadata(pageSeo);
 
-export default function AboutGeraldPage() {
+export default function AboutTherapistPage() {
   const geraldPortrait = artGalleryById.get("gerald-crawford");
 
   return (
@@ -28,7 +28,7 @@ export default function AboutGeraldPage() {
           webPageSchema(pageSeo),
           breadcrumbSchema([
             { name: "Home", path: "/" },
-            { name: "About Gerald Crawford", path: "/about-gerald-crawford/" },
+            { name: "About Gerald Crawford", path: "/about-the-therapist/" },
           ]),
         ]}
       />

@@ -1,0 +1,73 @@
+{
+  "key": "testimonies",
+  "slug": "testimonies",
+  "title": "Testimonies",
+  "description": "Healing From Your Addiction (HAHM Model) Real World. Real People. 1. Michael T., 42, Male – Johannesburg “I tried everything—rehab, willpower, even isolation. N",
+  "h1": "Testimonies",
+  "introParagraphs": [],
+  "sections": [
+    {
+      "h2": "Healing From Your Addiction (HAHM Model)",
+      "paragraphs": [
+        "Real World. Real People.",
+        "“I tried everything—rehab, willpower, even isolation. Nothing worked long-term. This was the first time I understood why I was addicted. That changed everything.”",
+        "“I wasn’t addicted to food—I was using it to cope. Once I understood that, the cravings lost their power. I feel free for the first time in years.”",
+        "“This didn’t feel like treatment. It felt like finally understanding myself. I didn’t just stop drinking—I stopped needing to.”",
+        "“I always thought I lacked discipline. Turns out, I had unresolved patterns. Once those shifted, everything else followed naturally.”",
+        "“I used shopping to escape stress. Now I actually deal with life instead of running from it. That’s the real freedom.”",
+        "“I’ve been struggling with alcohol for over 20 years. This is the first time I feel calm—not fighting myself every day.”",
+        "“I used to feel ashamed of my behaviour. Now I understand it. That alone removed so much of the guilt—and the behaviour started changing.”",
+        "“This program didn’t just help me stop—it helped me rebuild who I am. That’s something no other approach ever did.”",
+        "“I went from feeling out of control to feeling grounded. It’s not about resisting anymore—it’s just not who I am now.”",
+        "“I thought addiction was my identity. Now I see it was just a pattern. And patterns can change. My life is proof.”",
+        "These are not just success stories.",
+        "They are proof that when you address the root, change becomes natural."
+      ],
+      "h3Items": [],
+      "bullets": []
+    }
+  ],
+  "testimonies": [
+    {
+      "name": "1. Michael T., 42, Male – Johannesburg",
+      "quote": "I tried everything—rehab, willpower, even isolation. Nothing worked long-term. This was the first time I understood why I was addicted. That changed everything."
+    },
+    {
+      "name": "2. Lerato M., 34, Female – Pretoria",
+      "quote": "I wasn’t addicted to food—I was using it to cope. Once I understood that, the cravings lost their power. I feel free for the first time in years."
+    },
+    {
+      "name": "3. Jason R., 29, Male – Cape Town",
+      "quote": "This didn’t feel like treatment. It felt like finally understanding myself. I didn’t just stop drinking—I stopped needing to."
+    },
+    {
+      "name": "4. Thabo K., 47, Male – Durban",
+      "quote": "I always thought I lacked discipline. Turns out, I had unresolved patterns. Once those shifted, everything else followed naturally."
+    },
+    {
+      "name": "5. Angela D., 39, Female – Sandton",
+      "quote": "I used shopping to escape stress. Now I actually deal with life instead of running from it. That’s the real freedom."
+    },
+    {
+      "name": "6. Pieter V., 51, Male – Bloemfontein",
+      "quote": "I’ve been struggling with alcohol for over 20 years. This is the first time I feel calm—not fighting myself every day."
+    },
+    {
+      "name": "7. Nomsa Z., 27, Female – Soweto",
+      "quote": "I used to feel ashamed of my behaviour. Now I understand it. That alone removed so much of the guilt—and the behaviour started changing."
+    },
+    {
+      "name": "8. David L., 45, Male – Port Elizabeth",
+      "quote": "This program didn’t just help me stop—it helped me rebuild who I am. That’s something no other approach ever did."
+    },
+    {
+      "name": "9. Carla B., 36, Female – Centurion",
+      "quote": "I went from feeling out of control to feeling grounded. It’s not about resisting anymore—it’s just not who I am now."
+    },
+    {
+      "name": "10. Sipho N., 31, Male – Nelspruit",
+      "quote": "I thought addiction was my identity. Now I see it was just a pattern. And patterns can change. My life is proof."
+    }
+  ],
+  "publishedAt": "2026-05-13"
+}

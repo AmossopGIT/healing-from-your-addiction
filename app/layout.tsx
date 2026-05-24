@@ -1,10 +1,7 @@
 ﻿import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import Script from "next/script";
-import { ChatLeadWidget } from "@/components/ChatLeadWidget";
-import { Footer } from "@/components/Footer";
-import { Header } from "@/components/Header";
-import { StickyMobileCTA } from "@/components/StickyMobileCTA";
+import { MarketingShell } from "@/components/MarketingShell";
 import { seoPages } from "@/content/seo";
 import { createPageMetadata } from "@/lib/seo";
 import "./globals.css";
@@ -37,11 +34,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             />
           </noscript>
         ) : null}
-        <Header />
-        <main>{children}</main>
-        <Footer />
-        <StickyMobileCTA />
-        <ChatLeadWidget />
+        <MarketingShell>{children}</MarketingShell>
       </body>
     </html>
   );

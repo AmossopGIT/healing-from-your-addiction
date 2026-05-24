@@ -1,0 +1,4 @@
+-- Optional seed after creating admin user in Supabase Auth dashboard.
+-- Replace USER_UUID with the auth.users id for Gerald's admin account.
+--
+-- UPDATE profiles SET role = 'admin', full_name = 'Gerald Crawford' WHERE id = 'USER_UUID';

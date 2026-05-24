@@ -1,4 +1,4 @@
-﻿import type { NextConfig } from "next";
+import type { NextConfig } from "next";
 
 const githubRepo = "healing-from-your-addiction";
 const isGithubPages = process.env.GITHUB_PAGES === "true";
@@ -15,6 +15,11 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
+      {
+        source: "/about-gerald-crawford/",
+        destination: "/about-the-therapist/",
+        permanent: true,
+      },
       {
         source: "/hypnotherapy-addiction-healing-programs/",
         destination: "/blog/what-makes-hypnotherapy-programs-effective/",

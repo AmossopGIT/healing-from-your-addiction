@@ -432,7 +432,12 @@ export const phase1Pages: Record<string, Phase1Page> = {
           "Alcohol and some substance withdrawal can be medically dangerous. Detox and medical supervision may be required before or alongside any supportive pattern work.",
       },
     ],
-    links: [{ label: "Contact", href: seoPages.contact.path }, { label: "FAQs", href: seoPages.faqs.path }],
+    links: [
+      { label: "Terms and Conditions", href: seoPages.terms.path },
+      { label: "Privacy Policy", href: seoPages.privacyPolicy.path },
+      { label: "Contact", href: seoPages.contact.path },
+      { label: "FAQs", href: seoPages.faqs.path },
+    ],
   },
   privacyPolicy: {
     seo: seoPages.privacyPolicy,
@@ -458,7 +463,12 @@ export const phase1Pages: Record<string, Phase1Page> = {
           "Information is used to respond to your enquiry and understand the support request. Do not send emergency medical information through the form.",
       },
     ],
-    links: [{ label: "Medical Disclaimer", href: seoPages.medicalDisclaimer.path }, { label: "Contact", href: seoPages.contact.path }],
+    links: [
+      { label: "Terms and Conditions", href: seoPages.terms.path },
+      { label: "Medical Disclaimer", href: seoPages.medicalDisclaimer.path },
+      { label: "Testimonies", href: seoPages.testimonies.path },
+      { label: "Contact", href: seoPages.contact.path },
+    ],
   },
 };
 

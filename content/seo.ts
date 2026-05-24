@@ -25,7 +25,8 @@ export type SeoPageType =
   | "blog-tag"
   | "blog-post"
   | "case-study-hub"
-  | "case-study";
+  | "case-study"
+  | "dashboard";
 
 export type SeoPageRecord = {
   path: string;
@@ -162,7 +163,7 @@ export const seoPages = {
     ogImageAlt: "Addiction help overview for substance and behavioural addiction patterns",
   },
   about: {
-    path: "/about-gerald-crawford/",
+    path: "/about-the-therapist/",
     title: "About Gerald Crawford | Healing From Your Addiction",
     description:
       "Learn about Gerald Crawford, his hypnotherapy background and his approach to supporting people with addictive patterns, cravings and emotional triggers.",
@@ -500,6 +501,60 @@ export const seoPages = {
     ogImage: defaultOgImage,
     ogImageAlt: "Medical disclaimer and safety boundaries for addiction support",
   },
+  testimonies: {
+    path: "/testimonies/",
+    title: "Testimonies | Healing From Your Addiction",
+    description:
+      "Read illustrative HAHM model testimonies about addiction pattern change. Educational stories only—not guarantees or medical outcomes.",
+    primaryKeyword: "addiction recovery testimonies South Africa",
+    secondaryKeywords: [
+      "hypnotherapy addiction stories",
+      "HAHM model outcomes",
+      "illustrative recovery reflections",
+      "addiction pattern change stories",
+    ],
+    searchIntent: "Understand how people describe pattern-focused addiction support.",
+    pageType: "trust",
+    conversionGoal: "Build trust and move visitors toward enquiry or case studies.",
+    ogImage: defaultOgImage,
+    ogImageAlt: "Illustrative testimonies about addiction pattern support",
+  },
+  otherBooks: {
+    path: "/other-books-written-by-gerald-crawford/",
+    title: "Books by Gerald Crawford | Healing From Your Addiction",
+    description:
+      "Explore Gerald Crawford's published books on emotional intelligence, relationships, forgiveness, hypnotherapy, and self-awareness—author of 12+ titles since 2021.",
+    primaryKeyword: "Gerald Crawford books",
+    secondaryKeywords: [
+      "emotional intelligence books",
+      "hypnotherapy books Gerald Crawford",
+      "relationship self-help books",
+      "EFT tapping workbook",
+      "Gerald Crawford author South Africa",
+    ],
+    searchIntent: "Learn about Gerald Crawford's published books and themes.",
+    pageType: "trust",
+    conversionGoal: "Build credibility before a confidential enquiry.",
+    ogImage: "/art/watercolor/art-watercolor-gerald-crawford-books.png",
+    ogImageAlt: "Minimal watercolor illustration of books by Gerald Crawford on healing and self-awareness",
+  },
+  terms: {
+    path: "/terms-and-conditions-of-use/",
+    title: "Terms and Conditions of Use | Healing From Your Addiction",
+    description:
+      "Terms and conditions for using the Healing From Your Addiction website operated by Gerald Crawford. Effective 1 May 2026.",
+    primaryKeyword: "Healing From Your Addiction terms of use",
+    secondaryKeywords: [
+      "website terms addiction support",
+      "Gerald Crawford terms",
+      "site use policy South Africa",
+    ],
+    searchIntent: "Review legal terms before using the website or submitting an enquiry.",
+    pageType: "trust",
+    conversionGoal: "Set clear legal expectations for website use.",
+    ogImage: defaultOgImage,
+    ogImageAlt: "Terms and conditions for website use",
+  },
   privacyPolicy: {
     path: "/privacy-policy/",
     title: "Privacy Policy | Healing From Your Addiction",
@@ -512,6 +567,61 @@ export const seoPages = {
     conversionGoal: "Build trust around confidential enquiries.",
     ogImage: defaultOgImage,
     ogImageAlt: "Privacy policy for confidential addiction support enquiries",
+  },
+  adminDashboard: {
+    path: "/admin/",
+    title: "Admin Dashboard | Healing From Your Addiction",
+    description: "Private admin workspace.",
+    primaryKeyword: "admin dashboard",
+    secondaryKeywords: [],
+    searchIntent: "Admin access only.",
+    pageType: "dashboard",
+    conversionGoal: "Admin login.",
+    noIndex: true,
+  },
+  adminLogin: {
+    path: "/admin/login/",
+    title: "Admin Sign In | Healing From Your Addiction",
+    description: "Admin sign in.",
+    primaryKeyword: "admin login",
+    secondaryKeywords: [],
+    searchIntent: "Admin access only.",
+    pageType: "dashboard",
+    conversionGoal: "Admin login.",
+    noIndex: true,
+  },
+  portalDashboard: {
+    path: "/portal/",
+    title: "Client Portal | Healing From Your Addiction",
+    description: "Private client portal.",
+    primaryKeyword: "client portal",
+    secondaryKeywords: [],
+    searchIntent: "Client access only.",
+    pageType: "dashboard",
+    conversionGoal: "Client login.",
+    noIndex: true,
+  },
+  portalLogin: {
+    path: "/portal/login/",
+    title: "Client Portal Sign In | Healing From Your Addiction",
+    description: "Client portal sign in.",
+    primaryKeyword: "client portal login",
+    secondaryKeywords: [],
+    searchIntent: "Client access only.",
+    pageType: "dashboard",
+    conversionGoal: "Client login.",
+    noIndex: true,
+  },
+  portalSetPassword: {
+    path: "/portal/set-password/",
+    title: "Set Password | Client Portal",
+    description: "Set client portal password.",
+    primaryKeyword: "client portal password",
+    secondaryKeywords: [],
+    searchIntent: "Client access only.",
+    pageType: "dashboard",
+    conversionGoal: "Client login.",
+    noIndex: true,
   },
 } satisfies Record<string, SeoPageRecord>;
 

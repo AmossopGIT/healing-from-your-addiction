@@ -1,4 +1,4 @@
-﻿# Content Structure
+# Content Structure
 
 ## Sitemap
 
@@ -6,7 +6,7 @@
 - `/addictions/` - Addiction support hub
 - `/addictions/gambling-addiction-help/` - Gambling addiction landing page
 - `/addictions/food-addiction-binge-eating-help/` - Food addiction and binge eating landing page
-- `/about-gerald-crawford/` - About Gerald Crawford
+- `/about-the-therapist/` - About Gerald Crawford
 - `/programs/` - Programme overview
 - `/programs/4-week-addiction-healing-program/` - 4-week programme detail
 - `/hypnotherapy-for-addiction/` - Treatment method authority page
