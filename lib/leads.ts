@@ -34,7 +34,18 @@ export async function submitLead(payload: LeadPayload): Promise<"api" | "mailto"
   });
 
   if (!response.ok) {
-    throw new Error("Lead submission failed");
+    let errorMessage = "Lead submission failed";
+
+    try {
+      const responseBody = (await response.json()) as { error?: string };
+      if (responseBody.error) {
+        errorMessage = responseBody.error;
+      }
+    } catch {
+      // Ignore JSON parse failures and keep the generic message.
+    }
+
+    throw new Error(errorMessage);
   }
 
   return "api";

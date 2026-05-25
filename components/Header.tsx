@@ -2,11 +2,13 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
-import { FaArrowRightToBracket, FaBell, FaUser } from "react-icons/fa6";
+import { FaBell } from "react-icons/fa6";
 import hfyaLogo from "@/app/icon.png";
 import { SiteLink } from "@/components/SiteLink";
 import { TrackedLink } from "@/components/TrackedLink";
 import { blogPath, blogPosts } from "@/content/blog";
+import { createClient, getSupabaseBrowserConfigError } from "@/lib/supabase/client";
+import type { UserRole } from "@/types/database";
 
 type NavLink = {
   href: string;
@@ -25,16 +27,49 @@ const navLinks: NavLink[] = [
 
 const latestHeaderArticles = blogPosts.slice(0, 3);
 
+type HeaderAccount = {
+  isSignedIn: boolean;
+  role: UserRole | null;
+  fullName: string | null;
+  email: string | null;
+};
+
+const signedOutAccount: HeaderAccount = {
+  isSignedIn: false,
+  role: null,
+  fullName: null,
+  email: null,
+};
+
 function isActive(pathname: string | null, href: string) {
   if (!pathname) return false;
   if (href === "/") return pathname === "/";
   return pathname === href || pathname.startsWith(href);
 }
 
+function getAccountDisplayName(account: HeaderAccount) {
+  const name = account.fullName?.trim();
+  if (name) return name.split(/\s+/)[0];
+  const emailName = account.email?.split("@")[0]?.trim();
+  if (emailName) return emailName;
+  return "Account";
+}
+
+function getAccountHref(account: HeaderAccount) {
+  if (!account.isSignedIn) return "/portal/login/";
+  return account.role === "admin" ? "/admin/" : "/portal/account/";
+}
+
+function getPrimaryPortalHref(account: HeaderAccount) {
+  if (!account.isSignedIn) return "/portal/login/";
+  return account.role === "admin" ? "/admin/" : "/portal/";
+}
+
 export function Header() {
   const [open, setOpen] = useState(false);
   const [portalMenuOpen, setPortalMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [account, setAccount] = useState<HeaderAccount>(signedOutAccount);
   const pathname = usePathname();
   const portalMenuRef = useRef<HTMLDivElement | null>(null);
 
@@ -98,6 +133,53 @@ export function Header() {
     };
   }, []);
 
+  useEffect(() => {
+    if (getSupabaseBrowserConfigError()) {
+      setAccount(signedOutAccount);
+      return;
+    }
+
+    const supabase = createClient();
+    let isActive = true;
+
+    async function loadAccount(user: { id: string; email?: string | null } | null) {
+      if (!user) {
+        if (isActive) {
+          setAccount(signedOutAccount);
+        }
+        return;
+      }
+
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("full_name, role")
+        .eq("id", user.id)
+        .maybeSingle();
+
+      if (!isActive) return;
+
+      setAccount({
+        isSignedIn: true,
+        role: profile?.role ?? null,
+        fullName: profile?.full_name ?? null,
+        email: user.email ?? null,
+      });
+    }
+
+    void supabase.auth.getUser().then(({ data }) => loadAccount(data.user));
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      void loadAccount(session?.user ?? null);
+    });
+
+    return () => {
+      isActive = false;
+      subscription.unsubscribe();
+    };
+  }, []);
+
   const headerClass = [
     "site-header",
     open && "is-open",
@@ -105,6 +187,11 @@ export function Header() {
   ]
     .filter(Boolean)
     .join(" ");
+  const accountDisplayName = getAccountDisplayName(account);
+  const accountHref = getAccountHref(account);
+  const primaryPortalHref = getPrimaryPortalHref(account);
+  const isAdmin = account.role === "admin";
+  const isSignedIn = account.isSignedIn;
 
   return (
     <header className={headerClass}>
@@ -135,19 +222,27 @@ export function Header() {
             <div className="header-actions">
               <div className="header-utility-links" aria-label="Portal shortcuts">
                 <TrackedLink
-                  href="/portal/login/"
-                  className="header-login-link"
-                  tracking={{ ctaName: "client_login_header", linkLocation: "header" }}
+                  href={accountHref}
+                  className="header-login-link header-account-link"
+                  tracking={{
+                    ctaName: isSignedIn ? "account_header" : "client_login_header",
+                    linkLocation: "header",
+                  }}
                 >
-                  <FaArrowRightToBracket className="header-utility-icon" aria-hidden="true" />
-                  <span className="header-login-label-full">Client login</span>
-                  <span className="header-login-label-short">Log in</span>
+                  {isSignedIn ? (
+                    <span className="header-account-name">{accountDisplayName}</span>
+                  ) : (
+                    <>
+                      <span className="header-login-label-full">Log in / Sign up</span>
+                      <span className="header-login-label-short">Account</span>
+                    </>
+                  )}
                 </TrackedLink>
                 <div className="header-utility-menu" ref={portalMenuRef}>
                   <button
                     type="button"
                     className={`header-icon-button${portalMenuOpen ? " is-open" : ""}`}
-                    aria-label="Client portal shortcuts"
+                    aria-label="Portal and resource shortcuts"
                     aria-expanded={portalMenuOpen}
                     aria-haspopup="dialog"
                     onClick={() => setPortalMenuOpen((value) => !value)}
@@ -156,11 +251,15 @@ export function Header() {
                     <span className="visually-hidden">Client portal shortcuts</span>
                   </button>
                   {portalMenuOpen ? (
-                    <div className="header-utility-panel" role="dialog" aria-label="Client portal shortcuts">
+                    <div className="header-utility-panel" role="dialog" aria-label="Portal and resource shortcuts">
                       <div className="header-utility-panel-copy">
-                        <p className="header-utility-panel-title">Latest resources</p>
+                        <p className="header-utility-panel-title">
+                          {isSignedIn ? `Hello, ${accountDisplayName}` : "Latest resources"}
+                        </p>
                         <p className="header-utility-panel-text">
-                          Read the newest articles here, or open your secure client portal for messages and resources.
+                          {isSignedIn
+                            ? "Open your account area or browse the latest resources from the site."
+                            : "Read the newest articles here, or log in and create your account from one place."}
                         </p>
                       </div>
                       <div className="header-utility-articles">
@@ -188,43 +287,70 @@ export function Header() {
                         )}
                       </div>
                       <div className="header-utility-panel-links">
-                        <TrackedLink
-                          href="/portal/messages/"
-                          className="header-utility-panel-link"
-                          tracking={{ ctaName: "messages_header", linkLocation: "header_panel" }}
-                          onClick={() => setPortalMenuOpen(false)}
-                        >
-                          Secure messages
-                        </TrackedLink>
-                        <TrackedLink
-                          href="/portal/resources/"
-                          className="header-utility-panel-link"
-                          tracking={{ ctaName: "resources_header_panel", linkLocation: "header_panel" }}
-                          onClick={() => setPortalMenuOpen(false)}
-                        >
-                          New resources
-                        </TrackedLink>
-                        <TrackedLink
-                          href="/portal/account/"
-                          className="header-utility-panel-link"
-                          tracking={{ ctaName: "profile_header", linkLocation: "header_panel" }}
-                          onClick={() => setPortalMenuOpen(false)}
-                        >
-                          Account profile
-                        </TrackedLink>
+                        {isSignedIn ? (
+                          <>
+                            <TrackedLink
+                              href={primaryPortalHref}
+                              className="header-utility-panel-link header-utility-panel-link-primary"
+                              tracking={{ ctaName: isAdmin ? "admin_header" : "portal_header", linkLocation: "header_panel" }}
+                              onClick={() => setPortalMenuOpen(false)}
+                            >
+                              {isAdmin ? "Open admin dashboard" : "Open client portal"}
+                            </TrackedLink>
+                            {!isAdmin ? (
+                              <>
+                                <TrackedLink
+                                  href="/portal/messages/"
+                                  className="header-utility-panel-link"
+                                  tracking={{ ctaName: "messages_header", linkLocation: "header_panel" }}
+                                  onClick={() => setPortalMenuOpen(false)}
+                                >
+                                  Secure messages
+                                </TrackedLink>
+                                <TrackedLink
+                                  href="/portal/account/"
+                                  className="header-utility-panel-link"
+                                  tracking={{ ctaName: "profile_header", linkLocation: "header_panel" }}
+                                  onClick={() => setPortalMenuOpen(false)}
+                                >
+                                  Account profile
+                                </TrackedLink>
+                              </>
+                            ) : (
+                              <TrackedLink
+                                href="/blog/"
+                                className="header-utility-panel-link"
+                                tracking={{ ctaName: "resources_header_panel", linkLocation: "header_panel" }}
+                                onClick={() => setPortalMenuOpen(false)}
+                              >
+                                Browse resources
+                              </TrackedLink>
+                            )}
+                          </>
+                        ) : (
+                          <>
+                            <TrackedLink
+                              href="/portal/login/"
+                              className="header-utility-panel-link header-utility-panel-link-primary"
+                              tracking={{ ctaName: "client_login_header", linkLocation: "header_panel" }}
+                              onClick={() => setPortalMenuOpen(false)}
+                            >
+                              Log in
+                            </TrackedLink>
+                            <TrackedLink
+                              href="/portal/sign-up/"
+                              className="header-utility-panel-link"
+                              tracking={{ ctaName: "client_signup_header", linkLocation: "header_panel" }}
+                              onClick={() => setPortalMenuOpen(false)}
+                            >
+                              Sign up
+                            </TrackedLink>
+                          </>
+                        )}
                       </div>
                     </div>
                   ) : null}
                 </div>
-                <TrackedLink
-                  href="/portal/login/"
-                  className="header-icon-link"
-                  aria-label="Client portal login"
-                  tracking={{ ctaName: "client_login_profile_header", linkLocation: "header" }}
-                >
-                  <FaUser className="header-utility-icon" aria-hidden="true" />
-                  <span className="visually-hidden">Client portal login</span>
-                </TrackedLink>
               </div>
               <TrackedLink
                 href="/contact/"
@@ -273,34 +399,59 @@ export function Header() {
                 ))}
               </nav>
               <div className="mobile-menu-utility-links" aria-label="Portal shortcuts">
-                <TrackedLink
-                  href="/portal/messages/"
-                  className="button button-secondary"
-                  tracking={{ ctaName: "messages_header", linkLocation: "mobile_menu" }}
-                  onClick={close}
-                >
-                  <FaBell className="header-utility-icon" aria-hidden="true" />
-                  <span>Messages</span>
-                </TrackedLink>
-                <TrackedLink
-                  href="/portal/account/"
-                  className="button button-secondary"
-                  tracking={{ ctaName: "profile_header", linkLocation: "mobile_menu" }}
-                  onClick={close}
-                >
-                  <FaUser className="header-utility-icon" aria-hidden="true" />
-                  <span>Profile</span>
-                </TrackedLink>
+                {isSignedIn ? (
+                  <>
+                    <TrackedLink
+                      href={primaryPortalHref}
+                      className="button button-secondary"
+                      tracking={{ ctaName: isAdmin ? "admin_header" : "portal_header", linkLocation: "mobile_menu" }}
+                      onClick={close}
+                    >
+                      <span>{isAdmin ? "Admin dashboard" : accountDisplayName}</span>
+                    </TrackedLink>
+                    {!isAdmin ? (
+                      <TrackedLink
+                        href="/portal/messages/"
+                        className="button button-secondary"
+                        tracking={{ ctaName: "messages_header", linkLocation: "mobile_menu" }}
+                        onClick={close}
+                      >
+                        <FaBell className="header-utility-icon" aria-hidden="true" />
+                        <span>Messages</span>
+                      </TrackedLink>
+                    ) : (
+                      <TrackedLink
+                        href="/blog/"
+                        className="button button-secondary"
+                        tracking={{ ctaName: "resources_header_panel", linkLocation: "mobile_menu" }}
+                        onClick={close}
+                      >
+                        <span>Resources</span>
+                      </TrackedLink>
+                    )}
+                  </>
+                ) : (
+                  <>
+                    <TrackedLink
+                      href="/portal/login/"
+                      className="button button-secondary"
+                      tracking={{ ctaName: "client_login_header", linkLocation: "mobile_menu" }}
+                      onClick={close}
+                    >
+                      <span>Log in</span>
+                    </TrackedLink>
+                    <TrackedLink
+                      href="/portal/sign-up/"
+                      className="button button-secondary"
+                      tracking={{ ctaName: "client_signup_header", linkLocation: "mobile_menu" }}
+                      onClick={close}
+                    >
+                      <span>Sign up</span>
+                    </TrackedLink>
+                  </>
+                )}
               </div>
               <div className="mobile-menu-actions">
-                <TrackedLink
-                  href="/portal/login/"
-                  className="button button-secondary"
-                  tracking={{ ctaName: "client_login_header", linkLocation: "mobile_menu" }}
-                  onClick={close}
-                >
-                  Client login
-                </TrackedLink>
                 <TrackedLink
                   href="/contact/"
                   className="button button-primary"

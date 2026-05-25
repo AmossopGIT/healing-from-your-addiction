@@ -174,10 +174,10 @@ export function ChatLeadWidget() {
 
       track("chat_widget_submit_success");
       setStep("success");
-    } catch {
+    } catch (error) {
       track("chat_widget_submit_error");
       setStep("error");
-      setError("Something went wrong while sending your enquiry. You can still use WhatsApp or email.");
+      setError(error instanceof Error ? error.message : "Something went wrong while sending your enquiry. You can still use WhatsApp or email.");
     } finally {
       setIsSubmitting(false);
     }

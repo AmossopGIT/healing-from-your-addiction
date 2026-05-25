@@ -366,6 +366,19 @@ button.button-secondary {
   white-space: nowrap;
 }
 
+.header-account-link {
+  max-width: 13rem;
+  min-width: 0;
+}
+
+.header-account-name {
+  display: block;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .header-icon-link,
 .header-icon-button {
   height: 2.55rem;
@@ -3870,6 +3883,11 @@ main:not(:has(.page-hero-flush)) {
   padding: 0.62rem 0.95rem;
 }
 
+.site-header .header-account-link {
+  justify-content: flex-start;
+  max-width: min(14rem, 28vw);
+}
+
 .site-header .header-icon-link,
 .site-header .header-icon-button {
   height: 2.7rem;
@@ -4046,6 +4064,10 @@ main:not(:has(.page-hero-flush)) {
   .site-header .header-login-link {
     gap: 0.35rem;
     padding-inline: 0.78rem;
+  }
+
+  .site-header .header-account-link {
+    max-width: 8.75rem;
   }
 
   .site-header .header-login-label-full {

@@ -23,7 +23,7 @@ type LeadFormState = {
   addictionConcern: string;
   preferredContactMethod: string;
   message: string;
-  company: string;
+  website: string;
 };
 
 const initialConcern = addictionOptions[0];
@@ -52,7 +52,7 @@ export function LeadForm({
     addictionConcern: defaultConcern,
     preferredContactMethod: "WhatsApp",
     message: "",
-    company: "",
+    website: "",
   });
 
   const isSubmitting = status === "submitting";
@@ -99,8 +99,10 @@ export function LeadForm({
 
     setStatus("submitting");
 
+    const { website, ...visibleFields } = form;
     const payload = {
-      ...form,
+      ...visibleFields,
+      company: website,
       consentEmergencyAcknowledged: consent,
       sourcePage,
       ...getAttribution(),
@@ -120,8 +122,8 @@ export function LeadForm({
       } else {
         setStatus("success");
       }
-    } catch {
-      setError("Something went wrong while sending your enquiry. Please try again or use WhatsApp/email instead.");
+    } catch (error) {
+      setError(error instanceof Error ? error.message : "Something went wrong while sending your enquiry. Please try again or use WhatsApp/email instead.");
       setStatus("error");
     }
   }
@@ -222,14 +224,16 @@ export function LeadForm({
       </label>
 
       <label className="honeypot" aria-hidden="true">
-        <span>Company</span>
+        <span>Website</span>
         <input
           type="text"
-          name="company"
+          name="website"
           tabIndex={-1}
-          autoComplete="off"
-          value={form.company}
-          onChange={(event) => updateField("company", event.target.value)}
+          autoComplete="new-password"
+          data-lpignore="true"
+          data-1p-ignore="true"
+          value={form.website}
+          onChange={(event) => updateField("website", event.target.value)}
           maxLength={leadFieldMaxLengths.company}
         />
       </label>
