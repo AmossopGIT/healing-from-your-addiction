@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, type FormEvent } from "react";
 import { withBasePath } from "@/lib/basePath";
-import { createClient } from "@/lib/supabase/client";
+import { createClient, getSupabaseBrowserConfigError } from "@/lib/supabase/client";
 
 function buildEmailRedirectUrl(path: string) {
   if (typeof window === "undefined") {
@@ -16,6 +16,7 @@ function buildEmailRedirectUrl(path: string) {
 
 export function SignupForm() {
   const router = useRouter();
+  const configError = getSupabaseBrowserConfigError();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -33,6 +34,11 @@ export function SignupForm() {
 
     if (password !== confirmPassword) {
       setError("Passwords do not match.");
+      return;
+    }
+
+    if (configError) {
+      setError(configError);
       return;
     }
 
@@ -94,8 +100,9 @@ export function SignupForm() {
             onChange={(event) => setConfirmPassword(event.target.value)}
           />
         </label>
-        {error ? <p className="form-error">{error}</p> : null}
-        <button type="submit" className="button button-primary form-submit" disabled={loading}>
+        {configError ? <p className="form-error">{configError}</p> : null}
+        {!configError && error ? <p className="form-error">{error}</p> : null}
+        <button type="submit" className="button button-primary form-submit" disabled={loading || Boolean(configError)}>
           {loading ? "Creating account..." : "Create account"}
         </button>
       </form>

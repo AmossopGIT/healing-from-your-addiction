@@ -3,10 +3,11 @@
 import { useRouter } from "next/navigation";
 import { useState, type FormEvent } from "react";
 import { withBasePath } from "@/lib/basePath";
-import { createClient } from "@/lib/supabase/client";
+import { createClient, getSupabaseBrowserConfigError } from "@/lib/supabase/client";
 
 export function SetPasswordForm() {
   const router = useRouter();
+  const configError = getSupabaseBrowserConfigError();
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -23,6 +24,11 @@ export function SetPasswordForm() {
 
     if (password !== confirmPassword) {
       setError("Passwords do not match.");
+      return;
+    }
+
+    if (configError) {
+      setError(configError);
       return;
     }
 
@@ -68,8 +74,9 @@ export function SetPasswordForm() {
             onChange={(e) => setConfirmPassword(e.target.value)}
           />
         </label>
-        {error ? <p className="form-error">{error}</p> : null}
-        <button type="submit" className="button button-primary form-submit" disabled={loading}>
+        {configError ? <p className="form-error">{configError}</p> : null}
+        {!configError && error ? <p className="form-error">{error}</p> : null}
+        <button type="submit" className="button button-primary form-submit" disabled={loading || Boolean(configError)}>
           {loading ? "Saving..." : "Save password"}
         </button>
       </form>

@@ -12,6 +12,11 @@ export const siteConfig = {
   locale: "en_ZA",
 };
 
+export const siteSocialLinks = {
+  facebook: "https://www.facebook.com/profile.php?id=61590084852348",
+  instagram: "https://www.instagram.com/healingfromyouraddiction/",
+} as const;
+
 export const addictionOptions = [
   "Gambling",
   "Food / binge eating",
