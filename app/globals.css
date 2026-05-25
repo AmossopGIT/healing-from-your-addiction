@@ -210,6 +210,13 @@ button.button-secondary {
   padding: 0.66rem 1.28rem;
 }
 
+.button-icon {
+  flex: 0 0 auto;
+  height: 1rem;
+  margin-right: 0.45rem;
+  width: 1rem;
+}
+
 .text-link {
   color: var(--teal-dark);
   font-weight: 700;

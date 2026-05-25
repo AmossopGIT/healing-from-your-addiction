@@ -9,6 +9,7 @@ import { seoPages } from "@/content/seo";
 import { emailHref, formatSouthAfricanPhone, phoneHref, siteConfig, whatsappHref } from "@/lib/constants";
 import { createPageMetadata } from "@/lib/seo";
 import { breadcrumbSchema, professionalServiceSchema, webPageSchema } from "@/lib/schema";
+import { FaFacebook, FaInstagram } from "react-icons/fa6";
 
 const pageSeo = seoPages.contact;
 
@@ -56,7 +57,8 @@ export default function ContactPage() {
                 rel="noopener noreferrer"
                 tracking={{ ctaName: "facebook_contact", linkLocation: "contact_page" }}
               >
-                🔵 Facebook
+                <FaFacebook className="button-icon" aria-hidden="true" />
+                <span>Facebook</span>
               </TrackedLink>
               <TrackedLink
                 href="https://www.instagram.com/healingfromyouraddiction/"
@@ -65,7 +67,8 @@ export default function ContactPage() {
                 rel="noopener noreferrer"
                 tracking={{ ctaName: "instagram_contact", linkLocation: "contact_page" }}
               >
-                📸 Instagram
+                <FaInstagram className="button-icon" aria-hidden="true" />
+                <span>Instagram</span>
               </TrackedLink>
             </div>
           </article>

@@ -2,6 +2,7 @@
 import { siteConfig, standardDisclaimer } from "@/lib/constants";
 import { TrackedLink } from "@/components/TrackedLink";
 import { withBasePath } from "@/lib/basePath";
+import { FaFacebook, FaInstagram } from "react-icons/fa6";
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
@@ -31,7 +32,8 @@ export function Footer() {
                 rel="noopener noreferrer"
                 tracking={{ ctaName: "facebook_footer", linkLocation: "footer_left" }}
               >
-                🔵 Facebook
+                <FaFacebook className="button-icon" aria-hidden="true" />
+                <span>Facebook</span>
               </TrackedLink>
               <TrackedLink
                 href="https://www.instagram.com/healingfromyouraddiction/"
@@ -40,7 +42,8 @@ export function Footer() {
                 rel="noopener noreferrer"
                 tracking={{ ctaName: "instagram_footer", linkLocation: "footer_left" }}
               >
-                📸 Instagram
+                <FaInstagram className="button-icon" aria-hidden="true" />
+                <span>Instagram</span>
               </TrackedLink>
             </div>
           </div>

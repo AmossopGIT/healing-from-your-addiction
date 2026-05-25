@@ -9,6 +9,7 @@ import { artGalleryById } from "@/content/artGallery";
 import { seoPages } from "@/content/seo";
 import { createPageMetadata } from "@/lib/seo";
 import { breadcrumbSchema, professionalServiceSchema, webPageSchema } from "@/lib/schema";
+import { FaFacebook, FaInstagram, FaLinkedin } from "react-icons/fa6";
 
 const pageSeo = seoPages.about;
 
@@ -64,7 +65,8 @@ export default function AboutTherapistPage() {
                   rel="noopener noreferrer"
                   tracking={{ ctaName: "facebook_about", linkLocation: "about_page" }}
                 >
-                  🔵 Facebook
+                  <FaFacebook className="button-icon" aria-hidden="true" />
+                  <span>Facebook</span>
                 </TrackedLink>
                 <TrackedLink
                   href="https://www.instagram.com/healingfromyouraddiction/"
@@ -73,7 +75,8 @@ export default function AboutTherapistPage() {
                   rel="noopener noreferrer"
                   tracking={{ ctaName: "instagram_about", linkLocation: "about_page" }}
                 >
-                  📸 Instagram
+                  <FaInstagram className="button-icon" aria-hidden="true" />
+                  <span>Instagram</span>
                 </TrackedLink>
                 <TrackedLink
                   href="https://www.linkedin.com/in/gerald-crawford-4a563a178/"
@@ -82,7 +85,8 @@ export default function AboutTherapistPage() {
                   rel="noopener noreferrer"
                   tracking={{ ctaName: "gerald_linkedin_about", linkLocation: "about_page" }}
                 >
-                  💼 Gerald on LinkedIn
+                  <FaLinkedin className="button-icon" aria-hidden="true" />
+                  <span>Gerald on LinkedIn</span>
                 </TrackedLink>
               </div>
             </div>
