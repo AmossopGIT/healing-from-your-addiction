@@ -30,6 +30,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Remove server-only routes for Pages export
+        run: rm -rf app/admin app/portal app/api app/auth
+
       - name: Build static site
         run: npm run build
         env:
