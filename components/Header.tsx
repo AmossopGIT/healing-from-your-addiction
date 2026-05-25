@@ -3,10 +3,10 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import { FaArrowRightToBracket, FaBell, FaUser } from "react-icons/fa6";
+import hfyaLogo from "@/app/icon.png";
 import { SiteLink } from "@/components/SiteLink";
 import { TrackedLink } from "@/components/TrackedLink";
 import { blogPath, blogPosts } from "@/content/blog";
-import { withBasePath } from "@/lib/basePath";
 
 type NavLink = {
   href: string;
@@ -113,7 +113,7 @@ export function Header() {
           <div className="header-inner">
             <SiteLink className="brand" href="/" aria-label="Healing From Your Addiction home" onClick={close}>
               <span className="brand-mark" aria-hidden="true">
-                <img className="brand-mark-image" src={withBasePath("/icon.svg")} alt="" width={38} height={38} />
+                <img className="brand-mark-image" src={hfyaLogo.src} alt="" width={38} height={38} />
               </span>
               <span className="brand-text">
                 <strong>Healing From Your Addiction</strong>

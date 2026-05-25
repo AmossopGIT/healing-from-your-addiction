@@ -14,7 +14,7 @@ export function Footer() {
           <div className="footer-col footer-col-brand">
             <div className="footer-brand-row">
               <span className="footer-mark" aria-hidden="true">
-                <img className="footer-mark-image" src={withBasePath("/icon.svg")} alt="" width={38} height={38} />
+                <img className="footer-mark-image" src={withBasePath("/icon.png")} alt="" width={38} height={38} />
               </span>
               <p className="footer-brand">Healing From Your Addiction</p>
             </div>
