@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { formatDashboardDate } from "@/lib/dashboard/constants";
 import { getAuthProfile } from "@/lib/supabase/auth";
-import { getClientEnrollmentBundle } from "@/lib/dashboard/queries";
+import { getClientEnrollmentBundle, getClientSessionReceiptMap } from "@/lib/dashboard/queries";
 import { createMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = createMetadata({
@@ -27,6 +28,7 @@ export default async function PortalProgrammePage() {
   }
 
   const progressBySession = new Map(bundle.progress.map((item) => [item.session_id, item]));
+  const sessionReceiptMap = await getClientSessionReceiptMap(bundle.clientProfile.id, bundle.sessions.map((session) => session.id));
   const completedCount = bundle.progress.filter((item) => item.status === "completed").length;
   const availableCount = bundle.progress.filter((item) => item.status !== "locked").length;
 
@@ -41,12 +43,18 @@ export default async function PortalProgrammePage() {
         <ul className="dashboard-session-list">
           {bundle.sessions.map((session) => {
             const progress = progressBySession.get(session.id);
+            const receipt = sessionReceiptMap.get(session.id);
             const status = progress?.status ?? "locked";
             return (
               <li key={session.id} className="dashboard-session-item">
                 <div>
                   <strong>{session.title}</strong>
                   <p>Week {session.week_number} · Session {session.session_number} · {status}</p>
+                  {receipt?.read_at ? (
+                    <p className="dashboard-inline-note">Opened {formatDashboardDate(receipt.read_at)}</p>
+                  ) : receipt ? (
+                    <p className="dashboard-inline-note">New this month · unread</p>
+                  ) : null}
                 </div>
                 {status !== "locked" ? (
                   <Link href={`/portal/programme/session/${session.session_number}/`} className="button button-small button-secondary">Open</Link>

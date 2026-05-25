@@ -1,10 +1,13 @@
 import type { ReactNode } from "react";
 import { DashboardShell } from "@/components/dashboard/DashboardShell";
 import { portalNavItems } from "@/lib/dashboard/constants";
-import { requireAuthProfile } from "@/lib/supabase/auth";
+import { requireClientPortalAccess } from "@/lib/supabase/auth";
 
 export default async function PortalProtectedLayout({ children }: { children: ReactNode }) {
-  await requireAuthProfile("client");
+  const portalState =
+    process.env.NEXT_PUBLIC_STATIC_EXPORT !== "true" && process.env.GITHUB_PAGES !== "true"
+      ? await requireClientPortalAccess()
+      : null;
 
   return (
     <DashboardShell
@@ -12,6 +15,7 @@ export default async function PortalProtectedLayout({ children }: { children: Re
       subtitle="Your private programme space"
       navItems={portalNavItems}
       variant="portal"
+      currentProfile={portalState?.profile ?? null}
     >
       {children}
     </DashboardShell>

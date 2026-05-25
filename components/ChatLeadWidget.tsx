@@ -3,6 +3,7 @@
 import { FormEvent, KeyboardEvent, useEffect, useMemo, useRef, useState } from "react";
 import { addictionOptions, contactMethods, emailHref, siteConfig, whatsappHref } from "@/lib/constants";
 import { submitLead as submitLeadRequest } from "@/lib/leads";
+import { leadFieldMaxLengths } from "@/lib/leads/constraints";
 import { pushDataLayer } from "@/lib/tracking";
 
 type ChatStep = "welcome" | "fullName" | "email" | "phone" | "concern" | "preferred" | "message" | "consent" | "success" | "error";
@@ -109,7 +110,7 @@ export function ChatLeadWidget() {
     setError("");
 
     if (step === "fullName") {
-      if (!value) {
+      if (value.length < 2) {
         setError("Please add your name so Gerald knows who to respond to.");
         return;
       }
@@ -135,8 +136,8 @@ export function ChatLeadWidget() {
     }
 
     if (step === "phone") {
-      if (!value) {
-        setError("Please add a phone or WhatsApp number.");
+      if (value.length < 6) {
+        setError("Please add a valid phone or WhatsApp number.");
         return;
       }
 
@@ -242,6 +243,14 @@ export function ChatLeadWidget() {
   }, []);
 
   const showTextInput = step === "fullName" || step === "email" || step === "phone" || step === "message";
+  const textInputMaxLength =
+    step === "fullName"
+      ? leadFieldMaxLengths.fullName
+      : step === "email"
+        ? leadFieldMaxLengths.email
+        : step === "phone"
+          ? leadFieldMaxLengths.phone
+          : undefined;
 
   return (
     <div className={`chat-widget${isHiddenForLayout ? " is-hidden" : ""}`} aria-live="polite">
@@ -403,6 +412,7 @@ export function ChatLeadWidget() {
                   ref={inputRef as React.RefObject<HTMLTextAreaElement>}
                   value={inputValue}
                   onChange={(event) => setInputValue(event.target.value)}
+                  maxLength={leadFieldMaxLengths.message}
                   placeholder="Briefly share what you would like support with."
                   rows={3}
                 />
@@ -412,6 +422,7 @@ export function ChatLeadWidget() {
                   type={step === "email" ? "email" : step === "phone" ? "tel" : "text"}
                   value={inputValue}
                   onChange={(event) => setInputValue(event.target.value)}
+                  maxLength={textInputMaxLength}
                   placeholder={step === "fullName" ? "Your name" : step === "email" ? "Email address" : "Phone / WhatsApp"}
                 />
               )}

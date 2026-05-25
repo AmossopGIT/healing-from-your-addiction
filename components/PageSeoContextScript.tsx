@@ -5,17 +5,19 @@ type PageSeoContextScriptProps = {
 };
 
 export function PageSeoContextScript({ pageSeo }: PageSeoContextScriptProps) {
+  const seoContext = JSON.stringify({
+    path: pageSeo.path,
+    pageType: pageSeo.pageType,
+    primaryKeyword: pageSeo.primaryKeyword,
+    conversionGoal: pageSeo.conversionGoal,
+  }).replace(/</g, "\\u003c");
+
   return (
     <script
       id="page-seo-context"
       type="application/json"
       dangerouslySetInnerHTML={{
-        __html: JSON.stringify({
-          path: pageSeo.path,
-          pageType: pageSeo.pageType,
-          primaryKeyword: pageSeo.primaryKeyword,
-          conversionGoal: pageSeo.conversionGoal,
-        }),
+        __html: seoContext,
       }}
     />
   );

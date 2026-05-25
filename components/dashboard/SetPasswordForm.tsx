@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState, type FormEvent } from "react";
+import { withBasePath } from "@/lib/basePath";
 import { createClient } from "@/lib/supabase/client";
 
 export function SetPasswordForm() {
@@ -35,7 +36,7 @@ export function SetPasswordForm() {
       return;
     }
 
-    router.push("/portal/");
+    router.push(withBasePath("/portal/"));
     router.refresh();
   }
 

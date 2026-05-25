@@ -11,7 +11,12 @@ export const metadata: Metadata = createMetadata({
   noIndex: true,
 });
 
-export default async function PortalHomePage() {
+type PageProps = {
+  searchParams: Promise<{ onboarded?: string }>;
+};
+
+export default async function PortalHomePage({ searchParams }: PageProps) {
+  const { onboarded } = await searchParams;
   const profile = await getAuthProfile();
   const bundle = profile ? await getClientEnrollmentBundle(profile.id) : null;
 
@@ -21,6 +26,7 @@ export default async function PortalHomePage() {
         <p className="eyebrow">Welcome</p>
         <h1>Hello{profile?.full_name ? `, ${profile.full_name.split(" ")[0]}` : ""}</h1>
         <p>This is your private space for programme materials, progress, and secure messages.</p>
+        {onboarded ? <p className="dashboard-inline-note">Your profile is complete and your portal is ready.</p> : null}
       </section>
       <section className="dashboard-panel">
         <h2>Programme status</h2>

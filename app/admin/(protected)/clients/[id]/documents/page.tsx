@@ -1,12 +1,18 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { dashboardFieldMaxLengths } from "@/lib/dashboard/formValidation";
 import { uploadClientDocument } from "@/lib/dashboard/programmeActions";
 import { getAdminClientBundle, getClientDocuments } from "@/lib/dashboard/queries";
 import { formatDashboardDate } from "@/lib/dashboard/constants";
 import { createMetadata } from "@/lib/seo";
 
 type PageProps = { params: Promise<{ id: string }>; searchParams: Promise<{ error?: string }> };
+
+const documentErrorMessages: Record<string, string> = {
+  "missing-file": "Please choose a file before uploading.",
+  "invalid-label": "Please add a shorter document label.",
+};
 
 export default async function AdminClientDocumentsPage({ params, searchParams }: PageProps) {
   const { id } = await params;
@@ -22,11 +28,19 @@ export default async function AdminClientDocumentsPage({ params, searchParams }:
         <h1>Client documents</h1>
         <p><Link href={`/admin/clients/${id}/`}>Back to client</Link></p>
       </section>
-      {error ? <p className="form-error">{decodeURIComponent(error)}</p> : null}
+      {error ? <p className="form-error">{documentErrorMessages[error] ?? decodeURIComponent(error)}</p> : null}
       <section className="dashboard-panel">
         <form action={uploadClientDocument} className="dashboard-form" encType="multipart/form-data">
           <input type="hidden" name="clientProfileId" value={id} />
-          <label className="form-field"><span>Label</span><input name="label" required placeholder="Week 2 hypnotherapy audio" /></label>
+          <label className="form-field">
+            <span>Label</span>
+            <input
+              name="label"
+              required
+              maxLength={dashboardFieldMaxLengths.documentLabel}
+              placeholder="Week 2 hypnotherapy audio"
+            />
+          </label>
           <label className="form-field"><span>File</span><input name="file" type="file" required /></label>
           <button type="submit" className="button button-primary">Upload document</button>
         </form>
@@ -47,3 +61,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const { id } = await params;
   return createMetadata({ title: "Client documents | Admin", description: "Client documents.", path: `/admin/clients/${id}/documents/`, noIndex: true });
 }
+
+export async function generateStaticParams() {
+  return [];
+}
+

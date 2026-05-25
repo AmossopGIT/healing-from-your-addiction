@@ -5,6 +5,7 @@ import { programmes } from "@/content/programmes";
 import { CmsHeroArtFields } from "@/components/dashboard/CmsHeroArtFields";
 import { CmsSectionEditor } from "@/components/dashboard/CmsSectionEditor";
 import { saveCaseStudyDraft, updateCaseStudyFromForm } from "@/lib/cms/actions";
+import { cmsFieldMaxLengths } from "@/lib/cms/formValidation";
 import { cmsCaseStudyHeroArtId } from "@/lib/cms/mappers";
 import type { CmsCaseStudyRow } from "@/types/cms";
 
@@ -27,23 +28,35 @@ export function CmsCaseStudyForm({ study }: CmsCaseStudyFormProps) {
         <legend>Core content</legend>
         <label className="form-field">
           <span>Slug</span>
-          <input name="slug" required defaultValue={study?.slug ?? ""} placeholder="food-binge-eating-hahm-recovery-story" />
+          <input
+            name="slug"
+            required
+            maxLength={cmsFieldMaxLengths.slug}
+            pattern="[a-z0-9-]+"
+            defaultValue={study?.slug ?? ""}
+            placeholder="food-binge-eating-hahm-recovery-story"
+          />
         </label>
         <label className="form-field">
           <span>Legacy slug (for redirects)</span>
-          <input name="legacySlug" defaultValue={study?.legacy_slug ?? study?.slug ?? ""} />
+          <input
+            name="legacySlug"
+            maxLength={cmsFieldMaxLengths.slug}
+            pattern="[a-z0-9-]+"
+            defaultValue={study?.legacy_slug ?? study?.slug ?? ""}
+          />
         </label>
         <label className="form-field">
           <span>Title</span>
-          <input name="title" required defaultValue={study?.title ?? ""} />
+          <input name="title" required maxLength={cmsFieldMaxLengths.title} defaultValue={study?.title ?? ""} />
         </label>
         <label className="form-field">
           <span>H1</span>
-          <input name="h1" required defaultValue={study?.h1 ?? ""} />
+          <input name="h1" required maxLength={cmsFieldMaxLengths.h1} defaultValue={study?.h1 ?? ""} />
         </label>
         <label className="form-field">
           <span>Excerpt</span>
-          <textarea name="excerpt" rows={3} required defaultValue={study?.excerpt ?? ""} />
+          <textarea name="excerpt" rows={3} required maxLength={cmsFieldMaxLengths.excerpt} defaultValue={study?.excerpt ?? ""} />
         </label>
         <label className="form-field">
           <span>Case study type</span>
@@ -76,19 +89,19 @@ export function CmsCaseStudyForm({ study }: CmsCaseStudyFormProps) {
         <legend>SEO metadata</legend>
         <label className="form-field">
           <span>Meta description</span>
-          <textarea name="description" rows={3} required defaultValue={study?.description ?? ""} />
+          <textarea name="description" rows={3} required maxLength={cmsFieldMaxLengths.description} defaultValue={study?.description ?? ""} />
         </label>
         <label className="form-field">
           <span>Meta title override (optional)</span>
-          <input name="metaTitle" defaultValue={study?.meta_title ?? ""} />
+          <input name="metaTitle" maxLength={cmsFieldMaxLengths.metaTitle} defaultValue={study?.meta_title ?? ""} />
         </label>
         <label className="form-field">
           <span>Meta description override (optional)</span>
-          <textarea name="metaDescription" rows={2} defaultValue={study?.meta_description ?? ""} />
+          <textarea name="metaDescription" rows={2} maxLength={cmsFieldMaxLengths.metaDescription} defaultValue={study?.meta_description ?? ""} />
         </label>
         <label className="form-field">
           <span>Primary keyword</span>
-          <input name="primaryKeyword" required defaultValue={study?.primary_keyword ?? ""} />
+          <input name="primaryKeyword" required maxLength={cmsFieldMaxLengths.keyword} defaultValue={study?.primary_keyword ?? ""} />
         </label>
         <label className="form-field">
           <span>Secondary keywords (comma-separated)</span>
@@ -96,18 +109,23 @@ export function CmsCaseStudyForm({ study }: CmsCaseStudyFormProps) {
         </label>
         <label className="form-field">
           <span>Search intent</span>
-          <input name="searchIntent" defaultValue={study?.search_intent ?? "Read an educational addiction case study or programme resource."} />
+          <input
+            name="searchIntent"
+            maxLength={cmsFieldMaxLengths.searchIntent}
+            defaultValue={study?.search_intent ?? "Read an educational addiction case study or programme resource."}
+          />
         </label>
         <label className="form-field">
           <span>Conversion goal</span>
           <input
             name="conversionGoal"
+            maxLength={cmsFieldMaxLengths.conversionGoal}
             defaultValue={study?.conversion_goal ?? "Move readers toward a relevant programme page or confidential enquiry."}
           />
         </label>
         <label className="form-field">
           <span>OG image alt override (optional)</span>
-          <input name="ogImageAlt" defaultValue={study?.og_image_alt ?? ""} />
+          <input name="ogImageAlt" maxLength={cmsFieldMaxLengths.ogImageAlt} defaultValue={study?.og_image_alt ?? ""} />
         </label>
       </fieldset>
 

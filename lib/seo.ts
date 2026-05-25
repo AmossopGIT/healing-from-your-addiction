@@ -1,4 +1,4 @@
-﻿import type { Metadata } from "next";
+﻿import type { Metadata, Viewport } from "next";
 import { keywordsForMetadata, type SeoPageRecord } from "@/content/seo";
 import { withBasePath } from "@/lib/basePath";
 import { absoluteUrl, siteConfig } from "@/lib/constants";
@@ -13,6 +13,22 @@ type PageMetadataInput = {
   ogImage?: string;
   ogImageAlt?: string;
 };
+
+export const sitePwaThemeColor = "#f7f3ea";
+export const sitePwaAccentColor = "#0f5b52";
+
+export function createViewport(): Viewport {
+  return {
+    width: "device-width",
+    initialScale: 1,
+    viewportFit: "cover",
+    themeColor: [
+      { media: "(prefers-color-scheme: light)", color: sitePwaThemeColor },
+      { media: "(prefers-color-scheme: dark)", color: "#17231f" },
+    ],
+    colorScheme: "light",
+  };
+}
 
 export function createMetadata({
   title,
@@ -35,10 +51,24 @@ export function createMetadata({
     keywords,
     metadataBase: new URL(siteConfig.siteUrl),
     applicationName: siteConfig.name,
+    manifest: withBasePath("/manifest.webmanifest"),
     authors: [{ name: siteConfig.owner }],
     creator: siteConfig.owner,
     publisher: siteConfig.name,
     category: "Addiction support",
+    icons: {
+      icon: [
+        { url: withBasePath("/icon.svg"), type: "image/svg+xml" },
+        { url: withBasePath("/icon-maskable.svg"), type: "image/svg+xml" },
+      ],
+      apple: [{ url: withBasePath("/apple-icon"), sizes: "180x180", type: "image/png" }],
+      other: [{ rel: "mask-icon", url: withBasePath("/icon-maskable.svg"), color: sitePwaAccentColor }],
+    },
+    appleWebApp: {
+      capable: true,
+      title: siteConfig.name,
+      statusBarStyle: "default",
+    },
     alternates: {
       canonical: canonicalUrl,
     },

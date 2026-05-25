@@ -5,7 +5,7 @@ import { SchemaMarkup } from "@/components/SchemaMarkup";
 import { SiteLink } from "@/components/SiteLink";
 import { blogCategories, blogCategoryPath, blogTagPath, blogTags } from "@/content/blog";
 import { seoPages } from "@/content/seo";
-import { getMergedBlogPosts, getMergedCaseStudies, getMergedFeaturedCaseStudies, getMergedPostsByCategory } from "@/lib/cms/contentSource";
+import { getMergedBlogPosts, getMergedCaseStudies } from "@/lib/cms/contentSource";
 import { createPageMetadata } from "@/lib/seo";
 import { breadcrumbSchema, webPageSchema } from "@/lib/schema";
 
@@ -18,13 +18,11 @@ export const metadata = createPageMetadata(pageSeo);
 export default async function BlogIndexPage() {
   const blogPosts = await getMergedBlogPosts();
   const caseStudies = await getMergedCaseStudies();
-  const featuredCaseStudies = await getMergedFeaturedCaseStudies(3);
-  const categorySections = await Promise.all(
-    blogCategories.map(async (category) => ({
-      category,
-      posts: await getMergedPostsByCategory(category.slug),
-    })),
-  );
+  const featuredCaseStudies = caseStudies.filter((study) => study.caseStudyType === "outcome").slice(0, 3);
+  const categorySections = blogCategories.map((category) => ({
+    category,
+    posts: blogPosts.filter((post) => post.categorySlug === category.slug),
+  }));
 
   return (
     <>

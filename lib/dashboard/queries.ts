@@ -1,5 +1,98 @@
 import { createClient } from "@/lib/supabase/server";
-import type { ClientProfile, Enrollment, ProgrammeSession, ProgrammeTemplate, SessionProgress } from "@/types/database";
+import type {
+  ClientContentReceipt,
+  ClientDocument,
+  ClientMessage,
+  ClientProfile,
+  Enrollment,
+  PortalContentKind,
+  Profile,
+  ProgrammeSession,
+  ProgrammeTemplate,
+  SessionProgress,
+} from "@/types/database";
+
+type MessageAuthorProfile = Pick<Profile, "id" | "full_name" | "role">;
+
+export type ClientMessageWithProfile = ClientMessage & {
+  profiles: MessageAuthorProfile | null;
+};
+
+export type ClientDocumentWithReceipt = ClientDocument & {
+  receipt: ClientContentReceipt | null;
+};
+
+export type PortalNotificationItem = {
+  key: "messages" | "documents" | "sessions";
+  count: number;
+  href: string;
+  label: string;
+  description: string;
+  latestAt: string;
+};
+
+export type PortalNotificationSummary = {
+  unreadCount: number;
+  unreadMessageCount: number;
+  unreadDocumentCount: number;
+  unreadSessionCount: number;
+  items: PortalNotificationItem[];
+};
+
+function startOfCurrentMonthIso() {
+  const now = new Date();
+  return new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), 1)).toISOString();
+}
+
+function formatCountLabel(count: number, singular: string, plural: string) {
+  return count === 1 ? singular : plural;
+}
+
+async function getMessageAuthorMap(authorIds: string[]) {
+  if (!authorIds.length) {
+    return new Map<string, MessageAuthorProfile>();
+  }
+
+  const supabase = await createClient();
+  const { data: profiles } = await supabase.from("profiles").select("id, full_name, role").in("id", authorIds);
+  return new Map((profiles ?? []).map((profile) => [profile.id, profile]));
+}
+
+export async function getClientContentReceipts(
+  clientProfileId: string,
+  options?: {
+    contentKind?: PortalContentKind;
+    contentIds?: string[];
+    unreadOnly?: boolean;
+    releasedAfter?: string;
+  },
+) {
+  const supabase = await createClient();
+  let query = supabase
+    .from("client_content_receipts")
+    .select("*")
+    .eq("client_profile_id", clientProfileId)
+    .order("released_at", { ascending: false });
+
+  if (options?.contentKind) {
+    query = query.eq("content_kind", options.contentKind);
+  }
+
+  if (options?.contentIds?.length) {
+    query = query.in("content_id", options.contentIds);
+  }
+
+  if (options?.unreadOnly) {
+    query = query.is("read_at", null);
+  }
+
+  if (options?.releasedAfter) {
+    query = query.gte("released_at", options.releasedAfter);
+  }
+
+  const { data } = await query;
+  return data ?? [];
+}
 
 export async function getClientEnrollmentBundle(userId: string) {
   const supabase = await createClient();
@@ -111,13 +204,12 @@ export async function getClientMessages(clientProfileId: string) {
   }
 
   const authorIds = [...new Set(messages.map((message) => message.author_id))];
-  const { data: profiles } = await supabase.from("profiles").select("id, full_name, role").in("id", authorIds);
-  const profileMap = new Map((profiles ?? []).map((profile) => [profile.id, profile]));
+  const profileMap = await getMessageAuthorMap(authorIds);
 
   return messages.map((message) => ({
     ...message,
     profiles: profileMap.get(message.author_id) ?? null,
-  }));
+  })) as ClientMessageWithProfile[];
 }
 
 export async function getClientDocuments(clientProfileId: string) {
@@ -128,6 +220,138 @@ export async function getClientDocuments(clientProfileId: string) {
     .eq("client_profile_id", clientProfileId)
     .order("created_at", { ascending: false });
   return data ?? [];
+}
+
+export async function getClientDocumentsWithReceipts(clientProfileId: string) {
+  const [documents, receipts] = await Promise.all([
+    getClientDocuments(clientProfileId),
+    getClientContentReceipts(clientProfileId, { contentKind: "document" }),
+  ]);
+
+  const receiptByDocumentId = new Map(receipts.map((receipt) => [receipt.content_id, receipt]));
+
+  return documents.map((document) => ({
+    ...document,
+    receipt: receiptByDocumentId.get(document.id) ?? null,
+  })) as ClientDocumentWithReceipt[];
+}
+
+export async function getClientSessionReceiptMap(clientProfileId: string, sessionIds: string[]) {
+  const receipts = await getClientContentReceipts(clientProfileId, {
+    contentKind: "session",
+    contentIds: sessionIds,
+  });
+
+  return new Map(receipts.map((receipt) => [receipt.content_id, receipt]));
+}
+
+export async function getPortalNotificationSummary(userId: string): Promise<PortalNotificationSummary | null> {
+  const supabase = await createClient();
+  const { data: clientProfile } = await supabase.from("client_profiles").select("id").eq("user_id", userId).maybeSingle();
+
+  if (!clientProfile) {
+    return null;
+  }
+
+  const releasedAfter = startOfCurrentMonthIso();
+
+  const { data: unreadMessagesRaw } = await supabase
+    .from("client_messages")
+    .select("*")
+    .eq("client_profile_id", clientProfile.id)
+    .is("read_at", null)
+    .order("created_at", { ascending: false });
+
+  const unreadMessages = unreadMessagesRaw ?? [];
+  const authorIds = [...new Set(unreadMessages.map((message) => message.author_id))];
+  const profileMap = await getMessageAuthorMap(authorIds);
+  const unreadAdminMessages = unreadMessages.filter((message) => profileMap.get(message.author_id)?.role === "admin");
+
+  const unreadReceipts = await getClientContentReceipts(clientProfile.id, {
+    unreadOnly: true,
+    releasedAfter,
+  });
+
+  const unreadDocumentReceipts = unreadReceipts.filter((receipt) => receipt.content_kind === "document");
+  const unreadSessionReceipts = unreadReceipts.filter((receipt) => receipt.content_kind === "session");
+
+  const items: PortalNotificationItem[] = [];
+
+  if (unreadAdminMessages.length) {
+    const latestMessage = unreadAdminMessages[0];
+    const latestAuthor = profileMap.get(latestMessage.author_id);
+    items.push({
+      key: "messages",
+      count: unreadAdminMessages.length,
+      href: "/portal/messages/",
+      label: formatCountLabel(
+        unreadAdminMessages.length,
+        "1 new admin message",
+        `${unreadAdminMessages.length} new admin messages`,
+      ),
+      description: latestAuthor?.full_name
+        ? `Latest from ${latestAuthor.full_name}`
+        : "Unread secure messages from Gerald",
+      latestAt: latestMessage.created_at,
+    });
+  }
+
+  if (unreadDocumentReceipts.length) {
+    const documentIds = unreadDocumentReceipts.map((receipt) => receipt.content_id);
+    const { data: documents } = await supabase.from("client_documents").select("id, label").in("id", documentIds);
+    const firstDocument = documents?.[0];
+
+    items.push({
+      key: "documents",
+      count: unreadDocumentReceipts.length,
+      href: "/portal/resources/",
+      label: formatCountLabel(
+        unreadDocumentReceipts.length,
+        "1 new resource this month",
+        `${unreadDocumentReceipts.length} new resources this month`,
+      ),
+      description: unreadDocumentReceipts.length === 1 && firstDocument?.label
+        ? firstDocument.label
+        : "New shared files in your portal",
+      latestAt: unreadDocumentReceipts[0].released_at,
+    });
+  }
+
+  if (unreadSessionReceipts.length) {
+    const sessionIds = unreadSessionReceipts.map((receipt) => receipt.content_id);
+    const { data: sessions } = await supabase
+      .from("programme_sessions")
+      .select("id, title, session_number")
+      .in("id", sessionIds);
+    const firstSession = sessions?.[0];
+
+    items.push({
+      key: "sessions",
+      count: unreadSessionReceipts.length,
+      href: unreadSessionReceipts.length === 1 && firstSession
+        ? `/portal/programme/session/${firstSession.session_number}/`
+        : "/portal/programme/",
+      label: formatCountLabel(
+        unreadSessionReceipts.length,
+        "1 new programme session this month",
+        `${unreadSessionReceipts.length} new programme sessions this month`,
+      ),
+      description: unreadSessionReceipts.length === 1 && firstSession?.title
+        ? firstSession.title
+        : "New session content is ready to open",
+      latestAt: unreadSessionReceipts[0].released_at,
+    });
+  }
+
+  items.sort((left, right) => new Date(right.latestAt).getTime() - new Date(left.latestAt).getTime());
+
+  return {
+    unreadCount: unreadAdminMessages.length + unreadDocumentReceipts.length + unreadSessionReceipts.length,
+    unreadMessageCount: unreadAdminMessages.length,
+    unreadDocumentCount: unreadDocumentReceipts.length,
+    unreadSessionCount: unreadSessionReceipts.length,
+    items,
+  };
 }
 
 export type ClientProfileWithProfile = ClientProfile & {

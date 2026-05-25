@@ -1,13 +1,13 @@
 "use server";
 
+import { dashboardFieldMaxLengths, normalizeMultiline, sanitizeLeadStatus, sanitizeUuid } from "@/lib/dashboard/formValidation";
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
-import type { LeadStatus } from "@/types/database";
 import { logAuditEvent } from "@/lib/supabase/audit";
 
 export async function updateLeadStatusForm(formData: FormData) {
-  const leadId = String(formData.get("leadId") ?? "");
-  const status = String(formData.get("status") ?? "") as LeadStatus;
+  const leadId = sanitizeUuid(String(formData.get("leadId") ?? ""));
+  const status = sanitizeLeadStatus(String(formData.get("status") ?? ""));
 
   if (!leadId || !status) {
     redirect("/admin/leads/");
@@ -17,6 +17,9 @@ export async function updateLeadStatusForm(formData: FormData) {
   const {
     data: { user },
   } = await supabase.auth.getUser();
+  if (!user) {
+    redirect("/admin/login/");
+  }
 
   const { error } = await supabase.from("leads").update({ status }).eq("id", leadId);
 
@@ -36,11 +39,12 @@ export async function updateLeadStatusForm(formData: FormData) {
 }
 
 export async function addLeadNote(formData: FormData) {
-  const leadId = String(formData.get("leadId") ?? "");
-  const body = String(formData.get("body") ?? "").trim();
+  const leadId = sanitizeUuid(String(formData.get("leadId") ?? ""));
+  const body = normalizeMultiline(String(formData.get("body") ?? ""));
+  const redirectTo = leadId ? `/admin/leads/${leadId}/` : "/admin/leads/";
 
-  if (!leadId || !body) {
-    redirect(`/admin/leads/${leadId}/`);
+  if (!leadId || !body || body.length > dashboardFieldMaxLengths.noteBody) {
+    redirect(redirectTo);
   }
 
   const supabase = await createClient();
@@ -65,5 +69,5 @@ export async function addLeadNote(formData: FormData) {
     resourceId: leadId,
   });
 
-  redirect(`/admin/leads/${leadId}/`);
+  redirect(redirectTo);
 }

@@ -1,23 +1,41 @@
 "use server";
 
 import { redirect } from "next/navigation";
+import {
+  sanitizeContactMethod,
+  sanitizeEmail,
+  sanitizeProgrammeSlug,
+  sanitizeUuid,
+  normalizeSingleLine,
+} from "@/lib/dashboard/formValidation";
+import { leadFieldMaxLengths } from "@/lib/leads/constraints";
 import { logAuditEvent } from "@/lib/supabase/audit";
 import { createServiceClient } from "@/lib/supabase/service";
 import { isSupabaseServiceConfigured } from "@/lib/supabase/env";
 import { createClient } from "@/lib/supabase/server";
 
 export async function inviteClient(formData: FormData) {
-  const leadId = String(formData.get("leadId") ?? "").trim();
-  const email = String(formData.get("email") ?? "").trim().toLowerCase();
-  const fullName = String(formData.get("fullName") ?? "").trim();
-  const addictionSlug = String(formData.get("addictionSlug") ?? "").trim();
-  const preferredContactMethod = String(formData.get("preferredContactMethod") ?? "").trim();
+  const leadId = sanitizeUuid(String(formData.get("leadId") ?? ""));
+  const email = sanitizeEmail(String(formData.get("email") ?? ""));
+  const fullName = normalizeSingleLine(String(formData.get("fullName") ?? ""));
+  const rawAddictionSlug = String(formData.get("addictionSlug") ?? "");
+  const addictionSlug = sanitizeProgrammeSlug(rawAddictionSlug);
+  const rawPreferredContactMethod = String(formData.get("preferredContactMethod") ?? "");
+  const preferredContactMethod = sanitizeContactMethod(rawPreferredContactMethod);
 
   if (!email || !fullName) redirect("/admin/clients/invite/?error=missing-fields");
+  if (fullName.length < 2 || fullName.length > leadFieldMaxLengths.fullName) {
+    redirect("/admin/clients/invite/?error=invalid-name");
+  }
+  if (rawAddictionSlug.trim() && !addictionSlug) redirect("/admin/clients/invite/?error=invalid-programme");
+  if (rawPreferredContactMethod.trim() && !preferredContactMethod) {
+    redirect("/admin/clients/invite/?error=invalid-contact-method");
+  }
   if (!isSupabaseServiceConfigured()) redirect("/admin/clients/invite/?error=supabase-not-configured");
 
   const supabase = await createClient();
   const { data: { user: adminUser } } = await supabase.auth.getUser();
+  if (!adminUser) redirect("/admin/login/");
   const service = createServiceClient();
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 

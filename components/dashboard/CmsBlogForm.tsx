@@ -4,6 +4,7 @@ import { artGallery } from "@/content/artGallery";
 import { CmsHeroArtFields } from "@/components/dashboard/CmsHeroArtFields";
 import { CmsSectionEditor } from "@/components/dashboard/CmsSectionEditor";
 import { saveBlogPostDraft, updateBlogFromForm } from "@/lib/cms/actions";
+import { cmsFieldMaxLengths } from "@/lib/cms/formValidation";
 import { cmsBlogHeroArtId } from "@/lib/cms/mappers";
 import type { CmsBlogPostRow } from "@/types/cms";
 
@@ -24,19 +25,26 @@ export function CmsBlogForm({ post }: CmsBlogFormProps) {
         <legend>Core content</legend>
         <label className="form-field">
           <span>Slug</span>
-          <input name="slug" required defaultValue={post?.slug ?? ""} placeholder="what-makes-hypnotherapy-programs-effective" />
+          <input
+            name="slug"
+            required
+            maxLength={cmsFieldMaxLengths.slug}
+            pattern="[a-z0-9-]+"
+            defaultValue={post?.slug ?? ""}
+            placeholder="what-makes-hypnotherapy-programs-effective"
+          />
         </label>
         <label className="form-field">
           <span>Title</span>
-          <input name="title" required defaultValue={post?.title ?? ""} />
+          <input name="title" required maxLength={cmsFieldMaxLengths.title} defaultValue={post?.title ?? ""} />
         </label>
         <label className="form-field">
           <span>H1</span>
-          <input name="h1" required defaultValue={post?.h1 ?? ""} />
+          <input name="h1" required maxLength={cmsFieldMaxLengths.h1} defaultValue={post?.h1 ?? ""} />
         </label>
         <label className="form-field">
           <span>Excerpt</span>
-          <textarea name="excerpt" rows={3} required defaultValue={post?.excerpt ?? ""} />
+          <textarea name="excerpt" rows={3} required maxLength={cmsFieldMaxLengths.excerpt} defaultValue={post?.excerpt ?? ""} />
         </label>
         <label className="form-field">
           <span>Category</span>
@@ -59,19 +67,19 @@ export function CmsBlogForm({ post }: CmsBlogFormProps) {
         <legend>SEO metadata</legend>
         <label className="form-field">
           <span>Meta description</span>
-          <textarea name="description" rows={3} required defaultValue={post?.description ?? ""} />
+          <textarea name="description" rows={3} required maxLength={cmsFieldMaxLengths.description} defaultValue={post?.description ?? ""} />
         </label>
         <label className="form-field">
           <span>Meta title override (optional)</span>
-          <input name="metaTitle" defaultValue={post?.meta_title ?? ""} />
+          <input name="metaTitle" maxLength={cmsFieldMaxLengths.metaTitle} defaultValue={post?.meta_title ?? ""} />
         </label>
         <label className="form-field">
           <span>Meta description override (optional)</span>
-          <textarea name="metaDescription" rows={2} defaultValue={post?.meta_description ?? ""} />
+          <textarea name="metaDescription" rows={2} maxLength={cmsFieldMaxLengths.metaDescription} defaultValue={post?.meta_description ?? ""} />
         </label>
         <label className="form-field">
           <span>Primary keyword</span>
-          <input name="primaryKeyword" required defaultValue={post?.primary_keyword ?? ""} />
+          <input name="primaryKeyword" required maxLength={cmsFieldMaxLengths.keyword} defaultValue={post?.primary_keyword ?? ""} />
         </label>
         <label className="form-field">
           <span>Secondary keywords (comma-separated)</span>
@@ -79,18 +87,23 @@ export function CmsBlogForm({ post }: CmsBlogFormProps) {
         </label>
         <label className="form-field">
           <span>Search intent</span>
-          <input name="searchIntent" defaultValue={post?.search_intent ?? "Read an educational addiction recovery article."} />
+          <input
+            name="searchIntent"
+            maxLength={cmsFieldMaxLengths.searchIntent}
+            defaultValue={post?.search_intent ?? "Read an educational addiction recovery article."}
+          />
         </label>
         <label className="form-field">
           <span>Conversion goal</span>
           <input
             name="conversionGoal"
+            maxLength={cmsFieldMaxLengths.conversionGoal}
             defaultValue={post?.conversion_goal ?? "Move readers toward a relevant programme page or confidential enquiry."}
           />
         </label>
         <label className="form-field">
           <span>OG image alt override (optional)</span>
-          <input name="ogImageAlt" defaultValue={post?.og_image_alt ?? ""} />
+          <input name="ogImageAlt" maxLength={cmsFieldMaxLengths.ogImageAlt} defaultValue={post?.og_image_alt ?? ""} />
         </label>
       </fieldset>
 

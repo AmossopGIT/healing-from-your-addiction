@@ -1,4 +1,5 @@
 import { cmsWorkflowStatusLabels, cmsWorkflowTransitions, type CmsWorkflowStatus } from "@/types/cms";
+import { cmsFieldMaxLengths } from "@/lib/cms/formValidation";
 import { transitionBlogWorkflow, transitionCaseStudyWorkflow } from "@/lib/cms/actions";
 import { formatDashboardDate } from "@/lib/dashboard/constants";
 import type { CmsWorkflowEventRow } from "@/types/cms";
@@ -40,7 +41,7 @@ export function CmsWorkflowPanel({ contentType, contentId, status, scheduledFor,
             <input type="hidden" name="toStatus" value="approved" />
             <label className="form-field">
               <span>Review notes (optional)</span>
-              <input name="notes" placeholder="Approved for publish" />
+              <input name="notes" maxLength={cmsFieldMaxLengths.workflowNotes} placeholder="Approved for publish" />
             </label>
             <button type="submit" className="button button-primary">
               Approve
@@ -54,7 +55,12 @@ export function CmsWorkflowPanel({ contentType, contentId, status, scheduledFor,
             <input type="hidden" name="toStatus" value="draft" />
             <label className="form-field">
               <span>Revision notes</span>
-              <input name="notes" placeholder="Reason for sending back to draft" required />
+              <input
+                name="notes"
+                maxLength={cmsFieldMaxLengths.workflowNotes}
+                placeholder="Reason for sending back to draft"
+                required
+              />
             </label>
             <button type="submit" className="button button-secondary">
               Send back to draft

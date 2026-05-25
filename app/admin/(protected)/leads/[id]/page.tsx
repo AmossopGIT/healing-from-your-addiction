@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { addLeadNote, updateLeadStatusForm } from "@/lib/dashboard/adminActions";
 import { formatDashboardDate, leadStatusLabels, leadStatusOptions } from "@/lib/dashboard/constants";
+import { dashboardFieldMaxLengths } from "@/lib/dashboard/formValidation";
 import { createClient } from "@/lib/supabase/server";
 import { createMetadata } from "@/lib/seo";
 
@@ -80,7 +81,10 @@ export default async function AdminLeadDetailPage({ params }: PageProps) {
         <h2>Internal notes</h2>
         <form action={addLeadNote} className="dashboard-note-form">
           <input type="hidden" name="leadId" value={lead.id} />
-          <label className="form-field"><span>Add a private note</span><textarea name="body" rows={4} required /></label>
+          <label className="form-field">
+            <span>Add a private note</span>
+            <textarea name="body" rows={4} maxLength={dashboardFieldMaxLengths.noteBody} required />
+          </label>
           <button type="submit" className="button button-primary">Save note</button>
         </form>
         {notes?.length ? (
@@ -97,3 +101,8 @@ export default async function AdminLeadDetailPage({ params }: PageProps) {
     </div>
   );
 }
+
+export async function generateStaticParams() {
+  return [];
+}
+

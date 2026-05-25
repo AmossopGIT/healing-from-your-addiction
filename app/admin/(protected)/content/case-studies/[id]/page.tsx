@@ -53,3 +53,8 @@ export default async function EditCaseStudyPage({ params, searchParams }: PagePr
     </div>
   );
 }
+
+export async function generateStaticParams() {
+  return [];
+}
+

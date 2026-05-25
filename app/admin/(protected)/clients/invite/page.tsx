@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { programmes } from "@/content/programmes";
 import { contactMethods } from "@/lib/constants";
 import { inviteClient } from "@/lib/dashboard/inviteClient";
+import { leadFieldMaxLengths } from "@/lib/leads/constraints";
 import { createClient } from "@/lib/supabase/server";
 import { createMetadata } from "@/lib/seo";
 
@@ -13,6 +14,15 @@ export const metadata: Metadata = createMetadata({
 });
 
 type PageProps = { searchParams: Promise<{ leadId?: string; error?: string }> };
+
+const inviteErrorMessages: Record<string, string> = {
+  "missing-fields": "Please complete the full name and email fields.",
+  "invalid-name": "Please enter a valid full name.",
+  "invalid-programme": "Please choose a valid programme focus.",
+  "invalid-contact-method": "Please choose a valid preferred contact method.",
+  "supabase-not-configured": "Supabase is not configured for client invitations yet.",
+  "invite-failed": "The invitation could not be sent. Please try again.",
+};
 
 export default async function InviteClientPage({ searchParams }: PageProps) {
   const { leadId, error } = await searchParams;
@@ -31,12 +41,30 @@ export default async function InviteClientPage({ searchParams }: PageProps) {
         <h1>Invite client</h1>
         <p>Send a secure email invitation so the client can set a password and access their portal.</p>
       </section>
-      {error ? <p className="form-error">{decodeURIComponent(error)}</p> : null}
+      {error ? <p className="form-error">{inviteErrorMessages[error] ?? decodeURIComponent(error)}</p> : null}
       <section className="dashboard-panel">
         <form action={inviteClient} className="dashboard-form">
           <input type="hidden" name="leadId" value={leadId ?? ""} />
-          <label className="form-field"><span>Full name</span><input name="fullName" required defaultValue={lead?.full_name ?? ""} /></label>
-          <label className="form-field"><span>Email</span><input name="email" type="email" required defaultValue={lead?.email ?? ""} /></label>
+          <label className="form-field">
+            <span>Full name</span>
+            <input
+              name="fullName"
+              required
+              minLength={2}
+              maxLength={leadFieldMaxLengths.fullName}
+              defaultValue={lead?.full_name ?? ""}
+            />
+          </label>
+          <label className="form-field">
+            <span>Email</span>
+            <input
+              name="email"
+              type="email"
+              required
+              maxLength={leadFieldMaxLengths.email}
+              defaultValue={lead?.email ?? ""}
+            />
+          </label>
           <label className="form-field">
             <span>Addiction focus</span>
             <select name="addictionSlug" defaultValue="">

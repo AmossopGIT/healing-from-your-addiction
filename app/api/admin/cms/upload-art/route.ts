@@ -1,12 +1,14 @@
 import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { NextResponse } from "next/server";
+import { cmsFieldMaxLengths, sanitizeContentKind, sanitizeOptionalMultiline, sanitizeSlug } from "@/lib/cms/formValidation";
 import { cmsBlogHeroArtId, cmsCaseStudyHeroArtId } from "@/lib/cms/mappers";
 import { createClient } from "@/lib/supabase/server";
 import { createServiceClient } from "@/lib/supabase/service";
 import { isSupabaseServiceConfigured } from "@/lib/supabase/env";
 
 const allowedMimeTypes = new Set(["image/png", "image/jpeg", "image/webp"]);
+const maxUploadBytes = 5 * 1024 * 1024;
 
 async function requireAdmin() {
   const supabase = await createClient();
@@ -29,16 +31,20 @@ export async function POST(request: Request) {
 
   const formData = await request.formData();
   const file = formData.get("file");
-  const contentKind = String(formData.get("contentKind") ?? "");
-  const slug = String(formData.get("slug") ?? "").trim();
-  const alt = String(formData.get("alt") ?? "").trim();
+  const contentKind = sanitizeContentKind(String(formData.get("contentKind") ?? ""));
+  const slug = sanitizeSlug(String(formData.get("slug") ?? ""));
+  const alt = sanitizeOptionalMultiline(String(formData.get("alt") ?? ""), cmsFieldMaxLengths.uploadAlt);
 
-  if (!(file instanceof File) || !slug) {
-    return NextResponse.json({ error: "File and slug are required." }, { status: 400 });
+  if (!(file instanceof File) || !slug || !contentKind) {
+    return NextResponse.json({ error: "File, content kind, and slug are required." }, { status: 400 });
   }
 
   if (!allowedMimeTypes.has(file.type)) {
     return NextResponse.json({ error: "Only PNG, JPEG, or WebP images are allowed." }, { status: 400 });
+  }
+
+  if (file.size > maxUploadBytes) {
+    return NextResponse.json({ error: "Artwork must be 5 MB or smaller." }, { status: 400 });
   }
 
   const heroArtId = contentKind === "case-study" ? cmsCaseStudyHeroArtId(slug) : cmsBlogHeroArtId(slug);

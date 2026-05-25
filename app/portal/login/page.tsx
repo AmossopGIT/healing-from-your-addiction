@@ -9,13 +9,25 @@ export const metadata: Metadata = createMetadata({
   noIndex: true,
 });
 
-export default function PortalLoginPage() {
+type PageProps = {
+  searchParams: Promise<{ error?: string }>;
+};
+
+const loginErrorMessages: Record<string, string> = {
+  "invalid-link": "The sign-in link is invalid or has expired. Please sign in again.",
+};
+
+export default async function PortalLoginPage({ searchParams }: PageProps) {
+  const { error } = await searchParams;
+
   return (
     <div className="auth-page">
       <LoginForm
         title="Client portal sign in"
         description="Sign in to view your programme, resources, and secure messages."
         redirectTo="/portal/"
+        showClientLinks
+        notice={error ? loginErrorMessages[error] ?? decodeURIComponent(error) : null}
       />
     </div>
   );

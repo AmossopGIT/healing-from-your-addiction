@@ -1,16 +1,20 @@
 "use client";
 
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, type FormEvent } from "react";
+import { withBasePath } from "@/lib/basePath";
 import { createClient } from "@/lib/supabase/client";
 
 type LoginFormProps = {
   redirectTo: string;
   title: string;
   description: string;
+  showClientLinks?: boolean;
+  notice?: string | null;
 };
 
-export function LoginForm({ redirectTo, title, description }: LoginFormProps) {
+export function LoginForm({ redirectTo, title, description, showClientLinks = false, notice = null }: LoginFormProps) {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -32,7 +36,7 @@ export function LoginForm({ redirectTo, title, description }: LoginFormProps) {
       return;
     }
 
-    router.push(redirectTo);
+    router.push(withBasePath(redirectTo));
     router.refresh();
   }
 
@@ -41,6 +45,7 @@ export function LoginForm({ redirectTo, title, description }: LoginFormProps) {
       <p className="eyebrow">Private access</p>
       <h1>{title}</h1>
       <p className="auth-description">{description}</p>
+      {notice ? <p className="form-error">{notice}</p> : null}
       <form className="auth-form" onSubmit={handleSubmit}>
         <label className="form-field">
           <span>Email</span>
@@ -61,6 +66,13 @@ export function LoginForm({ redirectTo, title, description }: LoginFormProps) {
           {loading ? "Signing in..." : "Sign in"}
         </button>
       </form>
+      {showClientLinks ? (
+        <p className="auth-description">
+          <Link href="/portal/sign-up/">Create an account</Link>
+          {" · "}
+          <Link href="/portal/forgot-password/">Forgot your password?</Link>
+        </p>
+      ) : null}
     </div>
   );
 }

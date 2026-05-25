@@ -27,6 +27,7 @@ export const adminNavItems = [
   { href: "/admin/clients/", label: "Clients" },
   { href: "/admin/clients/invite/", label: "Invite client" },
   { href: "/admin/programmes/", label: "Programmes" },
+  { href: "/admin/notifications/", label: "Notifications" },
   { href: "/admin/content/", label: "Content" },
 ];
 

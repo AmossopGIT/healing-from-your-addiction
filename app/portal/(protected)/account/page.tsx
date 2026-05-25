@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { contactMethods } from "@/lib/constants";
+import { dashboardFieldMaxLengths } from "@/lib/dashboard/formValidation";
 import { updateClientAccount } from "@/lib/dashboard/portalActions";
+import { leadFieldMaxLengths } from "@/lib/leads/constraints";
 import { getAuthProfile, getClientProfileForUser } from "@/lib/supabase/auth";
 import { createMetadata } from "@/lib/seo";
 
@@ -11,10 +13,16 @@ export const metadata: Metadata = createMetadata({
   noIndex: true,
 });
 
-type PageProps = { searchParams: Promise<{ saved?: string }> };
+type PageProps = { searchParams: Promise<{ saved?: string; error?: string }> };
+
+const accountErrorMessages: Record<string, string> = {
+  "invalid-phone": "Please enter a valid phone or WhatsApp number.",
+  "invalid-contact-method": "Please select a valid preferred contact method.",
+  "invalid-emergency-contact": "Please shorten the emergency contact details.",
+};
 
 export default async function PortalAccountPage({ searchParams }: PageProps) {
-  const { saved } = await searchParams;
+  const { saved, error } = await searchParams;
   const profile = await getAuthProfile();
   const clientProfile = profile ? await getClientProfileForUser(profile.id) : null;
 
@@ -24,11 +32,21 @@ export default async function PortalAccountPage({ searchParams }: PageProps) {
         <p className="eyebrow">Account</p>
         <h1>Your details</h1>
         {saved ? <p className="dashboard-inline-note">Your details were saved.</p> : null}
+        {error ? <p className="form-error">{accountErrorMessages[error] ?? "Unable to save those details."}</p> : null}
       </section>
       <section className="dashboard-panel">
         <form action={updateClientAccount} className="dashboard-form">
           <label className="form-field"><span>Email</span><input value={profile?.email ?? ""} disabled /></label>
-          <label className="form-field"><span>Phone</span><input name="phone" defaultValue={profile?.phone ?? ""} /></label>
+          <label className="form-field">
+            <span>Phone</span>
+            <input
+              name="phone"
+              defaultValue={profile?.phone ?? ""}
+              maxLength={leadFieldMaxLengths.phone}
+              pattern="[0-9+()\-\s]{6,32}"
+              title="Use 6 to 32 characters: digits, spaces, parentheses, plus, and hyphens."
+            />
+          </label>
           <label className="form-field">
             <span>Preferred contact method</span>
             <select name="preferredContactMethod" defaultValue={clientProfile?.preferred_contact_method ?? ""}>
@@ -38,7 +56,14 @@ export default async function PortalAccountPage({ searchParams }: PageProps) {
               ))}
             </select>
           </label>
-          <label className="form-field"><span>Emergency contact (optional)</span><input name="emergencyContact" defaultValue={clientProfile?.emergency_contact ?? ""} /></label>
+          <label className="form-field">
+            <span>Emergency contact (optional)</span>
+            <input
+              name="emergencyContact"
+              defaultValue={clientProfile?.emergency_contact ?? ""}
+              maxLength={dashboardFieldMaxLengths.emergencyContact}
+            />
+          </label>
           <button type="submit" className="button button-primary">Save changes</button>
         </form>
       </section>

@@ -4,12 +4,26 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import type { BlogSection } from "@/content/blog";
 import type { CaseStudyType } from "@/content/caseStudies";
+import {
+  cmsFieldMaxLengths,
+  sanitizeAddictionSlug,
+  sanitizeBlogCategorySlug,
+  sanitizeCaseStudyType,
+  sanitizeHeroArtSrc,
+  sanitizeOptionalMultiline,
+  sanitizeOptionalText,
+  sanitizeRequiredText,
+  sanitizeScheduledFor,
+  sanitizeSecondaryKeywordList,
+  sanitizeSectionsJson,
+  sanitizeSlug,
+  sanitizeTagSlugList,
+  sanitizeUuid,
+  sanitizeWorkflowStatus,
+} from "@/lib/cms/formValidation";
 import { cmsBlogHeroArtId, cmsCaseStudyHeroArtId } from "@/lib/cms/mappers";
 import {
   canTransitionWorkflow,
-  parseSecondaryKeywords,
-  parseSectionsJson,
-  parseTagSlugs,
   validateBlogDraft,
   validateBlogPublish,
   validateCaseStudyDraft,
@@ -39,31 +53,31 @@ async function requireAdminUser() {
 
 function parseBlogForm(formData: FormData): ParsedBlogForm {
   const sectionsRaw = String(formData.get("sectionsJson") ?? "[]");
-  const sectionsResult = parseSectionsJson(sectionsRaw);
+  const sectionsResult = sanitizeSectionsJson(sectionsRaw);
   if ("error" in sectionsResult) {
     return { error: sectionsResult.error } as const;
   }
 
-  const slug = String(formData.get("slug") ?? "").trim();
+  const slug = sanitizeSlug(String(formData.get("slug") ?? ""));
   const input: PublishableBlogInput = {
     slug,
-    title: String(formData.get("title") ?? "").trim(),
-    description: String(formData.get("description") ?? "").trim(),
-    excerpt: String(formData.get("excerpt") ?? "").trim(),
-    h1: String(formData.get("h1") ?? "").trim(),
-    primaryKeyword: String(formData.get("primaryKeyword") ?? "").trim(),
-    secondaryKeywords: parseSecondaryKeywords(String(formData.get("secondaryKeywords") ?? "")),
-    categorySlug: String(formData.get("categorySlug") ?? "").trim(),
-    tagSlugs: parseTagSlugs(String(formData.get("tagSlugs") ?? "")),
+    title: sanitizeRequiredText(String(formData.get("title") ?? ""), cmsFieldMaxLengths.title),
+    description: sanitizeRequiredText(String(formData.get("description") ?? ""), cmsFieldMaxLengths.description),
+    excerpt: sanitizeOptionalMultiline(String(formData.get("excerpt") ?? ""), cmsFieldMaxLengths.excerpt) ?? "",
+    h1: sanitizeRequiredText(String(formData.get("h1") ?? ""), cmsFieldMaxLengths.h1),
+    primaryKeyword: sanitizeRequiredText(String(formData.get("primaryKeyword") ?? ""), cmsFieldMaxLengths.keyword),
+    secondaryKeywords: sanitizeSecondaryKeywordList(String(formData.get("secondaryKeywords") ?? "")),
+    categorySlug: sanitizeBlogCategorySlug(String(formData.get("categorySlug") ?? "")),
+    tagSlugs: sanitizeTagSlugList(String(formData.get("tagSlugs") ?? "")),
     sections: sectionsResult.sections,
-    heroArtId: String(formData.get("heroArtId") ?? cmsBlogHeroArtId(slug)).trim(),
-    heroArtSrc: String(formData.get("heroArtSrc") ?? "").trim(),
-    heroArtAlt: String(formData.get("heroArtAlt") ?? "").trim(),
-    metaTitle: String(formData.get("metaTitle") ?? "").trim() || null,
-    metaDescription: String(formData.get("metaDescription") ?? "").trim() || null,
-    searchIntent: String(formData.get("searchIntent") ?? "").trim() || null,
-    conversionGoal: String(formData.get("conversionGoal") ?? "").trim() || null,
-    ogImageAlt: String(formData.get("ogImageAlt") ?? "").trim() || null,
+    heroArtId: sanitizeRequiredText(String(formData.get("heroArtId") ?? cmsBlogHeroArtId(slug)), cmsFieldMaxLengths.heroArtId),
+    heroArtSrc: sanitizeHeroArtSrc(String(formData.get("heroArtSrc") ?? "")),
+    heroArtAlt: sanitizeOptionalMultiline(String(formData.get("heroArtAlt") ?? ""), cmsFieldMaxLengths.heroArtAlt) ?? "",
+    metaTitle: sanitizeOptionalText(String(formData.get("metaTitle") ?? ""), cmsFieldMaxLengths.metaTitle),
+    metaDescription: sanitizeOptionalMultiline(String(formData.get("metaDescription") ?? ""), cmsFieldMaxLengths.metaDescription),
+    searchIntent: sanitizeOptionalText(String(formData.get("searchIntent") ?? ""), cmsFieldMaxLengths.searchIntent),
+    conversionGoal: sanitizeOptionalText(String(formData.get("conversionGoal") ?? ""), cmsFieldMaxLengths.conversionGoal),
+    ogImageAlt: sanitizeOptionalText(String(formData.get("ogImageAlt") ?? ""), cmsFieldMaxLengths.ogImageAlt),
   };
 
   return { input } as const;
@@ -77,10 +91,13 @@ function parseCaseStudyForm(formData: FormData): ParsedCaseStudyForm {
 
   const input: PublishableCaseStudyInput = {
     ...blogParsed.input,
-    legacySlug: String(formData.get("legacySlug") ?? blogParsed.input.slug).trim(),
-    caseStudyType: String(formData.get("caseStudyType") ?? "outcome") as CaseStudyType,
-    addictionSlug: String(formData.get("addictionSlug") ?? "").trim(),
-    heroArtId: String(formData.get("heroArtId") ?? cmsCaseStudyHeroArtId(blogParsed.input.slug)).trim(),
+    legacySlug: sanitizeSlug(String(formData.get("legacySlug") ?? blogParsed.input.slug)),
+    caseStudyType: (sanitizeCaseStudyType(String(formData.get("caseStudyType") ?? "outcome")) || "outcome") as CaseStudyType,
+    addictionSlug: sanitizeAddictionSlug(String(formData.get("addictionSlug") ?? "")),
+    heroArtId: sanitizeRequiredText(
+      String(formData.get("heroArtId") ?? cmsCaseStudyHeroArtId(blogParsed.input.slug)),
+      cmsFieldMaxLengths.heroArtId,
+    ),
   };
 
   return { input } as const;
@@ -164,7 +181,7 @@ export async function saveBlogPostDraft(formData: FormData) {
     redirect(`/admin/content/blog/new/?error=${encodeURIComponent(validation.errors.join(" "))}`);
   }
 
-  const id = String(formData.get("id") ?? "").trim();
+  const id = sanitizeUuid(String(formData.get("id") ?? ""));
   const row = blogRowFromInput(parsed.input, user.id, "draft");
 
   if (id) {
@@ -198,7 +215,7 @@ export async function saveCaseStudyDraft(formData: FormData) {
     redirect(`/admin/content/case-studies/new/?error=${encodeURIComponent(validation.errors.join(" "))}`);
   }
 
-  const id = String(formData.get("id") ?? "").trim();
+  const id = sanitizeUuid(String(formData.get("id") ?? ""));
   const row = caseStudyRowFromInput(parsed.input, user.id, "draft");
 
   if (id) {
@@ -228,10 +245,11 @@ async function transitionContentWorkflow(
   adminPath: string,
 ) {
   const { supabase, user } = await requireAdminUser();
-  const id = String(formData.get("id") ?? "").trim();
-  const toStatus = String(formData.get("toStatus") ?? "") as CmsWorkflowStatus;
-  const notes = String(formData.get("notes") ?? "").trim() || undefined;
-  const scheduledFor = String(formData.get("scheduledFor") ?? "").trim();
+  const id = sanitizeUuid(String(formData.get("id") ?? ""));
+  const toStatus = sanitizeWorkflowStatus(String(formData.get("toStatus") ?? "")) as CmsWorkflowStatus;
+  const notes = sanitizeOptionalMultiline(String(formData.get("notes") ?? ""), cmsFieldMaxLengths.workflowNotes);
+  const rawScheduledFor = String(formData.get("scheduledFor") ?? "");
+  const scheduledFor = sanitizeScheduledFor(rawScheduledFor);
 
   if (!id || !toStatus) redirect(adminPath);
 
@@ -284,10 +302,10 @@ async function transitionContentWorkflow(
     }
 
     if (toStatus === "scheduled") {
-      if (!scheduledFor) {
+      if (!rawScheduledFor.trim() || !scheduledFor) {
         redirect(`${adminPath}${id}/?error=${encodeURIComponent("Scheduled publish date is required.")}`);
       }
-      updatePayload.scheduled_for = new Date(scheduledFor).toISOString();
+      updatePayload.scheduled_for = scheduledFor;
       updatePayload.approved_by = user.id;
     }
 
@@ -358,10 +376,10 @@ async function transitionContentWorkflow(
   }
 
   if (toStatus === "scheduled") {
-    if (!scheduledFor) {
+    if (!rawScheduledFor.trim() || !scheduledFor) {
       redirect(`${adminPath}${id}/?error=${encodeURIComponent("Scheduled publish date is required.")}`);
     }
-    updatePayload.scheduled_for = new Date(scheduledFor).toISOString();
+    updatePayload.scheduled_for = scheduledFor;
     updatePayload.approved_by = user.id;
   }
 
@@ -392,7 +410,7 @@ export async function transitionCaseStudyWorkflow(formData: FormData) {
 export async function updateBlogFromForm(formData: FormData) {
   const { supabase, user } = await requireAdminUser();
   const parsed = parseBlogForm(formData);
-  const id = String(formData.get("id") ?? "").trim();
+  const id = sanitizeUuid(String(formData.get("id") ?? ""));
   if ("error" in parsed) {
     redirect(`/admin/content/blog/${id || "new"}/?error=${encodeURIComponent(parsed.error)}`);
   }
@@ -420,7 +438,7 @@ export async function updateBlogFromForm(formData: FormData) {
 export async function updateCaseStudyFromForm(formData: FormData) {
   const { supabase, user } = await requireAdminUser();
   const parsed = parseCaseStudyForm(formData);
-  const id = String(formData.get("id") ?? "").trim();
+  const id = sanitizeUuid(String(formData.get("id") ?? ""));
   if ("error" in parsed) {
     redirect(`/admin/content/case-studies/${id || "new"}/?error=${encodeURIComponent(parsed.error)}`);
   }

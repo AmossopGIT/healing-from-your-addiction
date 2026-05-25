@@ -47,3 +47,8 @@ export default async function EditBlogPostPage({ params, searchParams }: PagePro
     </div>
   );
 }
+
+export async function generateStaticParams() {
+  return [];
+}
+

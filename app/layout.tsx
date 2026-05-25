@@ -1,15 +1,21 @@
 ﻿import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import Script from "next/script";
+import { getRequestSurface } from "@/lib/appSurface";
+import { createPageMetadata, createViewport } from "@/lib/seo";
 import { MarketingShell } from "@/components/MarketingShell";
+import { headers } from "next/headers";
+import Script from "next/script";
 import { seoPages } from "@/content/seo";
-import { createPageMetadata } from "@/lib/seo";
 import "./globals.css";
 
 export const metadata: Metadata = createPageMetadata(seoPages.home);
+export const viewport = createViewport();
 
-export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
+export default async function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
   const gtmId = process.env.NEXT_PUBLIC_GTM_ID?.trim() || "GTM-KN8WMGXR";
+  const appSurface = await getRequestSurface();
+  const requestHeaders = await headers();
+  const currentPath = requestHeaders.get("x-current-path") ?? "/";
 
   return (
     <html lang="en-ZA">
@@ -36,7 +42,11 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             />
           </noscript>
         ) : null}
-        <MarketingShell>{children}</MarketingShell>
+        {appSurface === "public" ? (
+          <MarketingShell currentPath={currentPath}>{children}</MarketingShell>
+        ) : (
+          children
+        )}
       </body>
     </html>
   );

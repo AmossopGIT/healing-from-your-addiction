@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { dashboardFieldMaxLengths } from "@/lib/dashboard/formValidation";
 import { sendClientMessage } from "@/lib/dashboard/programmeActions";
 import { getAdminClientBundle, getClientMessages } from "@/lib/dashboard/queries";
 import { formatDashboardDate } from "@/lib/dashboard/constants";
@@ -25,7 +26,10 @@ export default async function AdminClientMessagesPage({ params }: PageProps) {
         <form action={sendClientMessage} className="dashboard-note-form">
           <input type="hidden" name="clientProfileId" value={id} />
           <input type="hidden" name="redirectTo" value={`/admin/clients/${id}/messages/`} />
-          <label className="form-field"><span>Message to client</span><textarea name="body" rows={4} required /></label>
+          <label className="form-field">
+            <span>Message to client</span>
+            <textarea name="body" rows={4} maxLength={dashboardFieldMaxLengths.messageBody} required />
+          </label>
           <button type="submit" className="button button-primary">Send message</button>
         </form>
         <ul className="dashboard-message-list">
@@ -45,3 +49,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const { id } = await params;
   return createMetadata({ title: "Client messages | Admin", description: "Client messages.", path: `/admin/clients/${id}/messages/`, noIndex: true });
 }
+
+export async function generateStaticParams() {
+  return [];
+}
+

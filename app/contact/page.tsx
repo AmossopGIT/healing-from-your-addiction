@@ -46,7 +46,7 @@ export default function ContactPage() {
 
       <section className="section" id="contact-options" aria-labelledby="contact-options-heading">
         <div className="container three-grid">
-          <article className="contact-card">
+          <article className="contact-card contact-card-channel">
             <h2 id="contact-options-heading">Follow Healing From Your Addiction</h2>
             <p>Stay connected for updates, guidance and new resources.</p>
             <div className="button-row">
@@ -72,7 +72,7 @@ export default function ContactPage() {
               </TrackedLink>
             </div>
           </article>
-          <article className="contact-card">
+          <article className="contact-card contact-card-channel">
             {whatsappArt ? (
               <WatercolorArtwork item={whatsappArt} className="card-artwork" fill sizes="(min-width: 900px) 28vw, 92vw" />
             ) : null}
@@ -86,7 +86,7 @@ export default function ContactPage() {
               WhatsApp Gerald
             </TrackedLink>
           </article>
-          <article className="contact-card">
+          <article className="contact-card contact-card-channel">
             {emailArt ? (
               <WatercolorArtwork item={emailArt} className="card-artwork" fill sizes="(min-width: 900px) 28vw, 92vw" />
             ) : null}

@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import type { BlogSection } from "@/content/blog";
+import { cmsFieldMaxLengths } from "@/lib/cms/formValidation";
 
 type CmsSectionEditorProps = {
   initialSections: BlogSection[];
@@ -36,12 +37,18 @@ export function CmsSectionEditor({ initialSections }: CmsSectionEditorProps) {
           </div>
           <label className="form-field">
             <span>H2 heading</span>
-            <input value={section.h2} onChange={(event) => updateSection(index, { h2: event.target.value })} required />
+            <input
+              value={section.h2}
+              maxLength={cmsFieldMaxLengths.sectionHeading}
+              onChange={(event) => updateSection(index, { h2: event.target.value })}
+              required
+            />
           </label>
           <label className="form-field">
             <span>Paragraphs (one per line)</span>
             <textarea
               rows={4}
+              maxLength={cmsFieldMaxLengths.sectionText * 4}
               value={section.paragraphs.join("\n")}
               onChange={(event) => updateSection(index, { paragraphs: event.target.value.split("\n") })}
             />
@@ -50,6 +57,7 @@ export function CmsSectionEditor({ initialSections }: CmsSectionEditorProps) {
             <span>Bullets (one per line, optional)</span>
             <textarea
               rows={3}
+              maxLength={cmsFieldMaxLengths.sectionText * 3}
               value={(section.bullets ?? []).join("\n")}
               onChange={(event) => {
                 const bullets = event.target.value
@@ -72,6 +80,7 @@ export function CmsSectionEditor({ initialSections }: CmsSectionEditorProps) {
         <textarea
           className="cms-json-editor"
           rows={12}
+          maxLength={cmsFieldMaxLengths.sectionsJson}
           value={sectionsJson}
           onChange={(event) => {
             try {

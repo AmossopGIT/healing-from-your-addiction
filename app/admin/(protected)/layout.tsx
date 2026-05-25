@@ -4,7 +4,10 @@ import { adminNavItems } from "@/lib/dashboard/constants";
 import { requireAuthProfile } from "@/lib/supabase/auth";
 
 export default async function AdminProtectedLayout({ children }: { children: ReactNode }) {
-  await requireAuthProfile("admin");
+  const profile =
+    process.env.NEXT_PUBLIC_STATIC_EXPORT !== "true" && process.env.GITHUB_PAGES !== "true"
+      ? await requireAuthProfile("admin")
+      : null;
 
   return (
     <DashboardShell
@@ -12,6 +15,7 @@ export default async function AdminProtectedLayout({ children }: { children: Rea
       subtitle="Lead, client, and content management"
       navItems={adminNavItems}
       variant="admin"
+      currentProfile={profile}
     >
       {children}
     </DashboardShell>

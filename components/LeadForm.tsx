@@ -5,6 +5,7 @@ import { useMemo, useState } from "react";
 import { withBasePath } from "@/lib/basePath";
 import { addictionOptions, contactMethods } from "@/lib/constants";
 import { submitLead } from "@/lib/leads";
+import { leadFieldMaxLengths } from "@/lib/leads/constraints";
 import { getCurrentSeoContext, pushDataLayer } from "@/lib/tracking";
 
 type LeadFormProps = {
@@ -141,6 +142,8 @@ export function LeadForm({
           autoComplete="name"
           value={form.fullName}
           onChange={(event) => updateField("fullName", event.target.value)}
+          minLength={2}
+          maxLength={leadFieldMaxLengths.fullName}
           required
         />
       </label>
@@ -154,6 +157,7 @@ export function LeadForm({
             autoComplete="email"
             value={form.email}
             onChange={(event) => updateField("email", event.target.value)}
+            maxLength={leadFieldMaxLengths.email}
             required
           />
         </label>
@@ -165,6 +169,8 @@ export function LeadForm({
             autoComplete="tel"
             value={form.phone}
             onChange={(event) => updateField("phone", event.target.value)}
+            minLength={6}
+            maxLength={leadFieldMaxLengths.phone}
             required
           />
         </label>
@@ -210,6 +216,7 @@ export function LeadForm({
           rows={compact ? 4 : 5}
           value={form.message}
           onChange={(event) => updateField("message", event.target.value)}
+          maxLength={leadFieldMaxLengths.message}
           placeholder="Briefly share what you would like support with."
         />
       </label>
@@ -223,6 +230,7 @@ export function LeadForm({
           autoComplete="off"
           value={form.company}
           onChange={(event) => updateField("company", event.target.value)}
+          maxLength={leadFieldMaxLengths.company}
         />
       </label>
 

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import type { ArtGalleryItem } from "@/content/artGallery";
+import { cmsFieldMaxLengths } from "@/lib/cms/formValidation";
 
 type CmsHeroArtFieldsProps = {
   contentKind: "blog" | "case-study";
@@ -108,7 +109,14 @@ export function CmsHeroArtFields({
 
       <label className="form-field">
         <span>Hero image alt text</span>
-        <textarea name="heroArtAlt" rows={3} required value={heroArtAlt} onChange={(event) => setHeroArtAlt(event.target.value)} />
+        <textarea
+          name="heroArtAlt"
+          rows={3}
+          required
+          maxLength={cmsFieldMaxLengths.heroArtAlt}
+          value={heroArtAlt}
+          onChange={(event) => setHeroArtAlt(event.target.value)}
+        />
       </label>
 
       {heroArtSrc ? (

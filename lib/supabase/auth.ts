@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import type { UserRole } from "@/types/database";
 import { createClient } from "@/lib/supabase/server";
+import { isClientOnboardingComplete } from "@/lib/supabase/onboarding";
 
 export type AuthProfile = {
   id: string;
@@ -58,4 +59,25 @@ export async function getClientProfileForUser(userId: string) {
   const supabase = await createClient();
   const { data } = await supabase.from("client_profiles").select("*").eq("user_id", userId).maybeSingle();
   return data;
+}
+
+export async function getClientPortalState() {
+  const profile = await requireAuthProfile("client");
+  const clientProfile = await getClientProfileForUser(profile.id);
+
+  return {
+    profile,
+    clientProfile,
+    onboardingComplete: isClientOnboardingComplete(clientProfile),
+  };
+}
+
+export async function requireClientPortalAccess(options?: { allowIncomplete?: boolean }) {
+  const portalState = await getClientPortalState();
+
+  if (!options?.allowIncomplete && !portalState.onboardingComplete) {
+    redirect("/portal/onboarding/");
+  }
+
+  return portalState;
 }

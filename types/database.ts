@@ -15,6 +15,8 @@ export type SessionProgressStatus = "locked" | "available" | "in_progress" | "co
 
 export type ProgrammeContentType = "hypno" | "eft" | "affirmations" | "questions" | "overview";
 
+export type PortalContentKind = "document" | "session";
+
 export type Profile = {
   id: string;
   role: UserRole;
@@ -66,6 +68,7 @@ export type ClientProfile = {
   preferred_contact_method: string | null;
   emergency_contact: string | null;
   consent_signed_at: string | null;
+  onboarding_completed_at: string | null;
   created_at: string;
 };
 
@@ -132,6 +135,56 @@ export type ClientDocument = {
   created_at: string;
 };
 
+export type ClientContentReceipt = {
+  id: string;
+  client_profile_id: string;
+  content_kind: PortalContentKind;
+  content_id: string;
+  released_at: string;
+  read_at: string | null;
+  created_at: string;
+};
+
+export type WebPushConsentState = "subscribed" | "dismissed" | "denied" | "unsubscribed";
+
+export type WebPushSubscriptionStatus = "active" | "inactive" | "failed" | "expired";
+
+export type WebPushCategory = "site_updates" | "new_resources" | "gentle_reminders";
+
+export type WebPushSubscription = {
+  id: string;
+  endpoint: string;
+  p256dh: string;
+  auth: string;
+  subscription_json: Record<string, unknown>;
+  categories: WebPushCategory[];
+  consent_state: WebPushConsentState;
+  status: WebPushSubscriptionStatus;
+  user_id: string | null;
+  visitor_id: string | null;
+  source_path: string | null;
+  user_agent: string | null;
+  last_seen_at: string;
+  last_sent_at: string | null;
+  unsubscribed_at: string | null;
+  last_error: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
+export type WebPushDeliveryLog = {
+  id: string;
+  subscription_id: string;
+  category: WebPushCategory;
+  title: string;
+  body: string;
+  target_url: string;
+  status: "sent" | "failed";
+  response_status: number | null;
+  response_body: string | null;
+  created_at: string;
+};
+
 export type AuditLog = {
   id: string;
   user_id: string | null;
@@ -192,6 +245,7 @@ export type Database = {
           preferred_contact_method?: string | null;
           emergency_contact?: string | null;
           consent_signed_at?: string | null;
+          onboarding_completed_at?: string | null;
         },
         Partial<ClientProfile>
       >;
@@ -239,6 +293,52 @@ export type Database = {
       >;
       client_messages: TableDef<ClientMessage, { client_profile_id: string; author_id: string; body: string }, Partial<ClientMessage>>;
       client_documents: TableDef<ClientDocument, { client_profile_id: string; storage_path: string; label: string; uploaded_by: string }, Partial<ClientDocument>>;
+      client_content_receipts: TableDef<
+        ClientContentReceipt,
+        {
+          client_profile_id: string;
+          content_kind: PortalContentKind;
+          content_id: string;
+          released_at?: string;
+          read_at?: string | null;
+        },
+        Partial<ClientContentReceipt>
+      >;
+      web_push_subscriptions: TableDef<
+        WebPushSubscription,
+        {
+          endpoint: string;
+          p256dh: string;
+          auth: string;
+          subscription_json?: Record<string, unknown>;
+          categories?: WebPushCategory[];
+          consent_state?: WebPushConsentState;
+          status?: WebPushSubscriptionStatus;
+          user_id?: string | null;
+          visitor_id?: string | null;
+          source_path?: string | null;
+          user_agent?: string | null;
+          last_seen_at?: string;
+          last_sent_at?: string | null;
+          unsubscribed_at?: string | null;
+          last_error?: string | null;
+        },
+        Partial<WebPushSubscription>
+      >;
+      web_push_delivery_logs: TableDef<
+        WebPushDeliveryLog,
+        {
+          subscription_id: string;
+          category: WebPushCategory;
+          title: string;
+          body: string;
+          target_url: string;
+          status: "sent" | "failed";
+          response_status?: number | null;
+          response_body?: string | null;
+        },
+        Partial<WebPushDeliveryLog>
+      >;
       audit_log: TableDef<
         AuditLog,
         { user_id?: string | null; action: string; resource_type: string; resource_id?: string | null; metadata?: Record<string, unknown> | null },

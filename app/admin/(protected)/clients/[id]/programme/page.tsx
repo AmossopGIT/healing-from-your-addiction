@@ -73,3 +73,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const { id } = await params;
   return createMetadata({ title: "Client programme | Admin", description: "Manage client programme.", path: `/admin/clients/${id}/programme/`, noIndex: true });
 }
+
+export async function generateStaticParams() {
+  return [];
+}
+

@@ -14,7 +14,7 @@ export function Footer() {
           <div className="footer-col footer-col-brand">
             <div className="footer-brand-row">
               <span className="footer-mark" aria-hidden="true">
-                <img className="footer-mark-image" src={withBasePath("/icon.png")} alt="" width={38} height={38} />
+                <img className="footer-mark-image" src={withBasePath("/icon.svg")} alt="" width={38} height={38} />
               </span>
               <p className="footer-brand">Healing From Your Addiction</p>
             </div>
@@ -22,12 +22,18 @@ export function Footer() {
               {siteConfig.owner} provides confidential hypnotherapy, EFT and pattern-focused addiction support in South Africa.
             </p>
             <p className="footer-resource-link">
-              <SiteLink href="/blog/">Resources &amp; articles</SiteLink>
+              <TrackedLink
+                href="/blog/"
+                className="footer-chip footer-resource-cta"
+                tracking={{ ctaName: "resources_footer", linkLocation: "footer_left" }}
+              >
+                Resources &amp; articles
+              </TrackedLink>
             </p>
             <div className="footer-chips" aria-label="Social media links">
               <TrackedLink
                 href="https://www.facebook.com/profile.php?id=61590084852348"
-                className="footer-chip"
+                className="footer-chip footer-chip-social"
                 target="_blank"
                 rel="noopener noreferrer"
                 tracking={{ ctaName: "facebook_footer", linkLocation: "footer_left" }}
@@ -37,7 +43,7 @@ export function Footer() {
               </TrackedLink>
               <TrackedLink
                 href="https://www.instagram.com/healingfromyouraddiction/"
-                className="footer-chip"
+                className="footer-chip footer-chip-social"
                 target="_blank"
                 rel="noopener noreferrer"
                 tracking={{ ctaName: "instagram_footer", linkLocation: "footer_left" }}

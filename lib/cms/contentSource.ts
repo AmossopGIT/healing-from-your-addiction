@@ -1,3 +1,4 @@
+import { cache } from "react";
 import {
   blogPosts as staticBlogPosts,
   blogPostBySlug as staticBlogPostBySlug,
@@ -19,27 +20,34 @@ import {
 import { isSupabaseServiceConfigured } from "@/lib/supabase/env";
 import type { CmsBlogPostRow, CmsCaseStudyRow } from "@/types/cms";
 
-let publishedBlogCache: CmsBlogPostRow[] | null = null;
-let publishedCaseStudyCache: CmsCaseStudyRow[] | null = null;
-
 function cmsReady() {
   return isCmsContentEnabled() && isSupabaseServiceConfigured();
 }
 
-export async function getMergedBlogPosts(): Promise<BlogPost[]> {
+const getPublishedCmsBlogRows = cache(async (): Promise<CmsBlogPostRow[]> => {
+  if (!cmsReady()) return [];
+  return fetchPublishedCmsBlogPosts();
+});
+
+const getPublishedCmsCaseStudyRows = cache(async (): Promise<CmsCaseStudyRow[]> => {
+  if (!cmsReady()) return [];
+  return fetchPublishedCmsCaseStudies();
+});
+
+export const getMergedBlogPosts = cache(async (): Promise<BlogPost[]> => {
   if (!cmsReady()) return staticBlogPosts;
 
-  const cmsRows = await fetchPublishedCmsBlogPosts();
-  publishedBlogCache = cmsRows;
+  const cmsRows = await getPublishedCmsBlogRows();
   const cmsSlugs = new Set(cmsRows.map((row) => row.slug));
   const cmsPosts = cmsRows.map(cmsBlogPostToBlogPost);
   const staticOnly = staticBlogPosts.filter((post) => !cmsSlugs.has(post.slug));
   return [...cmsPosts, ...staticOnly].sort((a, b) => (a.publishedAt < b.publishedAt ? 1 : -1));
-}
+});
 
 export async function getMergedBlogPostBySlug(slug: string): Promise<{ post: BlogPost; cmsRow: CmsBlogPostRow | null } | null> {
   if (cmsReady()) {
-    const cmsRow = await fetchCmsBlogPostBySlug(slug, true);
+    const cachedRow = (await getPublishedCmsBlogRows()).find((row) => row.slug === slug) ?? null;
+    const cmsRow = cachedRow ?? (await fetchCmsBlogPostBySlug(slug, true));
     if (cmsRow) {
       return { post: cmsBlogPostToBlogPost(cmsRow), cmsRow };
     }
@@ -52,20 +60,20 @@ export async function getMergedBlogPostBySlug(slug: string): Promise<{ post: Blo
   return null;
 }
 
-export async function getMergedCaseStudies(): Promise<CaseStudy[]> {
+export const getMergedCaseStudies = cache(async (): Promise<CaseStudy[]> => {
   if (!cmsReady()) return staticCaseStudies;
 
-  const cmsRows = await fetchPublishedCmsCaseStudies();
-  publishedCaseStudyCache = cmsRows;
+  const cmsRows = await getPublishedCmsCaseStudyRows();
   const cmsSlugs = new Set(cmsRows.map((row) => row.slug));
   const cmsStudies = cmsRows.map(cmsCaseStudyToCaseStudy);
   const staticOnly = staticCaseStudies.filter((study) => !cmsSlugs.has(study.slug));
   return [...cmsStudies, ...staticOnly].sort((a, b) => (a.publishedAt < b.publishedAt ? 1 : -1));
-}
+});
 
 export async function getMergedCaseStudyBySlug(slug: string): Promise<{ study: CaseStudy; cmsRow: CmsCaseStudyRow | null } | null> {
   if (cmsReady()) {
-    const cmsRow = await fetchCmsCaseStudyBySlug(slug, true);
+    const cachedRow = (await getPublishedCmsCaseStudyRows()).find((row) => row.slug === slug) ?? null;
+    const cmsRow = cachedRow ?? (await fetchCmsCaseStudyBySlug(slug, true));
     if (cmsRow) {
       return { study: cmsCaseStudyToCaseStudy(cmsRow), cmsRow };
     }

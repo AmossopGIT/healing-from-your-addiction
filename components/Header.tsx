@@ -1,9 +1,11 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
+import { FaArrowRightToBracket, FaBell, FaUser } from "react-icons/fa6";
 import { SiteLink } from "@/components/SiteLink";
 import { TrackedLink } from "@/components/TrackedLink";
+import { blogPath, blogPosts } from "@/content/blog";
 import { withBasePath } from "@/lib/basePath";
 
 type NavLink = {
@@ -21,6 +23,8 @@ const navLinks: NavLink[] = [
   { href: "/contact/", label: "Contact" },
 ];
 
+const latestHeaderArticles = blogPosts.slice(0, 3);
+
 function isActive(pathname: string | null, href: string) {
   if (!pathname) return false;
   if (href === "/") return pathname === "/";
@@ -29,10 +33,15 @@ function isActive(pathname: string | null, href: string) {
 
 export function Header() {
   const [open, setOpen] = useState(false);
+  const [portalMenuOpen, setPortalMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
+  const portalMenuRef = useRef<HTMLDivElement | null>(null);
 
-  const close = useCallback(() => setOpen(false), []);
+  const close = useCallback(() => {
+    setOpen(false);
+    setPortalMenuOpen(false);
+  }, []);
 
   useEffect(() => {
     close();
@@ -67,6 +76,28 @@ export function Header() {
     };
   }, [open, close]);
 
+  useEffect(() => {
+    function onPointerDown(event: MouseEvent) {
+      if (!portalMenuRef.current?.contains(event.target as Node)) {
+        setPortalMenuOpen(false);
+      }
+    }
+
+    function onKey(event: KeyboardEvent) {
+      if (event.key === "Escape") {
+        setPortalMenuOpen(false);
+      }
+    }
+
+    document.addEventListener("mousedown", onPointerDown);
+    document.addEventListener("keydown", onKey);
+
+    return () => {
+      document.removeEventListener("mousedown", onPointerDown);
+      document.removeEventListener("keydown", onKey);
+    };
+  }, []);
+
   const headerClass = [
     "site-header",
     open && "is-open",
@@ -82,7 +113,7 @@ export function Header() {
           <div className="header-inner">
             <SiteLink className="brand" href="/" aria-label="Healing From Your Addiction home" onClick={close}>
               <span className="brand-mark" aria-hidden="true">
-                <img className="brand-mark-image" src={withBasePath("/icon.png")} alt="" width={38} height={38} />
+                <img className="brand-mark-image" src={withBasePath("/icon.svg")} alt="" width={38} height={38} />
               </span>
               <span className="brand-text">
                 <strong>Healing From Your Addiction</strong>
@@ -102,6 +133,99 @@ export function Header() {
               ))}
             </nav>
             <div className="header-actions">
+              <div className="header-utility-links" aria-label="Portal shortcuts">
+                <TrackedLink
+                  href="/portal/login/"
+                  className="header-login-link"
+                  tracking={{ ctaName: "client_login_header", linkLocation: "header" }}
+                >
+                  <FaArrowRightToBracket className="header-utility-icon" aria-hidden="true" />
+                  <span className="header-login-label-full">Client login</span>
+                  <span className="header-login-label-short">Log in</span>
+                </TrackedLink>
+                <div className="header-utility-menu" ref={portalMenuRef}>
+                  <button
+                    type="button"
+                    className={`header-icon-button${portalMenuOpen ? " is-open" : ""}`}
+                    aria-label="Client portal shortcuts"
+                    aria-expanded={portalMenuOpen}
+                    aria-haspopup="dialog"
+                    onClick={() => setPortalMenuOpen((value) => !value)}
+                  >
+                    <FaBell className="header-utility-icon" aria-hidden="true" />
+                    <span className="visually-hidden">Client portal shortcuts</span>
+                  </button>
+                  {portalMenuOpen ? (
+                    <div className="header-utility-panel" role="dialog" aria-label="Client portal shortcuts">
+                      <div className="header-utility-panel-copy">
+                        <p className="header-utility-panel-title">Latest resources</p>
+                        <p className="header-utility-panel-text">
+                          Read the newest articles here, or open your secure client portal for messages and resources.
+                        </p>
+                      </div>
+                      <div className="header-utility-articles">
+                        {latestHeaderArticles.length ? (
+                          latestHeaderArticles.map((article) => (
+                            <SiteLink
+                              key={article.slug}
+                              href={blogPath(article.slug)}
+                              className="header-utility-article-link"
+                              onClick={() => setPortalMenuOpen(false)}
+                            >
+                              <strong>{article.title}</strong>
+                              <span>{article.excerpt}</span>
+                            </SiteLink>
+                          ))
+                        ) : (
+                          <SiteLink
+                            href="/blog/"
+                            className="header-utility-article-link"
+                            onClick={() => setPortalMenuOpen(false)}
+                          >
+                            <strong>Browse resources</strong>
+                            <span>Open the full article library.</span>
+                          </SiteLink>
+                        )}
+                      </div>
+                      <div className="header-utility-panel-links">
+                        <TrackedLink
+                          href="/portal/messages/"
+                          className="header-utility-panel-link"
+                          tracking={{ ctaName: "messages_header", linkLocation: "header_panel" }}
+                          onClick={() => setPortalMenuOpen(false)}
+                        >
+                          Secure messages
+                        </TrackedLink>
+                        <TrackedLink
+                          href="/portal/resources/"
+                          className="header-utility-panel-link"
+                          tracking={{ ctaName: "resources_header_panel", linkLocation: "header_panel" }}
+                          onClick={() => setPortalMenuOpen(false)}
+                        >
+                          New resources
+                        </TrackedLink>
+                        <TrackedLink
+                          href="/portal/account/"
+                          className="header-utility-panel-link"
+                          tracking={{ ctaName: "profile_header", linkLocation: "header_panel" }}
+                          onClick={() => setPortalMenuOpen(false)}
+                        >
+                          Account profile
+                        </TrackedLink>
+                      </div>
+                    </div>
+                  ) : null}
+                </div>
+                <TrackedLink
+                  href="/portal/login/"
+                  className="header-icon-link"
+                  aria-label="Client portal login"
+                  tracking={{ ctaName: "client_login_profile_header", linkLocation: "header" }}
+                >
+                  <FaUser className="header-utility-icon" aria-hidden="true" />
+                  <span className="visually-hidden">Client portal login</span>
+                </TrackedLink>
+              </div>
               <TrackedLink
                 href="/contact/"
                 className="button button-primary button-small header-cta"
@@ -116,7 +240,10 @@ export function Header() {
                 aria-label={open ? "Close menu" : "Open menu"}
                 aria-expanded={open}
                 aria-controls="mobile-menu"
-                onClick={() => setOpen((value) => !value)}
+                onClick={() => {
+                  setPortalMenuOpen(false);
+                  setOpen((value) => !value);
+                }}
               >
                 <span aria-hidden="true" />
                 <span aria-hidden="true" />
@@ -145,7 +272,35 @@ export function Header() {
                   </SiteLink>
                 ))}
               </nav>
+              <div className="mobile-menu-utility-links" aria-label="Portal shortcuts">
+                <TrackedLink
+                  href="/portal/messages/"
+                  className="button button-secondary"
+                  tracking={{ ctaName: "messages_header", linkLocation: "mobile_menu" }}
+                  onClick={close}
+                >
+                  <FaBell className="header-utility-icon" aria-hidden="true" />
+                  <span>Messages</span>
+                </TrackedLink>
+                <TrackedLink
+                  href="/portal/account/"
+                  className="button button-secondary"
+                  tracking={{ ctaName: "profile_header", linkLocation: "mobile_menu" }}
+                  onClick={close}
+                >
+                  <FaUser className="header-utility-icon" aria-hidden="true" />
+                  <span>Profile</span>
+                </TrackedLink>
+              </div>
               <div className="mobile-menu-actions">
+                <TrackedLink
+                  href="/portal/login/"
+                  className="button button-secondary"
+                  tracking={{ ctaName: "client_login_header", linkLocation: "mobile_menu" }}
+                  onClick={close}
+                >
+                  Client login
+                </TrackedLink>
                 <TrackedLink
                   href="/contact/"
                   className="button button-primary"

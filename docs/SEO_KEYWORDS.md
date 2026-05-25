@@ -36,6 +36,7 @@ This tracker keeps page targets, intent, and conversion goals in one human-reada
 | FAQs | `/faqs/` | addiction hypnotherapy FAQs | gambling addiction FAQs; food addiction FAQs; hypnotherapy safety; addiction program FAQs | Answer trust, safety and programme questions before enquiry. | Reduce uncertainty and move visitors into enquiry. |
 | Medical Disclaimer | `/medical-disclaimer/` | addiction support medical disclaimer | addiction emergency support; medical detox warning; hypnotherapy disclaimer; addiction safety guidance | Understand professional boundaries and urgent-care situations. | Set safe expectations and direct urgent cases to appropriate care. |
 | Privacy Policy | `/privacy-policy/` | Healing From Your Addiction privacy policy | private addiction enquiry; confidential enquiry privacy; POPIA addiction support | Understand privacy before submitting an enquiry. | Build trust around confidential enquiries. |
+| Offline Fallback | `/offline/` | offline support page | noindex | Help visitors recover gracefully when the PWA is offline. | Restore navigation once the connection returns. |
 | Admin Dashboard | `/admin/` | admin dashboard | noindex | Admin access only. | Admin login. |
 | Admin Login | `/admin/login/` | admin login | noindex | Admin access only. | Admin login. |
 | Client Portal | `/portal/` | client portal | noindex | Client access only. | Client login. |
