@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
-import { FaBell } from "react-icons/fa6";
+import { FaBell, FaRegCircleUser } from "react-icons/fa6";
 import hfyaLogo from "@/app/icon.png";
 import { SiteLink } from "@/components/SiteLink";
 import { TrackedLink } from "@/components/TrackedLink";
@@ -192,6 +192,7 @@ export function Header() {
   const primaryPortalHref = getPrimaryPortalHref(account);
   const isAdmin = account.role === "admin";
   const isSignedIn = account.isSignedIn;
+  const accountAriaLabel = isSignedIn ? `Open account for ${accountDisplayName}` : "Log in or sign up";
 
   return (
     <header className={headerClass}>
@@ -223,20 +224,16 @@ export function Header() {
               <div className="header-utility-links" aria-label="Portal shortcuts">
                 <TrackedLink
                   href={accountHref}
-                  className="header-login-link header-account-link"
+                  className="header-icon-link"
+                  aria-label={accountAriaLabel}
+                  title={accountAriaLabel}
                   tracking={{
                     ctaName: isSignedIn ? "account_header" : "client_login_header",
                     linkLocation: "header",
                   }}
                 >
-                  {isSignedIn ? (
-                    <span className="header-account-name">{accountDisplayName}</span>
-                  ) : (
-                    <>
-                      <span className="header-login-label-full">Log in / Sign up</span>
-                      <span className="header-login-label-short">Account</span>
-                    </>
-                  )}
+                  <FaRegCircleUser className="header-utility-icon" aria-hidden="true" />
+                  <span className="visually-hidden">{accountAriaLabel}</span>
                 </TrackedLink>
                 <div className="header-utility-menu" ref={portalMenuRef}>
                   <button
