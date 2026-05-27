@@ -38,7 +38,9 @@ The static output is written to `out/`.
 
 ## Lead forms and Resend
 
-Enquiry forms POST to `/api/leads/`. Configure Resend on Node/Vercel hosting — see [`docs/RESEND_SETUP.md`](docs/RESEND_SETUP.md).
+Enquiry forms POST to `/api/leads/`. Configure Resend on Node/Vercel hosting by setting `RESEND_API_KEY`, `RESEND_FROM_EMAIL`, and `LEAD_NOTIFICATION_EMAIL` on the server — see [`docs/RESEND_SETUP.md`](docs/RESEND_SETUP.md).
+
+Portal password reset and sign-up emails are sent by **Supabase Auth**. If you see “email rate limit exceeded”, enable Resend SMTP in the Supabase dashboard — see [`docs/SUPABASE_AUTH_EMAIL.md`](docs/SUPABASE_AUTH_EMAIL.md).
 
 **GitHub Pages:** static export cannot run API routes in production. Forms fall back to mailto unless you set `NEXT_PUBLIC_LEAD_ENDPOINT` to a hosted `/api/leads/` URL (for example a Vercel deployment of this repo).
 

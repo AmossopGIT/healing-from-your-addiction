@@ -4,8 +4,12 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, type FormEvent } from "react";
 import { withBasePath } from "@/lib/basePath";
+import { formatAuthError } from "@/lib/auth/formatAuthError";
 import { buildAuthEmailRedirect } from "@/lib/supabase/redirectUrl";
 import { createClient, getSupabaseBrowserConfigError } from "@/lib/supabase/client";
+
+const recoveryCooldownKey = "hfya-portal-recovery-cooldown-until";
+const recoveryCooldownMs = 60_000;
 
 export function PasswordRecoveryForm() {
   const router = useRouter();
@@ -23,6 +27,13 @@ export function PasswordRecoveryForm() {
       return;
     }
 
+    const cooldownUntil = Number(sessionStorage.getItem(recoveryCooldownKey) ?? "0");
+    if (cooldownUntil > Date.now()) {
+      const secondsLeft = Math.ceil((cooldownUntil - Date.now()) / 1000);
+      setError(`Please wait ${secondsLeft} seconds before requesting another reset link.`);
+      return;
+    }
+
     setLoading(true);
 
     const supabase = createClient();
@@ -33,10 +44,11 @@ export function PasswordRecoveryForm() {
     setLoading(false);
 
     if (resetError) {
-      setError(resetError.message);
+      setError(formatAuthError(resetError.message));
       return;
     }
 
+    sessionStorage.setItem(recoveryCooldownKey, String(Date.now() + recoveryCooldownMs));
     router.push(withBasePath("/portal/check-email/?mode=recovery"));
   }
 

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, type FormEvent } from "react";
 import { withBasePath } from "@/lib/basePath";
+import { formatAuthError } from "@/lib/auth/formatAuthError";
 import { buildAuthEmailRedirect } from "@/lib/supabase/redirectUrl";
 import { createClient, getSupabaseBrowserConfigError } from "@/lib/supabase/client";
 
@@ -48,7 +49,7 @@ export function SignupForm() {
     setLoading(false);
 
     if (signUpError) {
-      setError(signUpError.message);
+      setError(formatAuthError(signUpError.message));
       return;
     }
 
