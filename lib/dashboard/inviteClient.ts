@@ -42,7 +42,7 @@ export async function inviteClient(formData: FormData) {
   const siteUrl = getAuthEmailOrigin();
 
   const { data: inviteData, error: inviteError } = await service.auth.admin.inviteUserByEmail(email, {
-    redirectTo: `${siteUrl.replace(/\/$/, "")}/auth/callback/?next=/portal/set-password/`,
+    redirectTo: `${siteUrl.replace(/\/$/, "")}/portal/set-password/`,
     data: { role: "client", full_name: fullName },
   });
 

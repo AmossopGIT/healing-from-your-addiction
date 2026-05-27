@@ -29,10 +29,12 @@ export async function GET(request: NextRequest) {
   }
 
   const code = searchParams.get("code");
+  const tokenHash = searchParams.get("token_hash");
+  const otpType = searchParams.get("type");
   const next = resolveNextPath(searchParams.get("next"));
   const loginPath = next.startsWith("/admin/") ? "/admin/login/" : "/portal/login/";
 
-  if (!code || !getSupabaseUrl() || !getSupabaseAnonKey()) {
+  if ((!code && !tokenHash) || !getSupabaseUrl() || !getSupabaseAnonKey()) {
     return redirectNoStore(`${origin}${withBasePath(loginPath)}?error=invalid-link`);
   }
 
@@ -51,11 +53,17 @@ export async function GET(request: NextRequest) {
     },
   });
 
-  const { error } = await supabase.auth.exchangeCodeForSession(code);
-  if (error) {
-    return redirectNoStore(
-      `${origin}${withBasePath(loginPath)}?error=${encodeURIComponent("The sign-in link is invalid or has expired.")}`,
-    );
+  const authResult = code
+    ? await supabase.auth.exchangeCodeForSession(code)
+    : await supabase.auth.verifyOtp({
+        token_hash: tokenHash!,
+        type: (otpType ?? "recovery") as "recovery" | "signup" | "invite" | "email",
+      });
+
+  if (authResult.error) {
+    const recoveryPath = withBasePath("/portal/set-password/");
+    const fallbackTarget = code ? `${recoveryPath}?code=${encodeURIComponent(code)}` : recoveryPath;
+    return redirectNoStore(`${origin}${fallbackTarget}`);
   }
 
   return response;

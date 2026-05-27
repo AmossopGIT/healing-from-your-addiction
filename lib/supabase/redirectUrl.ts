@@ -1,7 +1,9 @@
 import { withBasePath } from "@/lib/basePath";
+import { siteConfig } from "@/lib/constants";
 
-const productionSiteUrl = "https://healingfromyouraddiction.co.za";
+const productionSiteUrl = siteConfig.siteUrl.replace(/\/$/, "");
 const localhostPattern = /^(https?:\/\/)?(localhost|127\.0\.0\.1)(:\d+)?$/i;
+const productionHostPattern = /healingfromyouraddiction\.co\.za$/i;
 
 function normalizeOrigin(value: string) {
   return value.replace(/\/+$/, "");
@@ -24,22 +26,30 @@ function getBrowserOrigin() {
 }
 
 export function getAuthEmailOrigin() {
-  const configured = process.env.NEXT_PUBLIC_SITE_URL?.trim();
-  const configuredOrigin = configured ? normalizeOrigin(configured) : null;
+  const configured = process.env.NEXT_PUBLIC_SITE_URL?.trim() || productionSiteUrl;
+  const configuredOrigin = normalizeOrigin(configured);
   const browserOrigin = getBrowserOrigin();
 
-  if (configuredOrigin) {
-    if (process.env.NODE_ENV === "production" && isLocalhostOrigin(configuredOrigin)) {
+  if (process.env.NODE_ENV === "production") {
+    if (isLocalhostOrigin(configuredOrigin)) {
       return productionSiteUrl;
     }
     return configuredOrigin;
   }
 
-  if (browserOrigin) {
+  if (browserOrigin && productionHostPattern.test(new URL(browserOrigin).hostname)) {
     return browserOrigin;
   }
 
-  return productionSiteUrl;
+  if (browserOrigin && !isLocalhostOrigin(browserOrigin)) {
+    return browserOrigin;
+  }
+
+  if (!isLocalhostOrigin(configuredOrigin)) {
+    return configuredOrigin;
+  }
+
+  return browserOrigin ?? productionSiteUrl;
 }
 
 export function buildAuthEmailRedirect(path: string) {

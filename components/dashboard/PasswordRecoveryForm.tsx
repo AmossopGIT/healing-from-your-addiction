@@ -27,7 +27,7 @@ export function PasswordRecoveryForm() {
 
     const supabase = createClient();
     const { error: resetError } = await supabase.auth.resetPasswordForEmail(email.trim().toLowerCase(), {
-      redirectTo: buildAuthEmailRedirect("/auth/callback/?next=/portal/set-password/"),
+      redirectTo: buildAuthEmailRedirect("/portal/set-password/"),
     });
 
     setLoading(false);

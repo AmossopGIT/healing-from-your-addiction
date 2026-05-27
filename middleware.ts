@@ -41,6 +41,20 @@ function createMiddlewareClient(request: NextRequest, requestHeaders: Headers) {
 
 export async function middleware(request: NextRequest) {
   const pathname = normalizeSurfacePath(request.nextUrl.pathname);
+  const authCode = request.nextUrl.searchParams.get("code");
+
+  if (authCode && (pathname === "/" || pathname === "/portal/login/")) {
+    const callbackUrl = new URL(withBasePath("/auth/callback/"), request.url);
+    callbackUrl.searchParams.set("code", authCode);
+    const next = request.nextUrl.searchParams.get("next");
+    if (next) {
+      callbackUrl.searchParams.set("next", next);
+    } else if (pathname === "/portal/login/") {
+      callbackUrl.searchParams.set("next", "/portal/");
+    }
+    return NextResponse.redirect(callbackUrl);
+  }
+
   const isAdminRoute = pathname.startsWith("/admin/");
   const isPortalRoute = pathname.startsWith("/portal/");
   const requestHeaders = new Headers(request.headers);

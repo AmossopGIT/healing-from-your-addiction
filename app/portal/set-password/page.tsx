@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
+import { EstablishAuthSession } from "@/components/dashboard/EstablishAuthSession";
 import { SetPasswordForm } from "@/components/dashboard/SetPasswordForm";
 import { createMetadata } from "@/lib/seo";
-import { requireClientPortalAccess } from "@/lib/supabase/auth";
 
 export const metadata: Metadata = createMetadata({
   title: "Set Password | Client Portal",
@@ -10,14 +11,22 @@ export const metadata: Metadata = createMetadata({
   noIndex: true,
 });
 
-export default async function PortalSetPasswordPage() {
-  if (process.env.NEXT_PUBLIC_STATIC_EXPORT !== "true" && process.env.GITHUB_PAGES !== "true") {
-    await requireClientPortalAccess({ allowIncomplete: true });
-  }
-
+export default function PortalSetPasswordPage() {
   return (
     <div className="auth-page">
-      <SetPasswordForm />
+      <Suspense
+        fallback={
+          <div className="auth-card">
+            <p className="eyebrow">Client portal</p>
+            <h1>Verifying your link</h1>
+            <p className="auth-description">Please wait while we confirm your secure sign-in link.</p>
+          </div>
+        }
+      >
+        <EstablishAuthSession successPath="/portal/set-password/">
+          <SetPasswordForm />
+        </EstablishAuthSession>
+      </Suspense>
     </div>
   );
 }
