@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { addLeadNote, updateLeadStatusForm } from "@/lib/dashboard/adminActions";
+import { addLeadNote, updateLeadFollowUpForm, updateLeadStatusForm } from "@/lib/dashboard/adminActions";
 import { formatDashboardDate, leadStatusLabels, leadStatusOptions } from "@/lib/dashboard/constants";
 import { dashboardFieldMaxLengths } from "@/lib/dashboard/formValidation";
 import { createClient } from "@/lib/supabase/server";
 import { createMetadata } from "@/lib/seo";
+import { resolveFirstResponseTemplate } from "@/lib/leads/firstResponseTemplates";
 
 type PageProps = { params: Promise<{ id: string }> };
 
@@ -35,6 +36,7 @@ export default async function AdminLeadDetailPage({ params }: PageProps) {
     ...note,
     profiles: authorMap.get(note.author_id) ?? null,
   }));
+  const recommendedTemplate = resolveFirstResponseTemplate(lead);
 
   return (
     <div className="dashboard-stack">
@@ -52,8 +54,25 @@ export default async function AdminLeadDetailPage({ params }: PageProps) {
             <div><dt>Preferred contact</dt><dd>{lead.preferred_contact_method}</dd></div>
             <div><dt>Addiction concern</dt><dd>{lead.addiction_concern}</dd></div>
             {lead.message ? <div><dt>Message</dt><dd>{lead.message}</dd></div> : null}
+            {lead.support_goals ? <div><dt>Support goals</dt><dd>{lead.support_goals}</dd></div> : null}
           </dl>
         </section>
+        <section className="dashboard-panel">
+          <h2>Triage summary</h2>
+          <dl className="dashboard-dl">
+            <div><dt>Triage priority</dt><dd>{lead.triage_priority ?? "routine"}</dd></div>
+            <div><dt>Risk flag</dt><dd>{lead.risk_flag ?? "standard"}</dd></div>
+            <div><dt>Target SLA</dt><dd>{lead.triage_sla_hours ? `${lead.triage_sla_hours}h` : "24h"}</dd></div>
+            <div><dt>Urgency level</dt><dd>{lead.urgency_level ?? "—"}</dd></div>
+            <div><dt>Withdrawal support level</dt><dd>{lead.withdrawal_risk ?? "—"}</dd></div>
+            <div><dt>Medical support involved</dt><dd>{lead.medical_support_involved ?? "—"}</dd></div>
+            <div><dt>Best callback window</dt><dd>{lead.callback_window ?? "—"}</dd></div>
+            <div><dt>Readiness stage</dt><dd>{lead.readiness_stage ?? "—"}</dd></div>
+            <div><dt>Follow-up consent</dt><dd>WhatsApp: {lead.follow_up_consent_whatsapp ? "Yes" : "No"} · Email: {lead.follow_up_consent_email ? "Yes" : "No"} · Phone: {lead.follow_up_consent_phone ? "Yes" : "No"}</dd></div>
+          </dl>
+        </section>
+      </div>
+      <div className="dashboard-two-col">
         <section className="dashboard-panel">
           <h2>Attribution</h2>
           <dl className="dashboard-dl">
@@ -62,6 +81,37 @@ export default async function AdminLeadDetailPage({ params }: PageProps) {
             <div><dt>Primary keyword</dt><dd>{lead.primary_keyword ?? "—"}</dd></div>
             <div><dt>UTM campaign</dt><dd>{lead.utm_campaign ?? "—"}</dd></div>
           </dl>
+        </section>
+        <section className="dashboard-panel">
+          <h2>Follow-up operations</h2>
+          <dl className="dashboard-dl">
+            <div><dt>Follow-up due</dt><dd>{lead.follow_up_due_at ? formatDashboardDate(lead.follow_up_due_at) : "Not set"}</dd></div>
+            <div><dt>First response template</dt><dd>{lead.first_response_template_id ?? "Not selected"}</dd></div>
+            <div><dt>First response sent</dt><dd>{lead.first_response_sent_at ? formatDashboardDate(lead.first_response_sent_at) : "Not sent"}</dd></div>
+            <div><dt>Assigned admin notes</dt><dd>{lead.assigned_admin_notes ?? "—"}</dd></div>
+            <div><dt>Recommended template</dt><dd>{recommendedTemplate.label}</dd></div>
+          </dl>
+          <p>{recommendedTemplate.buildMessage(lead)}</p>
+          <form action={updateLeadFollowUpForm} className="dashboard-note-form">
+            <input type="hidden" name="leadId" value={lead.id} />
+            <label className="form-field">
+              <span>First response template ID</span>
+              <input type="text" name="firstResponseTemplateId" defaultValue={lead.first_response_template_id ?? ""} maxLength={80} />
+            </label>
+            <label className="form-field">
+              <span>Follow-up due at (ISO datetime)</span>
+              <input type="text" name="followUpDueAt" defaultValue={lead.follow_up_due_at ?? ""} maxLength={40} placeholder="2026-06-10T09:00:00+02:00" />
+            </label>
+            <label className="form-field">
+              <span>Assigned admin notes</span>
+              <textarea name="assignedAdminNotes" rows={3} defaultValue={lead.assigned_admin_notes ?? ""} maxLength={1000} />
+            </label>
+            <label className="form-field">
+              <span>Response marked sent at (ISO datetime, optional)</span>
+              <input type="text" name="firstResponseSentAt" defaultValue={lead.first_response_sent_at ?? ""} maxLength={40} placeholder="2026-06-10T08:20:00+02:00" />
+            </label>
+            <button type="submit" className="button button-secondary">Save follow-up fields</button>
+          </form>
         </section>
       </div>
       <section className="dashboard-panel">

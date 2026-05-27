@@ -1,6 +1,6 @@
 # Resend lead email setup
 
-Enquiry forms post to `/api/leads/`. When Resend is configured, Gerald receives a notification email with the visitor's details and attribution fields.
+Enquiry forms post to `/api/leads/`. When Resend is configured, Gerald receives a notification email with the visitor's details, triage summary (urgency/risk/SLA), and attribution fields.
 
 ## 1. Resend account
 
@@ -17,6 +17,7 @@ Copy `.env.example` to `.env.local` and set:
 | `RESEND_API_KEY` | Yes | Server-only Resend API key |
 | `RESEND_FROM_EMAIL` | Yes | Verified sender, e.g. `Healing From Your Addiction <enquiries@healingfromyouraddiction.co.za>` |
 | `LEAD_NOTIFICATION_EMAIL` | Recommended | Inbox that receives enquiries (defaults to `NEXT_PUBLIC_CONTACT_EMAIL`) |
+| `RESEND_TO_EMAIL` | Optional | Legacy alias for the notification inbox; prefer `LEAD_NOTIFICATION_EMAIL` |
 | `LEAD_API_ALLOWED_ORIGINS` | For cross-origin forms | Comma-separated site origins allowed to POST from the browser |
 
 Never commit `.env.local` or expose `RESEND_API_KEY` as a `NEXT_PUBLIC_` variable.
@@ -33,6 +34,16 @@ npm start
 ```
 
 Set the Resend variables in your host's environment (Vercel → Project → Settings → Environment Variables).
+
+At minimum, add:
+
+```env
+RESEND_API_KEY=re_...
+RESEND_FROM_EMAIL=Healing From Your Addiction <enquiries@your-verified-domain.co.za>
+LEAD_NOTIFICATION_EMAIL=start@healingfromyouraddiction.co.za
+```
+
+If you already use `RESEND_TO_EMAIL`, the server still accepts it as a fallback, but `LEAD_NOTIFICATION_EMAIL` is the preferred name going forward.
 
 ### GitHub Pages (static preview)
 

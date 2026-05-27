@@ -7,7 +7,7 @@ import type {
 
 export type UserRole = "admin" | "client";
 
-export type LeadStatus = "new" | "contacted" | "qualified" | "enrolled" | "closed";
+export type LeadStatus = "new" | "triage_review" | "outreach_started" | "care_pathway_defined" | "qualified" | "enrolled" | "closed";
 
 export type EnrollmentStatus = "active" | "paused" | "completed";
 
@@ -33,6 +33,22 @@ export type Lead = {
   addiction_concern: string;
   preferred_contact_method: string;
   message: string | null;
+  urgency_level: "low" | "medium" | "high" | null;
+  withdrawal_risk: "none" | "mild" | "moderate" | "severe" | "unsure" | null;
+  medical_support_involved: "yes" | "no" | "planning" | null;
+  callback_window: "early_morning" | "late_morning" | "afternoon" | "evening" | "flexible" | null;
+  support_goals: string | null;
+  follow_up_consent_whatsapp: boolean;
+  follow_up_consent_email: boolean;
+  follow_up_consent_phone: boolean;
+  readiness_stage: "exploring" | "ready_now" | "currently_in_support" | null;
+  risk_flag: "standard" | "priority" | "urgent_review" | null;
+  triage_priority: "routine" | "priority" | "urgent" | null;
+  triage_sla_hours: number | null;
+  first_response_template_id: string | null;
+  first_response_sent_at: string | null;
+  assigned_admin_notes: string | null;
+  follow_up_due_at: string | null;
   source_page: string | null;
   landing_page: string | null;
   referrer: string | null;
@@ -217,6 +233,22 @@ export type Database = {
           addiction_concern: string;
           preferred_contact_method: string;
           message?: string | null;
+          urgency_level?: "low" | "medium" | "high" | null;
+          withdrawal_risk?: "none" | "mild" | "moderate" | "severe" | "unsure" | null;
+          medical_support_involved?: "yes" | "no" | "planning" | null;
+          callback_window?: "early_morning" | "late_morning" | "afternoon" | "evening" | "flexible" | null;
+          support_goals?: string | null;
+          follow_up_consent_whatsapp?: boolean;
+          follow_up_consent_email?: boolean;
+          follow_up_consent_phone?: boolean;
+          readiness_stage?: "exploring" | "ready_now" | "currently_in_support" | null;
+          risk_flag?: "standard" | "priority" | "urgent_review" | null;
+          triage_priority?: "routine" | "priority" | "urgent" | null;
+          triage_sla_hours?: number | null;
+          first_response_template_id?: string | null;
+          first_response_sent_at?: string | null;
+          assigned_admin_notes?: string | null;
+          follow_up_due_at?: string | null;
           source_page?: string | null;
           landing_page?: string | null;
           referrer?: string | null;

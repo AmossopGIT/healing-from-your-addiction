@@ -42,9 +42,23 @@ export default async function InviteClientPage({ searchParams }: PageProps) {
         <p>Send a secure email invitation so the client can set a password and access their portal.</p>
       </section>
       {error ? <p className="form-error">{inviteErrorMessages[error] ?? decodeURIComponent(error)}</p> : null}
+      {lead ? (
+        <section className="dashboard-panel">
+          <h2>Lead handoff summary</h2>
+          <dl className="dashboard-dl">
+            <div><dt>Concern</dt><dd>{lead.addiction_concern}</dd></div>
+            <div><dt>Urgency</dt><dd>{lead.urgency_level ?? "—"}</dd></div>
+            <div><dt>Withdrawal support level</dt><dd>{lead.withdrawal_risk ?? "—"}</dd></div>
+            <div><dt>Medical support involved</dt><dd>{lead.medical_support_involved ?? "—"}</dd></div>
+            <div><dt>Support goals</dt><dd>{lead.support_goals ?? "—"}</dd></div>
+            <div><dt>Preferred callback window</dt><dd>{lead.callback_window ?? "—"}</dd></div>
+          </dl>
+        </section>
+      ) : null}
       <section className="dashboard-panel">
         <form action={inviteClient} className="dashboard-form">
           <input type="hidden" name="leadId" value={leadId ?? ""} />
+          <input type="hidden" name="handoffSummary" value={lead ? `${lead.addiction_concern} | urgency:${lead.urgency_level ?? "na"} | withdrawal:${lead.withdrawal_risk ?? "na"} | goals:${lead.support_goals ?? "na"}` : ""} />
           <label className="form-field">
             <span>Full name</span>
             <input

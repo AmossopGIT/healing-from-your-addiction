@@ -5,6 +5,18 @@ export type LeadPayload = {
   addictionConcern?: string;
   preferredContactMethod?: string;
   message?: string;
+  urgencyLevel?: "low" | "medium" | "high";
+  withdrawalRisk?: "none" | "mild" | "moderate" | "severe" | "unsure";
+  medicalSupportInvolved?: "yes" | "no" | "planning";
+  callbackWindow?: "early_morning" | "late_morning" | "afternoon" | "evening" | "flexible";
+  supportGoals?: string;
+  followUpConsentWhatsApp?: boolean;
+  followUpConsentEmail?: boolean;
+  followUpConsentPhone?: boolean;
+  readinessStage?: "exploring" | "ready_now" | "currently_in_support";
+  riskFlag?: "standard" | "priority" | "urgent_review";
+  triagePriority?: "routine" | "priority" | "urgent";
+  triageSlaHours?: number;
   company?: string;
   consentEmergencyAcknowledged?: boolean;
   sourcePage?: string;

@@ -2,13 +2,15 @@ import type { LeadStatus } from "@/types/database";
 
 export const leadStatusLabels: Record<LeadStatus, string> = {
   new: "New",
-  contacted: "Contacted",
+  triage_review: "Triage review",
+  outreach_started: "Outreach started",
+  care_pathway_defined: "Care pathway defined",
   qualified: "Qualified",
   enrolled: "Enrolled",
   closed: "Closed",
 };
 
-export const leadStatusOptions: LeadStatus[] = ["new", "contacted", "qualified", "enrolled", "closed"];
+export const leadStatusOptions: LeadStatus[] = ["new", "triage_review", "outreach_started", "care_pathway_defined", "qualified", "enrolled", "closed"];
 
 export function formatDashboardDate(value: string) {
   return new Intl.DateTimeFormat("en-ZA", {

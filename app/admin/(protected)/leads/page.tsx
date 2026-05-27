@@ -38,14 +38,15 @@ export default async function AdminLeadsPage({ searchParams }: PageProps) {
         {leads?.length ? (
           <div className="dashboard-table-wrap">
             <table className="dashboard-table">
-              <thead><tr><th>Name</th><th>Email</th><th>Concern</th><th>Status</th><th>Received</th></tr></thead>
+              <thead><tr><th>Name</th><th>Concern</th><th>Triage</th><th>Status</th><th>Follow-up due</th><th>Received</th></tr></thead>
               <tbody>
                 {leads.map((lead) => (
                   <tr key={lead.id}>
                     <td><Link href={`/admin/leads/${lead.id}/`}>{lead.full_name}</Link></td>
-                    <td>{lead.email}</td>
                     <td>{lead.addiction_concern}</td>
+                    <td>{lead.triage_priority ?? "routine"} / {lead.risk_flag ?? "standard"}</td>
                     <td><span className={`status-badge status-badge-${lead.status}`}>{leadStatusLabels[lead.status]}</span></td>
+                    <td>{lead.follow_up_due_at ? formatDashboardDate(lead.follow_up_due_at) : "—"}</td>
                     <td>{formatDashboardDate(lead.created_at)}</td>
                   </tr>
                 ))}

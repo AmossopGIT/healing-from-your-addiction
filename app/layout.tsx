@@ -18,7 +18,7 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
   const currentPath = requestHeaders.get("x-current-path") ?? "/";
 
   return (
-    <html lang="en-ZA">
+    <html lang="en-ZA" suppressHydrationWarning>
       <head>
         {gtmId ? (
           <Script id="gtm" strategy="afterInteractive">

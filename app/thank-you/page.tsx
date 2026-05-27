@@ -31,7 +31,10 @@ export default function ThankYouPage() {
           <p className="eyebrow">Enquiry received</p>
           <h1 id="thank-you-heading">Thank you. Your confidential enquiry has been received.</h1>
           <p className="lead">
-            Gerald will respond as soon as possible using the contact method you selected.
+            Gerald will review your intake and respond in your preferred channel as soon as possible.
+          </p>
+          <p>
+            If your situation becomes medically urgent (for example severe withdrawal or immediate safety risk), please contact emergency services or your GP immediately.
           </p>
           <div className="button-row">
             <TrackedLink

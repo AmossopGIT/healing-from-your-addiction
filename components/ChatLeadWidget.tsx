@@ -14,6 +14,15 @@ type ChatLeadState = {
   phone: string;
   addictionConcern: string;
   preferredContactMethod: string;
+  urgencyLevel: "low" | "medium" | "high";
+  withdrawalRisk: "none" | "mild" | "moderate" | "severe" | "unsure";
+  medicalSupportInvolved: "yes" | "no" | "planning";
+  callbackWindow: "early_morning" | "late_morning" | "afternoon" | "evening" | "flexible";
+  readinessStage: "exploring" | "ready_now" | "currently_in_support";
+  supportGoals: string;
+  followUpConsentWhatsApp: boolean;
+  followUpConsentEmail: boolean;
+  followUpConsentPhone: boolean;
   message: string;
 };
 
@@ -23,6 +32,15 @@ const initialLead: ChatLeadState = {
   phone: "",
   addictionConcern: addictionOptions[0],
   preferredContactMethod: contactMethods[0],
+  urgencyLevel: "medium",
+  withdrawalRisk: "unsure",
+  medicalSupportInvolved: "planning",
+  callbackWindow: "flexible",
+  readinessStage: "exploring",
+  supportGoals: "",
+  followUpConsentWhatsApp: true,
+  followUpConsentEmail: true,
+  followUpConsentPhone: false,
   message: "",
 };
 
@@ -274,7 +292,7 @@ export function ChatLeadWidget() {
 
           <div className="chat-widget-body">
             <div className="chat-bubble chat-bubble-assistant">
-              Hello, I can help you start a private enquiry in a few quick steps.
+              Hello, I can help you start a private, non-emergency enquiry in a few quick steps.
             </div>
 
             {step === "welcome" ? (
@@ -362,7 +380,7 @@ export function ChatLeadWidget() {
             {step === "consent" ? (
               <>
                 <div className="chat-bubble chat-bubble-assistant">
-                  Last step: please confirm this is an enquiry and not emergency medical support.
+                  Last step: please confirm this is for enquiry support and not emergency medical care.
                 </div>
                 <div className="chat-actions">
                   <button type="button" className="button button-primary" onClick={submitLead} disabled={isSubmitting}>

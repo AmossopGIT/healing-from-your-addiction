@@ -84,7 +84,8 @@ export default async function ThankYouTypePage({ params }: PageProps) {
         <div className="container narrow thank-you-card">
           <p className="eyebrow">Enquiry received</p>
           <h1 id="thank-you-heading">{page.h1}</h1>
-          <p className="lead">Gerald will respond as soon as possible using the contact method you selected.</p>
+          <p className="lead">Gerald will review your intake and respond as soon as possible using the contact method you selected.</p>
+          <p>If your situation becomes medically urgent, contact emergency services or your GP immediately.</p>
           <div className="button-row">
             <TrackedLink href={whatsappHref()} className="button button-primary" tracking={{ eventName: "whatsapp_click", linkLocation: `thank_you_${type}` }}>
               WhatsApp Gerald

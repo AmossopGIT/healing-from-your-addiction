@@ -22,6 +22,15 @@ type LeadFormState = {
   phone: string;
   addictionConcern: string;
   preferredContactMethod: string;
+  urgencyLevel: "low" | "medium" | "high";
+  withdrawalRisk: "none" | "mild" | "moderate" | "severe" | "unsure";
+  medicalSupportInvolved: "yes" | "no" | "planning";
+  callbackWindow: "early_morning" | "late_morning" | "afternoon" | "evening" | "flexible";
+  readinessStage: "exploring" | "ready_now" | "currently_in_support";
+  supportGoals: string;
+  followUpConsentWhatsApp: boolean;
+  followUpConsentEmail: boolean;
+  followUpConsentPhone: boolean;
   message: string;
   website: string;
 };
@@ -51,6 +60,15 @@ export function LeadForm({
     phone: "",
     addictionConcern: defaultConcern,
     preferredContactMethod: "WhatsApp",
+    urgencyLevel: "medium",
+    withdrawalRisk: "unsure",
+    medicalSupportInvolved: "planning",
+    callbackWindow: "flexible",
+    readinessStage: "exploring",
+    supportGoals: "",
+    followUpConsentWhatsApp: true,
+    followUpConsentEmail: true,
+    followUpConsentPhone: false,
     message: "",
     website: "",
   });
@@ -67,7 +85,7 @@ export function LeadForm({
     });
   }
 
-  function updateField(field: keyof LeadFormState, value: string) {
+  function updateField(field: keyof LeadFormState, value: string | boolean) {
     setForm((current) => ({ ...current, [field]: value }));
   }
 
@@ -115,6 +133,9 @@ export function LeadForm({
         form_name: "addiction_enquiry",
         addiction_type: form.addictionConcern,
         preferred_contact_method: form.preferredContactMethod,
+        urgency_level: form.urgencyLevel,
+        readiness_stage: form.readinessStage,
+        callback_window: form.callbackWindow,
       });
 
       if (submitMode === "api") {
@@ -133,7 +154,7 @@ export function LeadForm({
       <div className="form-heading">
         <p className="eyebrow">Private enquiry</p>
         <h2>{formTitle}</h2>
-        <p className="form-note">Private, non-emergency enquiry. Gerald will respond using your preferred contact method.</p>
+        <p className="form-note">Private, non-emergency enquiry. Share only what feels safe. Gerald will respond in your preferred channel.</p>
       </div>
 
       <label>
@@ -211,6 +232,74 @@ export function LeadForm({
         </label>
       </div>
 
+      <div className="form-grid">
+        <label>
+          <span>How urgent does support feel today?</span>
+          <select name="urgencyLevel" value={form.urgencyLevel} onChange={(event) => updateField("urgencyLevel", event.target.value)} required>
+            <option value="low">Low - I am planning ahead</option>
+            <option value="medium">Medium - I want help soon</option>
+            <option value="high">High - I need support as soon as possible</option>
+          </select>
+        </label>
+        <label>
+          <span>Withdrawal or medical support needed now?</span>
+          <select name="withdrawalRisk" value={form.withdrawalRisk} onChange={(event) => updateField("withdrawalRisk", event.target.value)} required>
+            <option value="none">No current withdrawal concern</option>
+            <option value="mild">Mild discomfort</option>
+            <option value="moderate">Moderate symptoms</option>
+            <option value="severe">Severe symptoms</option>
+            <option value="unsure">Not sure</option>
+          </select>
+        </label>
+      </div>
+
+      <div className="form-grid">
+        <label>
+          <span>Are you currently working with a GP/doctor?</span>
+          <select
+            name="medicalSupportInvolved"
+            value={form.medicalSupportInvolved}
+            onChange={(event) => updateField("medicalSupportInvolved", event.target.value)}
+            required
+          >
+            <option value="planning">Planning to / open to it</option>
+            <option value="yes">Yes, already working with one</option>
+            <option value="no">No</option>
+          </select>
+        </label>
+        <label>
+          <span>Best callback window</span>
+          <select name="callbackWindow" value={form.callbackWindow} onChange={(event) => updateField("callbackWindow", event.target.value)} required>
+            <option value="early_morning">Early morning</option>
+            <option value="late_morning">Late morning</option>
+            <option value="afternoon">Afternoon</option>
+            <option value="evening">Evening</option>
+            <option value="flexible">Flexible</option>
+          </select>
+        </label>
+      </div>
+
+      <label>
+        <span>Where are you right now in this process?</span>
+        <select name="readinessStage" value={form.readinessStage} onChange={(event) => updateField("readinessStage", event.target.value)} required>
+          <option value="exploring">Exploring options</option>
+          <option value="ready_now">Ready to start now</option>
+          <option value="currently_in_support">Already in support, need extra help</option>
+        </select>
+      </label>
+
+      <label>
+        <span>What would feel like progress for you in the next 2-4 weeks?</span>
+        <input
+          type="text"
+          name="supportGoals"
+          value={form.supportGoals}
+          onChange={(event) => updateField("supportGoals", event.target.value)}
+          maxLength={leadFieldMaxLengths.supportGoals}
+          placeholder="Example: fewer urges at night, better routine, less secrecy."
+        />
+      </label>
+
       <label>
         <span>Message</span>
         <textarea
@@ -222,6 +311,26 @@ export function LeadForm({
           placeholder="Briefly share what you would like support with."
         />
       </label>
+
+      <fieldset className="consent-row">
+        <legend>Okay to follow up using:</legend>
+        <label>
+          <input
+            type="checkbox"
+            checked={form.followUpConsentWhatsApp}
+            onChange={(event) => updateField("followUpConsentWhatsApp", event.target.checked)}
+          />
+          <span>WhatsApp</span>
+        </label>
+        <label>
+          <input type="checkbox" checked={form.followUpConsentEmail} onChange={(event) => updateField("followUpConsentEmail", event.target.checked)} />
+          <span>Email</span>
+        </label>
+        <label>
+          <input type="checkbox" checked={form.followUpConsentPhone} onChange={(event) => updateField("followUpConsentPhone", event.target.checked)} />
+          <span>Phone call</span>
+        </label>
+      </fieldset>
 
       <label className="honeypot" aria-hidden="true">
         <span>Website</span>
@@ -239,8 +348,23 @@ export function LeadForm({
       </label>
 
       <label className="consent-row">
-        <input type="checkbox" checked={consent} onChange={(event) => setConsent(event.target.checked)} required />
-        <span>I understand this is an enquiry and not emergency medical support.</span>
+        <input
+          type="checkbox"
+          checked={consent}
+          onChange={(event) => {
+            const checked = event.target.checked;
+            setConsent(checked);
+            if (checked) {
+              pushDataLayer("lead_form_safety_acknowledged", {
+                form_name: "addiction_enquiry",
+                urgency_level: form.urgencyLevel,
+                withdrawal_risk: form.withdrawalRisk,
+              });
+            }
+          }}
+          required
+        />
+        <span>I understand this form is for confidential enquiry support and not emergency medical care.</span>
       </label>
 
       {error ? <p className="form-error" role="alert">{error}</p> : null}

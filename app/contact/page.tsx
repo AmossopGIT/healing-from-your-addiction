@@ -35,8 +35,8 @@ export default function ContactPage() {
       />
       <Hero
         eyebrow="Contact Gerald Crawford"
-        title="Start with a confidential enquiry"
-        description="Use the form or contact options below to ask about addiction pattern support. Choose WhatsApp, phone or email as your preferred response method."
+        title="Start with a confidential, structured enquiry"
+        description="Use the form or contact options below to share your current challenges, urgency and preferred follow-up channel. This is non-emergency support triage."
         primaryCta="Use the Enquiry Form"
         secondaryCta="WhatsApp Gerald"
         secondaryHref="#contact-options"
@@ -122,7 +122,7 @@ export default function ContactPage() {
           <p className="eyebrow">Privacy and confidentiality</p>
           <h2 id="privacy-heading">Your enquiry is treated respectfully</h2>
           <p>
-            Addiction-related enquiries can feel sensitive. The form asks only for the information needed to respond and understand the concern. Do not include emergency medical information in the form; use urgent care or emergency services where required.
+            Addiction-related enquiries can feel sensitive. The form asks only for information needed to respond safely and appropriately. If you are facing severe withdrawal symptoms, overdose risk, or immediate danger, contact emergency medical services or a doctor now.
           </p>
         </div>
       </section>

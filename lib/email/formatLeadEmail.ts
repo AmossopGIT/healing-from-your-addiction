@@ -130,12 +130,26 @@ export function formatLeadEmailText(lead: LeadPayload) {
   const lines = [
     "A new confidential enquiry was submitted on Healing From Your Addiction.",
     "",
+    "--- Triage summary ---",
+    formatLine("Triage priority", lead.triagePriority),
+    formatLine("Risk flag", lead.riskFlag),
+    formatLine("Target response SLA (hours)", lead.triageSlaHours ? String(lead.triageSlaHours) : undefined),
+    formatLine("Urgency level", lead.urgencyLevel),
+    formatLine("Withdrawal support level", lead.withdrawalRisk),
+    formatLine("Medical support involved", lead.medicalSupportInvolved),
+    formatLine("Best callback window", lead.callbackWindow),
+    formatLine("Readiness stage", lead.readinessStage),
+    "",
     formatLine("Name", lead.fullName),
     formatLine("Email", lead.email),
     formatLine("Phone / WhatsApp", lead.phone),
     formatLine("Addiction concern", lead.addictionConcern),
     formatLine("Preferred contact", lead.preferredContactMethod),
     formatLine("Message", lead.message),
+    formatLine("Support goals", lead.supportGoals),
+    formatLine("Follow-up consent WhatsApp", typeof lead.followUpConsentWhatsApp === "boolean" ? (lead.followUpConsentWhatsApp ? "Yes" : "No") : undefined),
+    formatLine("Follow-up consent Email", typeof lead.followUpConsentEmail === "boolean" ? (lead.followUpConsentEmail ? "Yes" : "No") : undefined),
+    formatLine("Follow-up consent Phone", typeof lead.followUpConsentPhone === "boolean" ? (lead.followUpConsentPhone ? "Yes" : "No") : undefined),
     formatLine("Source page", lead.sourcePage || lead.landing_page),
     "",
     "--- Attribution ---",
@@ -173,6 +187,7 @@ export function formatLeadEmailHtml(lead: LeadPayload) {
   const sitePhone = formatSouthAfricanPhone(siteConfig.phone) || siteConfig.phone;
   const message = formatValue(lead.message, "No additional message was provided.");
   const concern = formatValue(lead.addictionConcern, "Addiction support");
+  const supportGoals = formatValue(lead.supportGoals, "No specific goals shared yet.");
 
   const enquiryRows = renderDataRows([
     { label: "Name", value: lead.fullName },
@@ -182,6 +197,20 @@ export function formatLeadEmailHtml(lead: LeadPayload) {
     { label: "Preferred contact", value: preferredContact },
     { label: "Source page", value: sourcePage },
     { label: "Emergency notice acknowledged", value: formatBoolean(lead.consentEmergencyAcknowledged) },
+  ]);
+
+  const triageRows = renderDataRows([
+    { label: "Triage priority", value: lead.triagePriority },
+    { label: "Risk flag", value: lead.riskFlag },
+    { label: "Target response SLA (hours)", value: lead.triageSlaHours ? String(lead.triageSlaHours) : undefined },
+    { label: "Urgency level", value: lead.urgencyLevel },
+    { label: "Withdrawal support level", value: lead.withdrawalRisk },
+    { label: "Medical support involved", value: lead.medicalSupportInvolved },
+    { label: "Best callback window", value: lead.callbackWindow },
+    { label: "Readiness stage", value: lead.readinessStage },
+    { label: "Follow-up consent WhatsApp", value: formatBoolean(lead.followUpConsentWhatsApp) },
+    { label: "Follow-up consent Email", value: formatBoolean(lead.followUpConsentEmail) },
+    { label: "Follow-up consent Phone", value: formatBoolean(lead.followUpConsentPhone) },
   ]);
 
   const attributionRows = renderDataRows([
@@ -221,8 +250,27 @@ export function formatLeadEmailHtml(lead: LeadPayload) {
                     <div style="background:linear-gradient(180deg,#fffaf2 0%,#efe6d7 100%);border:1px solid rgba(15,91,82,0.10);border-radius:26px;padding:24px;box-shadow:0 18px 45px rgba(15,91,82,0.12);">
                       <div style="display:inline-block;margin-bottom:14px;padding:6px 12px;border-radius:999px;background:#dcebe7;color:#0a3f39;font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;">${escapeHtml(concern)}</div>
                       <p style="margin:0;color:#17231f;font-size:17px;line-height:1.75;">${escapeHtml(message)}</p>
+                      <p style="margin:14px 0 0;color:#0a3f39;font-size:15px;line-height:1.7;"><strong>Support goals:</strong> ${escapeHtml(supportGoals)}</p>
                       ${renderActionRow(leadActions)}
                     </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding:0 0 18px;">
+                    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-collapse:separate;border-spacing:0;background:#fffdf9;border:1px solid #d8ded7;border-radius:20px;overflow:hidden;">
+                      <tr>
+                        <td style="padding:24px 24px 8px;">
+                          <h2 style="margin:0;color:#17231f;font-size:22px;line-height:1.2;">Triage summary</h2>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style="padding:8px 24px 12px;">
+                          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-collapse:collapse;">
+                            ${triageRows}
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
                   </td>
                 </tr>
                 <tr>
