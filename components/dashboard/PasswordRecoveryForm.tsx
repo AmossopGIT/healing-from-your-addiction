@@ -4,15 +4,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, type FormEvent } from "react";
 import { withBasePath } from "@/lib/basePath";
+import { buildAuthEmailRedirect } from "@/lib/supabase/redirectUrl";
 import { createClient, getSupabaseBrowserConfigError } from "@/lib/supabase/client";
-
-function buildRecoveryRedirectUrl(path: string) {
-  if (typeof window === "undefined") {
-    return withBasePath(path);
-  }
-
-  return new URL(withBasePath(path), window.location.origin).toString();
-}
 
 export function PasswordRecoveryForm() {
   const router = useRouter();
@@ -34,7 +27,7 @@ export function PasswordRecoveryForm() {
 
     const supabase = createClient();
     const { error: resetError } = await supabase.auth.resetPasswordForEmail(email.trim().toLowerCase(), {
-      redirectTo: buildRecoveryRedirectUrl("/auth/callback/?next=/portal/set-password/"),
+      redirectTo: buildAuthEmailRedirect("/auth/callback/?next=/portal/set-password/"),
     });
 
     setLoading(false);

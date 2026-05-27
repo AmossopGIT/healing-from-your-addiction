@@ -12,6 +12,7 @@ import { leadFieldMaxLengths } from "@/lib/leads/constraints";
 import { logAuditEvent } from "@/lib/supabase/audit";
 import { createServiceClient } from "@/lib/supabase/service";
 import { isSupabaseServiceConfigured } from "@/lib/supabase/env";
+import { getAuthEmailOrigin } from "@/lib/supabase/redirectUrl";
 import { createClient } from "@/lib/supabase/server";
 
 export async function inviteClient(formData: FormData) {
@@ -22,6 +23,7 @@ export async function inviteClient(formData: FormData) {
   const addictionSlug = sanitizeProgrammeSlug(rawAddictionSlug);
   const rawPreferredContactMethod = String(formData.get("preferredContactMethod") ?? "");
   const preferredContactMethod = sanitizeContactMethod(rawPreferredContactMethod);
+  const handoffSummary = normalizeSingleLine(String(formData.get("handoffSummary") ?? "")).slice(0, 500);
 
   if (!email || !fullName) redirect("/admin/clients/invite/?error=missing-fields");
   if (fullName.length < 2 || fullName.length > leadFieldMaxLengths.fullName) {
@@ -37,7 +39,7 @@ export async function inviteClient(formData: FormData) {
   const { data: { user: adminUser } } = await supabase.auth.getUser();
   if (!adminUser) redirect("/admin/login/");
   const service = createServiceClient();
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+  const siteUrl = getAuthEmailOrigin();
 
   const { data: inviteData, error: inviteError } = await service.auth.admin.inviteUserByEmail(email, {
     redirectTo: `${siteUrl.replace(/\/$/, "")}/auth/callback/?next=/portal/set-password/`,
@@ -70,7 +72,7 @@ export async function inviteClient(formData: FormData) {
     action: "client_invite",
     resourceType: "client_profile",
     resourceId: clientProfile!.id,
-    metadata: { email, leadId: leadId || null },
+    metadata: { email, leadId: leadId || null, handoffSummary: handoffSummary || null },
   });
 
   redirect(`/admin/clients/${clientProfile!.id}/`);

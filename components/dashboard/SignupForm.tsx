@@ -4,15 +4,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, type FormEvent } from "react";
 import { withBasePath } from "@/lib/basePath";
+import { buildAuthEmailRedirect } from "@/lib/supabase/redirectUrl";
 import { createClient, getSupabaseBrowserConfigError } from "@/lib/supabase/client";
-
-function buildEmailRedirectUrl(path: string) {
-  if (typeof window === "undefined") {
-    return withBasePath(path);
-  }
-
-  return new URL(withBasePath(path), window.location.origin).toString();
-}
 
 export function SignupForm() {
   const router = useRouter();
@@ -49,7 +42,7 @@ export function SignupForm() {
       email: normalizedEmail,
       password,
       options: {
-        emailRedirectTo: buildEmailRedirectUrl("/auth/callback/?next=/portal/onboarding/"),
+        emailRedirectTo: buildAuthEmailRedirect("/auth/callback/?next=/portal/onboarding/"),
       },
     });
     setLoading(false);
