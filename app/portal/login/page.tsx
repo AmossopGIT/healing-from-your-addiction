@@ -10,7 +10,7 @@ export const metadata: Metadata = createMetadata({
 });
 
 type PageProps = {
-  searchParams: Promise<{ error?: string }>;
+  searchParams: Promise<{ error?: string; saved?: string }>;
 };
 
 const loginErrorMessages: Record<string, string> = {
