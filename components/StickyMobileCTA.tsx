@@ -11,7 +11,7 @@ export function StickyMobileCTA({ enquireLabel = "Enquire" }: StickyMobileCTAPro
   return (
     <div className="sticky-mobile-cta" aria-label="Mobile contact options">
       <TrackedLink
-        href="#enquiry"
+        href="/need-help/"
         className="button button-primary"
         tracking={{ ctaName: enquireLabel, payload: { cta_location: "sticky_mobile" } }}
       >

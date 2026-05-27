@@ -54,6 +54,11 @@ window.dataLayer.push({
 
 ## Events implemented
 
+- `need_help_page_view`
+- `need_help_wizard_start`
+- `need_help_wizard_step_complete`
+- `need_help_wizard_submit_attempt`
+- `need_help_wizard_submit_error`
 - `lead_form_start`
 - `lead_form_submit`
 - `lead_form_safety_acknowledged`

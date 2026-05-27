@@ -42,7 +42,22 @@ export function SetPasswordForm() {
       return;
     }
 
-    router.push(withBasePath("/portal/"));
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    const { data: profile } = user
+      ? await supabase.from("profiles").select("role").eq("id", user.id).single()
+      : { data: null };
+
+    await supabase.auth.signOut();
+
+    if (profile?.role === "admin") {
+      router.push(withBasePath("/admin/login/?saved=1"));
+      router.refresh();
+      return;
+    }
+
+    router.push(withBasePath("/portal/login/?saved=1"));
     router.refresh();
   }
 

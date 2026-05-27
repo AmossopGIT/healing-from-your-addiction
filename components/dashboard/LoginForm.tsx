@@ -34,12 +34,38 @@ export function LoginForm({ redirectTo, title, description, showClientLinks = fa
     setLoading(true);
 
     const supabase = createClient();
-    const { error: signInError } = await supabase.auth.signInWithPassword({ email, password });
+    const normalizedEmail = email.trim().toLowerCase();
+    const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
+      email: normalizedEmail,
+      password,
+    });
+
+    if (signInError) {
+      setLoading(false);
+      setError(signInError.message);
+      return;
+    }
+
+    const userId = signInData.user?.id;
+    if (!userId) {
+      setLoading(false);
+      setError("Sign-in succeeded but no user session was created. Please try again.");
+      return;
+    }
+
+    const { data: profile } = await supabase.from("profiles").select("role").eq("id", userId).single();
 
     setLoading(false);
 
-    if (signInError) {
-      setError(signInError.message);
+    if (profile?.role === "admin") {
+      router.push(withBasePath("/admin/"));
+      router.refresh();
+      return;
+    }
+
+    if (profile?.role !== "client") {
+      await supabase.auth.signOut();
+      setError("This email is not set up for the client portal. If you are staff, use the admin sign-in page.");
       return;
     }
 

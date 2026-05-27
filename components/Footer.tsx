@@ -68,14 +68,14 @@ export function Footer() {
             <h2 className="footer-heading">Contact</h2>
             <div className="footer-chips">
               <TrackedLink
-                href="/contact/"
+                href="/need-help/"
                 className="footer-chip"
                 tracking={{ ctaName: "need_help", linkLocation: "footer" }}
               >
                 Need help?
               </TrackedLink>
-              <SiteLink className="footer-chip" href="/contact/">
-                Confidential enquiry form
+              <SiteLink className="footer-chip" href="/need-help/">
+                Confidential enquiry wizard
               </SiteLink>
             </div>
           </div>

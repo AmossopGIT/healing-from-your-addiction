@@ -3,8 +3,41 @@
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState, type ReactNode } from "react";
+import { parseAuthLinkParams } from "@/lib/auth/parseAuthLinkParams";
 import { withBasePath } from "@/lib/basePath";
 import { createClient, getSupabaseBrowserConfigError } from "@/lib/supabase/client";
+import type { SupabaseClient } from "@supabase/supabase-js";
+import type { Database } from "@/types/database";
+
+async function waitForImplicitHashSession(supabase: SupabaseClient<Database>, timeoutMs = 4000) {
+  const {
+    data: { session: initialSession },
+  } = await supabase.auth.getSession();
+  if (initialSession) {
+    return true;
+  }
+
+  if (typeof window === "undefined" || !window.location.hash.includes("access_token")) {
+    return false;
+  }
+
+  return new Promise<boolean>((resolve) => {
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((event, session) => {
+      if (session && (event === "PASSWORD_RECOVERY" || event === "SIGNED_IN" || event === "INITIAL_SESSION")) {
+        window.clearTimeout(timeout);
+        subscription.unsubscribe();
+        resolve(true);
+      }
+    });
+
+    const timeout = window.setTimeout(() => {
+      subscription.unsubscribe();
+      resolve(false);
+    }, timeoutMs);
+  });
+}
 
 type EstablishAuthSessionProps = {
   children: ReactNode;
@@ -36,27 +69,29 @@ export function EstablishAuthSession({ children, successPath }: EstablishAuthSes
 
     async function establishSession() {
       const supabase = createClient();
-      const code = searchParams.get("code");
-      const tokenHash = searchParams.get("token_hash");
-      const otpType = searchParams.get("type");
+      const { code, tokenHash, otpType, hasHashAccessToken, hashType } = parseAuthLinkParams(searchParams);
 
       if (code) {
         const { error } = await supabase.auth.exchangeCodeForSession(code);
         if (cancelled) return;
 
         if (error) {
-          setErrorMessage(
-            "This reset link is invalid or has already been used. Request a new link and open it once in the same browser.",
-          );
-          setState("error");
+          const recoveredViaHash = await waitForImplicitHashSession(supabase);
+          if (cancelled) return;
+          if (!recoveredViaHash) {
+            setErrorMessage(
+              "This reset link is invalid or has already been used. Request a new link and open it once in the same browser.",
+            );
+            setState("error");
+            return;
+          }
+        } else {
+          const target = successPath ?? window.location.pathname;
+          router.replace(withBasePath(target));
+          router.refresh();
+          setState("ready");
           return;
         }
-
-        const target = successPath ?? window.location.pathname;
-        router.replace(withBasePath(target));
-        router.refresh();
-        setState("ready");
-        return;
       }
 
       if (tokenHash && otpType) {
@@ -74,6 +109,16 @@ export function EstablishAuthSession({ children, successPath }: EstablishAuthSes
           return;
         }
 
+        const target = successPath ?? window.location.pathname;
+        router.replace(withBasePath(target));
+        router.refresh();
+        setState("ready");
+        return;
+      }
+
+      const hashSessionReady = await waitForImplicitHashSession(supabase);
+      if (cancelled) return;
+      if (hashSessionReady) {
         const target = successPath ?? window.location.pathname;
         router.replace(withBasePath(target));
         router.refresh();

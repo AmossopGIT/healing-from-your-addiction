@@ -350,12 +350,12 @@ export function Header() {
                 </div>
               </div>
               <TrackedLink
-                href="/contact/"
+                href="/need-help/"
                 className="button button-primary button-small header-cta"
                 tracking={{ ctaName: "need_help", linkLocation: "header" }}
               >
                 <span className="header-cta-label-full">Need help?</span>
-                <span className="header-cta-label-short">Help</span>
+                <span className="header-cta-label-short">Need help</span>
               </TrackedLink>
               <button
                 type="button"
@@ -450,7 +450,7 @@ export function Header() {
               </div>
               <div className="mobile-menu-actions">
                 <TrackedLink
-                  href="/contact/"
+                  href="/need-help/"
                   className="button button-primary"
                   tracking={{ ctaName: "need_help", linkLocation: "mobile_menu" }}
                   onClick={close}

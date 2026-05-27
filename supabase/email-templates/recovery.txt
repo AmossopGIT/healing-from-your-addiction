@@ -1,0 +1,12 @@
+Client portal — password reset
+
+We received a request to reset the password for {{ .Email }}.
+
+Open this secure link to choose a new password:
+{{ .SiteURL }}/portal/set-password/?token_hash={{ .TokenHash }}&type=recovery
+
+If you did not request this, you can safely ignore this email.
+
+Healing From Your Addiction
+https://healingfromyouraddiction.co.za/
+start@healingfromyouraddiction.co.za

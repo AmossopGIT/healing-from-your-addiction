@@ -1,0 +1,12 @@
+Confirm your Healing From Your Addiction client portal account.
+
+Thank you for signing up with {{ .Email }}.
+
+Confirm your email address here:
+{{ .ConfirmationURL }}
+
+If you did not create this account, you can safely ignore this email.
+
+Healing From Your Addiction
+https://healingfromyouraddiction.co.za/
+start@healingfromyouraddiction.co.za

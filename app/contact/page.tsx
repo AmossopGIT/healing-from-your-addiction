@@ -1,6 +1,5 @@
 ﻿import { Disclaimer } from "@/components/Disclaimer";
 import { Hero } from "@/components/Hero";
-import { LeadForm } from "@/components/LeadForm";
 import { SchemaMarkup } from "@/components/SchemaMarkup";
 import { TrackedLink } from "@/components/TrackedLink";
 import { WatercolorArtwork } from "@/components/WatercolorArtwork";
@@ -35,42 +34,27 @@ export default function ContactPage() {
       />
       <Hero
         eyebrow="Contact Gerald Crawford"
-        title="Start with a confidential, structured enquiry"
-        description="Use the form or contact options below to share your current challenges, urgency and preferred follow-up channel. This is non-emergency support triage."
-        primaryCta="Use the Enquiry Form"
+        title="Start with a confidential enquiry"
+        description="Use the guided help wizard for a calm step-by-step intake, or reach Gerald directly by WhatsApp, email, or phone. This is non-emergency support triage."
+        primaryCta="Start the help wizard"
+        primaryHref="/need-help/"
         secondaryCta="WhatsApp Gerald"
-        secondaryHref="#contact-options"
-      >
-        <LeadForm />
-      </Hero>
+        secondaryHref={whatsappHref()}
+        heroArtId="confidential-enquiry"
+      />
 
-      <section className="section" id="contact-options" aria-labelledby="contact-options-heading">
+      <section className="section section-muted" aria-labelledby="contact-paths-heading">
         <div className="container three-grid">
           <article className="contact-card contact-card-channel">
-            <h2 id="contact-options-heading">Follow Healing From Your Addiction</h2>
-            <p>Stay connected for updates, guidance and new resources.</p>
-            <div className="button-row">
-              <TrackedLink
-                href="https://www.facebook.com/profile.php?id=61590084852348"
-                className="button button-secondary button-small"
-                target="_blank"
-                rel="noopener noreferrer"
-                tracking={{ ctaName: "facebook_contact", linkLocation: "contact_page" }}
-              >
-                <FaFacebook className="button-icon" aria-hidden="true" />
-                <span>Facebook</span>
-              </TrackedLink>
-              <TrackedLink
-                href="https://www.instagram.com/healingfromyouraddiction/"
-                className="button button-secondary button-small"
-                target="_blank"
-                rel="noopener noreferrer"
-                tracking={{ ctaName: "instagram_contact", linkLocation: "contact_page" }}
-              >
-                <FaInstagram className="button-icon" aria-hidden="true" />
-                <span>Instagram</span>
-              </TrackedLink>
-            </div>
+            <h2 id="contact-paths-heading">Guided confidential enquiry</h2>
+            <p>Best if you want a short wizard — one question at a time — with triage built in.</p>
+            <TrackedLink
+              href="/need-help/"
+              className="button button-primary"
+              tracking={{ ctaName: "need_help_wizard", linkLocation: "contact_page" }}
+            >
+              Open need help wizard
+            </TrackedLink>
           </article>
           <article className="contact-card contact-card-channel">
             {whatsappArt ? (
@@ -100,6 +84,37 @@ export default function ContactPage() {
               {siteConfig.email}
             </TrackedLink>
           </article>
+        </div>
+      </section>
+
+      <section className="section" id="contact-options" aria-labelledby="contact-more-heading">
+        <div className="container three-grid">
+          <article className="contact-card contact-card-channel">
+            <h2 id="contact-more-heading">Follow Healing From Your Addiction</h2>
+            <p>Stay connected for updates, guidance and new resources.</p>
+            <div className="button-row">
+              <TrackedLink
+                href="https://www.facebook.com/profile.php?id=61590084852348"
+                className="button button-secondary button-small"
+                target="_blank"
+                rel="noopener noreferrer"
+                tracking={{ ctaName: "facebook_contact", linkLocation: "contact_page" }}
+              >
+                <FaFacebook className="button-icon" aria-hidden="true" />
+                <span>Facebook</span>
+              </TrackedLink>
+              <TrackedLink
+                href="https://www.instagram.com/healingfromyouraddiction/"
+                className="button button-secondary button-small"
+                target="_blank"
+                rel="noopener noreferrer"
+                tracking={{ ctaName: "instagram_contact", linkLocation: "contact_page" }}
+              >
+                <FaInstagram className="button-icon" aria-hidden="true" />
+                <span>Instagram</span>
+              </TrackedLink>
+            </div>
+          </article>
           <article className="contact-card">
             {phoneArt ? (
               <WatercolorArtwork item={phoneArt} className="card-artwork" fill sizes="(min-width: 900px) 28vw, 92vw" />
@@ -122,7 +137,9 @@ export default function ContactPage() {
           <p className="eyebrow">Privacy and confidentiality</p>
           <h2 id="privacy-heading">Your enquiry is treated respectfully</h2>
           <p>
-            Addiction-related enquiries can feel sensitive. The form asks only for information needed to respond safely and appropriately. If you are facing severe withdrawal symptoms, overdose risk, or immediate danger, contact emergency medical services or a doctor now.
+            Addiction-related enquiries can feel sensitive. The help wizard asks only for information needed to respond
+            safely and appropriately. If you are facing severe withdrawal symptoms, overdose risk, or immediate danger,
+            contact emergency medical services or a doctor now.
           </p>
         </div>
       </section>

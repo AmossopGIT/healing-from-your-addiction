@@ -1,0 +1,12 @@
+You are invited to the Healing From Your Addiction client portal.
+
+Gerald Crawford has invited {{ .Email }} to set up private portal access for programme content, resources, and secure messages.
+
+Accept your invitation here:
+{{ .ConfirmationURL }}
+
+If you were not expecting this invitation, you can safely ignore this email.
+
+Healing From Your Addiction
+https://healingfromyouraddiction.co.za/
+start@healingfromyouraddiction.co.za

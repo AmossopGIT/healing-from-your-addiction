@@ -194,9 +194,27 @@ export const seoPages = {
     ],
     searchIntent: "Contact Gerald Crawford privately and choose a preferred response method.",
     pageType: "contact",
-    conversionGoal: "Submit the enquiry form or click WhatsApp, email, or phone.",
+    conversionGoal: "Open the help wizard or click WhatsApp, email, or phone.",
     ogImage: defaultOgImage,
     ogImageAlt: "Contact Healing From Your Addiction for a confidential enquiry",
+  },
+  needHelp: {
+    path: "/need-help/",
+    title: "Need Help Wizard | Confidential Addiction Enquiry | Healing From Your Addiction",
+    description:
+      "Start a short, step-by-step confidential enquiry wizard for hypnotherapy and addiction pattern support. Share your concern, urgency, and preferred contact method at your own pace.",
+    primaryKeyword: "confidential addiction help wizard",
+    secondaryKeywords: [
+      "addiction support enquiry South Africa",
+      "private hypnotherapy enquiry",
+      "step by step addiction help form",
+      "confidential gambling food addiction enquiry",
+    ],
+    searchIntent: "Complete a guided confidential enquiry without a long single-page form.",
+    pageType: "contact",
+    conversionGoal: "Start the help wizard and submit a triaged confidential enquiry.",
+    ogImage: defaultOgImage,
+    ogImageAlt: "Confidential need help wizard for addiction pattern support enquiries",
   },
   thankYou: {
     path: "/thank-you/",

@@ -80,6 +80,7 @@ export async function middleware(request: NextRequest) {
   } = await supabase.auth.getUser();
 
   const isAuthPath = ADMIN_AUTH_PATHS.has(pathname) || PORTAL_PUBLIC_PATHS.has(pathname);
+  const isSetPasswordPath = pathname === "/portal/set-password/";
 
   if (!user) {
     if (isAuthPath) {
@@ -92,9 +93,15 @@ export async function middleware(request: NextRequest) {
   const { data: profile } = await supabase.from("profiles").select("role").eq("id", user.id).single();
   const role = profile?.role;
 
+  // Password recovery must not bounce by role (avoids admin <-> portal redirect loop).
+  if (isSetPasswordPath) {
+    return getResponse();
+  }
+
   if (isAdminRoute) {
     if (role !== "admin") {
-      return NextResponse.redirect(new URL(withBasePath("/portal/"), request.url));
+      const fallback = role ? withBasePath("/portal/") : withBasePath("/portal/login/");
+      return NextResponse.redirect(new URL(fallback, request.url));
     }
     if (pathname === "/admin/login/") {
       return NextResponse.redirect(new URL(withBasePath("/admin/"), request.url));
@@ -102,8 +109,43 @@ export async function middleware(request: NextRequest) {
   }
 
   if (isPortalRoute) {
+    const isPortalPublicAuthPath = PORTAL_PUBLIC_PATHS.has(pathname);
+
+    // Login, sign-up, forgot-password, check-email, set-password must always render (no role bounce).
+    if (isPortalPublicAuthPath) {
+      if (role === "admin") {
+        return NextResponse.redirect(new URL(withBasePath("/admin/"), request.url));
+      }
+
+      if (role === "client") {
+        const { data: clientProfile } = await supabase
+          .from("client_profiles")
+          .select("id, onboarding_completed_at")
+          .eq("user_id", user.id)
+          .maybeSingle();
+        const onboardingComplete = isClientOnboardingComplete(clientProfile);
+
+        if (pathname === "/portal/login/" || pathname === "/portal/sign-up/" || pathname === "/portal/forgot-password/") {
+          const target = onboardingComplete ? "/portal/" : PORTAL_ONBOARDING_PATH;
+          return NextResponse.redirect(new URL(withBasePath(target), request.url));
+        }
+
+        if (pathname === "/portal/check-email/") {
+          const target = onboardingComplete ? "/portal/" : PORTAL_ONBOARDING_PATH;
+          return NextResponse.redirect(new URL(withBasePath(target), request.url));
+        }
+      }
+
+      return getResponse();
+    }
+
     if (role !== "client") {
-      return NextResponse.redirect(new URL(withBasePath("/admin/"), request.url));
+      if (role === "admin") {
+        return NextResponse.redirect(new URL(withBasePath("/admin/"), request.url));
+      }
+      return NextResponse.redirect(
+        new URL(`${withBasePath("/portal/login/")}?error=${encodeURIComponent("This account is not set up for the client portal.")}`, request.url),
+      );
     }
 
     const { data: clientProfile } = await supabase
@@ -120,18 +162,8 @@ export async function middleware(request: NextRequest) {
       return getResponse();
     }
 
-    if (!onboardingComplete && !PORTAL_PUBLIC_PATHS.has(pathname)) {
+    if (!onboardingComplete) {
       return NextResponse.redirect(new URL(withBasePath(PORTAL_ONBOARDING_PATH), request.url));
-    }
-
-    if (pathname === "/portal/login/" || pathname === "/portal/sign-up/" || pathname === "/portal/forgot-password/") {
-      const target = onboardingComplete ? "/portal/" : PORTAL_ONBOARDING_PATH;
-      return NextResponse.redirect(new URL(withBasePath(target), request.url));
-    }
-
-    if (pathname === "/portal/check-email/") {
-      const target = onboardingComplete ? "/portal/" : PORTAL_ONBOARDING_PATH;
-      return NextResponse.redirect(new URL(withBasePath(target), request.url));
     }
   }
 

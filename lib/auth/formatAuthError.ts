@@ -12,5 +12,13 @@ export function formatAuthError(message: string) {
     return "This link is invalid or has expired. Request a new password reset link and open it once.";
   }
 
+  if (
+    normalized.includes("error sending recovery email") ||
+    normalized.includes("error sending confirmation email") ||
+    normalized.includes("error sending")
+  ) {
+    return "We could not send the email because Supabase SMTP is misconfigured. In Supabase → Authentication → SMTP Settings, set Username to resend (literally) and Password to your Resend API key (re_...). See docs/SUPABASE_AUTH_EMAIL.md.";
+  }
+
   return message;
 }

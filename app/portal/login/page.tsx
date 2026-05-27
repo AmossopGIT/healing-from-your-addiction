@@ -18,7 +18,12 @@ const loginErrorMessages: Record<string, string> = {
 };
 
 export default async function PortalLoginPage({ searchParams }: PageProps) {
-  const { error } = await searchParams;
+  const { error, saved } = await searchParams;
+  const notice = saved
+    ? "Your password was saved. Sign in below with your new password."
+    : error
+      ? loginErrorMessages[error] ?? decodeURIComponent(error)
+      : null;
 
   return (
     <div className="auth-page">
@@ -27,7 +32,7 @@ export default async function PortalLoginPage({ searchParams }: PageProps) {
         description="Sign in to view your programme, resources, and secure messages."
         redirectTo="/portal/"
         showClientLinks
-        notice={error ? loginErrorMessages[error] ?? decodeURIComponent(error) : null}
+        notice={notice}
       />
     </div>
   );
