@@ -1422,6 +1422,59 @@ body.no-scroll {
   margin-top: 1.25rem;
 }
 
+.blog-lyric-video {
+  margin: 1.25rem 0 1.5rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--paper);
+}
+
+.blog-lyric-video-embed {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #0a1412;
+}
+
+.blog-lyric-video-embed iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.blog-lyric-video-player {
+  display: block;
+  width: 100%;
+  height: auto;
+  vertical-align: middle;
+  background: #f7f3ea;
+}
+
+.blog-lyric-video figcaption {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding: 0.85rem 1rem 1rem;
+  font-size: 0.92rem;
+  color: var(--muted);
+  border-top: 1px solid var(--line);
+}
+
+.blog-lyric-video figcaption strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.blog-lyric-video figcaption a {
+  color: var(--teal);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
 .status {
   margin-bottom: 1rem;
   width: fit-content;
@@ -3910,10 +3963,6 @@ main:not(:has(.page-hero-flush)) {
   white-space: nowrap;
 }
 
-.site-header .header-cta-label-short {
-  display: none;
-}
-
 .site-header .header-utility-panel {
   right: 0;
 }
@@ -4001,9 +4050,6 @@ main:not(:has(.page-hero-flush)) {
     max-width: 100%;
   }
 
-  .site-header .header-cta-label-short {
-    display: none;
-  }
 }
 
 @media (max-width: 1500px) {
@@ -4020,13 +4066,11 @@ main:not(:has(.page-hero-flush)) {
     padding: 0.44rem 0.62rem;
   }
 
-  .site-header .header-login-label-full,
-  .site-header .header-cta-label-full {
+  .site-header .header-login-label-full {
     display: none;
   }
 
-  .site-header .header-login-label-short,
-  .site-header .header-cta-label-short {
+  .site-header .header-login-label-short {
     display: inline;
   }
 }

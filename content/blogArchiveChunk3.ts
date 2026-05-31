@@ -67,6 +67,18 @@ export const blogPostsChunk3: BlogPost[] = [
         "bullets": []
       },
       {
+        "h2": "Same loop, new name — lyric video",
+        "paragraphs": [
+          "This song follows the cross-addiction loop in plain language: one habit eases, another urge arrives, and the same trigger–craving–relief pattern finds a new outlet. The lyrics map to the sections above — including both choruses and the bridge about pattern work and medical safety where withdrawal risk rises."
+        ],
+        "video": {
+          "title": "Same Loop, New Name — cross-addiction lyric video",
+          "youtubeId": "jv9ML5VchMY"
+        },
+        "h3Items": [],
+        "bullets": []
+      },
+      {
         "h2": "How cross-addiction commonly shows up",
         "paragraphs": [
           "These are examples, not a checklist. Many people recognise one or two patterns rather than every type."

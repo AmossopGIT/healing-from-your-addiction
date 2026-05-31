@@ -10,11 +10,19 @@ type LoginFormProps = {
   redirectTo: string;
   title: string;
   description: string;
+  portal: "admin" | "client";
   showClientLinks?: boolean;
   notice?: string | null;
 };
 
-export function LoginForm({ redirectTo, title, description, showClientLinks = false, notice = null }: LoginFormProps) {
+export function LoginForm({
+  redirectTo,
+  title,
+  description,
+  portal,
+  showClientLinks = false,
+  notice = null,
+}: LoginFormProps) {
   const router = useRouter();
   const configError = getSupabaseBrowserConfigError();
   const [email, setEmail] = useState("");
@@ -53,24 +61,48 @@ export function LoginForm({ redirectTo, title, description, showClientLinks = fa
       return;
     }
 
-    const { data: profile } = await supabase.from("profiles").select("role").eq("id", userId).single();
+    const { data: profile, error: profileError } = await supabase
+      .from("profiles")
+      .select("role")
+      .eq("id", userId)
+      .maybeSingle();
 
     setLoading(false);
 
-    if (profile?.role === "admin") {
-      router.push(withBasePath("/admin/"));
+    if (profileError) {
+      await supabase.auth.signOut();
+      setError("Signed in, but your account profile could not be loaded. Please try again or contact support.");
+      return;
+    }
+
+    if (portal === "admin") {
+      if (profile?.role === "admin") {
+        router.push(withBasePath("/admin/"));
+        router.refresh();
+        return;
+      }
+
+      await supabase.auth.signOut();
+      setError(
+        profile?.role === "client"
+          ? "This email is for the client portal. Use the client sign-in page instead."
+          : "This email is not set up for admin access.",
+      );
+      return;
+    }
+
+    if (profile?.role === "client") {
+      router.push(withBasePath(redirectTo));
       router.refresh();
       return;
     }
 
-    if (profile?.role !== "client") {
-      await supabase.auth.signOut();
-      setError("This email is not set up for the client portal. If you are staff, use the admin sign-in page.");
-      return;
-    }
-
-    router.push(withBasePath(redirectTo));
-    router.refresh();
+    await supabase.auth.signOut();
+    setError(
+      profile?.role === "admin"
+        ? "This email is for staff admin access. Use the admin sign-in page instead."
+        : "This email is not set up for the client portal.",
+    );
   }
 
   return (

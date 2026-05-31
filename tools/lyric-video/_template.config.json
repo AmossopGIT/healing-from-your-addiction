@@ -1,0 +1,15 @@
+{
+  "blogSlug": "signs-of-behavioral-addictions",
+  "songSlug": "signs-of-behavioral-addictions-TODO-song-kebab",
+  "audioPath": "C:\\Users\\amoss\\Downloads\\TODO Song Title.wav",
+  "duration": 0,
+  "bottomCrop": 8,
+  "srt": "public/videos/signs-of-behavioral-addictions-TODO-song-kebab-exact-v1.srt",
+  "loopsDir": "public/videos/loops/signs-of-behavioral-addictions",
+  "loopA": "loop-a.mp4",
+  "loopB": "loop-b.mp4",
+  "loopADownload": "",
+  "loopBDownload": "",
+  "thumbSeekSeconds": 42,
+  "previewSeekSeconds": 46
+}

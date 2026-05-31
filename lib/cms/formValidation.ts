@@ -165,11 +165,38 @@ function sanitizeSection(section: BlogSection): BlogSection {
     .filter((item) => item.h3 && item.body)
     .slice(0, 20);
 
+  const video =
+    section.video && typeof section.video.title === "string"
+      ? (() => {
+          const youtubeId =
+            typeof section.video.youtubeId === "string"
+              ? normalizeSingleLine(section.video.youtubeId).slice(0, 32)
+              : undefined;
+          const src =
+            typeof section.video.src === "string"
+              ? normalizeSingleLine(section.video.src).slice(0, 200)
+              : undefined;
+          if (!youtubeId && !src) return undefined;
+          return {
+            title: normalizeSingleLine(section.video.title).slice(0, cmsFieldMaxLengths.sectionHeading),
+            description: section.video.description
+              ? normalizeSingleLine(section.video.description).slice(0, cmsFieldMaxLengths.sectionText)
+              : undefined,
+            youtubeId,
+            src,
+            posterSrc: section.video.posterSrc
+              ? normalizeSingleLine(section.video.posterSrc).slice(0, 200)
+              : undefined,
+          };
+        })()
+      : undefined;
+
   return {
     h2: normalizeSingleLine(section.h2).slice(0, cmsFieldMaxLengths.sectionHeading),
     paragraphs,
     bullets: bullets?.length ? bullets : undefined,
     h3Items: h3Items?.length ? h3Items : undefined,
+    video,
   };
 }
 

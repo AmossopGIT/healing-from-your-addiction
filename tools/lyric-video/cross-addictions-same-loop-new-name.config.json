@@ -1,0 +1,15 @@
+{
+  "blogSlug": "cross-addictions",
+  "songSlug": "cross-addictions-same-loop-new-name",
+  "audioPath": "C:\\Users\\amoss\\Downloads\\Same Loop, New Name.wav",
+  "duration": 226.16,
+  "bottomCrop": 8,
+  "srt": "public/videos/cross-addictions-same-loop-new-name-exact-v1.srt",
+  "loopsDir": "public/videos/loops",
+  "loopA": "cross-addictions-loop-right-left.mp4",
+  "loopB": "cross-addictions-loop-yellow-pause.mp4",
+  "loopADownload": "C:\\Users\\amoss\\Downloads\\andycraitor_Create_a_minimal_seamless_looping_video_for_the_b_22c58ce5-5378-4ee7-a23e-f4eaad4f8f9a_2.mp4",
+  "loopBDownload": "C:\\Users\\amoss\\Downloads\\andycraitor_Create_a_minimal_seamless_looping_video_for_the_b_22c58ce5-5378-4ee7-a23e-f4eaad4f8f9a_0.mp4",
+  "thumbSeekSeconds": 42,
+  "previewSeekSeconds": 46
+}

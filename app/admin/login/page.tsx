@@ -13,6 +13,7 @@ export default function AdminLoginPage() {
   return (
     <div className="auth-page">
       <LoginForm
+        portal="admin"
         title="Admin sign in"
         description="Sign in to manage leads, notes, and client invitations."
         redirectTo="/admin/"

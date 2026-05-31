@@ -13,6 +13,7 @@ This directory is the source of truth for paid media campaign planning, build de
 
 - `governance/` - Messaging constraints and launch compliance checklist.
 - `framework/` - Campaign architecture, naming, lifecycle workflow, and reporting workflow.
+- `lyric-videos/` - Blog-song lyric video queue, per-article campaigns, and social publishing copy.
 - `campaigns/search/` - Human-readable campaign briefs for Search campaigns.
 - `assets/` - Shared ad assets used across campaigns.
 - `negatives/` - Human-readable negative keyword lists.

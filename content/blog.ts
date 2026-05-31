@@ -9,6 +9,16 @@ export type BlogCategory = {
   heroArtId: string;
 };
 
+export type BlogSectionVideo = {
+  title: string;
+  description?: string;
+  /** YouTube video ID (e.g. jv9ML5VchMY) — embed counts views on YouTube. */
+  youtubeId?: string;
+  /** Self-hosted MP4 when no youtubeId is set. */
+  src?: string;
+  posterSrc?: string;
+};
+
 export type BlogSection = {
   h2: string;
   paragraphs: string[];
@@ -17,6 +27,7 @@ export type BlogSection = {
     body: string;
   }>;
   bullets?: string[];
+  video?: BlogSectionVideo;
 };
 
 export type BlogPost = {

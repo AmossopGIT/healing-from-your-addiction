@@ -28,6 +28,7 @@ export default async function PortalLoginPage({ searchParams }: PageProps) {
   return (
     <div className="auth-page">
       <LoginForm
+        portal="client"
         title="Client portal sign in"
         description="Sign in to view your programme, resources, and secure messages."
         redirectTo="/portal/"

@@ -9,10 +9,14 @@ SET onboarding_completed_at = COALESCE(onboarding_completed_at, created_at)
 WHERE onboarding_completed_at IS NULL;
 
 -- Public self-signup should never be able to self-assign admin via user metadata.
-CREATE OR REPLACE FUNCTION handle_new_user()
-RETURNS TRIGGER AS $$
+CREATE OR REPLACE FUNCTION public.handle_new_user()
+RETURNS TRIGGER
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public
+AS $$
 BEGIN
-  INSERT INTO profiles (id, role, full_name)
+  INSERT INTO public.profiles (id, role, full_name)
   VALUES (
     NEW.id,
     CASE
@@ -25,4 +29,4 @@ BEGIN
 
   RETURN NEW;
 END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
+$$;

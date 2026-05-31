@@ -1,4 +1,5 @@
 import type { BlogSection } from "@/content/blog";
+import { BlogLyricVideo } from "@/components/BlogLyricVideo";
 
 type ContentArticleBodyProps = {
   sections: BlogSection[];
@@ -10,6 +11,15 @@ export function ContentArticleBody({ sections }: ContentArticleBodyProps) {
       {sections.map((section) => (
         <section key={section.h2} className="blog-section">
           <h2>{section.h2}</h2>
+          {section.video ? (
+            <BlogLyricVideo
+              title={section.video.title}
+              description={section.video.description}
+              youtubeId={section.video.youtubeId}
+              src={section.video.src}
+              posterSrc={section.video.posterSrc}
+            />
+          ) : null}
           {section.paragraphs.map((paragraph) => (
             <p key={paragraph}>{paragraph}</p>
           ))}
