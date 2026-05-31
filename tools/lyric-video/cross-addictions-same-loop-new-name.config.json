@@ -5,6 +5,7 @@
   "duration": 226.16,
   "bottomCrop": 8,
   "srt": "public/videos/cross-addictions-same-loop-new-name-exact-v1.srt",
+  "skipLyricSync": true,
   "loopsDir": "public/videos/loops",
   "loopA": "cross-addictions-loop-right-left.mp4",
   "loopB": "cross-addictions-loop-yellow-pause.mp4",

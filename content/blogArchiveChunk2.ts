@@ -5,8 +5,10 @@ export const blogPostsChunk2: BlogPost[] = [
   {
     "slug": "signs-of-behavioral-addictions",
     "title": "Signs of Behavioral Addictions",
-    "description": "Behavioral (process) addictions don’t involve substances—but they activate the same reward system and follow the same loop: Trigger → Craving → Behavior → Rewar",
-    "excerpt": "Behavioral (process) addictions don’t involve substances—but they activate the same reward system and follow the same loop:",
+    "description":
+      "Behavioral addictions follow the same trigger–craving–behaviour–reward loop as substances, without chemicals. Learn core warning signs across gambling, screens, food, and more.",
+    "excerpt":
+      "Process addictions don't involve substances—but they activate the same reward system. Here are the core signs that a behaviour may have become a compulsive pattern.",
     "h1": "Signs of Behavioral Addictions",
     "primaryKeyword": "signs of behavioral addictions",
     "secondaryKeywords": [
@@ -18,6 +20,7 @@ export const blogPostsChunk2: BlogPost[] = [
     "categorySlug": "addiction-recovery",
     "tagSlugs": [
       "addiction-recovery",
+      "behavioral-addictions",
       "hypnotherapy",
       "relapse-prevention",
       "south-africa"
@@ -26,200 +29,238 @@ export const blogPostsChunk2: BlogPost[] = [
     "publishedAt": "2026-04-28",
     "sections": [
       {
-        "h2": "Overview",
+        "h2": "What counts as a behavioral addiction",
         "paragraphs": [
-          "Behavioral (process) addictions don’t involve substances—but they activate the same reward system and follow the same loop:",
-          "Instead of chemicals, the “high” comes from dopamine linked to actions (winning, scrolling, buying, attention, etc.)."
+          "Behavioral (process) addictions don't involve substances—but they activate the same reward system and follow the same loop: trigger, craving, behaviour, brief relief, then repeat.",
+          "Instead of chemicals, the \"high\" comes from dopamine linked to actions: winning, scrolling, buying, attention, achievement, or escape. Because many of these behaviours are normal parts of daily life, the pattern can be harder to recognise than substance use.",
+          "This article describes common warning signs across behavioural addictions. It is educational, not a diagnosis. If you are worried about your safety or someone else's, seek appropriate professional or emergency support."
         ],
         "h3Items": [],
         "bullets": []
       },
       {
-        "h2": "Core Signs (Across All Behavioral Addictions)",
-        "paragraphs": [],
+        "h2": "Core signs across all behavioral addictions",
+        "paragraphs": [
+          "These seven patterns appear across gambling, screens, food, shopping, and other process addictions. You may recognise one or several—not every sign needs to be present for the pattern to matter."
+        ],
         "h3Items": [
           {
             "h3": "1. Loss of control",
-            "body": ""
+            "body": "You do the behaviour longer or more often than intended, and repeated attempts to cut down don't hold."
           },
           {
             "h3": "2. Preoccupation",
-            "body": ""
+            "body": "The activity occupies your thoughts. You plan when and how to do it again, even when other tasks need attention."
           },
           {
-            "h3": "3. Cravings / urges",
-            "body": ""
+            "h3": "3. Cravings and urges",
+            "body": "A strong pull to engage appears—often at predictable times, places, or emotional states. Restlessness builds when you can't act on the urge."
           },
           {
             "h3": "4. Emotional dependence",
-            "body": ""
+            "body": "The behaviour becomes a primary way to cope with stress, anxiety, loneliness, boredom, or low mood. Relief is real but usually brief."
           },
           {
-            "h3": "5. Tolerance (behavioral version)",
-            "body": ""
+            "h3": "5. Tolerance (behavioural version)",
+            "body": "You need more time, intensity, risk, or novelty to get the same effect. What once felt enough no longer does."
           },
           {
             "h3": "6. Negative consequences",
-            "body": ""
+            "body": "Work, finances, health, sleep, or relationships are affected—and the behaviour continues despite the harm."
           },
           {
-            "h3": "7. Withdrawal-like symptoms",
-            "body": "When stopping:"
+            "h3": "7. Withdrawal-like symptoms when stopping",
+            "body": "When you try to pause or reduce, irritability, anxiety, low mood, or restlessness can appear—even without a physical substance."
           }
         ],
-        "bullets": [
-          "Doing the behavior longer than intended",
-          "Repeated failed attempts to cut down",
-          "Constant thinking about the activity",
-          "Planning when/how to do it again",
-          "Strong pull to engage",
-          "Restlessness when unable to",
-          "Using the behavior to cope with: Stress Anxiety Loneliness Boredom",
-          "Needing more time or intensity for the same effect",
-          "Work, finances, health, or relationships affected",
-          "Continuing despite harm",
-          "Irritability",
-          "Anxiety",
-          "Low mood",
-          "Restlessness"
-        ]
+        "bullets": []
       },
       {
         "h2": "Gambling (Gambling Disorder)",
-        "paragraphs": [],
+        "artId": "gambling",
+        "paragraphs": [
+          "Gambling disorder is recognised in clinical frameworks. Warning signs often include chasing losses and escalating risk to recover money or excitement."
+        ],
         "h3Items": [],
         "bullets": [
-          "Chasing losses",
-          "Increasing bet size",
-          "Financial secrecy or debt"
+          "Chasing losses — returning to win back what was lost",
+          "Increasing bet size or frequency over time",
+          "Financial secrecy, debt, or borrowing to gamble",
+          "Irritability or restlessness when unable to gamble"
         ]
       },
       {
         "h2": "Internet addiction",
-        "paragraphs": [],
+        "paragraphs": [
+          "Problematic internet use often shows up as time distortion and neglect of offline responsibilities rather than a single app or site."
+        ],
         "h3Items": [],
         "bullets": [
-          "Excessive time online",
-          "Neglect of offline life",
-          "Loss of time awareness"
+          "Excessive time online with difficulty stopping",
+          "Neglect of offline life, sleep, or relationships",
+          "Loss of time awareness — hours passing unnoticed",
+          "Using the internet mainly for escape or numbness"
         ]
       },
       {
         "h2": "Social media addiction",
-        "paragraphs": [],
+        "paragraphs": [
+          "Social media patterns often tie mood to feedback loops: likes, comments, comparison, and the pull to check again."
+        ],
         "h3Items": [],
         "bullets": [
-          "Constant checking",
-          "Mood tied to likes/comments",
-          "Comparison and validation seeking"
+          "Constant checking, even in inappropriate moments",
+          "Mood tied closely to likes, comments, or follower changes",
+          "Comparison and validation-seeking that affects self-worth",
+          "Difficulty being present offline"
         ]
       },
       {
         "h2": "Gaming addiction (Internet Gaming Disorder)",
-        "paragraphs": [],
+        "paragraphs": [
+          "Gaming disorder involves impaired control and priority given to gaming over other life areas, often with long uninterrupted sessions."
+        ],
         "h3Items": [],
         "bullets": [
-          "Long, uninterrupted sessions",
-          "Neglecting sleep or responsibilities",
-          "Emotional dependence on in-game progress"
+          "Long, uninterrupted sessions that are hard to end",
+          "Neglecting sleep, meals, or responsibilities",
+          "Emotional dependence on in-game progress or status",
+          "Irritability or distress when gaming is restricted"
         ]
       },
       {
         "h2": "Pornography addiction",
-        "paragraphs": [],
+        "paragraphs": [
+          "Compulsive pornography use often involves escalation, secrecy, and reduced engagement with real-life intimacy or connection."
+        ],
         "h3Items": [],
         "bullets": [
-          "Escalation in content or frequency",
-          "Secrecy and guilt",
-          "Reduced real-life engagement"
+          "Escalation in content type or frequency over time",
+          "Secrecy, shame, or guilt around use",
+          "Reduced real-life sexual or emotional engagement",
+          "Using pornography mainly to regulate mood or stress"
         ]
       },
       {
         "h2": "Sex addiction",
-        "paragraphs": [],
+        "paragraphs": [
+          "Compulsive sexual behaviour patterns may involve risk, repetition despite consequences, and emotional highs followed by crashes."
+        ],
         "h3Items": [],
         "bullets": [
-          "Risky or compulsive sexual behavior",
-          "Repeated patterns despite consequences",
-          "Emotional highs and crashes"
+          "Risky or compulsive sexual behaviour that feels driven rather than chosen",
+          "Repeated patterns despite relationship or health consequences",
+          "Emotional highs and crashes after acting out",
+          "Preoccupation that interferes with daily life"
         ]
       },
       {
         "h2": "Shopping addiction (compulsive buying)",
-        "paragraphs": [],
+        "paragraphs": [
+          "Compulsive buying is often less about the item and more about the brief relief of purchase—followed by regret or financial pressure."
+        ],
         "h3Items": [],
         "bullets": [
-          "Impulsive purchases",
-          "Buying for emotional relief",
-          "Financial stress or debt"
+          "Impulsive purchases that weren't planned",
+          "Buying mainly for emotional relief, not need",
+          "Financial stress, debt, or hiding spending",
+          "Guilt or shame after buying"
         ]
       },
       {
         "h2": "Food addiction / Binge Eating Disorder",
-        "paragraphs": [],
+        "artId": "food-binge-eating",
+        "paragraphs": [
+          "Binge eating patterns involve loss of control over eating quantity or speed, often followed by guilt or shame. This is distinct from occasional overeating."
+        ],
         "h3Items": [],
         "bullets": [
-          "Eating large amounts quickly",
-          "Loss of control",
-          "Guilt and shame after"
+          "Eating large amounts quickly, beyond comfortable fullness",
+          "Loss of control during eating episodes",
+          "Guilt, shame, or distress afterward",
+          "Using food as the main way to cope with difficult emotions"
         ]
       },
       {
         "h2": "Exercise addiction",
-        "paragraphs": [],
+        "paragraphs": [
+          "Exercise addiction can hide behind \"healthy\" labels. The key question is whether training continues despite injury, rest needs, or life imbalance."
+        ],
         "h3Items": [],
         "bullets": [
-          "Training despite injury",
-          "Anxiety when missing workouts",
-          "Compulsive routine"
+          "Training despite injury or medical advice to rest",
+          "Anxiety, irritability, or guilt when missing workouts",
+          "Compulsive routine that overrides other priorities",
+          "Exercise used mainly to avoid feelings rather than for wellbeing"
         ]
       },
       {
         "h2": "Work addiction (workaholism)",
-        "paragraphs": [],
+        "paragraphs": [
+          "Workaholism is not simply working hard—it is difficulty stopping, guilt when resting, and life organised around work as the primary source of worth or relief."
+        ],
         "h3Items": [],
         "bullets": [
-          "Inability to stop working",
-          "Guilt when resting",
-          "Burnout and life imbalance"
+          "Inability to stop working or mentally switch off",
+          "Guilt or anxiety when resting or taking leave",
+          "Burnout paired with continued overwork",
+          "Relationships or health neglected for work"
         ]
       },
       {
         "h2": "Key difference vs substance addiction",
         "paragraphs": [
-          "But both use the same brain system"
+          "Behavioral addictions don't usually involve physical withdrawal in the same way as alcohol, opioids, or benzodiazepines. There may be no obvious \"substance\" to remove.",
+          "But both behavioural and substance addictions use the same brain reward system: trigger, craving, behaviour, brief relief, reinforcement, repeat. That shared loop is why pattern-focused support can address many types of addiction—not only one label.",
+          "For substance dependence with medical withdrawal risk, professional medical guidance is essential. Behavioural patterns still deserve serious attention when control, mood, and life areas are affected."
         ],
         "h3Items": [],
         "bullets": []
       },
       {
         "h2": "When it becomes serious",
-        "paragraphs": [],
-        "h3Items": [],
-        "bullets": [
-          "You feel controlled by the behavior",
-          "It replaces important parts of life",
-          "You can’t stop despite wanting to",
-          "Your mood depends on it"
-        ]
-      },
-      {
-        "h2": "The deeper truth",
         "paragraphs": [
-          "Behavioral addictions are often harder to spot because:",
-          "But internally:"
+          "Many people recognise themselves in one or two signs without every item on a list. These markers suggest the pattern may need more than willpower alone:"
         ],
         "h3Items": [],
         "bullets": [
-          "They’re socially acceptable",
-          "They’re often part of daily life",
-          "There’s no obvious physical sign"
+          "You feel controlled by the behaviour rather than choosing it",
+          "It replaces important parts of life — connection, rest, work, or health",
+          "You can't stop despite wanting to, or pauses don't last",
+          "Your mood depends heavily on the behaviour or on being able to do it",
+          "Secrecy, shame, or conflict around the pattern is increasing"
         ]
       },
       {
-        "h2": "Grounded perspective",
+        "h2": "Why behavioral addictions are harder to spot",
         "paragraphs": [
-          "It’s not about the activity—it’s about:"
+          "Behavioral addictions are often harder to spot because they can look like normal life: scrolling, shopping, working late, training hard, or socialising online.",
+          "There may be no track marks, no bottle, no obvious physical sign. Internally, though, the same loop can be running — and the cost can be just as real in sleep, relationships, money, and mood."
+        ],
+        "h3Items": [],
+        "bullets": [
+          "They're socially acceptable or even praised (productivity, fitness, hustle)",
+          "They're built into daily routines and devices",
+          "There's no single \"substance\" to remove — the trigger is often context or emotion",
+          "Shame can delay asking for help"
+        ]
+      },
+      {
+        "h2": "The signs of my trigger — lyric video",
+        "artId": "blog-signs-of-behavioral-addictions-recovery-path",
+        "paragraphs": [
+          "\"The Signs of My Trigger\" is written for this article — not the cross-addictions song. It uses a sad, metaphorical lens (trigger, the road, the pause) to name the same reward loop without a substance: loss of control, cravings, tolerance, harm, and the behavioural addictions listed above.",
+          "The lyric video is in production. When it is live here, it will use calm, pattern-focused framing — not a diagnosis, and not emergency care."
+        ],
+        "h3Items": [],
+        "bullets": []
+      },
+      {
+        "h2": "Grounded perspective and next steps",
+        "paragraphs": [
+          "Recognising signs of behavioral addictions is not about labelling yourself. It's about noticing whether an activity has become the main way you cope, escape, or feel okay — and whether the loop is costing you more than it gives.",
+          "Pattern-focused support — including hypnotherapy and EFT-informed methods — may help with trigger awareness, urge pauses, and new responses. This is supportive work, not a cure guarantee, and it does not replace medical or psychiatric care where needed.",
+          "If several signs above resonate, a confidential enquiry can be a calm first step. You can also read about cross-addictions, the unified addiction loop model, or signs of substance addictions for the full picture."
         ],
         "h3Items": [],
         "bullets": []

@@ -5,7 +5,7 @@
 | Status | Published | Blog slug | Article title | Song slug | Notes |
 |--------|-----------|-----------|---------------|-----------|-------|
 | **done** | 2026-05-12 | `cross-addictions` | Cross-Addictions: When One Pattern Becomes Another | `cross-addictions-same-loop-new-name` | YouTube `jv9ML5VchMY`; loop-v5 masters |
-| **next** | 2026-04-28 | `signs-of-behavioral-addictions` | Signs of Behavioral Addictions | _TBD_ | Song + loops not started |
+| **next** | 2026-04-28 | `signs-of-behavioral-addictions` | Signs of Behavioral Addictions | `signs-of-behavioral-addictions-the-signs-of-my-trigger` | *The Signs of My Trigger* — WAV + video pending |
 | planned | 2026-04-26 | `signs-of-substance-addictions` | Signs of Substance Addictions | _TBD_ | After behavioral |
 
 ## Status keys

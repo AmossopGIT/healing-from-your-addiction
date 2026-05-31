@@ -1,6 +1,7 @@
 import { homeFaqs } from "@/content/faqs";
 import { foodContent } from "@/content/food";
 import { gamblingContent } from "@/content/gambling";
+import { artGalleryByCategory } from "@/content/artGallery";
 import { programmeBySlug, type Programme } from "@/content/programmes";
 import { getSeoByPath } from "@/content/seo";
 import type { LandingPageContent } from "@/content/types";
@@ -34,6 +35,7 @@ function generatedPillarContent(programme: Programme): LandingPageContent {
     path: programme.pillarHref,
     breadcrumbLabel: programme.title,
     defaultConcern: programme.concern,
+    heroArtId: artGalleryByCategory.has(programme.slug) ? programme.slug : undefined,
     seo: {
       title,
       description,

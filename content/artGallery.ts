@@ -41,7 +41,16 @@ const blogCategorySymbolBySlug: Record<string, string> = {
   "addiction-recovery": "a winding path with small stones and a stable pause point",
 };
 
-function blogAltText(categorySlug: string) {
+const blogAltBySlug: Record<string, string> = {
+  "signs-of-behavioral-addictions":
+    "Minimal watercolor illustration of a seated figure surrounded by a gambling loop with dice, cards, and a pause point, suggesting behavioral addiction patterns.",
+};
+
+function blogAltText(categorySlug: string, slug?: string) {
+  if (slug && blogAltBySlug[slug]) {
+    return blogAltBySlug[slug];
+  }
+
   if (categorySlug === "hypnotherapy") {
     return "Minimal watercolor illustration of a calm head outline with an inner loop, suggesting hypnotherapy pattern support.";
   }
@@ -114,7 +123,7 @@ const blogArtEntries: ArtGalleryItem[] = blogPosts.map((post) => {
     title: `Blog Hero - ${post.title}`,
     category: `blog-${post.categorySlug}`,
     src: `/art/watercolor/art-watercolor-${post.heroArtId}.png`,
-    alt: blogAltText(post.categorySlug),
+    alt: blogAltText(post.categorySlug, post.slug),
     prompt: `${basePrompt} Create artwork for the article theme "${post.title}" in category "${category?.title ?? post.categorySlug}". Show ${symbol}. Keep it symbolic, calm, and non-stigmatizing.`,
     palette: sharedPalette,
     usage: `Primary hero artwork for blog article: ${post.title}.`,
@@ -636,6 +645,16 @@ export const artGallery: readonly ArtGalleryItem[] = [
     prompt: `${basePrompt} Show a simple path ending at a pause stone with soft teal wash to suggest clear boundaries and calm site use.`,
     palette: sharedPalette,
     usage: "Terms and conditions page hero artwork.",
+  },
+  {
+    id: "blog-signs-of-behavioral-addictions-recovery-path",
+    title: "Behavioral Addictions — Recovery Path",
+    category: "blog-addiction-recovery",
+    src: "/art/watercolor/art-watercolor-blog-signs-of-behavioral-addictions-recovery-path.png",
+    alt: "Minimal watercolor illustration of a figure beside a winding path and golden pause stone, suggesting a pause before behavioral addiction patterns.",
+    prompt: `${basePrompt} Create artwork for behavioral addiction recovery. Show an anonymous figure beside a winding stepping-stone path with one muted gold pause point and soft teal washes. Keep symbolic, calm, and non-stigmatizing.`,
+    palette: sharedPalette,
+    usage: "Supplementary artwork for Signs of Behavioral Addictions blog article — road and pause point motif.",
   },
   ...blogArtEntries,
   ...caseStudyArtEntries,

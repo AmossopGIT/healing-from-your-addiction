@@ -24,6 +24,8 @@ export type LandingPageContent = {
   path: string;
   breadcrumbLabel: string;
   defaultConcern: string;
+  /** Watercolor artwork shown in the hero column when a form is present. */
+  heroArtId?: string;
   seo: {
     title: string;
     description: string;

@@ -13,6 +13,7 @@ Paid Search/PMax docs live in `docs/marketing/campaigns/search/`. This tree is o
 | [`../framework/lyric-video-production-workflow.md`](../framework/lyric-video-production-workflow.md) | FFmpeg defaults, loop-v5 layout, review checklist |
 | [`../../public/videos/README.md`](../../public/videos/README.md) | On-disk video and subtitle paths |
 | [`../../tools/lyric-video/`](../../tools/lyric-video/) | Per-song JSON config + render entry script |
+| [`../../boilerplate/lyric-video-kit/`](../../boilerplate/lyric-video-kit/) | **Portable boilerplate** — copy to new projects (scripts, templates, workflow) |
 
 ## Naming (every campaign)
 
@@ -25,7 +26,9 @@ Paid Search/PMax docs live in `docs/marketing/campaigns/search/`. This tree is o
 
 ## Per-campaign workflow
 
-1. Copy [`campaigns/_template/`](./campaigns/_template/) → `campaigns/<blog-slug>/`.
+**New external project:** copy [`boilerplate/lyric-video-kit/`](../../boilerplate/lyric-video-kit/) wholesale; use kit `marketing/campaigns/_template/` and `config/_template.config.json`.
+
+1. Copy [`campaigns/_template/`](./campaigns/_template/) → `campaigns/<blog-slug>/` (HFYA in-repo).
 2. Fill `CAMPAIGN.md` (article, song, audio path, duration, art/loops).
 3. Add `tools/lyric-video/<song-slug>.config.json`.
 4. Produce exact `.srt` / `.ass` → render → QA → fill `social-publishing.md`.
@@ -39,4 +42,4 @@ Paid Search/PMax docs live in `docs/marketing/campaigns/search/`. This tree is o
 
 ## Next
 
-- [Signs of Behavioral Addictions](./campaigns/signs-of-behavioral-addictions/CAMPAIGN.md) — 2026-04-28, Addiction Recovery
+- [Signs of Behavioral Addictions](./campaigns/signs-of-behavioral-addictions/CAMPAIGN.md) — *The Signs of My Trigger* (WAV/video pending) · 2026-04-28

@@ -6,6 +6,7 @@ export const foodContent: LandingPageContent = {
   path: "/addictions/food-addiction-binge-eating-help/",
   breadcrumbLabel: "Food Addiction and Binge Eating Healing Program",
   defaultConcern: "Food / binge eating",
+  heroArtId: "food-binge-eating",
   seo: {
     title: seoPages.food.title,
     description: seoPages.food.description,

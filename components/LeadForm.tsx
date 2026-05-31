@@ -52,6 +52,7 @@ export function LeadForm({
   const router = useRouter();
   const [started, setStarted] = useState(false);
   const [consent, setConsent] = useState(false);
+  const [showOptionalFields, setShowOptionalFields] = useState(false);
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
   const [error, setError] = useState("");
   const [form, setForm] = useState<LeadFormState>({
@@ -253,6 +254,18 @@ export function LeadForm({
         </label>
       </div>
 
+      {compact ? (
+        <button
+          type="button"
+          className="form-expand-toggle"
+          aria-expanded={showOptionalFields}
+          onClick={() => setShowOptionalFields((current) => !current)}
+        >
+          {showOptionalFields ? "Hide optional details" : "Add optional details (callback window, goals, etc.)"}
+        </button>
+      ) : null}
+
+      <div className={compact && !showOptionalFields ? "form-optional-fields is-collapsed" : "form-optional-fields"}>
       <div className="form-grid">
         <label>
           <span>Are you currently working with a GP/doctor?</span>
@@ -260,7 +273,7 @@ export function LeadForm({
             name="medicalSupportInvolved"
             value={form.medicalSupportInvolved}
             onChange={(event) => updateField("medicalSupportInvolved", event.target.value)}
-            required
+            required={!compact}
           >
             <option value="planning">Planning to / open to it</option>
             <option value="yes">Yes, already working with one</option>
@@ -269,7 +282,7 @@ export function LeadForm({
         </label>
         <label>
           <span>Best callback window</span>
-          <select name="callbackWindow" value={form.callbackWindow} onChange={(event) => updateField("callbackWindow", event.target.value)} required>
+          <select name="callbackWindow" value={form.callbackWindow} onChange={(event) => updateField("callbackWindow", event.target.value)} required={!compact}>
             <option value="early_morning">Early morning</option>
             <option value="late_morning">Late morning</option>
             <option value="afternoon">Afternoon</option>
@@ -281,7 +294,7 @@ export function LeadForm({
 
       <label>
         <span>Where are you right now in this process?</span>
-        <select name="readinessStage" value={form.readinessStage} onChange={(event) => updateField("readinessStage", event.target.value)} required>
+        <select name="readinessStage" value={form.readinessStage} onChange={(event) => updateField("readinessStage", event.target.value)} required={!compact}>
           <option value="exploring">Exploring options</option>
           <option value="ready_now">Ready to start now</option>
           <option value="currently_in_support">Already in support, need extra help</option>
@@ -299,6 +312,7 @@ export function LeadForm({
           placeholder="Example: fewer urges at night, better routine, less secrecy."
         />
       </label>
+      </div>
 
       <label>
         <span>Message</span>

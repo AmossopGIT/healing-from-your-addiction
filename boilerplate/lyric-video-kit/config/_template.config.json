@@ -1,0 +1,30 @@
+{
+  "projectRoot": ".",
+  "videosDir": "assets/videos",
+  "blogSlug": "my-article",
+  "songSlug": "my-article-my-song",
+  "songTitle": "My Song Title",
+  "audioPath": "assets/audio/my-song.wav",
+  "duration": 0,
+  "bottomCrop": 8,
+  "srt": "assets/videos/my-article-my-song-exact-v1.srt",
+  "lyricsPath": "marketing/campaigns/my-article/suno-paste.txt",
+  "lyricSyncStart": 12,
+  "lyricSyncEnd": 0,
+  "whisperModel": "medium",
+  "skipLyricSync": false,
+  "loopsDir": "assets/loops/my-article",
+  "loops": [
+    { "file": "loop-a.mp4", "download": "" },
+    { "file": "loop-b.mp4", "download": "" }
+  ],
+  "loopA": "",
+  "loopB": "",
+  "loopC": "",
+  "loopADownload": "",
+  "loopBDownload": "",
+  "loopCDownload": "",
+  "backgroundOutput": "",
+  "thumbSeekSeconds": 42,
+  "previewSeekSeconds": 46
+}

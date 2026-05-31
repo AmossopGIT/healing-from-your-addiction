@@ -38,6 +38,14 @@ export default async function NeedHelpPage({ searchParams }: PageProps) {
       />
       <section className="need-help-hero page-hero-flush section-band">
         <div className="container need-help-hero-grid">
+          {wizardArt ? (
+            <WatercolorArtwork
+              item={wizardArt}
+              className="need-help-hero-art hero-visual"
+              priority
+              sizes="(min-width: 900px) 28vw, 92vw"
+            />
+          ) : null}
           <div className="need-help-hero-copy">
             <p className="eyebrow">Need help wizard</p>
             <h1>Confidential enquiry, one calm step at a time</h1>
@@ -60,9 +68,6 @@ export default async function NeedHelpPage({ searchParams }: PageProps) {
               .
             </p>
           </div>
-          {wizardArt ? (
-            <WatercolorArtwork item={wizardArt} className="need-help-hero-art" sizes="(min-width: 900px) 32vw, 88vw" />
-          ) : null}
         </div>
       </section>
 

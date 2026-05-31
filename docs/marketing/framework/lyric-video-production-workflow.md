@@ -4,7 +4,9 @@ Use this process for every blog-song video so output is consistent, brand-aligne
 
 **Hub (queue, campaigns, posting):** [`../lyric-videos/README.md`](../lyric-videos/README.md)  
 **Video paths on disk:** [`../../public/videos/README.md`](../../public/videos/README.md)  
-**Config + render:** `tools/lyric-video/<song-slug>.config.json` → `tools/render_lyric_video_loop.ps1`
+**Config + render:** `tools/lyric-video/<song-slug>.config.json` → `tools/render_lyric_video_loop.ps1` (canonical scripts in [`boilerplate/lyric-video-kit/`](../../boilerplate/lyric-video-kit/))
+
+**Auto-sync (optional):** set `lyricsPath` in config; render runs Whisper → align → phrase-split unless `-SkipSync` or `"skipLyricSync": true`. **3+ loops:** `loops[]` in config → `build_multi_loop_bg.py`; 2 loops still use alternating A/B.
 
 ## Scope
 
@@ -45,7 +47,7 @@ Use incremented suffixes (`v2`, `v3`, `v4`, `loop-v5`) for revisions.
 
 Loop-video exports (Midjourney background):
 
-- `public/videos/<slug>-bg-alternating.mp4`
+- `public/videos/<slug>-bg-alternating.mp4` (2 loops) or `<slug>-bg-loop.mp4` (3+ loops)
 - `public/videos/<slug>-horizontal-loop-v5.mp4`
 - `public/videos/<slug>-portrait-loop-v5.mp4`
 - `public/videos/<slug>-youtube-thumb.png` (frame from horizontal master, not the blog hero PNG)

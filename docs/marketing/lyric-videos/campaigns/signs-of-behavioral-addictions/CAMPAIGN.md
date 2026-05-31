@@ -2,41 +2,56 @@
 
 | Field | Value |
 |-------|--------|
-| **Status** | next |
+| **Status** | in-progress (masters + Whisper-synced lyrics; YouTube pending) |
 | **Blog slug** | `signs-of-behavioral-addictions` |
 | **URL** | https://www.healingfromyouraddiction.co.za/blog/signs-of-behavioral-addictions/ |
 | **Published** | 2026-04-28 |
 | **Category** | Addiction Recovery |
-| **Hero art** | `blog-signs-of-behavioral-addictions` |
-| **Song title** | _TBD_ |
-| **Song slug** | _TBD_ (pattern: `<blog-slug>-<song-title-kebab>`) |
+| **Hero art** | `/art/watercolor/art-watercolor-blog-signs-of-behavioral-addictions.png` |
+| **Song title** | **The Signs of My Trigger** |
+| **Song slug** | `signs-of-behavioral-addictions-the-signs-of-my-trigger` |
 | **YouTube** | _TBD_ |
 
-## Article hook (for lyrics / social)
+## Lyrics
 
-> Behavioral (process) addictions don’t involve substances—but they activate the same reward system and follow the same loop: Trigger → Craving → Behavior → Reward.
+- [`lyrics.md`](./lyrics.md) — powered merge (*same reward, same loop* + deeper article coverage)  
+- [`suno-paste.txt`](./suno-paste.txt) — Suno paste  
 
-## Checklist before render
+**Chorus hook:** *The signs of my trigger — same reward, same loop.*
 
-- [ ] Suno (or other) master `.wav` in Downloads; note duration (seconds)
-- [ ] Exact approved lyric text → `<song-slug>-exact-v1.srt`
-- [ ] Whisper rough pass → manual sync in Aegisub → `exact-v1.ass`
-- [ ] Two Midjourney seamless loops OR static watercolor hero + loop plan
-- [ ] `tools/lyric-video/<song-slug>.config.json` from `_template.config.json`
-- [ ] Loops in `public/videos/loops/signs-of-behavioral-addictions/`
-- [ ] Render horizontal + portrait (`tools/render_lyric_video_loop.ps1`)
-- [ ] QA: audio, lyrics in lower band (portrait), second chorus if applicable
-- [ ] YouTube upload + thumbnail frame extract
-- [ ] `social-publishing.md` from template
-- [ ] Blog `section.video.youtubeId` in `content/blogArchiveChunk2.ts`
-- [ ] Mark **done** in [`QUEUE.md`](../../QUEUE.md)
+## Suno brief (dark / sad)
 
-## Visual direction (draft)
+Sad cinematic acoustic, **minor key**, 78–86 BPM, sparse piano or fingerpicked guitar, mournful strings. Soft tired vocal. **Trigger–gun metaphor** (click, hammer, smoke, shot) + **road / pause point** recovery image — not aggressive, not glorifying violence.
 
-- Reuse Addiction Recovery palette and watercolor system (`docs/art-style-guide.md`).
-- Hero already shows figure + loop icons (dice, card, pause) — align loop clips or stills with that metaphor.
-- Cross-link in copy to [cross-addictions](../cross-addictions/CAMPAIGN.md) where the shared loop is discussed.
+## Sync and render
 
-## Social publishing
+```powershell
+powershell -File tools/sync_lyrics_whisper.ps1 -SongSlug signs-of-behavioral-addictions-the-signs-of-my-trigger
+powershell -File tools/render_signs_of_behavioral_addictions.ps1 -SkipSync
+```
 
-Create [`social-publishing.md`](./social-publishing.md) when masters are ready (copy from [`../_template/social-publishing.template.md`](../_template/social-publishing.template.md)).
+Whisper **medium** + line align + **phrase split** (~137 short cues on the beat, not static blocks).
+
+**Background loops** (A -> B -> C, repeat): `loop-a.mp4`, `loop-b.mp4`, `loop-c.mp4` under `public/videos/loops/signs-of-behavioral-addictions/`.
+
+## Next steps
+
+1. QA portrait/horizontal on phone/desktop.
+2. Optional: fine-tune in Aegisub using `...-exact-v1-aligned.srt`, re-run phrase split + `-SkipSync`.
+3. YouTube upload → blog `youtubeId` + `social-publishing.md`.
+
+## Publish assets (when ready)
+
+| Asset | Path |
+|-------|------|
+| Horizontal | `public/videos/signs-of-behavioral-addictions-the-signs-of-my-trigger-horizontal-loop-v5.mp4` |
+| Portrait | `public/videos/signs-of-behavioral-addictions-the-signs-of-my-trigger-portrait-loop-v5.mp4` |
+| Thumbnail | `public/videos/signs-of-behavioral-addictions-the-signs-of-my-trigger-youtube-thumb.png` |
+| Subtitles | `public/videos/signs-of-behavioral-addictions-the-signs-of-my-trigger-exact-v1.srt` |
+
+## Checklist
+
+- [x] Final lyrics — *The Signs of My Trigger*
+- [x] Master WAV + Whisper-synced `exact-v1.srt`
+- [x] Horizontal + portrait masters
+- [ ] YouTube + `social-publishing.md` + blog `youtubeId`

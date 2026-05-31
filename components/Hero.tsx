@@ -27,9 +27,22 @@ export function Hero({
   heroArtId,
   children,
 }: HeroProps) {
+  const sideArtwork = heroArtId ? artGalleryById.get(heroArtId) : undefined;
+  const showArtColumn = Boolean(sideArtwork && children);
+
   return (
-    <section className="hero page-hero-flush section-band">
-      <div className="container hero-grid">
+    <section className={`hero page-hero-flush section-band${showArtColumn ? " hero-with-art" : ""}`}>
+      <div className={`container hero-grid${showArtColumn ? " hero-grid-with-art" : ""}`}>
+        {showArtColumn ? (
+          <RevealDiv className="hero-art">
+            <WatercolorArtwork
+              item={sideArtwork!}
+              className="hero-visual hero-visual-side"
+              priority
+              sizes="(min-width: 1100px) 22vw, (min-width: 720px) 42vw, 92vw"
+            />
+          </RevealDiv>
+        ) : null}
         <RevealDiv className="hero-copy">
           {eyebrow ? <p className="eyebrow">{eyebrow}</p> : null}
           <h1>{title}</h1>

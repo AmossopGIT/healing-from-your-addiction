@@ -1,15 +1,19 @@
 {
-  "blogSlug": "signs-of-behavioral-addictions",
-  "songSlug": "signs-of-behavioral-addictions-TODO-song-kebab",
-  "audioPath": "C:\\Users\\amoss\\Downloads\\TODO Song Title.wav",
+  "blogSlug": "my-article",
+  "songSlug": "my-article-my-song",
+  "songTitle": "My Song Title",
+  "audioPath": "C:\\path\\to\\My Song.wav",
   "duration": 0,
   "bottomCrop": 8,
-  "srt": "public/videos/signs-of-behavioral-addictions-TODO-song-kebab-exact-v1.srt",
-  "loopsDir": "public/videos/loops/signs-of-behavioral-addictions",
-  "loopA": "loop-a.mp4",
-  "loopB": "loop-b.mp4",
-  "loopADownload": "",
-  "loopBDownload": "",
+  "srt": "public/videos/my-article-my-song-exact-v1.srt",
+  "lyricsPath": "docs/marketing/lyric-videos/campaigns/my-article/suno-paste.txt",
+  "lyricSyncStart": 12,
+  "whisperModel": "medium",
+  "loopsDir": "public/videos/loops/my-article",
+  "loops": [
+    { "file": "loop-a.mp4", "download": "" },
+    { "file": "loop-b.mp4", "download": "" }
+  ],
   "thumbSeekSeconds": 42,
   "previewSeekSeconds": 46
 }

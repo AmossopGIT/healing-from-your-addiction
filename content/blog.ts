@@ -28,6 +28,8 @@ export type BlogSection = {
   }>;
   bullets?: string[];
   video?: BlogSectionVideo;
+  /** Optional inline section artwork from the watercolor gallery. */
+  artId?: string;
 };
 
 export type BlogPost = {

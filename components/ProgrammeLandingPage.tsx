@@ -36,6 +36,7 @@ export function ProgrammeLandingPage({ content }: ProgrammeLandingPageProps) {
     <>
       <SchemaMarkup data={schema} />
       <Hero
+        heroArtId={content.heroArtId}
         eyebrow={content.hero.eyebrow}
         title={content.hero.title}
         description={content.hero.description}

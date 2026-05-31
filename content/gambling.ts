@@ -6,6 +6,7 @@ export const gamblingContent: LandingPageContent = {
   path: "/addictions/gambling-addiction-help/",
   breadcrumbLabel: "Gambling Addiction Healing Program",
   defaultConcern: "Gambling",
+  heroArtId: "gambling",
   seo: {
     title: seoPages.gambling.title,
     description: seoPages.gambling.description,

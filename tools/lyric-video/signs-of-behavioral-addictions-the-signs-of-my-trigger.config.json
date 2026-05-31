@@ -1,0 +1,30 @@
+{
+  "blogSlug": "signs-of-behavioral-addictions",
+  "songSlug": "signs-of-behavioral-addictions-the-signs-of-my-trigger",
+  "songTitle": "The Signs of My Trigger",
+  "audioPath": "C:\\Users\\amoss\\Downloads\\The Signs of My Trigger.wav",
+  "duration": 247.76,
+  "bottomCrop": 8,
+  "srt": "public/videos/signs-of-behavioral-addictions-the-signs-of-my-trigger-exact-v1.srt",
+  "lyricsPath": "docs/marketing/lyric-videos/campaigns/signs-of-behavioral-addictions/suno-paste.txt",
+  "lyricSyncStart": 12,
+  "whisperModel": "medium",
+  "heroImage": "public/art/watercolor/art-watercolor-blog-signs-of-behavioral-addictions.png",
+  "loopsDir": "public/videos/loops/signs-of-behavioral-addictions",
+  "loops": [
+    {
+      "file": "loop-a.mp4",
+      "download": "C:\\Users\\amoss\\Downloads\\andycraitor_httpss.mj.run6tyTFx76iyQ_A_minimal_watercolor_ill_dff24220-72e7-4fcc-a71b-47328b024616_1.mp4"
+    },
+    {
+      "file": "loop-b.mp4",
+      "download": "C:\\Users\\amoss\\Downloads\\andycraitor_A_minimal_watercolor_illustration_for_a_wellness__bc5ecb35-80f7-40a0-9a8f-075742c55afd_2.mp4"
+    },
+    {
+      "file": "loop-c.mp4",
+      "download": "C:\\Users\\amoss\\Downloads\\andycraitor_A_minimal_watercolor_illustration_for_a_wellness__601573ec-0ace-4ae2-8cc7-0ff404e19818_3.mp4"
+    }
+  ],
+  "thumbSeekSeconds": 42,
+  "previewSeekSeconds": 46
+}
