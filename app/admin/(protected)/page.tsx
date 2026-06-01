@@ -1,7 +1,11 @@
 import type { Metadata } from "next";
-import { createClient } from "@/lib/supabase/server";
-import { formatDashboardDate } from "@/lib/dashboard/constants";
+import Link from "next/link";
+import { LeadSlaBadge } from "@/components/dashboard/LeadSlaBadge";
+import { getAdminOverviewBundle } from "@/lib/dashboard/adminOverview";
+import { formatDashboardDate, leadStatusLabels, leadStatusOptions } from "@/lib/dashboard/constants";
+import { isLeadOverdue } from "@/lib/dashboard/leadSla";
 import { createMetadata } from "@/lib/seo";
+import { cmsWorkflowStatusLabels } from "@/types/cms";
 
 export const metadata: Metadata = createMetadata({
   title: "Admin Overview | Healing From Your Addiction",
@@ -11,13 +15,7 @@ export const metadata: Metadata = createMetadata({
 });
 
 export default async function AdminOverviewPage() {
-  const supabase = await createClient();
-
-  const [{ count: newLeadsCount }, { data: recentLeads }, { count: clientsCount }] = await Promise.all([
-    supabase.from("leads").select("*", { count: "exact", head: true }).eq("status", "new"),
-    supabase.from("leads").select("*").order("created_at", { ascending: false }).limit(5),
-    supabase.from("client_profiles").select("*", { count: "exact", head: true }),
-  ]);
+  const bundle = await getAdminOverviewBundle();
 
   return (
     <div className="dashboard-stack">
@@ -27,22 +25,102 @@ export default async function AdminOverviewPage() {
         <p>Review new enquiries, follow up with leads, and manage enrolled clients.</p>
       </section>
 
-      <section className="dashboard-stat-grid">
+      <section className="dashboard-quick-actions">
+        <Link className="button button-secondary" href="/admin/leads/">
+          All leads
+        </Link>
+        <Link className="button button-secondary" href="/admin/leads/?overdue=1">
+          Overdue leads
+        </Link>
+        <Link className="button button-secondary" href="/admin/clients/invite/">
+          Invite client
+        </Link>
+        <Link className="button button-secondary" href="/admin/content/">
+          Content hub
+        </Link>
+      </section>
+
+      <section className="dashboard-stat-grid dashboard-stat-grid-4">
         <article className="dashboard-stat-card">
           <p className="dashboard-stat-label">New leads</p>
-          <p className="dashboard-stat-value">{newLeadsCount ?? 0}</p>
+          <p className="dashboard-stat-value">{bundle.counts.newLeads}</p>
+        </article>
+        <article className="dashboard-stat-card dashboard-stat-card-alert">
+          <p className="dashboard-stat-label">Overdue / action required</p>
+          <p className="dashboard-stat-value">{bundle.counts.overdueLeads}</p>
+        </article>
+        <article className="dashboard-stat-card">
+          <p className="dashboard-stat-label">Awaiting first response</p>
+          <p className="dashboard-stat-value">{bundle.counts.awaitingFirstResponse}</p>
         </article>
         <article className="dashboard-stat-card">
           <p className="dashboard-stat-label">Enrolled clients</p>
-          <p className="dashboard-stat-value">{clientsCount ?? 0}</p>
+          <p className="dashboard-stat-value">{bundle.counts.enrolledClients}</p>
         </article>
+      </section>
+
+      <section className="dashboard-panel">
+        <div className="dashboard-panel-header">
+          <h2>Action queue</h2>
+          <Link href="/admin/leads/?overdue=1" className="dashboard-panel-link">
+            View all overdue
+          </Link>
+        </div>
+        {bundle.overdueLeads.length ? (
+          <div className="dashboard-table-wrap">
+            <table className="dashboard-table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Triage</th>
+                  <th>SLA</th>
+                  <th>Follow-up due</th>
+                </tr>
+              </thead>
+              <tbody>
+                {bundle.overdueLeads.map((lead) => (
+                  <tr key={lead.id} className="dashboard-table-row-overdue">
+                    <td>
+                      <Link href={`/admin/leads/${lead.id}/`}>{lead.full_name}</Link>
+                    </td>
+                    <td>
+                      {lead.triage_priority ?? "routine"} / {lead.risk_flag ?? "standard"}
+                    </td>
+                    <td>
+                      <LeadSlaBadge lead={lead} />
+                    </td>
+                    <td>{lead.follow_up_due_at ? formatDashboardDate(lead.follow_up_due_at) : "—"}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        ) : (
+          <p className="dashboard-empty">
+            No overdue leads right now.{" "}
+            <Link href="/admin/leads/">Browse all enquiries</Link>.
+          </p>
+        )}
+      </section>
+
+      <section className="dashboard-panel">
+        <h2>Pipeline snapshot</h2>
+        <p className="dashboard-inline-note">{bundle.counts.openPipeline} open leads (excluding closed)</p>
+        <div className="dashboard-pipeline-row">
+          {leadStatusOptions.map((status) => (
+            <Link key={status} href={`/admin/leads/?status=${status}`} className="dashboard-pipeline-chip">
+              <span className="dashboard-pipeline-count">{bundle.pipelineByStatus[status]}</span>
+              <span className="dashboard-pipeline-label">{leadStatusLabels[status]}</span>
+            </Link>
+          ))}
+        </div>
       </section>
 
       <section className="dashboard-panel">
         <div className="dashboard-panel-header">
           <h2>Recent enquiries</h2>
         </div>
-        {recentLeads?.length ? (
+        {bundle.recentLeads.length ? (
           <div className="dashboard-table-wrap">
             <table className="dashboard-table">
               <thead>
@@ -50,18 +128,22 @@ export default async function AdminOverviewPage() {
                   <th>Name</th>
                   <th>Concern</th>
                   <th>Status</th>
+                  <th>SLA</th>
                   <th>Received</th>
                 </tr>
               </thead>
               <tbody>
-                {recentLeads.map((lead) => (
-                  <tr key={lead.id}>
+                {bundle.recentLeads.map((lead) => (
+                  <tr key={lead.id} className={isLeadOverdue(lead) ? "dashboard-table-row-overdue" : undefined}>
                     <td>
-                      <a href={`/admin/leads/${lead.id}/`}>{lead.full_name}</a>
+                      <Link href={`/admin/leads/${lead.id}/`}>{lead.full_name}</Link>
                     </td>
                     <td>{lead.addiction_concern}</td>
                     <td>
-                      <span className={`status-badge status-badge-${lead.status}`}>{lead.status}</span>
+                      <span className={`status-badge status-badge-${lead.status}`}>{leadStatusLabels[lead.status]}</span>
+                    </td>
+                    <td>
+                      <LeadSlaBadge lead={lead} />
                     </td>
                     <td>{formatDashboardDate(lead.created_at)}</td>
                   </tr>
@@ -71,6 +153,54 @@ export default async function AdminOverviewPage() {
           </div>
         ) : (
           <p className="dashboard-empty">No leads yet. Enquiries from the public site will appear here.</p>
+        )}
+      </section>
+
+      <section className="dashboard-panel">
+        <div className="dashboard-panel-header">
+          <h2>Content needing attention</h2>
+          <Link href="/admin/content/" className="dashboard-panel-link">
+            Content hub
+          </Link>
+        </div>
+        {bundle.cmsAttention.length ? (
+          <div className="dashboard-table-wrap">
+            <table className="dashboard-table">
+              <thead>
+                <tr>
+                  <th>Title</th>
+                  <th>Type</th>
+                  <th>Status</th>
+                  <th>When</th>
+                </tr>
+              </thead>
+              <tbody>
+                {bundle.cmsAttention.slice(0, 5).map((item) => (
+                  <tr key={`${item.contentType}-${item.id}`}>
+                    <td>
+                      <Link href={item.editHref}>{item.title}</Link>
+                    </td>
+                    <td>{item.contentType === "blog" ? "Blog" : "Case study"}</td>
+                    <td>
+                      <span className={`cms-status-badge cms-status-${item.workflowStatus}`}>
+                        {cmsWorkflowStatusLabels[item.workflowStatus]}
+                      </span>
+                    </td>
+                    <td>
+                      {item.scheduledFor
+                        ? formatDashboardDate(item.scheduledFor)
+                        : formatDashboardDate(item.updatedAt)}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        ) : (
+          <p className="dashboard-empty">
+            No content in review or scheduled soon.{" "}
+            <Link href="/admin/content/">Open content hub</Link>.
+          </p>
         )}
       </section>
     </div>

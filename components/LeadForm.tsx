@@ -13,7 +13,10 @@ type LeadFormProps = {
   formTitle?: string;
   /** Submit button label when not sending */
   submitLabel?: string;
+  /** Shorter layout: core fields visible, triage/scheduling behind a toggle */
   compact?: boolean;
+  /** Omit in-card title when the page section already has a heading */
+  hideHeading?: boolean;
 };
 
 type LeadFormState = {
@@ -48,6 +51,7 @@ export function LeadForm({
   formTitle = "Start your confidential enquiry",
   submitLabel = "Send enquiry",
   compact = false,
+  hideHeading = false,
 }: LeadFormProps) {
   const router = useRouter();
   const [started, setStarted] = useState(false);
@@ -150,13 +154,25 @@ export function LeadForm({
     }
   }
 
+  const formClassName = [
+    "lead-form",
+    compact ? "compact" : "",
+    hideHeading ? "lead-form--section" : "",
+  ]
+    .filter(Boolean)
+    .join(" ");
+
   return (
-    <form id="enquiry" className={compact ? "lead-form compact" : "lead-form"} onSubmit={handleSubmit} onFocus={markStarted}>
-      <div className="form-heading">
-        <p className="eyebrow">Private enquiry</p>
-        <h2>{formTitle}</h2>
-        <p className="form-note">Private, non-emergency enquiry. Share only what feels safe. Gerald will respond in your preferred channel.</p>
-      </div>
+    <form id="enquiry" className={formClassName} onSubmit={handleSubmit} onFocus={markStarted}>
+      {hideHeading ? (
+        <p className="form-note form-note-inline">Share only what feels safe. Gerald will respond in your preferred channel.</p>
+      ) : (
+        <div className="form-heading">
+          <p className="eyebrow">Private enquiry</p>
+          <h2>{formTitle}</h2>
+          <p className="form-note">Private, non-emergency enquiry. Share only what feels safe. Gerald will respond in your preferred channel.</p>
+        </div>
+      )}
 
       <label>
         <span>Full name</span>
@@ -233,39 +249,79 @@ export function LeadForm({
         </label>
       </div>
 
-      <div className="form-grid">
-        <label>
-          <span>How urgent does support feel today?</span>
-          <select name="urgencyLevel" value={form.urgencyLevel} onChange={(event) => updateField("urgencyLevel", event.target.value)} required>
-            <option value="low">Low - I am planning ahead</option>
-            <option value="medium">Medium - I want help soon</option>
-            <option value="high">High - I need support as soon as possible</option>
-          </select>
-        </label>
-        <label>
-          <span>Withdrawal or medical support needed now?</span>
-          <select name="withdrawalRisk" value={form.withdrawalRisk} onChange={(event) => updateField("withdrawalRisk", event.target.value)} required>
-            <option value="none">No current withdrawal concern</option>
-            <option value="mild">Mild discomfort</option>
-            <option value="moderate">Moderate symptoms</option>
-            <option value="severe">Severe symptoms</option>
-            <option value="unsure">Not sure</option>
-          </select>
-        </label>
-      </div>
+      {!compact ? (
+        <div className="form-grid">
+          <label>
+            <span>How urgent does support feel today?</span>
+            <select name="urgencyLevel" value={form.urgencyLevel} onChange={(event) => updateField("urgencyLevel", event.target.value)} required>
+              <option value="low">Low - I am planning ahead</option>
+              <option value="medium">Medium - I want help soon</option>
+              <option value="high">High - I need support as soon as possible</option>
+            </select>
+          </label>
+          <label>
+            <span>Withdrawal or medical support needed now?</span>
+            <select name="withdrawalRisk" value={form.withdrawalRisk} onChange={(event) => updateField("withdrawalRisk", event.target.value)} required>
+              <option value="none">No current withdrawal concern</option>
+              <option value="mild">Mild discomfort</option>
+              <option value="moderate">Moderate symptoms</option>
+              <option value="severe">Severe symptoms</option>
+              <option value="unsure">Not sure</option>
+            </select>
+          </label>
+        </div>
+      ) : null}
+
+      <label>
+        <span>Message</span>
+        <textarea
+          name="message"
+          rows={compact ? 3 : 5}
+          value={form.message}
+          onChange={(event) => updateField("message", event.target.value)}
+          maxLength={leadFieldMaxLengths.message}
+          placeholder="Briefly share what you would like support with."
+        />
+      </label>
 
       {compact ? (
         <button
           type="button"
           className="form-expand-toggle"
           aria-expanded={showOptionalFields}
+          aria-controls="lead-form-optional-fields"
           onClick={() => setShowOptionalFields((current) => !current)}
         >
-          {showOptionalFields ? "Hide optional details" : "Add optional details (callback window, goals, etc.)"}
+          {showOptionalFields ? "Hide triage & scheduling details" : "Add triage & scheduling details (optional)"}
         </button>
       ) : null}
 
-      <div className={compact && !showOptionalFields ? "form-optional-fields is-collapsed" : "form-optional-fields"}>
+      <div
+        id="lead-form-optional-fields"
+        className={compact && !showOptionalFields ? "form-optional-fields is-collapsed" : "form-optional-fields"}
+      >
+      {compact ? (
+        <div className="form-grid">
+          <label>
+            <span>How urgent does support feel today?</span>
+            <select name="urgencyLevel" value={form.urgencyLevel} onChange={(event) => updateField("urgencyLevel", event.target.value)}>
+              <option value="low">Low - I am planning ahead</option>
+              <option value="medium">Medium - I want help soon</option>
+              <option value="high">High - I need support as soon as possible</option>
+            </select>
+          </label>
+          <label>
+            <span>Withdrawal or medical support needed now?</span>
+            <select name="withdrawalRisk" value={form.withdrawalRisk} onChange={(event) => updateField("withdrawalRisk", event.target.value)}>
+              <option value="none">No current withdrawal concern</option>
+              <option value="mild">Mild discomfort</option>
+              <option value="moderate">Moderate symptoms</option>
+              <option value="severe">Severe symptoms</option>
+              <option value="unsure">Not sure</option>
+            </select>
+          </label>
+        </div>
+      ) : null}
       <div className="form-grid">
         <label>
           <span>Are you currently working with a GP/doctor?</span>
@@ -314,19 +370,7 @@ export function LeadForm({
       </label>
       </div>
 
-      <label>
-        <span>Message</span>
-        <textarea
-          name="message"
-          rows={compact ? 4 : 5}
-          value={form.message}
-          onChange={(event) => updateField("message", event.target.value)}
-          maxLength={leadFieldMaxLengths.message}
-          placeholder="Briefly share what you would like support with."
-        />
-      </label>
-
-      <fieldset className="consent-row">
+      <fieldset className={`consent-row${compact ? " consent-row-compact" : ""}`}>
         <legend>Okay to follow up using:</legend>
         <label>
           <input

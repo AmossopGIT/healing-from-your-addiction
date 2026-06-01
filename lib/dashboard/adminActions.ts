@@ -1,5 +1,6 @@
 "use server";
 
+import { parseDatetimeLocalInput } from "@/lib/dashboard/leadSla";
 import { dashboardFieldMaxLengths, normalizeMultiline, normalizeSingleLine, sanitizeLeadStatus, sanitizeUuid } from "@/lib/dashboard/formValidation";
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
@@ -72,12 +73,10 @@ export async function addLeadNote(formData: FormData) {
   redirect(redirectTo);
 }
 
-function sanitizeOptionalDatetime(value: string | null | undefined) {
+function sanitizeOptionalUuid(value: string | null | undefined) {
   const normalized = normalizeSingleLine(value);
-  if (!normalized) return null;
-  const date = new Date(normalized);
-  if (Number.isNaN(date.getTime())) return null;
-  return date.toISOString();
+  if (!normalized || normalized === "none") return null;
+  return sanitizeUuid(normalized) || null;
 }
 
 export async function updateLeadFollowUpForm(formData: FormData) {
@@ -87,9 +86,10 @@ export async function updateLeadFollowUpForm(formData: FormData) {
   }
 
   const firstResponseTemplateId = normalizeSingleLine(String(formData.get("firstResponseTemplateId") ?? "")).slice(0, 80) || null;
-  const followUpDueAt = sanitizeOptionalDatetime(String(formData.get("followUpDueAt") ?? ""));
-  const firstResponseSentAt = sanitizeOptionalDatetime(String(formData.get("firstResponseSentAt") ?? ""));
+  const followUpDueAt = parseDatetimeLocalInput(String(formData.get("followUpDueAt") ?? ""));
+  const firstResponseSentAt = parseDatetimeLocalInput(String(formData.get("firstResponseSentAt") ?? ""));
   const assignedAdminNotes = normalizeMultiline(String(formData.get("assignedAdminNotes") ?? "")).slice(0, 1000) || null;
+  const assignedAdminId = sanitizeOptionalUuid(String(formData.get("assignedAdminId") ?? ""));
 
   const supabase = await createClient();
   const {
@@ -107,6 +107,7 @@ export async function updateLeadFollowUpForm(formData: FormData) {
       follow_up_due_at: followUpDueAt,
       first_response_sent_at: firstResponseSentAt,
       assigned_admin_notes: assignedAdminNotes,
+      assigned_admin_id: assignedAdminId,
     })
     .eq("id", leadId);
 
@@ -119,7 +120,7 @@ export async function updateLeadFollowUpForm(formData: FormData) {
     action: "lead_follow_up_update",
     resourceType: "lead",
     resourceId: leadId,
-    metadata: { firstResponseTemplateId, followUpDueAt, firstResponseSentAt },
+    metadata: { firstResponseTemplateId, followUpDueAt, firstResponseSentAt, assignedAdminId },
   });
 
   redirect(`/admin/leads/${leadId}/`);
