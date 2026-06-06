@@ -45,3 +45,17 @@ Each addiction page should include:
 - Pornography Addiction
 - Social Media Addiction
 - Gaming Addiction
+
+## Blog CMS (admin)
+
+Blog posts are authored in the admin CMS (`/admin/content/blog/`). Writers can paste a labeled template, edit with formatting tools, and review a live side preview before saving drafts or publishing.
+
+See `CMS_BLOG_ADMIN.md` for template labels, SEO checklist, categories, draft save rules, and test commands.
+
+Public blog routes:
+
+- `/blog/` — index
+- `/blog/[slug]/` — article
+- `/blog/category/[slug]/` — category archive
+- `/blog/tag/[slug]/` — tag archive
+

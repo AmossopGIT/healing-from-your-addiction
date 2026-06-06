@@ -39,6 +39,20 @@ export async function fetchCmsBlogList(filters: CmsListFilters): Promise<{
     posts = filterByTitle(posts, searchQuery);
   }
 
+  posts.sort((a, b) => {
+    const statusOrder: Record<CmsWorkflowStatus, number> = {
+      published: 0,
+      scheduled: 1,
+      approved: 2,
+      in_review: 3,
+      draft: 4,
+      archived: 5,
+    };
+    const statusDiff = statusOrder[a.workflow_status] - statusOrder[b.workflow_status];
+    if (statusDiff !== 0) return statusDiff;
+    return b.updated_at.localeCompare(a.updated_at);
+  });
+
   return { posts, filters, totalCount: posts.length };
 }
 
@@ -57,6 +71,20 @@ export async function fetchCmsCaseStudyList(filters: CmsListFilters): Promise<{
   if (searchQuery) {
     studies = filterByTitle(studies, searchQuery);
   }
+
+  studies.sort((a, b) => {
+    const statusOrder: Record<CmsWorkflowStatus, number> = {
+      published: 0,
+      scheduled: 1,
+      approved: 2,
+      in_review: 3,
+      draft: 4,
+      archived: 5,
+    };
+    const statusDiff = statusOrder[a.workflow_status] - statusOrder[b.workflow_status];
+    if (statusDiff !== 0) return statusDiff;
+    return b.updated_at.localeCompare(a.updated_at);
+  });
 
   return { studies, filters, totalCount: studies.length };
 }

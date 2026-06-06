@@ -22,6 +22,7 @@ import {
   sanitizeWorkflowStatus,
 } from "@/lib/cms/formValidation";
 import { cmsBlogHeroArtId, cmsCaseStudyHeroArtId } from "@/lib/cms/mappers";
+import { withDraftDefaults } from "@/lib/cms/draftDefaults";
 import {
   canTransitionWorkflow,
   validateBlogDraft,
@@ -181,8 +182,9 @@ export async function saveBlogPostDraft(formData: FormData) {
     redirect(`/admin/content/blog/new/?error=${encodeURIComponent(validation.errors.join(" "))}`);
   }
 
+  const input = withDraftDefaults(parsed.input);
   const id = sanitizeUuid(String(formData.get("id") ?? ""));
-  const row = blogRowFromInput(parsed.input, user.id, "draft");
+  const row = blogRowFromInput(input, user.id, "draft");
 
   if (id) {
     const { error } = await supabase.from("cms_blog_posts").update(row).eq("id", id);
@@ -425,7 +427,8 @@ export async function updateBlogFromForm(formData: FormData) {
   }
 
   const { data: existing } = await supabase.from("cms_blog_posts").select("workflow_status").eq("id", id).single();
-  const row = blogRowFromInput(parsed.input, user.id, (existing?.workflow_status as CmsWorkflowStatus) ?? "draft");
+  const input = withDraftDefaults(parsed.input);
+  const row = blogRowFromInput(input, user.id, (existing?.workflow_status as CmsWorkflowStatus) ?? "draft");
 
   const { error } = await supabase.from("cms_blog_posts").update(row).eq("id", id);
   if (error) redirect(`/admin/content/blog/${id}/?error=${encodeURIComponent(error.message)}`);

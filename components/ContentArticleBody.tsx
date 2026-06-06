@@ -2,6 +2,7 @@ import type { BlogSection } from "@/content/blog";
 import { BlogLyricVideo } from "@/components/BlogLyricVideo";
 import { WatercolorArtwork } from "@/components/WatercolorArtwork";
 import { artGalleryById } from "@/content/artGallery";
+import { ArticleInlineContent } from "@/lib/cms/inlineMarkdown";
 
 type ContentArticleBodyProps = {
   sections: BlogSection[];
@@ -29,18 +30,24 @@ export function ContentArticleBody({ sections }: ContentArticleBodyProps) {
               />
             ) : null}
             {section.paragraphs.map((paragraph) => (
-              <p key={paragraph}>{paragraph}</p>
+              <p key={paragraph}>
+                <ArticleInlineContent text={paragraph} />
+              </p>
             ))}
             {section.h3Items?.map((item) => (
               <div key={item.h3}>
                 <h3>{item.h3}</h3>
-                <p>{item.body}</p>
+                <p>
+                  <ArticleInlineContent text={item.body} />
+                </p>
               </div>
             ))}
             {section.bullets ? (
               <ul>
                 {section.bullets.map((bullet) => (
-                  <li key={bullet}>{bullet}</li>
+                  <li key={bullet}>
+                    <ArticleInlineContent text={bullet} />
+                  </li>
                 ))}
               </ul>
             ) : null}

@@ -12,6 +12,7 @@ Files:
 - `PROJECT_RULES.md`
 - `ARCHITECTURE.md`
 - `CONTENT_STRUCTURE.md`
+- `CMS_BLOG_ADMIN.md` — blog template import, live preview, SEO checklist, rich text editor
 - `TRACKING_AND_ANALYTICS.md`
 - `SEO_AND_CONVERSION_IMPROVEMENTS.md`
 - `SOUL.md`

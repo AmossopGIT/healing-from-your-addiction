@@ -82,6 +82,70 @@ export const blogCategories: BlogCategory[] = [
     primaryKeyword: "addiction recovery South Africa",
     heroArtId: createBlogArtId("addiction-recovery-south-africa-core-approaches"),
   },
+  {
+    slug: "behavioral-addictions",
+    title: "Behavioral Addictions",
+    description:
+      "Articles on gambling, shopping, gaming, and other behavioural addiction patterns, including early signs and support options.",
+    primaryKeyword: "behavioral addictions support",
+    heroArtId: createBlogArtId("signs-of-behavioral-addictions"),
+  },
+  {
+    slug: "gambling-addiction",
+    title: "Gambling Addiction",
+    description:
+      "Focused guidance on gambling addiction patterns, triggers, financial stress, and confidential recovery support.",
+    primaryKeyword: "gambling addiction support South Africa",
+    heroArtId: createBlogArtId("gambling-addiction-support"),
+  },
+  {
+    slug: "food-addiction",
+    title: "Food Addiction",
+    description:
+      "Educational content on emotional eating, food addiction loops, and calmer pattern-change support.",
+    primaryKeyword: "food addiction support",
+    heroArtId: createBlogArtId("food-addiction-emotional-eating"),
+  },
+  {
+    slug: "eft-tapping",
+    title: "EFT & Tapping",
+    description:
+      "Articles about EFT, tapping, and emotional regulation tools used alongside addiction recovery support.",
+    primaryKeyword: "EFT for addiction support",
+    heroArtId: createBlogArtId("eft-tapping-addiction-support"),
+  },
+  {
+    slug: "triggers-cravings",
+    title: "Triggers & Cravings",
+    description:
+      "Practical articles on triggers, cravings, urges, and pause strategies for addiction recovery.",
+    primaryKeyword: "addiction triggers and cravings",
+    heroArtId: createBlogArtId("understanding-addiction-triggers"),
+  },
+  {
+    slug: "family-support",
+    title: "Family & Loved Ones",
+    description:
+      "Supportive guidance for partners, family members, and loved ones affected by addiction patterns.",
+    primaryKeyword: "supporting a loved one with addiction",
+    heroArtId: createBlogArtId("supporting-loved-one-addiction"),
+  },
+  {
+    slug: "programme-guides",
+    title: "Programme Guides",
+    description:
+      "How the healing programme works, what to expect week by week, and how to choose the right support path.",
+    primaryKeyword: "addiction healing programme guide",
+    heroArtId: createBlogArtId("what-makes-hypnotherapy-programs-effective"),
+  },
+  {
+    slug: "south-africa-resources",
+    title: "South Africa Resources",
+    description:
+      "Local context, access, and practical recovery resources for people seeking addiction support in South Africa.",
+    primaryKeyword: "addiction recovery resources South Africa",
+    heroArtId: createBlogArtId("addiction-recovery-south-africa-core-approaches"),
+  },
 ];
 
 export const blogTags: BlogTag[] = [

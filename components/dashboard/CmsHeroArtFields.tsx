@@ -11,6 +11,8 @@ type CmsHeroArtFieldsProps = {
   defaultArtId: string;
   defaultArtSrc: string;
   defaultArtAlt: string;
+  onAltChange?: (value: string) => void;
+  onHeroChange?: (values: { heroArtId: string; heroArtSrc: string; heroArtAlt: string }) => void;
 };
 
 export function CmsHeroArtFields({
@@ -20,6 +22,8 @@ export function CmsHeroArtFields({
   defaultArtId,
   defaultArtSrc,
   defaultArtAlt,
+  onAltChange,
+  onHeroChange,
 }: CmsHeroArtFieldsProps) {
   const [heroArtId, setHeroArtId] = useState(defaultArtId);
   const [heroArtSrc, setHeroArtSrc] = useState(defaultArtSrc);
@@ -34,6 +38,8 @@ export function CmsHeroArtFields({
     setHeroArtId(item.id);
     setHeroArtSrc(item.src);
     setHeroArtAlt(item.alt);
+    onAltChange?.(item.alt);
+    onHeroChange?.({ heroArtId: item.id, heroArtSrc: item.src, heroArtAlt: item.alt });
   }
 
   async function handleUpload(event: React.ChangeEvent<HTMLInputElement>) {
@@ -63,7 +69,13 @@ export function CmsHeroArtFields({
 
       setHeroArtId(payload.heroArtId ?? expectedId);
       setHeroArtSrc(payload.heroArtSrc ?? "");
+      const nextAlt = payload.heroArtAlt ?? heroArtAlt;
       if (payload.heroArtAlt) setHeroArtAlt(payload.heroArtAlt);
+      onHeroChange?.({
+        heroArtId: payload.heroArtId ?? expectedId,
+        heroArtSrc: payload.heroArtSrc ?? "",
+        heroArtAlt: nextAlt,
+      });
       setUploadStatus("Artwork uploaded successfully.");
     } catch {
       setUploadStatus("Upload failed. Try again.");
@@ -112,10 +124,14 @@ export function CmsHeroArtFields({
         <textarea
           name="heroArtAlt"
           rows={3}
-          required
           maxLength={cmsFieldMaxLengths.heroArtAlt}
           value={heroArtAlt}
-          onChange={(event) => setHeroArtAlt(event.target.value)}
+          onChange={(event) => {
+            setHeroArtAlt(event.target.value);
+            onAltChange?.(event.target.value);
+            onHeroChange?.({ heroArtId, heroArtSrc, heroArtAlt: event.target.value });
+          }}
+          placeholder="Describe the hero image for accessibility and SEO."
         />
       </label>
 

@@ -1,5 +1,12 @@
 import type { BlogSection } from "@/content/blog";
 import type { CaseStudyType } from "@/content/caseStudies";
+import {
+  HERO_ALT_MIN,
+  META_DESC_MAX,
+  META_DESC_PUBLISH_MIN,
+  META_TITLE_MAX,
+  META_TITLE_MIN,
+} from "@/lib/cms/seoChecklist";
 import type { CmsWorkflowStatus } from "@/types/cms";
 import { cmsWorkflowTransitions } from "@/types/cms";
 
@@ -57,15 +64,29 @@ function validateSeoAndArt(input: PublishableBlogInput, errors: string[]) {
     errors.push("Slug must use lowercase letters, numbers, and hyphens only.");
   }
   if (!input.title.trim()) errors.push("Title is required.");
+  const titleLen = input.title.trim().length;
+  if (titleLen < META_TITLE_MIN) {
+    errors.push(`Title is too short for SEO (${titleLen} chars). Aim for ${META_TITLE_MIN}–${META_TITLE_MAX} characters.`);
+  }
+  if (titleLen > META_TITLE_MAX) {
+    errors.push(`Title is too long (${titleLen} chars). Keep the article title under ${META_TITLE_MAX} characters.`);
+  }
   if (!input.description.trim()) errors.push("Meta description is required.");
+  const descriptionLen = (input.metaDescription?.trim() || input.description.trim()).length;
+  if (descriptionLen < META_DESC_PUBLISH_MIN) {
+    errors.push(`Meta description is too short — write at least ${META_DESC_PUBLISH_MIN} characters.`);
+  }
+  if (descriptionLen > META_DESC_MAX) {
+    errors.push(`Meta description must be ${META_DESC_MAX} characters or fewer (currently ${descriptionLen}).`);
+  }
   if (!input.excerpt.trim()) errors.push("Excerpt is required.");
   if (!input.h1.trim()) errors.push("H1 is required.");
   if (!input.primaryKeyword.trim()) errors.push("Primary keyword is required.");
   if (!input.heroArtId.trim()) errors.push("Hero art ID is required.");
   if (!input.heroArtSrc.trim()) errors.push("Hero image path is required.");
   if (!input.heroArtAlt.trim()) errors.push("Hero image alt text is required.");
-  if (input.heroArtAlt.length < 20) {
-    errors.push("Hero image alt text should be descriptive (at least 20 characters).");
+  if (input.heroArtAlt.length < HERO_ALT_MIN) {
+    errors.push(`Hero image alt text should be descriptive (at least ${HERO_ALT_MIN} characters).`);
   }
 }
 

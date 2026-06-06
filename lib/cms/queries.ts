@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { createServiceClient } from "@/lib/supabase/service";
 import { isSupabaseServiceConfigured } from "@/lib/supabase/env";
+import { normalizeCmsBlogPostRow, normalizeCmsCaseStudyRow } from "@/lib/cms/normalizeCmsRow";
 import type { CmsBlogPostRow, CmsCaseStudyRow, CmsWorkflowEventRow } from "@/types/cms";
 
 const publishedStatuses = ["published", "scheduled"] as const;
@@ -51,10 +52,14 @@ export async function fetchPublishedCmsBlogPosts(): Promise<CmsBlogPostRow[]> {
 }
 
 export async function fetchCmsBlogPostById(id: string): Promise<CmsBlogPostRow | null> {
-  const supabase = await createClient();
-  const { data, error } = await supabase.from("cms_blog_posts").select("*").eq("id", id).maybeSingle();
-  if (error) throw new Error(error.message);
-  return (data as CmsBlogPostRow | null) ?? null;
+  try {
+    const supabase = await createClient();
+    const { data, error } = await supabase.from("cms_blog_posts").select("*").eq("id", id).maybeSingle();
+    if (error || !data) return null;
+    return normalizeCmsBlogPostRow(data as CmsBlogPostRow);
+  } catch {
+    return null;
+  }
 }
 
 export async function fetchCmsBlogPostBySlug(slug: string, publicOnly = false): Promise<CmsBlogPostRow | null> {
@@ -90,10 +95,14 @@ export async function fetchPublishedCmsCaseStudies(): Promise<CmsCaseStudyRow[]>
 }
 
 export async function fetchCmsCaseStudyById(id: string): Promise<CmsCaseStudyRow | null> {
-  const supabase = await createClient();
-  const { data, error } = await supabase.from("cms_case_studies").select("*").eq("id", id).maybeSingle();
-  if (error) throw new Error(error.message);
-  return (data as CmsCaseStudyRow | null) ?? null;
+  try {
+    const supabase = await createClient();
+    const { data, error } = await supabase.from("cms_case_studies").select("*").eq("id", id).maybeSingle();
+    if (error || !data) return null;
+    return normalizeCmsCaseStudyRow(data as CmsCaseStudyRow);
+  } catch {
+    return null;
+  }
 }
 
 export async function fetchCmsCaseStudyBySlug(slug: string, publicOnly = false): Promise<CmsCaseStudyRow | null> {
