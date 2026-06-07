@@ -29,7 +29,7 @@ export function ContentArticleBody({ sections }: ContentArticleBodyProps) {
                 posterSrc={section.video.posterSrc}
               />
             ) : null}
-            {section.paragraphs.map((paragraph) => (
+            {section.paragraphs?.map((paragraph) => (
               <p key={paragraph}>
                 <ArticleInlineContent text={paragraph} />
               </p>

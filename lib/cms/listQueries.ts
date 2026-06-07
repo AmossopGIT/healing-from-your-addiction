@@ -41,11 +41,11 @@ export async function fetchCmsBlogList(filters: CmsListFilters): Promise<{
 
   posts.sort((a, b) => {
     const statusOrder: Record<CmsWorkflowStatus, number> = {
-      published: 0,
-      scheduled: 1,
+      draft: 0,
+      in_review: 1,
       approved: 2,
-      in_review: 3,
-      draft: 4,
+      scheduled: 3,
+      published: 4,
       archived: 5,
     };
     const statusDiff = statusOrder[a.workflow_status] - statusOrder[b.workflow_status];
@@ -74,11 +74,11 @@ export async function fetchCmsCaseStudyList(filters: CmsListFilters): Promise<{
 
   studies.sort((a, b) => {
     const statusOrder: Record<CmsWorkflowStatus, number> = {
-      published: 0,
-      scheduled: 1,
+      draft: 0,
+      in_review: 1,
       approved: 2,
-      in_review: 3,
-      draft: 4,
+      scheduled: 3,
+      published: 4,
       archived: 5,
     };
     const statusDiff = statusOrder[a.workflow_status] - statusOrder[b.workflow_status];

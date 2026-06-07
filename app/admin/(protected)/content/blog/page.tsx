@@ -81,6 +81,7 @@ export default async function AdminBlogListPage({ searchParams }: PageProps) {
                   <th>Title</th>
                   <th>Slug</th>
                   <th>Status</th>
+                  <th>Published</th>
                   <th>Updated</th>
                 </tr>
               </thead>
@@ -96,6 +97,7 @@ export default async function AdminBlogListPage({ searchParams }: PageProps) {
                         {cmsWorkflowStatusLabels[post.workflow_status]}
                       </span>
                     </td>
+                    <td>{post.published_at ? formatDashboardDate(post.published_at) : "—"}</td>
                     <td>{formatDashboardDate(post.updated_at)}</td>
                   </tr>
                 ))}

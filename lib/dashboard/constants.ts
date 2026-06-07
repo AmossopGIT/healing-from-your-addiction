@@ -25,6 +25,7 @@ export function statusBadgeClass(status: LeadStatus) {
 
 export const adminNavItems = [
   { href: "/admin/", label: "Overview" },
+  { href: "/admin/analytics/", label: "Analytics" },
   { href: "/admin/leads/", label: "Leads" },
   { href: "/admin/clients/", label: "Clients" },
   { href: "/admin/clients/invite/", label: "Invite client" },

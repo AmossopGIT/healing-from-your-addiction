@@ -48,7 +48,7 @@ function includesKeyword(haystack: string, keyword: string): boolean {
 
 function firstParagraph(sections: BlogSection[]): string {
   for (const section of sections) {
-    for (const paragraph of section.paragraphs) {
+    for (const paragraph of section.paragraphs ?? []) {
       const text = paragraph.trim();
       if (text) return text;
     }
@@ -60,7 +60,7 @@ function allSectionText(sections: BlogSection[]): string {
   const chunks: string[] = [];
   for (const section of sections) {
     chunks.push(section.h2);
-    chunks.push(...section.paragraphs);
+    chunks.push(...(section.paragraphs ?? []));
     if (section.bullets) chunks.push(...section.bullets);
     if (section.h3Items) {
       for (const item of section.h3Items) {

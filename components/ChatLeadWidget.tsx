@@ -87,6 +87,7 @@ export function ChatLeadWidget() {
 
   function track(event: string, payload: Record<string, unknown> = {}) {
     pushDataLayer(event, {
+      form_name: "chat_widget",
       link_location: "chat_widget",
       addiction_type: lead.addictionConcern,
       preferred_contact_method: lead.preferredContactMethod,

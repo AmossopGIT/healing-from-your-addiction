@@ -14,7 +14,7 @@ type CmsWorkflowPanelProps = {
 
 export function CmsWorkflowPanel({ contentType, contentId, status, scheduledFor, events }: CmsWorkflowPanelProps) {
   const action = contentType === "blog" ? transitionBlogWorkflow : transitionCaseStudyWorkflow;
-  const nextStatuses = cmsWorkflowTransitions[status];
+  const nextStatuses = cmsWorkflowTransitions[status] ?? [];
 
   return (
     <section className="dashboard-panel cms-workflow-panel">

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { AnalyticsOverviewStrip } from "@/components/dashboard/AnalyticsOverviewStrip";
 import { LeadSlaBadge } from "@/components/dashboard/LeadSlaBadge";
 import { getAdminOverviewBundle } from "@/lib/dashboard/adminOverview";
 import { formatDashboardDate, leadStatusLabels, leadStatusOptions } from "@/lib/dashboard/constants";
@@ -39,6 +40,8 @@ export default async function AdminOverviewPage() {
           Content hub
         </Link>
       </section>
+
+      <AnalyticsOverviewStrip />
 
       <section className="dashboard-stat-grid dashboard-stat-grid-4">
         <article className="dashboard-stat-card">

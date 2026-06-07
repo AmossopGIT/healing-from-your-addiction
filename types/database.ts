@@ -211,6 +211,31 @@ export type AuditLog = {
   created_at: string;
 };
 
+export type ConsentTier = "essential" | "analytics";
+
+export type AnalyticsEvent = {
+  id: string;
+  occurred_at: string;
+  event_name: string;
+  page_path: string;
+  session_id: string | null;
+  visitor_id: string | null;
+  consent_tier: ConsentTier;
+  page_type: string | null;
+  primary_keyword: string | null;
+  conversion_goal: string | null;
+  landing_page: string | null;
+  referrer: string | null;
+  utm_source: string | null;
+  utm_medium: string | null;
+  utm_campaign: string | null;
+  utm_term: string | null;
+  utm_content: string | null;
+  gclid: string | null;
+  properties: Record<string, unknown>;
+  created_at: string;
+};
+
 export type { CmsBlogPostRow, CmsCaseStudyRow, CmsWorkflowEventRow, CmsWorkflowStatus };
 
 type TableDef<Row, Insert, Update> = {
@@ -375,6 +400,30 @@ export type Database = {
         AuditLog,
         { user_id?: string | null; action: string; resource_type: string; resource_id?: string | null; metadata?: Record<string, unknown> | null },
         Partial<AuditLog>
+      >;
+      analytics_events: TableDef<
+        AnalyticsEvent,
+        {
+          occurred_at?: string;
+          event_name: string;
+          page_path: string;
+          session_id?: string | null;
+          visitor_id?: string | null;
+          consent_tier: ConsentTier;
+          page_type?: string | null;
+          primary_keyword?: string | null;
+          conversion_goal?: string | null;
+          landing_page?: string | null;
+          referrer?: string | null;
+          utm_source?: string | null;
+          utm_medium?: string | null;
+          utm_campaign?: string | null;
+          utm_term?: string | null;
+          utm_content?: string | null;
+          gclid?: string | null;
+          properties?: Record<string, unknown>;
+        },
+        Partial<AnalyticsEvent>
       >;
       cms_blog_posts: TableDef<
         CmsBlogPostRow,

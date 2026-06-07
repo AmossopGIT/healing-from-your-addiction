@@ -4,7 +4,10 @@ import { notFound } from "next/navigation";
 import { CmsCaseStudyForm } from "@/components/dashboard/CmsCaseStudyForm";
 import { CmsWorkflowPanel } from "@/components/dashboard/CmsWorkflowPanel";
 import { fetchCmsCaseStudyById, fetchWorkflowEvents } from "@/lib/cms/queries";
+import { safeDecodeURIComponent } from "@/lib/cms/safeQueryParam";
 import { createMetadata } from "@/lib/seo";
+
+export const dynamic = "force-dynamic";
 
 type PageProps = {
   params: Promise<{ id: string }>;
@@ -38,7 +41,7 @@ export default async function EditCaseStudyPage({ params, searchParams }: PagePr
           Back to case study list
         </Link>
       </section>
-      {error ? <p className="form-error">{decodeURIComponent(error)}</p> : null}
+      {error ? <p className="form-error">{safeDecodeURIComponent(error)}</p> : null}
       {saved ? <p className="cms-inline-status">Saved successfully.</p> : null}
       <CmsWorkflowPanel
         contentType="case-study"

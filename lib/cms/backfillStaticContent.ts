@@ -44,11 +44,11 @@ function buildBlogRow(post: (typeof blogPosts)[number], actorId: string | null) 
     hero_art_alt: art?.alt ?? post.title,
     hero_art_prompt: art?.prompt ?? "",
     hero_art_palette: art?.palette ? [...art.palette] : ["#f7f3ea", "#17231f", "#0a3f39"],
-    workflow_status: "published" as const,
+    workflow_status: "draft" as const,
     published_at: new Date(`${post.publishedAt}T08:00:00.000Z`).toISOString(),
     created_by: actorId,
     updated_by: actorId,
-    approved_by: actorId,
+    approved_by: null,
   };
 }
 
@@ -80,11 +80,11 @@ function buildCaseStudyRow(study: (typeof caseStudies)[number], actorId: string 
     hero_art_alt: art?.alt ?? study.title,
     hero_art_prompt: art?.prompt ?? "",
     hero_art_palette: art?.palette ? [...art.palette] : ["#f7f3ea", "#17231f", "#0a3f39"],
-    workflow_status: "published" as const,
+    workflow_status: "draft" as const,
     published_at: new Date(`${study.publishedAt}T08:00:00.000Z`).toISOString(),
     created_by: actorId,
     updated_by: actorId,
-    approved_by: actorId,
+    approved_by: null,
   };
 }
 

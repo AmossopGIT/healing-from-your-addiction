@@ -7,6 +7,7 @@ import { CmsSectionEditor } from "@/components/dashboard/CmsSectionEditor";
 import { saveCaseStudyDraft, updateCaseStudyFromForm } from "@/lib/cms/actions";
 import { cmsFieldMaxLengths } from "@/lib/cms/formValidation";
 import { cmsCaseStudyHeroArtId } from "@/lib/cms/mappers";
+import { normalizeBlogSections } from "@/lib/cms/normalizeSections";
 import type { CmsCaseStudyRow } from "@/types/cms";
 
 type CmsCaseStudyFormProps = {
@@ -138,7 +139,7 @@ export function CmsCaseStudyForm({ study }: CmsCaseStudyFormProps) {
         defaultArtAlt={study?.hero_art_alt ?? ""}
       />
 
-      <CmsSectionEditor initialSections={study?.sections ?? []} />
+      <CmsSectionEditor initialSections={normalizeBlogSections(study?.sections ?? [])} />
 
       <div className="cms-form-actions">
         <button type="submit" className="button button-primary">

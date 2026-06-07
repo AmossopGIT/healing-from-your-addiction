@@ -31,7 +31,9 @@ export function CmsBlogPreview({
   heroArtAlt,
 }: CmsBlogPreviewProps) {
   const category = blogCategoryBySlug.get(categorySlug);
-  const previewSections = sections.some((section) => section.h2.trim() || section.paragraphs.some((p) => p.trim()))
+  const previewSections = sections.some(
+    (section) => section.h2.trim() || (section.paragraphs ?? []).some((p) => p.trim()),
+  )
     ? sections
     : [{ h2: "Introduction", paragraphs: ["Your article body will appear here as you write."] }];
 

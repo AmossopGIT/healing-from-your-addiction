@@ -370,24 +370,26 @@ export function LeadForm({
       </label>
       </div>
 
-      <fieldset className={`consent-row${compact ? " consent-row-compact" : ""}`}>
+      <fieldset className="follow-up-consent">
         <legend>Okay to follow up using:</legend>
-        <label>
-          <input
-            type="checkbox"
-            checked={form.followUpConsentWhatsApp}
-            onChange={(event) => updateField("followUpConsentWhatsApp", event.target.checked)}
-          />
-          <span>WhatsApp</span>
-        </label>
-        <label>
-          <input type="checkbox" checked={form.followUpConsentEmail} onChange={(event) => updateField("followUpConsentEmail", event.target.checked)} />
-          <span>Email</span>
-        </label>
-        <label>
-          <input type="checkbox" checked={form.followUpConsentPhone} onChange={(event) => updateField("followUpConsentPhone", event.target.checked)} />
-          <span>Phone call</span>
-        </label>
+        <div className="follow-up-options">
+          <label className="follow-up-option">
+            <input
+              type="checkbox"
+              checked={form.followUpConsentWhatsApp}
+              onChange={(event) => updateField("followUpConsentWhatsApp", event.target.checked)}
+            />
+            <span>WhatsApp</span>
+          </label>
+          <label className="follow-up-option">
+            <input type="checkbox" checked={form.followUpConsentEmail} onChange={(event) => updateField("followUpConsentEmail", event.target.checked)} />
+            <span>Email</span>
+          </label>
+          <label className="follow-up-option">
+            <input type="checkbox" checked={form.followUpConsentPhone} onChange={(event) => updateField("followUpConsentPhone", event.target.checked)} />
+            <span>Phone call</span>
+          </label>
+        </div>
       </fieldset>
 
       <label className="honeypot" aria-hidden="true">

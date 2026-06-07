@@ -1,4 +1,8 @@
 import type { ReactNode } from "react";
+import { AnalyticsCollector } from "@/components/analytics/AnalyticsCollector";
+import { AnalyticsEngagementTracker } from "@/components/analytics/AnalyticsEngagementTracker";
+import { ConsentRestore } from "@/components/analytics/ConsentRestore";
+import { CookieConsentBanner } from "@/components/analytics/CookieConsentBanner";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { MarketingEnhancements } from "@/components/MarketingEnhancements";
@@ -16,6 +20,10 @@ export function MarketingShell({
       <Header />
       <main id="main-content">{children}</main>
       <Footer />
+      <AnalyticsCollector />
+      <AnalyticsEngagementTracker />
+      <ConsentRestore />
+      <CookieConsentBanner />
       <MarketingEnhancements
         currentPath={currentPath}
         serviceWorkerUrl={withBasePath("/sw.js")}

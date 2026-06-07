@@ -4,7 +4,10 @@ import { notFound } from "next/navigation";
 import { CmsBlogForm } from "@/components/dashboard/CmsBlogForm";
 import { CmsWorkflowPanel } from "@/components/dashboard/CmsWorkflowPanel";
 import { fetchCmsBlogPostById, fetchWorkflowEvents } from "@/lib/cms/queries";
+import { safeDecodeURIComponent } from "@/lib/cms/safeQueryParam";
 import { createMetadata } from "@/lib/seo";
+
+export const dynamic = "force-dynamic";
 
 type PageProps = {
   params: Promise<{ id: string }>;
@@ -38,7 +41,7 @@ export default async function EditBlogPostPage({ params, searchParams }: PagePro
           Back to blog list
         </Link>
       </section>
-      {error ? <p className="form-error">{decodeURIComponent(error)}</p> : null}
+      {error ? <p className="form-error">{safeDecodeURIComponent(error)}</p> : null}
       {saved ? <p className="cms-inline-status">Saved successfully.</p> : null}
       <CmsWorkflowPanel contentType="blog" contentId={post.id} status={post.workflow_status} scheduledFor={post.scheduled_for} events={events} />
       <section className="dashboard-panel">

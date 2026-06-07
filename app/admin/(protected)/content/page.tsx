@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { BackfillCmsButton } from "@/components/dashboard/BackfillCmsButton";
+import { CmsSyncStatus } from "@/components/dashboard/CmsSyncStatus";
 import { isCmsContentEnabled } from "@/lib/cms/featureFlag";
 import { fetchAllCmsBlogPosts, fetchAllCmsCaseStudies } from "@/lib/cms/queries";
+import { buildStaticInventory } from "@/lib/cms/staticInventory";
 import { formatDashboardDate } from "@/lib/dashboard/constants";
 import { createMetadata } from "@/lib/seo";
 import { cmsWorkflowStatusLabels, type CmsWorkflowStatus } from "@/types/cms";
@@ -29,8 +30,18 @@ type AttentionItem = {
   reason: "in_review" | "scheduled_soon";
 };
 
+type RecentContentItem = {
+  id: string;
+  contentType: "blog" | "case-study";
+  title: string;
+  workflowStatus: CmsWorkflowStatus;
+  updatedAt: string;
+  editHref: string;
+};
+
 export default async function AdminContentPage() {
   const [blogPosts, caseStudies] = await Promise.all([fetchAllCmsBlogPosts(true), fetchAllCmsCaseStudies(true)]);
+  const inventory = buildStaticInventory(blogPosts, caseStudies);
 
   const workflowCounts = Object.fromEntries(WORKFLOW_STATUSES.map((status) => [status, 0])) as Record<CmsWorkflowStatus, number>;
   const attention: AttentionItem[] = [];
@@ -105,6 +116,46 @@ export default async function AdminContentPage() {
     return aTime < bTime ? -1 : 1;
   });
 
+  const recentContent: RecentContentItem[] = [
+    ...blogPosts.map((post) => ({
+      id: post.id,
+      contentType: "blog" as const,
+      title: post.title,
+      workflowStatus: post.workflow_status,
+      updatedAt: post.updated_at,
+      editHref: `/admin/content/blog/${post.id}/`,
+    })),
+    ...caseStudies.map((study) => ({
+      id: study.id,
+      contentType: "case-study" as const,
+      title: study.title,
+      workflowStatus: study.workflow_status,
+      updatedAt: study.updated_at,
+      editHref: `/admin/content/case-studies/${study.id}/`,
+    })),
+  ]
+    .sort((a, b) => b.updatedAt.localeCompare(a.updatedAt))
+    .slice(0, 8);
+
+  const livePublishedBlogs = blogPosts
+    .filter((post) => post.workflow_status === "draft")
+    .sort((a, b) => {
+      const aDate = a.published_at ?? a.updated_at;
+      const bDate = b.published_at ?? b.updated_at;
+      return bDate.localeCompare(aDate);
+    });
+
+  const draftCaseStudies = caseStudies
+    .filter((study) => study.workflow_status === "draft")
+    .sort((a, b) => {
+      const aDate = a.published_at ?? a.updated_at;
+      const bDate = b.published_at ?? b.updated_at;
+      return bDate.localeCompare(aDate);
+    });
+
+  const cmsDraftCount =
+    inventory.cmsDraftBlogCount + inventory.cmsDraftCaseStudyCount;
+
   return (
     <div className="dashboard-stack">
       <section className="dashboard-page-header">
@@ -113,15 +164,68 @@ export default async function AdminContentPage() {
         <p>Create structured content with SEO metadata, watercolor hero art, and editorial workflow.</p>
         <p className="cms-feature-flag">
           CMS public rendering: <strong>{isCmsContentEnabled() ? "enabled" : "disabled"}</strong> (set{" "}
-          <code>NEXT_PUBLIC_CMS_CONTENT_ENABLED=true</code> after backfill)
+          <code>NEXT_PUBLIC_CMS_CONTENT_ENABLED=true</code> after verifying CMS matches live content)
         </p>
+      </section>
+
+      <section className="dashboard-panel cms-content-inventory">
+        <h2>Content inventory</h2>
+        <div className="dashboard-stat-grid dashboard-stat-grid-4">
+          <div className="dashboard-stat-card">
+            <p className="dashboard-stat-label">Live site (static)</p>
+            <p className="dashboard-stat-value">
+              {inventory.staticBlogCount} blogs · {inventory.staticCaseStudyCount} case studies
+            </p>
+          </div>
+          <div className="dashboard-stat-card">
+            <p className="dashboard-stat-label">In CMS (drafts ready)</p>
+            <p className="dashboard-stat-value">
+              {inventory.cmsDraftBlogCount} blogs · {inventory.cmsDraftCaseStudyCount} case studies
+            </p>
+          </div>
+          <div className="dashboard-stat-card">
+            <p className="dashboard-stat-label">In CMS (published)</p>
+            <p className="dashboard-stat-value">
+              {inventory.cmsPublishedBlogCount} blogs · {inventory.cmsPublishedCaseStudyCount} case studies
+            </p>
+          </div>
+          <div className="dashboard-stat-card">
+            <p className="dashboard-stat-label">Draft queue total</p>
+            <p className="dashboard-stat-value">{cmsDraftCount}</p>
+          </div>
+          <div className="dashboard-stat-card">
+            <p className="dashboard-stat-label">CMS total</p>
+            <p className="dashboard-stat-value">
+              {inventory.cmsBlogCount} blogs · {inventory.cmsCaseStudyCount} case studies
+            </p>
+          </div>
+        </div>
+        {inventory.missingBlogSlugs.length || inventory.missingCaseStudySlugs.length ? (
+          <div className="cms-inventory-missing">
+            <p>
+              <strong>Missing from CMS</strong> (will sync on next deploy):
+            </p>
+            {inventory.missingBlogSlugs.length ? (
+              <p>
+                Blog slugs: <code>{inventory.missingBlogSlugs.join(", ")}</code>
+              </p>
+            ) : null}
+            {inventory.missingCaseStudySlugs.length ? (
+              <p>
+                Case study slugs: <code>{inventory.missingCaseStudySlugs.join(", ")}</code>
+              </p>
+            ) : null}
+          </div>
+        ) : (
+          <p className="dashboard-empty">All live static content is present in CMS.</p>
+        )}
       </section>
 
       <section className="dashboard-panel cms-publish-checklist">
         <h2>Publish checklist</h2>
         <ol>
-          <li>Run backfill from static content (below) if CMS tables are empty.</li>
-          <li>Review drafts and move items through in review → approved → published.</li>
+          <li>Static content syncs on deploy as CMS drafts — review, edit, then publish when ready.</li>
+          <li>Open a draft below, check SEO and sections, then submit for review or publish.</li>
           <li>Set <code>NEXT_PUBLIC_CMS_CONTENT_ENABLED=true</code> and verify public blog and case study routes.</li>
         </ol>
       </section>
@@ -164,6 +268,54 @@ export default async function AdminContentPage() {
       </section>
 
       <section className="dashboard-panel">
+        <h2>Drafts ready to publish</h2>
+        <p className="cms-field-help">
+          Synced live content lands here as drafts. Click Edit to review structured sections and SEO, then publish when ready.
+        </p>
+        {livePublishedBlogs.length || draftCaseStudies.length ? (
+          <div className="dashboard-table-wrap">
+            <table className="dashboard-table">
+              <thead>
+                <tr>
+                  <th>Title</th>
+                  <th>Type</th>
+                  <th>Slug</th>
+                  <th>Planned date</th>
+                  <th>Edit</th>
+                </tr>
+              </thead>
+              <tbody>
+                {livePublishedBlogs.map((post) => (
+                  <tr key={`blog-${post.id}`}>
+                    <td>{post.title}</td>
+                    <td>Blog</td>
+                    <td>{post.slug}</td>
+                    <td>{post.published_at ? formatDashboardDate(post.published_at) : "—"}</td>
+                    <td>
+                      <Link href={`/admin/content/blog/${post.id}/`}>Edit</Link>
+                    </td>
+                  </tr>
+                ))}
+                {draftCaseStudies.map((study) => (
+                  <tr key={`case-study-${study.id}`}>
+                    <td>{study.title}</td>
+                    <td>Case study</td>
+                    <td>{study.slug}</td>
+                    <td>{study.published_at ? formatDashboardDate(study.published_at) : "—"}</td>
+                    <td>
+                      <Link href={`/admin/content/case-studies/${study.id}/`}>Edit</Link>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        ) : (
+          <p className="dashboard-empty">No drafts in CMS yet. Sync runs on deploy.</p>
+        )}
+      </section>
+
+      <section className="dashboard-panel">
         <h2>Needs attention</h2>
         {attention.length ? (
           <div className="dashboard-table-wrap">
@@ -203,28 +355,43 @@ export default async function AdminContentPage() {
         )}
       </section>
 
-      <section className="dashboard-two-col">
-        <div className="dashboard-panel">
-          <h2>Recent blog drafts</h2>
-          {blogPosts.slice(0, 5).map((post) => (
-            <p key={post.id}>
-              <Link href={`/admin/content/blog/${post.id}/`}>{post.title}</Link> —{" "}
-              {cmsWorkflowStatusLabels[post.workflow_status]}
-            </p>
-          ))}
-        </div>
-        <div className="dashboard-panel">
-          <h2>Recent case studies</h2>
-          {caseStudies.slice(0, 5).map((study) => (
-            <p key={study.id}>
-              <Link href={`/admin/content/case-studies/${study.id}/`}>{study.title}</Link> —{" "}
-              {cmsWorkflowStatusLabels[study.workflow_status]}
-            </p>
-          ))}
-        </div>
+      <section className="dashboard-panel">
+        <h2>Recent content</h2>
+        {recentContent.length ? (
+          <div className="dashboard-table-wrap">
+            <table className="dashboard-table">
+              <thead>
+                <tr>
+                  <th>Title</th>
+                  <th>Type</th>
+                  <th>Status</th>
+                  <th>Updated</th>
+                </tr>
+              </thead>
+              <tbody>
+                {recentContent.map((item) => (
+                  <tr key={`${item.contentType}-${item.id}`}>
+                    <td>
+                      <Link href={item.editHref}>{item.title}</Link>
+                    </td>
+                    <td>{item.contentType === "blog" ? "Blog" : "Case study"}</td>
+                    <td>
+                      <span className={`cms-status-badge cms-status-${item.workflowStatus}`}>
+                        {cmsWorkflowStatusLabels[item.workflowStatus]}
+                      </span>
+                    </td>
+                    <td>{formatDashboardDate(item.updatedAt)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        ) : (
+          <p className="dashboard-empty">No CMS content yet.</p>
+        )}
       </section>
 
-      <BackfillCmsButton />
+      <CmsSyncStatus />
     </div>
   );
 }

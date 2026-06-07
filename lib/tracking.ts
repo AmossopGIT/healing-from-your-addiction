@@ -1,5 +1,7 @@
 ﻿"use client";
 
+import { collectEvent } from "@/lib/analytics/collect";
+import { hasAnalyticsConsent } from "@/lib/analytics/consent";
 import { getSeoByPath } from "@/content/seo";
 
 type DataLayerPayload = Record<string, unknown>;
@@ -59,11 +61,24 @@ export function getCurrentSeoContext() {
 export function pushDataLayer(event: string, payload: DataLayerPayload = {}) {
   if (typeof window === "undefined") return;
 
+  const seo = getCurrentSeoContext();
+  const consentTier = hasAnalyticsConsent() ? "analytics" : "essential";
+
+  collectEvent({
+    event_name: event,
+    page_path: window.location.pathname,
+    consent_tier: consentTier,
+    ...seo,
+    properties: payload,
+  });
+
+  if (!hasAnalyticsConsent()) return;
+
   window.dataLayer = window.dataLayer || [];
   window.dataLayer.push({
     event,
     page_path: window.location.pathname,
-    ...getCurrentSeoContext(),
+    ...seo,
     ...payload,
   });
 }

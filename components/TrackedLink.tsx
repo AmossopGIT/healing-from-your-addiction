@@ -47,14 +47,14 @@ export function TrackedLink({ tracking, onClick, children, href, ...props }: Tra
 
   if (isInternalPath(href)) {
     return (
-      <SiteLink href={href!} {...props} onClick={handleClick}>
+      <SiteLink href={href!} {...props} onClick={handleClick} data-analytics-tracked={tracking ? "true" : undefined}>
         {children}
       </SiteLink>
     );
   }
 
   return (
-    <a {...props} href={href} onClick={handleClick}>
+    <a {...props} href={href} onClick={handleClick} data-analytics-tracked={tracking ? "true" : undefined}>
       {children}
     </a>
   );

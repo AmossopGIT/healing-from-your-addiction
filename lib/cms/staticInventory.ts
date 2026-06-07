@@ -10,6 +10,7 @@ export type StaticInventorySummary = {
   cmsPublishedBlogCount: number;
   cmsPublishedCaseStudyCount: number;
   cmsDraftBlogCount: number;
+  cmsDraftCaseStudyCount: number;
   missingBlogSlugs: string[];
   missingCaseStudySlugs: string[];
 };
@@ -32,6 +33,7 @@ export function buildStaticInventory(
     cmsPublishedBlogCount: cmsBlogPosts.filter((post) => post.workflow_status === "published").length,
     cmsPublishedCaseStudyCount: cmsCaseStudies.filter((study) => study.workflow_status === "published").length,
     cmsDraftBlogCount: cmsBlogPosts.filter((post) => post.workflow_status === "draft").length,
+    cmsDraftCaseStudyCount: cmsCaseStudies.filter((study) => study.workflow_status === "draft").length,
     missingBlogSlugs: staticBlogSlugs.filter((slug) => !cmsBlogSlugs.has(slug)),
     missingCaseStudySlugs: staticCaseStudySlugs.filter((slug) => !cmsCaseStudySlugs.has(slug)),
   };

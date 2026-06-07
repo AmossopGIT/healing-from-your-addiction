@@ -429,32 +429,34 @@ export function NeedHelpWizard({ defaultConcern }: { defaultConcern?: string }) 
               placeholder="Briefly share what you would like support with."
             />
           </label>
-          <fieldset className="consent-row">
+          <fieldset className="follow-up-consent">
             <legend>Okay to follow up using:</legend>
-            <label>
-              <input
-                type="checkbox"
-                checked={lead.followUpConsentWhatsApp}
-                onChange={(event) => updateField("followUpConsentWhatsApp", event.target.checked)}
-              />
-              <span>WhatsApp</span>
-            </label>
-            <label>
-              <input
-                type="checkbox"
-                checked={lead.followUpConsentEmail}
-                onChange={(event) => updateField("followUpConsentEmail", event.target.checked)}
-              />
-              <span>Email</span>
-            </label>
-            <label>
-              <input
-                type="checkbox"
-                checked={lead.followUpConsentPhone}
-                onChange={(event) => updateField("followUpConsentPhone", event.target.checked)}
-              />
-              <span>Phone call</span>
-            </label>
+            <div className="follow-up-options">
+              <label className="follow-up-option">
+                <input
+                  type="checkbox"
+                  checked={lead.followUpConsentWhatsApp}
+                  onChange={(event) => updateField("followUpConsentWhatsApp", event.target.checked)}
+                />
+                <span>WhatsApp</span>
+              </label>
+              <label className="follow-up-option">
+                <input
+                  type="checkbox"
+                  checked={lead.followUpConsentEmail}
+                  onChange={(event) => updateField("followUpConsentEmail", event.target.checked)}
+                />
+                <span>Email</span>
+              </label>
+              <label className="follow-up-option">
+                <input
+                  type="checkbox"
+                  checked={lead.followUpConsentPhone}
+                  onChange={(event) => updateField("followUpConsentPhone", event.target.checked)}
+                />
+                <span>Phone call</span>
+              </label>
+            </div>
           </fieldset>
           <label className="honeypot" aria-hidden="true">
             <span>Website</span>

@@ -176,8 +176,8 @@ export default function HomePage() {
       <Disclaimer />
 
       <section className="section form-section" aria-labelledby="home-form-heading">
-        <div className="container form-layout">
-          <RevealDiv>
+        <div className="container form-layout form-layout-sticky">
+          <RevealDiv className="form-layout-aside">
             <p className="eyebrow">Confidential next step</p>
             <h2 id="home-form-heading">Start your confidential enquiry</h2>
             <p>Use the form to share the concern and choose how Gerald should respond. This is an enquiry, not emergency support.</p>
@@ -185,9 +185,9 @@ export default function HomePage() {
               Prefer one question at a time?{" "}
               <SiteLink href="/need-help/">Use the confidential help wizard</SiteLink>.
             </p>
-            {enquiryArtwork ? <WatercolorArtwork item={enquiryArtwork} className="section-inline-art" /> : null}
+            {enquiryArtwork ? <WatercolorArtwork item={enquiryArtwork} className="section-inline-art form-layout-art" /> : null}
           </RevealDiv>
-          <RevealDiv delay={0.08}>
+          <RevealDiv className="form-layout-main" delay={0.08}>
             <LeadForm compact hideHeading />
           </RevealDiv>
         </div>

@@ -62,7 +62,7 @@ export function CmsSectionEditor({ initialSections, onSectionsChange }: CmsSecti
             label="Paragraphs (one block per paragraph — use toolbar for formatting)"
             rows={5}
             maxLength={cmsFieldMaxLengths.sectionText * 4}
-            value={section.paragraphs.join("\n\n")}
+            value={(section.paragraphs ?? []).join("\n\n")}
             onChange={(value) =>
               updateSection(index, {
                 paragraphs: value.split(/\n\s*\n/).map((paragraph) => paragraph.trim()).filter(Boolean).length

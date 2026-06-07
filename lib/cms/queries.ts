@@ -21,6 +21,14 @@ async function getReadClient(useServiceRole: boolean) {
   return createClient();
 }
 
+/** Prefer service role for admin CMS reads; fall back to the authenticated session. */
+async function getAdminReadClient() {
+  if (isSupabaseServiceConfigured()) {
+    return createServiceClient();
+  }
+  return createClient();
+}
+
 async function safeQuery<T>(query: () => Promise<T>, fallback: T): Promise<T> {
   try {
     return await query();
@@ -31,10 +39,10 @@ async function safeQuery<T>(query: () => Promise<T>, fallback: T): Promise<T> {
 
 export async function fetchAllCmsBlogPosts(admin = false): Promise<CmsBlogPostRow[]> {
   return safeQuery(async () => {
-    const supabase = await getReadClient(!admin);
+    const supabase = admin ? await getAdminReadClient() : await getReadClient(true);
     const { data, error } = await supabase.from("cms_blog_posts").select("*").order("updated_at", { ascending: false });
     if (error) throw new Error(error.message);
-    return (data ?? []) as CmsBlogPostRow[];
+    return ((data ?? []) as CmsBlogPostRow[]).map(normalizeCmsBlogPostRow);
   }, []);
 }
 
@@ -53,7 +61,7 @@ export async function fetchPublishedCmsBlogPosts(): Promise<CmsBlogPostRow[]> {
 
 export async function fetchCmsBlogPostById(id: string): Promise<CmsBlogPostRow | null> {
   try {
-    const supabase = await createClient();
+    const supabase = await getAdminReadClient();
     const { data, error } = await supabase.from("cms_blog_posts").select("*").eq("id", id).maybeSingle();
     if (error || !data) return null;
     return normalizeCmsBlogPostRow(data as CmsBlogPostRow);
@@ -74,10 +82,10 @@ export async function fetchCmsBlogPostBySlug(slug: string, publicOnly = false): 
 
 export async function fetchAllCmsCaseStudies(admin = false): Promise<CmsCaseStudyRow[]> {
   return safeQuery(async () => {
-    const supabase = await getReadClient(!admin);
+    const supabase = admin ? await getAdminReadClient() : await getReadClient(true);
     const { data, error } = await supabase.from("cms_case_studies").select("*").order("updated_at", { ascending: false });
     if (error) throw new Error(error.message);
-    return (data ?? []) as CmsCaseStudyRow[];
+    return ((data ?? []) as CmsCaseStudyRow[]).map(normalizeCmsCaseStudyRow);
   }, []);
 }
 
@@ -96,7 +104,7 @@ export async function fetchPublishedCmsCaseStudies(): Promise<CmsCaseStudyRow[]>
 
 export async function fetchCmsCaseStudyById(id: string): Promise<CmsCaseStudyRow | null> {
   try {
-    const supabase = await createClient();
+    const supabase = await getAdminReadClient();
     const { data, error } = await supabase.from("cms_case_studies").select("*").eq("id", id).maybeSingle();
     if (error || !data) return null;
     return normalizeCmsCaseStudyRow(data as CmsCaseStudyRow);
@@ -117,7 +125,7 @@ export async function fetchCmsCaseStudyBySlug(slug: string, publicOnly = false):
 
 export async function fetchWorkflowEvents(contentType: "blog_post" | "case_study", contentId: string): Promise<CmsWorkflowEventRow[]> {
   try {
-    const supabase = await createClient();
+    const supabase = await getAdminReadClient();
     const { data, error } = await supabase
       .from("cms_workflow_events")
       .select("*")

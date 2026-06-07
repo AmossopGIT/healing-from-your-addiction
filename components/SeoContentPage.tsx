@@ -19,8 +19,9 @@ type SeoContentPageProps = {
 };
 
 export function SeoContentPage({ page, breadcrumbs, useProgrammeCards = false }: SeoContentPageProps) {
-  const heroArtId = page.heroArtId ?? page.artId;
-  const heroArtwork = heroArtId ? artGalleryById.get(heroArtId) : undefined;
+  const formArtId = page.heroArtId ?? page.artId;
+  const formArtwork = formArtId ? artGalleryById.get(formArtId) : undefined;
+  const heroSideArtId = page.showLeadForm && formArtId ? formArtId : undefined;
   const hubProgrammes = useProgrammeCards
     ? programmes.filter((programme) => page.links.some((link) => link.href === programme.primaryHref))
     : [];
@@ -29,22 +30,24 @@ export function SeoContentPage({ page, breadcrumbs, useProgrammeCards = false }:
     <>
       <SchemaMarkup data={[webPageSchema(page.seo), serviceSchema(page.seo), breadcrumbSchema(breadcrumbs)]} />
       <Hero
+        heroArtId={heroSideArtId}
         eyebrow={page.hero.eyebrow}
         title={page.hero.title}
         description={page.hero.description}
         primaryCta={page.hero.primaryCta}
+        primaryHref="#enquiry"
         secondaryCta={page.hero.secondaryCta}
         secondaryHref={page.hero.secondaryHref}
       >
-        {heroArtwork ? (
-          <WatercolorArtwork item={heroArtwork} className="hero-visual" priority sizes="(min-width: 900px) 42vw, 92vw" />
-        ) : page.showLeadForm ? (
+        {page.showLeadForm ? (
           <LeadForm
             defaultConcern={page.defaultConcern}
             formTitle={page.hero.primaryCta ?? "Start your confidential enquiry"}
             submitLabel={page.hero.primaryCta ?? "Send enquiry"}
             compact
           />
+        ) : formArtwork ? (
+          <WatercolorArtwork item={formArtwork} className="hero-visual" priority sizes="(min-width: 900px) 42vw, 92vw" />
         ) : null}
       </Hero>
 
@@ -136,13 +139,26 @@ export function SeoContentPage({ page, breadcrumbs, useProgrammeCards = false }:
       <Disclaimer />
       {page.showLeadForm ? (
         <section className="section form-section" aria-labelledby={`${page.seo.pageType}-form-heading`} id="enquiry">
-          <div className="container form-layout">
-            <div>
+          <div className="container form-layout form-layout-sticky">
+            <RevealDiv className="form-layout-aside">
               <p className="eyebrow">Private next step</p>
               <h2 id={`${page.seo.pageType}-form-heading`}>Start your confidential enquiry</h2>
               <p>Share the concern and choose how Gerald should respond. This is a non-emergency enquiry.</p>
-            </div>
-            <LeadForm defaultConcern={page.defaultConcern} />
+              <p className="form-section-alt">
+                Prefer one question at a time?{" "}
+                <SiteLink href="/need-help/">Use the confidential help wizard</SiteLink>.
+              </p>
+              {formArtwork ? <WatercolorArtwork item={formArtwork} className="section-inline-art form-layout-art" /> : null}
+            </RevealDiv>
+            <RevealDiv className="form-layout-main" delay={0.08}>
+              <LeadForm
+                defaultConcern={page.defaultConcern}
+                formTitle={page.hero.primaryCta ?? "Start your confidential enquiry"}
+                submitLabel={page.hero.primaryCta ?? "Send enquiry"}
+                compact
+                hideHeading
+              />
+            </RevealDiv>
           </div>
         </section>
       ) : null}

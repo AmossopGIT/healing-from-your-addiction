@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import { getRequestSurface } from "@/lib/appSurface";
 import { createPageMetadata, createViewport } from "@/lib/seo";
 import { MarketingShell } from "@/components/MarketingShell";
+import { ConsentModeScript } from "@/components/analytics/ConsentModeScript";
 import { headers } from "next/headers";
 import Script from "next/script";
 import { seoPages } from "@/content/seo";
@@ -20,7 +21,8 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
   return (
     <html lang="en-ZA" suppressHydrationWarning>
       <head>
-        {gtmId ? (
+        {gtmId && appSurface === "public" ? <ConsentModeScript /> : null}
+        {gtmId && appSurface === "public" ? (
           <Script id="gtm" strategy="afterInteractive">
             {`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -31,7 +33,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         ) : null}
       </head>
       <body>
-        {gtmId ? (
+        {gtmId && appSurface === "public" ? (
           <noscript>
             <iframe
               src={`https://www.googletagmanager.com/ns.html?id=${gtmId}`}

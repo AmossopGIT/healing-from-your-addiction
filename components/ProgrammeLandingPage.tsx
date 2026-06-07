@@ -41,6 +41,7 @@ export function ProgrammeLandingPage({ content }: ProgrammeLandingPageProps) {
         title={content.hero.title}
         description={content.hero.description}
         primaryCta={content.hero.primaryCta}
+        primaryHref="#enquiry"
         secondaryCta="WhatsApp Gerald"
         secondaryHref="/contact/#contact-options"
       >
@@ -182,14 +183,23 @@ export function ProgrammeLandingPage({ content }: ProgrammeLandingPageProps) {
       <TrustSection title={content.trust.title} body={content.trust.body} />
       <FAQSection faqs={content.faqs} />
       <Disclaimer />
-      <section className="section form-section" aria-labelledby="programme-bottom-form-heading">
-        <div className="container form-layout">
-          <div>
+      <section className="section form-section" aria-labelledby="programme-bottom-form-heading" id="enquiry">
+        <div className="container form-layout form-layout-sticky">
+          <div className="form-layout-aside">
             <p className="eyebrow">Confidential next step</p>
             <h2 id="programme-bottom-form-heading">{content.finalCta.title}</h2>
             <p>{content.finalCta.body}</p>
+            {programmeArtwork ? <WatercolorArtwork item={programmeArtwork} className="section-inline-art form-layout-art" /> : null}
           </div>
-          <LeadForm defaultConcern={content.defaultConcern} formTitle={content.finalCta.title} submitLabel={content.finalCta.button} />
+          <div className="form-layout-main">
+            <LeadForm
+              defaultConcern={content.defaultConcern}
+              formTitle={content.finalCta.title}
+              submitLabel={content.finalCta.button}
+              compact
+              hideHeading
+            />
+          </div>
         </div>
       </section>
       <CTASection title={content.finalCta.title} body={content.finalCta.body} button={content.finalCta.button} />

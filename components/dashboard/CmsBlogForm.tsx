@@ -13,6 +13,7 @@ import { CmsSectionEditor } from "@/components/dashboard/CmsSectionEditor";
 import { saveBlogPostDraft, updateBlogFromForm } from "@/lib/cms/actions";
 import { cmsFieldMaxLengths } from "@/lib/cms/formValidation";
 import { cmsBlogHeroArtId } from "@/lib/cms/mappers";
+import { normalizeBlogSections } from "@/lib/cms/normalizeSections";
 import type { BlogTemplateImportData } from "@/lib/cms/templateImport";
 import type { CmsBlogPostRow } from "@/types/cms";
 
@@ -43,8 +44,9 @@ export function CmsBlogForm({ post }: CmsBlogFormProps) {
   const [ogImageAlt, setOgImageAlt] = useState(post?.og_image_alt ?? "");
   const [heroArtAlt, setHeroArtAlt] = useState(post?.hero_art_alt ?? "");
   const [heroArtSrc, setHeroArtSrc] = useState(post?.hero_art_src ?? "");
-  const [sections, setSections] = useState(post?.sections ?? []);
-  const [editorInitialSections, setEditorInitialSections] = useState(post?.sections ?? []);
+  const initialSections = normalizeBlogSections(post?.sections ?? []);
+  const [sections, setSections] = useState(initialSections);
+  const [editorInitialSections, setEditorInitialSections] = useState(initialSections);
   const [sectionsResetKey, setSectionsResetKey] = useState(0);
   const [importNotes, setImportNotes] = useState<string | null>(null);
 

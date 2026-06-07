@@ -4965,6 +4965,28 @@ main,
   margin-top: 0.35rem;
 }
 
+.cms-content-inventory .dashboard-stat-value {
+  font-size: 1.05rem;
+}
+
+.cms-inventory-missing {
+  margin-top: 1rem;
+  color: var(--muted);
+}
+
+.cms-inventory-missing code {
+  font-size: 0.85rem;
+  word-break: break-word;
+}
+
+.cms-sync-status p {
+  color: var(--muted);
+}
+
+.cms-sync-status p + p {
+  margin-top: 0.75rem;
+}
+
 .dashboard-table-wrap {
   overflow-x: auto;
 }

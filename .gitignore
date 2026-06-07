@@ -9,6 +9,7 @@ build
 .vercel
 .env*.local
 .env
+tmp/
 .DS_Store
 *.log
 npm-debug.log*
