@@ -13,6 +13,7 @@ type LoginFormProps = {
   portal: "admin" | "client";
   showClientLinks?: boolean;
   notice?: string | null;
+  helperText?: string | null;
 };
 
 export function LoginForm({
@@ -22,6 +23,7 @@ export function LoginForm({
   portal,
   showClientLinks = false,
   notice = null,
+  helperText = null,
 }: LoginFormProps) {
   const router = useRouter();
   const configError = getSupabaseBrowserConfigError();
@@ -111,6 +113,7 @@ export function LoginForm({
       <h1>{title}</h1>
       <p className="auth-description">{description}</p>
       {notice ? <p className="form-error">{notice}</p> : null}
+      {helperText ? <p className="auth-description">{helperText}</p> : null}
       <form className="auth-form" onSubmit={handleSubmit}>
         <label className="form-field">
           <span>Email</span>

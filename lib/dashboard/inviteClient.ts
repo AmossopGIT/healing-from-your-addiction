@@ -12,7 +12,7 @@ import { leadFieldMaxLengths } from "@/lib/leads/constraints";
 import { logAuditEvent } from "@/lib/supabase/audit";
 import { createServiceClient } from "@/lib/supabase/service";
 import { isSupabaseServiceConfigured } from "@/lib/supabase/env";
-import { getAuthEmailOrigin } from "@/lib/supabase/redirectUrl";
+import { buildAuthEmailRedirect } from "@/lib/supabase/redirectUrl";
 import { createClient } from "@/lib/supabase/server";
 
 export async function inviteClient(formData: FormData) {
@@ -39,11 +39,10 @@ export async function inviteClient(formData: FormData) {
   const { data: { user: adminUser } } = await supabase.auth.getUser();
   if (!adminUser) redirect("/admin/login/");
   const service = createServiceClient();
-  const siteUrl = getAuthEmailOrigin();
 
   const { data: inviteData, error: inviteError } = await service.auth.admin.inviteUserByEmail(email, {
-    redirectTo: `${siteUrl.replace(/\/$/, "")}/portal/set-password/`,
-    data: { role: "client", full_name: fullName },
+    redirectTo: buildAuthEmailRedirect("/portal/set-password/"),
+    data: { role: "client", full_name: fullName, needs_password_setup: true },
   });
 
   if (inviteError || !inviteData.user) {

@@ -1,5 +1,6 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
+import { resolveAuthCallbackNext, userNeedsPasswordSetup, PORTAL_SET_PASSWORD_PATH } from "@/lib/auth/passwordSetup";
 import { normalizeSurfacePath, resolveAppSurface } from "@/lib/appSurface";
 import { withBasePath } from "@/lib/basePath";
 import { isClientOnboardingComplete } from "@/lib/supabase/onboarding";
@@ -43,15 +44,17 @@ export async function middleware(request: NextRequest) {
   const pathname = normalizeSurfacePath(request.nextUrl.pathname);
   const authCode = request.nextUrl.searchParams.get("code");
 
-  if (authCode && (pathname === "/" || pathname === "/portal/login/")) {
+  if (
+    authCode &&
+    (pathname === "/" || pathname === "/portal/login/" || pathname === PORTAL_SET_PASSWORD_PATH)
+  ) {
     const callbackUrl = new URL(withBasePath("/auth/callback/"), request.url);
     callbackUrl.searchParams.set("code", authCode);
-    const next = request.nextUrl.searchParams.get("next");
-    if (next) {
-      callbackUrl.searchParams.set("next", next);
-    } else if (pathname === "/portal/login/") {
-      callbackUrl.searchParams.set("next", "/portal/");
+    const otpType = request.nextUrl.searchParams.get("type");
+    if (otpType) {
+      callbackUrl.searchParams.set("type", otpType);
     }
+    callbackUrl.searchParams.set("next", resolveAuthCallbackNext(pathname, request.nextUrl.searchParams));
     return NextResponse.redirect(callbackUrl);
   }
 
@@ -92,10 +95,20 @@ export async function middleware(request: NextRequest) {
 
   const { data: profile } = await supabase.from("profiles").select("role").eq("id", user.id).single();
   const role = profile?.role;
+  const pendingPasswordSetup = userNeedsPasswordSetup(user);
 
   // Password recovery must not bounce by role (avoids admin <-> portal redirect loop).
   if (isSetPasswordPath) {
     return getResponse();
+  }
+
+  if (
+    pendingPasswordSetup &&
+    isPortalRoute &&
+    pathname !== "/portal/forgot-password/" &&
+    pathname !== "/portal/check-email/"
+  ) {
+    return NextResponse.redirect(new URL(withBasePath(PORTAL_SET_PASSWORD_PATH), request.url));
   }
 
   if (isAdminRoute) {
@@ -126,6 +139,9 @@ export async function middleware(request: NextRequest) {
         const onboardingComplete = isClientOnboardingComplete(clientProfile);
 
         if (pathname === "/portal/login/" || pathname === "/portal/sign-up/" || pathname === "/portal/forgot-password/") {
+          if (pendingPasswordSetup) {
+            return NextResponse.redirect(new URL(withBasePath(PORTAL_SET_PASSWORD_PATH), request.url));
+          }
           const target = onboardingComplete ? "/portal/" : PORTAL_ONBOARDING_PATH;
           return NextResponse.redirect(new URL(withBasePath(target), request.url));
         }

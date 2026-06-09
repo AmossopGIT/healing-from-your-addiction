@@ -34,7 +34,10 @@ export function SetPasswordForm() {
 
     setLoading(true);
     const supabase = createClient();
-    const { error: updateError } = await supabase.auth.updateUser({ password });
+    const { error: updateError } = await supabase.auth.updateUser({
+      password,
+      data: { needs_password_setup: false },
+    });
     setLoading(false);
 
     if (updateError) {
@@ -49,14 +52,26 @@ export function SetPasswordForm() {
       ? await supabase.from("profiles").select("role").eq("id", user.id).single()
       : { data: null };
 
-    await supabase.auth.signOut();
-
     if (profile?.role === "admin") {
+      await supabase.auth.signOut();
       router.push(withBasePath("/admin/login/?saved=1"));
       router.refresh();
       return;
     }
 
+    if (profile?.role === "client" && user) {
+      const { data: clientProfile } = await supabase
+        .from("client_profiles")
+        .select("onboarding_completed_at")
+        .eq("user_id", user.id)
+        .maybeSingle();
+      const onboardingComplete = Boolean(clientProfile?.onboarding_completed_at);
+      router.push(withBasePath(onboardingComplete ? "/portal/" : "/portal/onboarding/"));
+      router.refresh();
+      return;
+    }
+
+    await supabase.auth.signOut();
     router.push(withBasePath("/portal/login/?saved=1"));
     router.refresh();
   }

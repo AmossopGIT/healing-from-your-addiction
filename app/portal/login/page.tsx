@@ -24,6 +24,10 @@ export default async function PortalLoginPage({ searchParams }: PageProps) {
     : error
       ? loginErrorMessages[error] ?? decodeURIComponent(error)
       : null;
+  const helperText =
+    saved || error
+      ? null
+      : "Invited by Gerald? Open the invitation email and tap Accept invitation to set your password first. If the link expired, use Forgot your password.";
 
   return (
     <div className="auth-page">
@@ -34,6 +38,7 @@ export default async function PortalLoginPage({ searchParams }: PageProps) {
         redirectTo="/portal/"
         showClientLinks
         notice={notice}
+        helperText={helperText}
       />
     </div>
   );

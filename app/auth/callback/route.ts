@@ -1,5 +1,6 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
+import { PORTAL_SET_PASSWORD_PATH } from "@/lib/auth/passwordSetup";
 import { withBasePath } from "@/lib/basePath";
 import type { Database } from "@/types/database";
 import { getSupabaseAnonKey, getSupabaseUrl } from "@/lib/supabase/env";
@@ -13,7 +14,11 @@ function redirectNoStore(url: string) {
   return response;
 }
 
-function resolveNextPath(rawNext: string | null) {
+function resolveNextPath(rawNext: string | null, otpType: string | null) {
+  if (otpType === "invite" || otpType === "recovery") {
+    return PORTAL_SET_PASSWORD_PATH;
+  }
+
   const normalized = rawNext?.trim() || "/portal/";
   if (!normalized.startsWith("/") || normalized.startsWith("//")) {
     return "/portal/";
@@ -31,7 +36,7 @@ export async function GET(request: NextRequest) {
   const code = searchParams.get("code");
   const tokenHash = searchParams.get("token_hash");
   const otpType = searchParams.get("type");
-  const next = resolveNextPath(searchParams.get("next"));
+  const next = resolveNextPath(searchParams.get("next"), searchParams.get("type"));
   const loginPath = next.startsWith("/admin/") ? "/admin/login/" : "/portal/login/";
 
   if ((!code && !tokenHash) || !getSupabaseUrl() || !getSupabaseAnonKey()) {
