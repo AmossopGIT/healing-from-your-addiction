@@ -9,6 +9,9 @@ const nextConfig: NextConfig = {
   assetPrefix: pagesAssetPrefix ? `${pagesAssetPrefix}/` : undefined,
   trailingSlash: true,
   poweredByHeader: false,
+  outputFileTracingExcludes: {
+    "*": ["./public/videos/**/*"],
+  },
   images: {
     unoptimized: isGithubPages,
     formats: ["image/avif", "image/webp"],

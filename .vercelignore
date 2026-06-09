@@ -1,0 +1,4 @@
+# Social platform exports and loop masters — not served by the site (blog uses YouTube embeds).
+public/videos/social/**/*.mp4
+public/videos/loops/**
+public/videos/**/*.mp4
