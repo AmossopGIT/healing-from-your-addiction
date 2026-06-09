@@ -94,6 +94,10 @@ export function LoginForm({
     }
 
     if (profile?.role === "client") {
+      if (signInData.user?.user_metadata?.needs_password_setup === true) {
+        await supabase.auth.updateUser({ data: { needs_password_setup: false } });
+        await supabase.auth.refreshSession();
+      }
       router.push(withBasePath(redirectTo));
       router.refresh();
       return;

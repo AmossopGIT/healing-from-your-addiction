@@ -45,6 +45,8 @@ export function SetPasswordForm() {
       return;
     }
 
+    await supabase.auth.refreshSession();
+
     const {
       data: { user },
     } = await supabase.auth.getUser();

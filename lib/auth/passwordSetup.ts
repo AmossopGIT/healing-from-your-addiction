@@ -2,13 +2,18 @@ import type { User } from "@supabase/supabase-js";
 
 export const PORTAL_SET_PASSWORD_PATH = "/portal/set-password/";
 
-type PasswordSetupUser = Pick<User, "user_metadata" | "invited_at"> | null | undefined;
+type PasswordSetupUser = Pick<User, "user_metadata"> | null | undefined;
 
 export function userNeedsPasswordSetup(user: PasswordSetupUser) {
-  if (!user) return false;
-  if (user.user_metadata?.needs_password_setup === true) return true;
-  if (typeof user.invited_at === "string" && user.invited_at.length > 0) return true;
-  return false;
+  // Only the explicit flag counts. invited_at stays on the account forever after an invite.
+  return user?.user_metadata?.needs_password_setup === true;
+}
+
+export function clearPasswordSetupFlag(metadata: Record<string, unknown> | undefined) {
+  return {
+    ...metadata,
+    needs_password_setup: false,
+  };
 }
 
 export function resolveAuthCallbackNext(pathname: string, searchParams: URLSearchParams) {
