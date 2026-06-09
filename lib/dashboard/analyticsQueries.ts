@@ -1,6 +1,7 @@
 import type { AnalyticsBundle, AnalyticsRange } from "@/lib/analytics/types";
 import { formatAnalyticsRangeLabel, rangeToStartIso } from "@/lib/analytics/types";
 import { createClient } from "@/lib/supabase/server";
+import { isSupabaseServiceConfigured } from "@/lib/supabase/env";
 import type { AnalyticsEvent, Lead } from "@/types/database";
 
 const FUNNEL_STEPS = [
@@ -595,7 +596,18 @@ export async function getAnalyticsBundle(range: AnalyticsRange): Promise<Analyti
   const eventRows = (events ?? []) as AnalyticsEvent[];
   const leadRows = (leads ?? []) as Lead[];
 
-  return buildAnalyticsBundle(range, eventRows, leadRows);
+  const bundle = buildAnalyticsBundle(range, eventRows, leadRows);
+
+  if (!isSupabaseServiceConfigured() && eventRows.length === 0) {
+    return {
+      ...bundle,
+      storageReady: false,
+      storageMessage:
+        "Analytics collection is not configured. Set SUPABASE_SERVICE_ROLE_KEY on your deployment host (for example Vercel project environment variables), then redeploy.",
+    };
+  }
+
+  return bundle;
 }
 
 export async function getAnalyticsSummary(range: AnalyticsRange) {
