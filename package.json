@@ -17,7 +17,10 @@
     "video:render": "powershell -ExecutionPolicy Bypass -File boilerplate/lyric-video-kit/scripts/render_lyric_video_loop.ps1 -ProjectRoot .",
     "video:sync": "powershell -ExecutionPolicy Bypass -File boilerplate/lyric-video-kit/scripts/sync_lyrics_from_config.ps1 -ProjectRoot .",
     "video:align": "python boilerplate/lyric-video-kit/scripts/align_lyrics_whisper.py",
-    "video:validate": "powershell -ExecutionPolicy Bypass -File boilerplate/lyric-video-kit/scripts/validate_lyric_video_config.ps1 -ProjectRoot ."
+    "video:validate": "powershell -ExecutionPolicy Bypass -File boilerplate/lyric-video-kit/scripts/validate_lyric_video_config.ps1 -ProjectRoot .",
+    "social:render": "powershell -ExecutionPolicy Bypass -File boilerplate/social-video-kit/scripts/render_social_exports.ps1 -ProjectRoot .",
+    "social:validate": "powershell -ExecutionPolicy Bypass -File boilerplate/social-video-kit/scripts/validate_social_config.ps1 -ProjectRoot .",
+    "social:previews": "powershell -ExecutionPolicy Bypass -File boilerplate/social-video-kit/scripts/generate_safe_zone_previews.ps1 -ProjectRoot ."
   },
   "dependencies": {
     "@react-pdf/renderer": "^4.5.1",

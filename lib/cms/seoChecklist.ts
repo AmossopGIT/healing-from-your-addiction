@@ -56,24 +56,7 @@ function firstParagraph(sections: BlogSection[]): string {
   return "";
 }
 
-function allSectionText(sections: BlogSection[]): string {
-  const chunks: string[] = [];
-  for (const section of sections) {
-    chunks.push(section.h2);
-    chunks.push(...(section.paragraphs ?? []));
-    if (section.bullets) chunks.push(...section.bullets);
-    if (section.h3Items) {
-      for (const item of section.h3Items) {
-        chunks.push(item.h3, item.body);
-      }
-    }
-  }
-  return chunks.join("\n");
-}
-
-function hasInternalLink(text: string): boolean {
-  return /\[([^\]]+)\]\(\/[^)]+\)/.test(text) || /\]\(\/[a-z0-9\-/]+\)/i.test(text);
-}
+import { countInternalLinks, allSectionText } from "@/lib/cms/internalLinks";
 
 export function evaluateBlogSeoChecklist(input: SeoChecklistInput): SeoChecklistItem[] {
   const titleLen = input.title.trim().length;
@@ -163,10 +146,10 @@ export function evaluateBlogSeoChecklist(input: SeoChecklistInput): SeoChecklist
     },
     {
       id: "internal-links",
-      label: "At least one internal link in body",
-      ok: hasInternalLink(bodyText),
-      severity: hasInternalLink(bodyText) ? "pass" : "warn",
-      hint: "Add links like [contact](/contact/) to relevant site pages.",
+      label: `Internal links in body (${countInternalLinks(input.sections)})`,
+      ok: countInternalLinks(input.sections) >= 2,
+      severity: countInternalLinks(input.sections) >= 2 ? "pass" : "warn",
+      hint: "Add at least 2 links to programme or funnel pages. See docs/CONTENT_INTERNAL_LINKS.md.",
     },
     {
       id: "category",

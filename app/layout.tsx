@@ -6,7 +6,7 @@ import { MarketingShell } from "@/components/MarketingShell";
 import { ConsentModeScript } from "@/components/analytics/ConsentModeScript";
 import { headers } from "next/headers";
 import Script from "next/script";
-import { seoPages } from "@/content/seo";
+import { seoPages, getSeoByPath } from "@/content/seo";
 import "./globals.css";
 
 export const metadata: Metadata = createPageMetadata(seoPages.home);
@@ -17,6 +17,7 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
   const appSurface = await getRequestSurface();
   const requestHeaders = await headers();
   const currentPath = requestHeaders.get("x-current-path") ?? "/";
+  const pageSeo = appSurface === "public" ? getSeoByPath(currentPath) : undefined;
 
   return (
     <html lang="en-ZA" suppressHydrationWarning>
@@ -45,7 +46,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           </noscript>
         ) : null}
         {appSurface === "public" ? (
-          <MarketingShell currentPath={currentPath}>{children}</MarketingShell>
+          <MarketingShell currentPath={currentPath} pageSeo={pageSeo}>{children}</MarketingShell>
         ) : (
           children
         )}

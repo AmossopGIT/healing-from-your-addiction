@@ -25,6 +25,7 @@ const onboardingErrorMessages: Record<string, string> = {
   "invalid-contact-method": "Please choose a valid preferred contact method.",
   "invalid-programme": "Please choose the support focus that fits you best.",
   "invalid-emergency-contact": "Please shorten the emergency contact details.",
+  "save-failed": "We could not save your profile. Please try again or contact support if this continues.",
 };
 
 export default async function PortalOnboardingPage({ searchParams }: PageProps) {

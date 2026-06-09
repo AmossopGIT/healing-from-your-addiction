@@ -1,0 +1,42 @@
+{
+  "projectRoot": ".",
+  "campaignSlug": "my-article",
+  "songSlug": "my-article-my-song",
+  "sources": {
+    "horizontal": "public/videos/<song-slug>-horizontal-loop-v5.mp4",
+    "portrait": "public/videos/<song-slug>-portrait-loop-v5.mp4"
+  },
+  "outputsDir": "public/videos/social/<campaign-slug>",
+  "thumbSeekSeconds": 46,
+  "brand": {
+    "hookFont": "Arial",
+    "hookFontSizePortrait": 44,
+    "hookFontSizeHorizontal": 36,
+    "primaryColour": "#FFFFFF",
+    "outlineColour": "#a87727",
+    "creamColour": "#f7f3ea"
+  },
+  "hooks": [
+    {
+      "id": "main-hook",
+      "text": "Your on-screen hook line here",
+      "startSeconds": 0,
+      "endSeconds": 3.5,
+      "position": "top_safe",
+      "platforms": ["tiktok", "instagram_reels", "youtube_shorts", "facebook_reels"],
+      "burnIn": true
+    }
+  ],
+  "exports": {
+    "youtube": { "enabled": true, "copyMaster": true },
+    "facebook_landscape": { "enabled": true, "copyMaster": true },
+    "linkedin": { "enabled": true, "copyMaster": true },
+    "tiktok": { "enabled": true, "hookId": "main-hook", "variants": ["clean", "hook"] },
+    "instagram_reels": { "enabled": true, "hookId": "main-hook", "variants": ["clean", "hook"] },
+    "youtube_shorts": { "enabled": true, "hookId": "main-hook", "variants": ["clean", "hook"] },
+    "facebook_reels": { "enabled": true, "hookId": "main-hook", "variants": ["clean", "hook"] },
+    "instagram_feed_square": { "enabled": true, "cropFrom": "portrait" },
+    "instagram_feed_portrait": { "enabled": true, "cropFrom": "portrait" },
+    "facebook_square": { "enabled": true, "cropFrom": "portrait" }
+  }
+}

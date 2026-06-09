@@ -507,6 +507,78 @@ export function AnalyticsDashboard({ initialBundle }: { initialBundle: Analytics
             </article>
           </section>
 
+          <section className="dashboard-two-col">
+            <article className="dashboard-panel">
+              <div className="dashboard-panel-header">
+                <h2>Performance by keyword</h2>
+                <span className="dashboard-inline-note">Page views, conversions, and leads</span>
+              </div>
+              <div className="dashboard-table-wrap">
+                <table className="dashboard-table">
+                  <thead>
+                    <tr>
+                      <th>Primary keyword</th>
+                      <th>Views</th>
+                      <th>Conversions</th>
+                      <th>Leads</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {bundle.keywordPerformance.length ? (
+                      bundle.keywordPerformance.map((row) => (
+                        <tr key={row.keyword}>
+                          <td>{row.keyword}</td>
+                          <td>{row.pageViews}</td>
+                          <td>{row.conversions}</td>
+                          <td>{row.leads}</td>
+                        </tr>
+                      ))
+                    ) : (
+                      <tr>
+                        <td colSpan={4}>No keyword data yet. Ensure pages carry SEO context and leads include primary_keyword.</td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </article>
+
+            <article className="dashboard-panel">
+              <div className="dashboard-panel-header">
+                <h2>Blog to programme links</h2>
+                <span className="dashboard-inline-note">Internal link clicks from blog articles</span>
+              </div>
+              <div className="dashboard-table-wrap">
+                <table className="dashboard-table">
+                  <thead>
+                    <tr>
+                      <th>Source article</th>
+                      <th>Link text</th>
+                      <th>Destination</th>
+                      <th>Clicks</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {bundle.blogProgrammeLinks.length ? (
+                      bundle.blogProgrammeLinks.map((row) => (
+                        <tr key={`${row.sourceSlug}-${row.destination}-${row.linkText}`}>
+                          <td>{row.sourceSlug}</td>
+                          <td>{row.linkText}</td>
+                          <td>{row.destination}</td>
+                          <td>{row.clicks}</td>
+                        </tr>
+                      ))
+                    ) : (
+                      <tr>
+                        <td colSpan={4}>No blog internal link clicks recorded yet.</td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </article>
+          </section>
+
           <section className="dashboard-panel">
             <div className="dashboard-panel-header">
               <h2>Lead attribution</h2>

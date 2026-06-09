@@ -39,11 +39,33 @@ const blogCategorySymbolBySlug: Record<string, string> = {
   "healing-program": "a pathway folder, stepping stones, and a pause point",
   hypnotherapy: "a calm head outline with an inner loop and one pause marker",
   "addiction-recovery": "a winding path with small stones and a stable pause point",
+  "gambling-addiction": "a subtle card or chip shape with a circular loop and pause point",
+  "food-addiction": "a bowl and spoon outline with a gentle loop and pause point",
 };
 
 const blogAltBySlug: Record<string, string> = {
   "signs-of-behavioral-addictions":
     "Minimal watercolor illustration of a seated figure surrounded by a gambling loop with dice, cards, and a pause point, suggesting behavioral addiction patterns.",
+  "when-you-decide-to-heal-gambling":
+    "Minimal watercolor illustration of an anonymous figure beside a gentle loop and gold pause stone, suggesting the decision to heal from gambling addiction.",
+  "how-to-quit-gambling-when-youve-tried-everything":
+    "Minimal watercolor illustration of a hand pausing before dice and cards, suggesting help to quit gambling when previous attempts failed.",
+  "chasing-losses-why-the-gambling-loop-keeps-running":
+    "Minimal watercolor illustration of a circular loop with a downward spiral, suggesting the chasing-losses gambling pattern.",
+  "introduction-to-hypnotherapy-for-gambling-addiction":
+    "Minimal watercolor illustration of a calm head outline with an inner loop, suggesting hypnotherapy support for gambling addiction.",
+  "what-happens-after-a-gambling-support-enquiry":
+    "Minimal watercolor illustration of stepping stones along a path, suggesting the next step after a confidential gambling support enquiry.",
+  "when-you-decide-to-heal-food-addiction":
+    "Minimal watercolor illustration of an anonymous figure beside a bowl and pause point, suggesting the decision to heal from food addiction.",
+  "emotional-eating-at-night-triggers-and-pause":
+    "Minimal watercolor illustration of a bowl and hand with a pause line, suggesting emotional eating at night and a calmer response.",
+  "food-addiction-vs-binge-eating-understanding-the-pattern":
+    "Minimal watercolor illustration of overlapping gentle spirals near a bowl, suggesting food addiction and binge eating patterns.",
+  "eft-for-food-cravings-a-gentle-first-step":
+    "Minimal watercolor illustration of calm hands near a bowl with a soft loop, suggesting EFT support for food cravings.",
+  "preparing-for-the-four-week-food-addiction-programme":
+    "Minimal watercolor illustration of stepping stones and a folder-like shape, suggesting preparation for a structured food addiction programme.",
 };
 
 function blogAltText(categorySlug: string, slug?: string) {

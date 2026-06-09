@@ -2276,6 +2276,26 @@ textarea:focus {
   width: 1px;
 }
 
+.skip-link {
+  background: var(--teal-dark);
+  color: #fff;
+  left: 1rem;
+  padding: 0.65rem 1rem;
+  position: absolute;
+  top: -100%;
+  z-index: 10000;
+  border-radius: var(--radius-sm);
+}
+
+.skip-link:focus {
+  top: 1rem;
+}
+
+.dashboard-cell-warn {
+  color: #9a4b00;
+  font-weight: 600;
+}
+
 @media (max-width: 1040px) {
   h1 {
     font-size: 2.65rem;

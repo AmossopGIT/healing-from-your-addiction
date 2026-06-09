@@ -94,6 +94,20 @@ export type AnalyticsAttributionRow = {
   conversions: number;
 };
 
+export type AnalyticsKeywordRow = {
+  keyword: string;
+  pageViews: number;
+  conversions: number;
+  leads: number;
+};
+
+export type AnalyticsBlogLinkRow = {
+  sourceSlug: string;
+  destination: string;
+  linkText: string;
+  clicks: number;
+};
+
 export type AnalyticsLeadVelocityPoint = {
   date: string;
   newLeads: number;
@@ -118,6 +132,8 @@ export type AnalyticsBundle = {
   funnel: AnalyticsFunnelStep[];
   attribution: AnalyticsAttributionRow[];
   leadVelocity: AnalyticsLeadVelocityPoint[];
+  keywordPerformance: AnalyticsKeywordRow[];
+  blogProgrammeLinks: AnalyticsBlogLinkRow[];
 };
 
 export function parseAnalyticsRange(value: string | null | undefined): AnalyticsRange {

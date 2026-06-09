@@ -4,7 +4,7 @@ import { FormEvent, KeyboardEvent, useEffect, useMemo, useRef, useState } from "
 import { addictionOptions, contactMethods, emailHref, siteConfig, whatsappHref } from "@/lib/constants";
 import { submitLead as submitLeadRequest } from "@/lib/leads";
 import { leadFieldMaxLengths } from "@/lib/leads/constraints";
-import { pushDataLayer } from "@/lib/tracking";
+import { getCurrentSeoContext, pushDataLayer } from "@/lib/tracking";
 
 type ChatStep = "welcome" | "fullName" | "email" | "phone" | "concern" | "preferred" | "message" | "consent" | "success" | "error";
 
@@ -54,7 +54,7 @@ function getAttribution() {
   const params = new URLSearchParams(window.location.search);
 
   return {
-    landing_page: window.location.pathname,
+    ...getCurrentSeoContext(),
     referrer: document.referrer,
     utm_source: params.get("utm_source"),
     utm_medium: params.get("utm_medium"),

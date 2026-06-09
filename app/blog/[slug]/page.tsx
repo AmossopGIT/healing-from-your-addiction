@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ContentArticleBody } from "@/components/ContentArticleBody";
+import { BlogPostViewTracker } from "@/components/BlogPostViewTracker";
 import { PageSeoContextScript } from "@/components/PageSeoContextScript";
+import { RelatedBlogPosts } from "@/components/RelatedBlogPosts";
 import { SchemaMarkup } from "@/components/SchemaMarkup";
 import { SiteLink } from "@/components/SiteLink";
 import { WatercolorArtwork } from "@/components/WatercolorArtwork";
@@ -76,6 +78,7 @@ export default async function BlogPostPage({ params }: PageProps) {
 
   return (
     <>
+      <BlogPostViewTracker slug={post.slug} categorySlug={post.categorySlug} primaryKeyword={post.primaryKeyword} />
       {pageSeo ? <PageSeoContextScript pageSeo={pageSeo} /> : null}
       <SchemaMarkup
         data={[
@@ -125,7 +128,7 @@ export default async function BlogPostPage({ params }: PageProps) {
             ) : null}
           </p>
           {art ? <WatercolorArtwork item={art} className="section-artwork blog-hero-art" priority /> : null}
-          <ContentArticleBody sections={post.sections} />
+          <ContentArticleBody sections={post.sections} sourceSlug={post.slug} />
 
           <div className="blog-tag-list">
             {post.tagSlugs.map((tagSlug) => {
@@ -139,6 +142,7 @@ export default async function BlogPostPage({ params }: PageProps) {
           </div>
         </div>
       </article>
+      <RelatedBlogPosts currentSlug={post.slug} categorySlug={post.categorySlug} />
     </>
   );
 }

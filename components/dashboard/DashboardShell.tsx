@@ -70,7 +70,7 @@ export async function DashboardShell({ title, subtitle, navItems, children, vari
             {variant === "portal" ? <PortalNotificationBell summary={notificationSummary} /> : null}
           </div>
         </header>
-        <div className="dashboard-content">{children}</div>
+        <div id="main-content" className="dashboard-content">{children}</div>
         <nav className="dashboard-mobile-nav" aria-label={`${title} quick navigation`}>
           {navItems.map((item) => (
             <Link

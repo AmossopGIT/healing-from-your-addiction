@@ -14,6 +14,8 @@ Paid Search/PMax docs live in `docs/marketing/campaigns/search/`. This tree is o
 | [`../../public/videos/README.md`](../../public/videos/README.md) | On-disk video and subtitle paths |
 | [`../../tools/lyric-video/`](../../tools/lyric-video/) | Per-song JSON config + render entry script |
 | [`../../boilerplate/lyric-video-kit/`](../../boilerplate/lyric-video-kit/) | **Portable boilerplate** — copy to new projects (scripts, templates, workflow) |
+| [`../../boilerplate/social-video-kit/`](../../boilerplate/social-video-kit/) | **Social distribution** — platform exports, hooks, crops after loop-v5 |
+| [`../../tools/social-video/`](../../tools/social-video/) | Per-campaign social export JSON configs |
 
 ## Naming (every campaign)
 
@@ -32,9 +34,10 @@ Paid Search/PMax docs live in `docs/marketing/campaigns/search/`. This tree is o
 2. Fill `CAMPAIGN.md` (article, song, audio path, duration, art/loops).
 3. Add `tools/lyric-video/<song-slug>.config.json`.
 4. Produce exact `.srt` / `.ass` → render → QA → fill `social-publishing.md`.
-5. Upload YouTube; set `youtubeId` on blog `section.video` in `content/blogArchiveChunk*.ts`.
-6. Post portrait to TikTok/Reels; horizontal to YouTube/Facebook.
-7. Mark row **done** in `QUEUE.md`.
+5. Run social-video-kit (`npm run social:render -- -Config tools/social-video/<blog-slug>.campaign.json`) for platform exports.
+6. Upload YouTube; set `youtubeId` on blog `section.video` in `content/blogArchiveChunk*.ts`.
+7. Post portrait to TikTok/Reels; horizontal to YouTube/Facebook (use `public/videos/social/<blog-slug>/manifest.json`).
+8. Mark row **done** in `QUEUE.md`.
 
 ## Completed campaigns
 

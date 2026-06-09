@@ -6,9 +6,10 @@ import { ArticleInlineContent } from "@/lib/cms/inlineMarkdown";
 
 type ContentArticleBodyProps = {
   sections: BlogSection[];
+  sourceSlug?: string;
 };
 
-export function ContentArticleBody({ sections }: ContentArticleBodyProps) {
+export function ContentArticleBody({ sections, sourceSlug }: ContentArticleBodyProps) {
   return (
     <div className="blog-prose">
       {sections.map((section) => {
@@ -31,14 +32,14 @@ export function ContentArticleBody({ sections }: ContentArticleBodyProps) {
             ) : null}
             {section.paragraphs?.map((paragraph) => (
               <p key={paragraph}>
-                <ArticleInlineContent text={paragraph} />
+                <ArticleInlineContent text={paragraph} sourceSlug={sourceSlug} />
               </p>
             ))}
             {section.h3Items?.map((item) => (
               <div key={item.h3}>
                 <h3>{item.h3}</h3>
                 <p>
-                  <ArticleInlineContent text={item.body} />
+                  <ArticleInlineContent text={item.body} sourceSlug={sourceSlug} />
                 </p>
               </div>
             ))}
@@ -46,7 +47,7 @@ export function ContentArticleBody({ sections }: ContentArticleBodyProps) {
               <ul>
                 {section.bullets.map((bullet) => (
                   <li key={bullet}>
-                    <ArticleInlineContent text={bullet} />
+                    <ArticleInlineContent text={bullet} sourceSlug={sourceSlug} />
                   </li>
                 ))}
               </ul>

@@ -6,17 +6,26 @@ import { CookieConsentBanner } from "@/components/analytics/CookieConsentBanner"
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { MarketingEnhancements } from "@/components/MarketingEnhancements";
+import { PageSeoContextScript } from "@/components/PageSeoContextScript";
+import { SkipLink } from "@/components/SkipLink";
+import type { SeoPageRecord } from "@/content/seo";
 import { withBasePath } from "@/lib/basePath";
 
 export function MarketingShell({
   children,
   currentPath,
+  pageSeo,
 }: {
   children: ReactNode;
   currentPath: string;
+  pageSeo?: SeoPageRecord;
 }) {
+  const pageOwnsSeoContext = /^\/(blog|case-studies)\/[^/]+\/$/.test(currentPath);
+
   return (
     <>
+      <SkipLink />
+      {pageSeo && !pageOwnsSeoContext ? <PageSeoContextScript pageSeo={pageSeo} /> : null}
       <Header />
       <main id="main-content">{children}</main>
       <Footer />

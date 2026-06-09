@@ -1,5 +1,5 @@
-import Link from "next/link";
 import type { ReactNode } from "react";
+import { BlogInternalLink } from "@/components/BlogInternalLink";
 
 type Token =
   | { type: "text"; value: string }
@@ -49,25 +49,23 @@ function tokenizeInlineMarkdown(text: string): Token[] {
   return tokens.length ? tokens : [{ type: "text", value: text }];
 }
 
-function renderToken(token: Token, key: string): ReactNode {
+function renderToken(token: Token, key: string, sourceSlug?: string): ReactNode {
   switch (token.type) {
     case "bold":
-      return <strong key={key}>{parseInlineMarkdown(token.value)}</strong>;
+      return <strong key={key}>{parseInlineMarkdown(token.value, sourceSlug)}</strong>;
     case "italic":
-      return <em key={key}>{parseInlineMarkdown(token.value)}</em>;
+      return <em key={key}>{parseInlineMarkdown(token.value, sourceSlug)}</em>;
     case "small":
-      return <small key={key}>{parseInlineMarkdown(token.value)}</small>;
+      return <small key={key}>{parseInlineMarkdown(token.value, sourceSlug)}</small>;
     case "large":
       return (
         <span key={key} className="blog-text-large">
-          {parseInlineMarkdown(token.value)}
+          {parseInlineMarkdown(token.value, sourceSlug)}
         </span>
       );
     case "link":
       return token.href.startsWith("/") ? (
-        <Link key={key} href={token.href}>
-          {token.label}
-        </Link>
+        <BlogInternalLink key={key} href={token.href} label={token.label} sourceSlug={sourceSlug} />
       ) : (
         <a key={key} href={token.href} rel="noreferrer noopener" target="_blank">
           {token.label}
@@ -83,10 +81,10 @@ function renderToken(token: Token, key: string): ReactNode {
   }
 }
 
-export function parseInlineMarkdown(text: string): ReactNode[] {
-  return tokenizeInlineMarkdown(text).map((token, index) => renderToken(token, `${token.type}-${index}`));
+export function parseInlineMarkdown(text: string, sourceSlug?: string): ReactNode[] {
+  return tokenizeInlineMarkdown(text).map((token, index) => renderToken(token, `${token.type}-${index}`, sourceSlug));
 }
 
-export function ArticleInlineContent({ text }: { text: string }) {
-  return <>{parseInlineMarkdown(text)}</>;
+export function ArticleInlineContent({ text, sourceSlug }: { text: string; sourceSlug?: string }) {
+  return <>{parseInlineMarkdown(text, sourceSlug)}</>;
 }

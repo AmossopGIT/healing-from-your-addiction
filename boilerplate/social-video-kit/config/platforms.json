@@ -1,0 +1,141 @@
+{
+  "version": 1,
+  "platforms": {
+    "youtube": {
+      "label": "YouTube",
+      "aspect": "16:9",
+      "width": 1920,
+      "height": 1080,
+      "sourceMaster": "horizontal",
+      "suffix": "youtube",
+      "safeZone": {
+        "topPercent": 8,
+        "bottomPercent": 12,
+        "sidePercent": 6
+      }
+    },
+    "facebook_landscape": {
+      "label": "Facebook (landscape)",
+      "aspect": "16:9",
+      "width": 1920,
+      "height": 1080,
+      "sourceMaster": "horizontal",
+      "suffix": "facebook-landscape",
+      "safeZone": {
+        "topPercent": 8,
+        "bottomPercent": 12,
+        "sidePercent": 6
+      }
+    },
+    "linkedin": {
+      "label": "LinkedIn",
+      "aspect": "16:9",
+      "width": 1920,
+      "height": 1080,
+      "sourceMaster": "horizontal",
+      "suffix": "linkedin",
+      "safeZone": {
+        "topPercent": 8,
+        "bottomPercent": 12,
+        "sidePercent": 6
+      }
+    },
+    "tiktok": {
+      "label": "TikTok",
+      "aspect": "9:16",
+      "width": 1080,
+      "height": 1920,
+      "sourceMaster": "portrait",
+      "suffix": "tiktok",
+      "safeZone": {
+        "topPercent": 14,
+        "bottomPercent": 22,
+        "sidePercent": 5
+      }
+    },
+    "instagram_reels": {
+      "label": "Instagram Reels",
+      "aspect": "9:16",
+      "width": 1080,
+      "height": 1920,
+      "sourceMaster": "portrait",
+      "suffix": "instagram-reels",
+      "safeZone": {
+        "topPercent": 14,
+        "bottomPercent": 22,
+        "sidePercent": 5
+      }
+    },
+    "youtube_shorts": {
+      "label": "YouTube Shorts",
+      "aspect": "9:16",
+      "width": 1080,
+      "height": 1920,
+      "sourceMaster": "portrait",
+      "suffix": "youtube-shorts",
+      "safeZone": {
+        "topPercent": 12,
+        "bottomPercent": 20,
+        "sidePercent": 5
+      }
+    },
+    "facebook_reels": {
+      "label": "Facebook Reels",
+      "aspect": "9:16",
+      "width": 1080,
+      "height": 1920,
+      "sourceMaster": "portrait",
+      "suffix": "facebook-reels",
+      "safeZone": {
+        "topPercent": 14,
+        "bottomPercent": 22,
+        "sidePercent": 5
+      }
+    },
+    "instagram_feed_square": {
+      "label": "Instagram feed (1:1)",
+      "aspect": "1:1",
+      "width": 1080,
+      "height": 1080,
+      "sourceMaster": "portrait",
+      "cropFrom": "portrait",
+      "crop": { "w": 1080, "h": 1080, "x": 0, "y": 0 },
+      "suffix": "ig-square",
+      "safeZone": {
+        "topPercent": 6,
+        "bottomPercent": 6,
+        "sidePercent": 6
+      }
+    },
+    "instagram_feed_portrait": {
+      "label": "Instagram feed (4:5)",
+      "aspect": "4:5",
+      "width": 1080,
+      "height": 1350,
+      "sourceMaster": "portrait",
+      "cropFrom": "portrait",
+      "crop": { "w": 1080, "h": 1350, "x": 0, "y": 0 },
+      "suffix": "ig-4x5",
+      "safeZone": {
+        "topPercent": 8,
+        "bottomPercent": 10,
+        "sidePercent": 5
+      }
+    },
+    "facebook_square": {
+      "label": "Facebook feed (1:1)",
+      "aspect": "1:1",
+      "width": 1080,
+      "height": 1080,
+      "sourceMaster": "portrait",
+      "cropFrom": "portrait",
+      "crop": { "w": 1080, "h": 1080, "x": 0, "y": 0 },
+      "suffix": "facebook-square",
+      "safeZone": {
+        "topPercent": 6,
+        "bottomPercent": 6,
+        "sidePercent": 6
+      }
+    }
+  }
+}

@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { FormEvent, useMemo, useRef, useState } from "react";
+import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
 import { withBasePath } from "@/lib/basePath";
 import { addictionOptions, contactMethods } from "@/lib/constants";
 import { submitLead } from "@/lib/leads";
@@ -113,6 +113,11 @@ export function NeedHelpWizard({ defaultConcern }: { defaultConcern?: string }) 
   const progressIndex = Math.max(0, stepOrder.indexOf(step));
   const progressTotal = stepOrder.length - 1;
   const progressPercent = step === "welcome" ? 0 : Math.round((progressIndex / progressTotal) * 100);
+
+  useEffect(() => {
+    if (step === "welcome") return;
+    document.querySelector<HTMLElement>(".need-help-wizard-panel h2")?.focus();
+  }, [step]);
 
   function track(event: string, payload: Record<string, unknown> = {}) {
     pushDataLayer(event, {
@@ -240,7 +245,7 @@ export function NeedHelpWizard({ defaultConcern }: { defaultConcern?: string }) 
       {step === "welcome" ? (
         <div className="need-help-wizard-panel">
           <p className="eyebrow">Private help wizard</p>
-          <h2>Take it one step at a time</h2>
+          <h2 tabIndex={-1}>Take it one step at a time</h2>
           <p className="need-help-wizard-lead">
             Answer a few short questions so Gerald can respond with the right level of care. This is for confidential
             enquiry support — not emergency medical care.
@@ -265,13 +270,15 @@ export function NeedHelpWizard({ defaultConcern }: { defaultConcern?: string }) 
 
       {step === "concern" ? (
         <div className="need-help-wizard-panel">
-          <h2>What would you like support with?</h2>
+          <h2 tabIndex={-1}>What would you like support with?</h2>
           <p className="need-help-wizard-hint">Choose the closest match. You can add more detail later.</p>
-          <div className="need-help-chip-grid">
+          <div className="need-help-chip-grid" role="radiogroup" aria-label="Addiction concern">
             {addictionOptions.map((option) => (
               <button
                 key={option}
                 type="button"
+                role="radio"
+                aria-checked={lead.addictionConcern === option}
                 className={`need-help-chip${lead.addictionConcern === option ? " is-selected" : ""}`}
                 onClick={() => updateField("addictionConcern", option)}
               >
@@ -285,7 +292,7 @@ export function NeedHelpWizard({ defaultConcern }: { defaultConcern?: string }) 
 
       {step === "contact" ? (
         <div className="need-help-wizard-panel">
-          <h2>How can Gerald reach you?</h2>
+          <h2 tabIndex={-1}>How can Gerald reach you?</h2>
           <form className="need-help-wizard-form" onSubmit={(event) => { event.preventDefault(); handleNext(); }}>
             <label>
               <span>Full name</span>
@@ -327,7 +334,7 @@ export function NeedHelpWizard({ defaultConcern }: { defaultConcern?: string }) 
 
       {step === "urgency" ? (
         <div className="need-help-wizard-panel">
-          <h2>How does this feel right now?</h2>
+          <h2 tabIndex={-1}>How does this feel right now?</h2>
           <label>
             <span>Urgency today</span>
             <select value={lead.urgencyLevel} onChange={(event) => updateField("urgencyLevel", event.target.value as WizardLeadState["urgencyLevel"])}>
@@ -358,7 +365,7 @@ export function NeedHelpWizard({ defaultConcern }: { defaultConcern?: string }) 
 
       {step === "reach" ? (
         <div className="need-help-wizard-panel">
-          <h2>Your preferences</h2>
+          <h2 tabIndex={-1}>Your preferences</h2>
           <label>
             <span>Preferred contact method</span>
             <select
@@ -407,7 +414,7 @@ export function NeedHelpWizard({ defaultConcern }: { defaultConcern?: string }) 
 
       {step === "share" ? (
         <div className="need-help-wizard-panel">
-          <h2>Anything you want Gerald to know?</h2>
+          <h2 tabIndex={-1}>Anything you want Gerald to know?</h2>
           <p className="need-help-wizard-hint">Both fields are optional. Share only what feels safe.</p>
           <label>
             <span>Progress in the next 2–4 weeks (optional)</span>
@@ -474,7 +481,7 @@ export function NeedHelpWizard({ defaultConcern }: { defaultConcern?: string }) 
 
       {step === "confirm" ? (
         <div className="need-help-wizard-panel">
-          <h2>Ready to send?</h2>
+          <h2 tabIndex={-1}>Ready to send?</h2>
           <dl className="need-help-review">
             <div>
               <dt>Concern</dt>

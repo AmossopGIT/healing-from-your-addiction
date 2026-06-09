@@ -83,6 +83,14 @@ npm run video:validate -- -Config tools/lyric-video/<song-slug>.config.json
 
 Pass script arguments after `--`.
 
+## After render: social distribution
+
+When loop-v5 masters are ready, run [**social-video-kit**](../social-video-kit/README.md) to export platform files (TikTok/Reels hooks, 1:1/4:5 crops, `manifest.json`):
+
+```bash
+npm run social:render -- -Config tools/social-video/<campaign-slug>.campaign.json
+```
+
 ## Reference campaigns (HFYA)
 
 - Cross-addictions (2 loops, manual SRT): `tools/lyric-video/cross-addictions-same-loop-new-name.config.json`

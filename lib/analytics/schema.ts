@@ -30,6 +30,8 @@ export const ANALYTICS_EVENT_ALLOWLIST = [
   "link_click",
   "outbound_click",
   "time_on_page",
+  "blog_post_view",
+  "blog_internal_link_click",
 ] as const;
 
 export type AnalyticsEventName = (typeof ANALYTICS_EVENT_ALLOWLIST)[number];

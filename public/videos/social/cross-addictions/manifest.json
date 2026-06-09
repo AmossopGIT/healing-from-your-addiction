@@ -1,0 +1,148 @@
+﻿{
+    "campaignSlug":  "cross-addictions",
+    "songSlug":  "cross-addictions-same-loop-new-name",
+    "generatedAt":  "2026-06-08T09:28:43.1963235Z",
+    "outputsDir":  "public/videos/social/cross-addictions",
+    "exports":  [
+                    {
+                        "platform":  "youtube",
+                        "file":  "public/videos/social/cross-addictions/cross-addictions-same-loop-new-name-youtube.mp4",
+                        "variant":  "clean",
+                        "hookId":  "",
+                        "burnIn":  false,
+                        "aspect":  "16:9",
+                        "width":  1920,
+                        "height":  1080
+                    },
+                    {
+                        "platform":  "facebook_landscape",
+                        "file":  "public/videos/social/cross-addictions/cross-addictions-same-loop-new-name-facebook-landscape.mp4",
+                        "variant":  "clean",
+                        "hookId":  "",
+                        "burnIn":  false,
+                        "aspect":  "16:9",
+                        "width":  1920,
+                        "height":  1080
+                    },
+                    {
+                        "platform":  "linkedin",
+                        "file":  "public/videos/social/cross-addictions/cross-addictions-same-loop-new-name-linkedin.mp4",
+                        "variant":  "clean",
+                        "hookId":  "",
+                        "burnIn":  false,
+                        "aspect":  "16:9",
+                        "width":  1920,
+                        "height":  1080
+                    },
+                    {
+                        "platform":  "tiktok",
+                        "file":  "public/videos/social/cross-addictions/cross-addictions-same-loop-new-name-tiktok-clean.mp4",
+                        "variant":  "clean",
+                        "hookId":  "main-hook",
+                        "burnIn":  false,
+                        "aspect":  "9:16",
+                        "width":  1080,
+                        "height":  1920
+                    },
+                    {
+                        "platform":  "tiktok",
+                        "file":  "public/videos/social/cross-addictions/cross-addictions-same-loop-new-name-tiktok-hook.mp4",
+                        "variant":  "hook",
+                        "hookId":  "main-hook",
+                        "burnIn":  true,
+                        "aspect":  "9:16",
+                        "width":  1080,
+                        "height":  1920
+                    },
+                    {
+                        "platform":  "instagram_reels",
+                        "file":  "public/videos/social/cross-addictions/cross-addictions-same-loop-new-name-instagram-reels-clean.mp4",
+                        "variant":  "clean",
+                        "hookId":  "main-hook",
+                        "burnIn":  false,
+                        "aspect":  "9:16",
+                        "width":  1080,
+                        "height":  1920
+                    },
+                    {
+                        "platform":  "instagram_reels",
+                        "file":  "public/videos/social/cross-addictions/cross-addictions-same-loop-new-name-instagram-reels-hook.mp4",
+                        "variant":  "hook",
+                        "hookId":  "main-hook",
+                        "burnIn":  true,
+                        "aspect":  "9:16",
+                        "width":  1080,
+                        "height":  1920
+                    },
+                    {
+                        "platform":  "youtube_shorts",
+                        "file":  "public/videos/social/cross-addictions/cross-addictions-same-loop-new-name-youtube-shorts-clean.mp4",
+                        "variant":  "clean",
+                        "hookId":  "main-hook",
+                        "burnIn":  false,
+                        "aspect":  "9:16",
+                        "width":  1080,
+                        "height":  1920
+                    },
+                    {
+                        "platform":  "youtube_shorts",
+                        "file":  "public/videos/social/cross-addictions/cross-addictions-same-loop-new-name-youtube-shorts-hook.mp4",
+                        "variant":  "hook",
+                        "hookId":  "main-hook",
+                        "burnIn":  true,
+                        "aspect":  "9:16",
+                        "width":  1080,
+                        "height":  1920
+                    },
+                    {
+                        "platform":  "facebook_reels",
+                        "file":  "public/videos/social/cross-addictions/cross-addictions-same-loop-new-name-facebook-reels-clean.mp4",
+                        "variant":  "clean",
+                        "hookId":  "main-hook",
+                        "burnIn":  false,
+                        "aspect":  "9:16",
+                        "width":  1080,
+                        "height":  1920
+                    },
+                    {
+                        "platform":  "facebook_reels",
+                        "file":  "public/videos/social/cross-addictions/cross-addictions-same-loop-new-name-facebook-reels-hook.mp4",
+                        "variant":  "hook",
+                        "hookId":  "main-hook",
+                        "burnIn":  true,
+                        "aspect":  "9:16",
+                        "width":  1080,
+                        "height":  1920
+                    },
+                    {
+                        "platform":  "instagram_feed_square",
+                        "file":  "public/videos/social/cross-addictions/cross-addictions-same-loop-new-name-ig-square.mp4",
+                        "variant":  "clean",
+                        "hookId":  "",
+                        "burnIn":  false,
+                        "aspect":  "1:1",
+                        "width":  1080,
+                        "height":  1080
+                    },
+                    {
+                        "platform":  "instagram_feed_portrait",
+                        "file":  "public/videos/social/cross-addictions/cross-addictions-same-loop-new-name-ig-4x5.mp4",
+                        "variant":  "clean",
+                        "hookId":  "",
+                        "burnIn":  false,
+                        "aspect":  "4:5",
+                        "width":  1080,
+                        "height":  1350
+                    },
+                    {
+                        "platform":  "facebook_square",
+                        "file":  "public/videos/social/cross-addictions/cross-addictions-same-loop-new-name-facebook-square.mp4",
+                        "variant":  "clean",
+                        "hookId":  "",
+                        "burnIn":  false,
+                        "aspect":  "1:1",
+                        "width":  1080,
+                        "height":  1080
+                    }
+                ]
+}

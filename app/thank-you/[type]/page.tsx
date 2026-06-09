@@ -97,6 +97,15 @@ export default async function ThankYouTypePage({ params }: PageProps) {
         </div>
       </section>
       <Disclaimer title="If this is urgent" />
+      <section className="section section-band">
+        <div className="container narrow">
+          <h2>Create your client portal account</h2>
+          <p>While you wait for Gerald to respond, you can create a free portal account to prepare for your programme and keep materials in one place.</p>
+          <TrackedLink href="/portal/sign-up/" className="button button-secondary" tracking={{ eventName: "cta_click", linkLocation: "thank_you_portal_signup", payload: { cta_name: "Create portal account" } }}>
+            Create portal account
+          </TrackedLink>
+        </div>
+      </section>
       <CTASection title="Continue reading while you wait" body="You can return to the relevant support page or explore the wider addiction support hub." button={page.returnLabel} href={page.returnHref} />
     </>
   );

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { getAuthProfile } from "@/lib/supabase/auth";
 import { getClientEnrollmentBundle } from "@/lib/dashboard/queries";
 import { standardDisclaimer } from "@/lib/constants";
@@ -26,7 +27,12 @@ export default async function PortalHomePage({ searchParams }: PageProps) {
         <p className="eyebrow">Welcome</p>
         <h1>Hello{profile?.full_name ? `, ${profile.full_name.split(" ")[0]}` : ""}</h1>
         <p>This is your private space for programme materials, progress, and secure messages.</p>
-        {onboarded ? <p className="dashboard-inline-note">Your profile is complete and your portal is ready.</p> : null}
+        {onboarded ? (
+          <p className="dashboard-inline-note">
+            Your profile is complete and your portal is ready.{" "}
+            <Link href="/portal/account/">View your profile</Link>
+          </p>
+        ) : null}
       </section>
       <section className="dashboard-panel">
         <h2>Programme status</h2>

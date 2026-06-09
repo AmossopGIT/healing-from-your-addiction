@@ -410,6 +410,53 @@ function findTopCta(events: AnalyticsEvent[]) {
   return sorted[0]?.[0] ?? null;
 }
 
+function buildKeywordPerformance(events: AnalyticsEvent[], leads: Lead[]) {
+  const map = new Map<string, { pageViews: number; conversions: number; leads: number }>();
+
+  for (const event of events) {
+    const keyword = event.primary_keyword?.trim();
+    if (!keyword) continue;
+    const row = map.get(keyword) ?? { pageViews: 0, conversions: 0, leads: 0 };
+    if (event.event_name === "page_view" || event.event_name === "blog_post_view") {
+      row.pageViews += 1;
+    }
+    if (event.event_name === "lead_form_submit" || event.event_name === "thank_you_view") {
+      row.conversions += 1;
+    }
+    map.set(keyword, row);
+  }
+
+  for (const lead of leads) {
+    const keyword = lead.primary_keyword?.trim();
+    if (!keyword) continue;
+    const row = map.get(keyword) ?? { pageViews: 0, conversions: 0, leads: 0 };
+    row.leads += 1;
+    map.set(keyword, row);
+  }
+
+  return [...map.entries()]
+    .map(([keyword, stats]) => ({ keyword, ...stats }))
+    .sort((a, b) => b.pageViews - a.pageViews || b.leads - a.leads)
+    .slice(0, 20);
+}
+
+function buildBlogProgrammeLinks(events: AnalyticsEvent[]) {
+  const map = new Map<string, { sourceSlug: string; destination: string; linkText: string; clicks: number }>();
+
+  for (const event of events) {
+    if (event.event_name !== "blog_internal_link_click") continue;
+    const sourceSlug = typeof event.properties?.source_slug === "string" ? event.properties.source_slug : "unknown";
+    const destination = typeof event.properties?.destination_path === "string" ? event.properties.destination_path : "unknown";
+    const linkText = typeof event.properties?.link_text === "string" ? event.properties.link_text : destination;
+    const key = `${sourceSlug}::${destination}::${linkText}`;
+    const current = map.get(key) ?? { sourceSlug, destination, linkText, clicks: 0 };
+    current.clicks += 1;
+    map.set(key, current);
+  }
+
+  return [...map.values()].sort((a, b) => b.clicks - a.clicks).slice(0, 20);
+}
+
 function isAnalyticsStorageMissing(message: string) {
   return (
     message.includes("analytics_events") ||
@@ -450,6 +497,8 @@ function emptyAnalyticsBundle(range: AnalyticsRange, storageMessage: string | nu
     funnel: FUNNEL_STEPS.map(({ step, label }) => ({ step, label, count: 0, rate: 0 })),
     attribution: [],
     leadVelocity: [],
+    keywordPerformance: [],
+    blogProgrammeLinks: [],
   };
 }
 
@@ -503,6 +552,8 @@ function buildAnalyticsBundle(
     funnel: buildFunnel(eventRows),
     attribution: buildAttribution(leadRows),
     leadVelocity: buildLeadVelocity(leadRows),
+    keywordPerformance: buildKeywordPerformance(eventRows, leadRows),
+    blogProgrammeLinks: buildBlogProgrammeLinks(eventRows),
   };
 }
 

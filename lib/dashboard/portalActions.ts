@@ -78,29 +78,38 @@ export async function completePortalOnboarding(formData: FormData) {
   const { data: profile } = await supabase.from("profiles").select("role").eq("id", user.id).single();
   if (profile?.role !== "client") redirect("/portal/login/");
 
-  await supabase.from("profiles").update({
+  const { error: profileError } = await supabase.from("profiles").update({
     full_name: fullName,
     phone,
   }).eq("id", user.id);
+  if (profileError) {
+    redirect("/portal/onboarding/?error=save-failed");
+  }
 
   const clientProfile = await getClientProfileForUser(user.id);
   const onboardingCompletedAt = new Date().toISOString();
 
   if (clientProfile) {
-    await supabase.from("client_profiles").update({
+    const { error: clientError } = await supabase.from("client_profiles").update({
       addiction_slug: addictionSlug,
       preferred_contact_method: preferredContactMethod,
       emergency_contact: emergencyContact || null,
       onboarding_completed_at: onboardingCompletedAt,
     }).eq("id", clientProfile.id);
+    if (clientError) {
+      redirect("/portal/onboarding/?error=save-failed");
+    }
   } else {
-    await supabase.from("client_profiles").insert({
+    const { error: clientError } = await supabase.from("client_profiles").insert({
       user_id: user.id,
       addiction_slug: addictionSlug,
       preferred_contact_method: preferredContactMethod,
       emergency_contact: emergencyContact || null,
       onboarding_completed_at: onboardingCompletedAt,
     });
+    if (clientError) {
+      redirect("/portal/onboarding/?error=save-failed");
+    }
   }
 
   redirect("/portal/?onboarded=1");

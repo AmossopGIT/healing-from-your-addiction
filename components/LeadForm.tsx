@@ -163,7 +163,13 @@ export function LeadForm({
     .join(" ");
 
   return (
-    <form id="enquiry" className={formClassName} onSubmit={handleSubmit} onFocus={markStarted}>
+    <form
+      id="enquiry"
+      className={formClassName}
+      onSubmit={handleSubmit}
+      onFocus={markStarted}
+      aria-describedby={error ? "lead-form-error" : undefined}
+    >
       {hideHeading ? (
         <p className="form-note form-note-inline">Share only what feels safe. Gerald will respond in your preferred channel.</p>
       ) : (
@@ -427,7 +433,7 @@ export function LeadForm({
         <span>I understand this form is for confidential enquiry support and not emergency medical care.</span>
       </label>
 
-      {error ? <p className="form-error" role="alert">{error}</p> : null}
+      {error ? <p id="lead-form-error" className="form-error" role="alert">{error}</p> : null}
 
       <button className="button button-primary form-submit" type="submit" disabled={isSubmitting}>
         {isSubmitting ? "Sending..." : submitLabel}

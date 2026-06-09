@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { contactMethods } from "@/lib/constants";
+import { programmeBySlug } from "@/content/programmes";
 import { dashboardFieldMaxLengths } from "@/lib/dashboard/formValidation";
 import { updateClientAccount } from "@/lib/dashboard/portalActions";
 import { leadFieldMaxLengths } from "@/lib/leads/constraints";
@@ -25,16 +26,27 @@ export default async function PortalAccountPage({ searchParams }: PageProps) {
   const { saved, error } = await searchParams;
   const profile = await getAuthProfile();
   const clientProfile = profile ? await getClientProfileForUser(profile.id) : null;
+  const supportFocus = clientProfile?.addiction_slug
+    ? programmeBySlug.get(clientProfile.addiction_slug)?.title ?? clientProfile.addiction_slug
+    : null;
 
   return (
     <div className="dashboard-stack">
       <section className="dashboard-page-header">
         <p className="eyebrow">Account</p>
-        <h1>Your details</h1>
+        <h1>Your profile</h1>
         {saved ? <p className="dashboard-inline-note">Your details were saved.</p> : null}
-        {error ? <p className="form-error">{accountErrorMessages[error] ?? "Unable to save those details."}</p> : null}
+        {error ? <p className="form-error" role="alert">{accountErrorMessages[error] ?? "Unable to save those details."}</p> : null}
       </section>
       <section className="dashboard-panel">
+        <h2>Profile summary</h2>
+        <dl className="dashboard-dl">
+          <div><dt>Full name</dt><dd>{profile?.full_name ?? "—"}</dd></div>
+          <div><dt>Main support focus</dt><dd>{supportFocus ?? "—"}</dd></div>
+        </dl>
+      </section>
+      <section className="dashboard-panel">
+        <h2>Contact details</h2>
         <form action={updateClientAccount} className="dashboard-form">
           <label className="form-field"><span>Email</span><input value={profile?.email ?? ""} disabled /></label>
           <label className="form-field">

@@ -1,5 +1,6 @@
 import { blogPostsChunk2 } from "@/content/blogArchiveChunk2";
 import { blogPostsChunk3 } from "@/content/blogArchiveChunk3";
+import { blogPostsChunk4 } from "@/content/blogArchiveChunk4";
 
 export type BlogCategory = {
   slug: string;
@@ -375,7 +376,7 @@ const blogPostsInitial: BlogPost[] = [
   },
 ];
 
-export const blogPosts: BlogPost[] = [...blogPostsInitial, ...blogPostsChunk2, ...blogPostsChunk3].sort((a, b) =>
+export const blogPosts: BlogPost[] = [...blogPostsInitial, ...blogPostsChunk2, ...blogPostsChunk3, ...blogPostsChunk4].sort((a, b) =>
   a.publishedAt < b.publishedAt ? 1 : -1
 );
 

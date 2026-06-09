@@ -731,6 +731,38 @@ export function getSeoByPath(path: string) {
     }
   }
 
+  const thankYouType = path.match(/^\/thank-you\/([^/]+)\/$/)?.[1];
+  if (thankYouType) {
+    const thankYouKeywords: Record<string, { primaryKeyword: string; conversionGoal: string }> = {
+      "gambling-addiction": {
+        primaryKeyword: "gambling addiction enquiry received",
+        conversionGoal: "Confirm gambling lead conversion and offer follow-up contact.",
+      },
+      "food-addiction": {
+        primaryKeyword: "food addiction enquiry received",
+        conversionGoal: "Confirm food addiction lead conversion and offer follow-up contact.",
+      },
+      "general-enquiry": {
+        primaryKeyword: "confidential addiction enquiry received",
+        conversionGoal: "Confirm general lead conversion and offer follow-up contact.",
+      },
+    };
+    const thankYouMeta = thankYouKeywords[thankYouType] ?? thankYouKeywords["general-enquiry"];
+    return {
+      path,
+      title: seoPages.thankYou.title,
+      description: seoPages.thankYou.description,
+      primaryKeyword: thankYouMeta.primaryKeyword,
+      secondaryKeywords: seoPages.thankYou.secondaryKeywords,
+      searchIntent: seoPages.thankYou.searchIntent,
+      pageType: "conversion",
+      conversionGoal: thankYouMeta.conversionGoal,
+      noIndex: true,
+      ogImage: defaultOgImage,
+      ogImageAlt: seoPages.thankYou.ogImageAlt,
+    } satisfies SeoPageRecord;
+  }
+
   return undefined;
 }
 
