@@ -10,7 +10,7 @@ const nextConfig: NextConfig = {
   trailingSlash: true,
   poweredByHeader: false,
   outputFileTracingExcludes: {
-    "*": ["./public/videos/**/*"],
+    "*": ["public/**", "tools/**", "boilerplate/**", "docs/**", "supabase/**"],
   },
   images: {
     unoptimized: isGithubPages,
