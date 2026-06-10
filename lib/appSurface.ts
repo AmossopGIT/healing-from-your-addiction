@@ -1,4 +1,3 @@
-import { headers } from "next/headers";
 import { withoutBasePath } from "@/lib/basePath";
 
 export type AppSurface = "public" | "portal" | "admin";
@@ -24,16 +23,6 @@ export function resolveAppSurface(pathname: string | null | undefined): AppSurfa
   }
 
   return "public";
-}
-
-export async function getRequestSurface() {
-  const headerStore = await headers();
-  return (headerStore.get("x-app-surface") as AppSurface | null) ?? "public";
-}
-
-export async function getRequestPathname() {
-  const headerStore = await headers();
-  return normalizeSurfacePath(headerStore.get("x-current-path"));
 }
 
 export function getActiveNavHref(

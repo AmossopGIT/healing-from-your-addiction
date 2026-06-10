@@ -1,6 +1,6 @@
 ﻿import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import { getRequestSurface } from "@/lib/appSurface";
+import { getRequestSurface } from "@/lib/appSurface.server";
 import { createPageMetadata, createViewport } from "@/lib/seo";
 import { MarketingShell } from "@/components/MarketingShell";
 import { ConsentModeScript } from "@/components/analytics/ConsentModeScript";
