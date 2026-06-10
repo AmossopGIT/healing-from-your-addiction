@@ -60,6 +60,10 @@ export default async function AdminOverviewPage() {
           <p className="dashboard-stat-label">Enrolled clients</p>
           <p className="dashboard-stat-value">{bundle.counts.enrolledClients}</p>
         </article>
+        <article className="dashboard-stat-card">
+          <p className="dashboard-stat-label">Pending intakes</p>
+          <p className="dashboard-stat-value">{bundle.counts.pendingIntakes}</p>
+        </article>
       </section>
 
       <section className="dashboard-panel">
@@ -102,6 +106,50 @@ export default async function AdminOverviewPage() {
           <p className="dashboard-empty">
             No overdue leads right now.{" "}
             <Link href="/admin/leads/">Browse all enquiries</Link>.
+          </p>
+        )}
+      </section>
+
+      <section className="dashboard-panel">
+        <div className="dashboard-panel-header">
+          <h2>Pending intakes</h2>
+          <Link href="/admin/clients/" className="dashboard-panel-link">
+            All clients
+          </Link>
+        </div>
+        {bundle.pendingIntakes.length ? (
+          <div className="dashboard-table-wrap">
+            <table className="dashboard-table">
+              <thead>
+                <tr>
+                  <th>Client</th>
+                  <th>Focus</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {bundle.pendingIntakes.slice(0, 8).map((client) => (
+                  <tr key={client.clientProfileId}>
+                    <td>
+                      <Link href={`/admin/clients/${client.clientProfileId}/intake/`}>{client.fullName}</Link>
+                    </td>
+                    <td>{client.addictionSlug ?? "—"}</td>
+                    <td>
+                      {client.startedAt ? (
+                        <span className="status-badge status-badge-intake-in-progress">In progress</span>
+                      ) : (
+                        <span className="status-badge status-badge-intake-not-started">Not started</span>
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        ) : (
+          <p className="dashboard-empty">
+            All onboarded clients have completed their intake questions.{" "}
+            <Link href="/admin/clients/">Browse clients</Link>.
           </p>
         )}
       </section>

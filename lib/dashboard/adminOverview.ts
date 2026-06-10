@@ -1,6 +1,7 @@
 import { fetchAllCmsBlogPosts, fetchAllCmsCaseStudies } from "@/lib/cms/queries";
 import { isLeadAwaitingFirstResponse, isLeadOverdue } from "@/lib/dashboard/leadSla";
 import { leadStatusOptions } from "@/lib/dashboard/constants";
+import { getPendingIntakeClients } from "@/lib/dashboard/queries";
 import { createClient } from "@/lib/supabase/server";
 import type { Lead, LeadStatus, Profile } from "@/types/database";
 import type { CmsWorkflowStatus } from "@/types/cms";
@@ -16,6 +17,14 @@ export type CmsAttentionItem = {
   reason: "in_review" | "scheduled_soon";
 };
 
+export type PendingIntakeClient = {
+  clientProfileId: string;
+  fullName: string;
+  addictionSlug: string | null;
+  startedAt: string | null;
+  onboardingCompletedAt: string | null;
+};
+
 export type AdminOverviewBundle = {
   counts: {
     newLeads: number;
@@ -23,12 +32,14 @@ export type AdminOverviewBundle = {
     overdueLeads: number;
     awaitingFirstResponse: number;
     openPipeline: number;
+    pendingIntakes: number;
   };
   pipelineByStatus: Record<LeadStatus, number>;
   triageByPriority: Record<string, number>;
   triageByRisk: Record<string, number>;
   overdueLeads: Lead[];
   recentLeads: Lead[];
+  pendingIntakes: PendingIntakeClient[];
   cmsWorkflowCounts: Record<CmsWorkflowStatus, number>;
   cmsAttention: CmsAttentionItem[];
 };
@@ -150,6 +161,7 @@ export async function getAdminOverviewBundle(): Promise<AdminOverviewBundle> {
     { data: recentLeads },
     blogPosts,
     caseStudies,
+    pendingIntakes,
   ] = await Promise.all([
     supabase.from("leads").select("*", { count: "exact", head: true }).eq("status", "new"),
     supabase.from("client_profiles").select("*", { count: "exact", head: true }),
@@ -157,6 +169,7 @@ export async function getAdminOverviewBundle(): Promise<AdminOverviewBundle> {
     supabase.from("leads").select("*").order("created_at", { ascending: false }).limit(5),
     fetchAllCmsBlogPosts(true),
     fetchAllCmsCaseStudies(true),
+    getPendingIntakeClients(),
   ]);
 
   const leads = (allLeads ?? []) as Lead[];
@@ -197,12 +210,14 @@ export async function getAdminOverviewBundle(): Promise<AdminOverviewBundle> {
       overdueLeads: leads.filter(isLeadOverdue).length,
       awaitingFirstResponse,
       openPipeline,
+      pendingIntakes: pendingIntakes.length,
     },
     pipelineByStatus,
     triageByPriority,
     triageByRisk,
     overdueLeads,
     recentLeads: (recentLeads ?? []) as Lead[],
+    pendingIntakes,
     cmsWorkflowCounts,
     cmsAttention,
   };

@@ -5162,6 +5162,82 @@ main,
 .status-badge-qualified { background: #e2eeea; }
 .status-badge-enrolled { background: #d7efe8; }
 .status-badge-closed { background: #ececec; }
+.status-badge-intake-complete { background: #d7efe8; }
+.status-badge-intake-in-progress { background: #f2e4c7; }
+.status-badge-intake-not-started { background: #ececec; }
+
+.dashboard-success-note {
+  color: var(--teal);
+}
+
+.dashboard-panel-highlight {
+  border-color: var(--teal-soft);
+  background: linear-gradient(180deg, #fffdfa 0%, var(--surface-strong) 100%);
+}
+
+.intake-form {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.intake-form-header {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.intake-progress-note {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.intake-section {
+  display: grid;
+  gap: 1rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--line);
+}
+
+.intake-section h3 {
+  margin: 0;
+  font-size: 1.05rem;
+}
+
+.intake-question-list,
+.intake-answer-list {
+  display: grid;
+  gap: 1rem;
+}
+
+.intake-question-field span {
+  font-weight: 500;
+  line-height: 1.45;
+}
+
+.intake-answer-item {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  padding: 0.85rem;
+  background: var(--surface-strong);
+}
+
+.intake-question-label {
+  margin: 0 0 0.45rem;
+  font-weight: 500;
+  line-height: 1.45;
+}
+
+.intake-answer-text {
+  margin: 0;
+  white-space: pre-wrap;
+  color: var(--ink);
+}
+
+.intake-form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  padding-top: 0.5rem;
+}
 
 .form-field {
   display: grid;

@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getAdminClientBundle } from "@/lib/dashboard/queries";
+import { formatDashboardDate } from "@/lib/dashboard/constants";
+import { getAdminClientBundle, getClientIntakeSubmission } from "@/lib/dashboard/queries";
 import { createMetadata } from "@/lib/seo";
 
 type PageProps = { params: Promise<{ id: string }> };
@@ -17,6 +18,7 @@ export default async function AdminClientDetailPage({ params }: PageProps) {
   if (!bundle) notFound();
 
   const { clientProfile, profile, enrollment, template } = bundle;
+  const intakeSubmission = await getClientIntakeSubmission(id);
 
   return (
     <div className="dashboard-stack">
@@ -26,6 +28,7 @@ export default async function AdminClientDetailPage({ params }: PageProps) {
         <p>{clientProfile.addiction_slug ? `Focus: ${clientProfile.addiction_slug}` : "Addiction focus not set"}</p>
       </section>
       <div className="dashboard-quick-links">
+        <Link href={`/admin/clients/${id}/intake/`} className="button button-secondary">Intake</Link>
         <Link href={`/admin/clients/${id}/programme/`} className="button button-secondary">Programme</Link>
         <Link href={`/admin/clients/${id}/messages/`} className="button button-secondary">Messages</Link>
         <Link href={`/admin/clients/${id}/documents/`} className="button button-secondary">Documents</Link>
@@ -37,7 +40,27 @@ export default async function AdminClientDetailPage({ params }: PageProps) {
           <div><dt>Preferred contact</dt><dd>{clientProfile.preferred_contact_method ?? "—"}</dd></div>
           <div><dt>Emergency contact</dt><dd>{clientProfile.emergency_contact ?? "—"}</dd></div>
           <div><dt>Programme</dt><dd>{enrollment ? template?.title ?? "Assigned" : "Not enrolled"}</dd></div>
+          <div>
+            <dt>Intake</dt>
+            <dd>
+              {intakeSubmission?.completed_at ? (
+                <>
+                  <span className="status-badge status-badge-intake-complete">Completed</span>{" "}
+                  {formatDashboardDate(intakeSubmission.completed_at)}
+                </>
+              ) : intakeSubmission ? (
+                <span className="status-badge status-badge-intake-in-progress">In progress</span>
+              ) : (
+                <span className="status-badge status-badge-intake-not-started">Not started</span>
+              )}
+            </dd>
+          </div>
         </dl>
+        {intakeSubmission ? (
+          <p className="dashboard-inline-note">
+            <Link href={`/admin/clients/${id}/intake/`}>View intake responses</Link>
+          </p>
+        ) : null}
         {clientProfile.lead_id ? <p className="dashboard-inline-note"><Link href={`/admin/leads/${clientProfile.lead_id}/`}>View originating lead</Link></p> : null}
       </section>
     </div>

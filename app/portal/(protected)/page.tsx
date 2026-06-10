@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { getAuthProfile } from "@/lib/supabase/auth";
-import { getClientEnrollmentBundle } from "@/lib/dashboard/queries";
+import { getAuthProfile, getClientProfileForUser } from "@/lib/supabase/auth";
+import { getClientEnrollmentBundle, getClientIntakeSubmission } from "@/lib/dashboard/queries";
 import { standardDisclaimer } from "@/lib/constants";
 import { createMetadata } from "@/lib/seo";
 
@@ -19,7 +19,11 @@ type PageProps = {
 export default async function PortalHomePage({ searchParams }: PageProps) {
   const { onboarded } = await searchParams;
   const profile = await getAuthProfile();
-  const bundle = profile ? await getClientEnrollmentBundle(profile.id) : null;
+  const clientProfile = profile ? await getClientProfileForUser(profile.id) : null;
+  const [bundle, intakeSubmission] = await Promise.all([
+    profile ? getClientEnrollmentBundle(profile.id) : Promise.resolve(null),
+    clientProfile ? getClientIntakeSubmission(clientProfile.id) : Promise.resolve(null),
+  ]);
 
   return (
     <div className="dashboard-stack">
@@ -34,6 +38,21 @@ export default async function PortalHomePage({ searchParams }: PageProps) {
           </p>
         ) : null}
       </section>
+      {!intakeSubmission?.completed_at && clientProfile?.addiction_slug ? (
+        <section className="dashboard-panel dashboard-panel-highlight">
+          <h2>Complete your intake</h2>
+          <p>
+            {intakeSubmission
+              ? "You have started your pre-programme questions. Finish and submit them before your intake conversation."
+              : "Please answer your pre-programme intake questions before your intake conversation with Gerald."}
+          </p>
+          <p>
+            <Link href="/portal/intake/" className="button button-primary button-small">
+              {intakeSubmission ? "Continue intake" : "Start intake"}
+            </Link>
+          </p>
+        </section>
+      ) : null}
       <section className="dashboard-panel">
         <h2>Programme status</h2>
         {bundle?.enrollment ? (

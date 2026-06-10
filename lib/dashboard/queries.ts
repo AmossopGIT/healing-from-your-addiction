@@ -2,6 +2,7 @@ import { createClient } from "@/lib/supabase/server";
 import type {
   ClientContentReceipt,
   ClientDocument,
+  ClientIntakeSubmission,
   ClientMessage,
   ClientProfile,
   Enrollment,
@@ -357,3 +358,73 @@ export async function getPortalNotificationSummary(userId: string): Promise<Port
 export type ClientProfileWithProfile = ClientProfile & {
   profile?: { full_name: string | null; phone: string | null; id: string } | null;
 };
+
+export type ClientIntakeSubmissionRow = ClientIntakeSubmission;
+
+export async function getClientIntakeSubmission(clientProfileId: string) {
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from("client_intake_submissions")
+    .select("*")
+    .eq("client_profile_id", clientProfileId)
+    .maybeSingle();
+
+  if (!data) return null;
+
+  return {
+    ...data,
+    responses: (data.responses ?? {}) as Record<string, string>,
+  } as ClientIntakeSubmissionRow;
+}
+
+export async function getClientIntakeSubmissions() {
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from("client_intake_submissions")
+    .select("*")
+    .order("updated_at", { ascending: false });
+
+  return (data ?? []).map((row) => ({
+    ...row,
+    responses: (row.responses ?? {}) as Record<string, string>,
+  })) as ClientIntakeSubmissionRow[];
+}
+
+export async function getPendingIntakeClients() {
+  const supabase = await createClient();
+  const { data: clients } = await supabase
+    .from("client_profiles")
+    .select("id, user_id, addiction_slug, onboarding_completed_at, created_at")
+    .not("onboarding_completed_at", "is", null)
+    .order("created_at", { ascending: false });
+
+  if (!clients?.length) return [];
+
+  const clientIds = clients.map((client) => client.id);
+  const userIds = [...new Set(clients.map((client) => client.user_id))];
+
+  const [{ data: submissions }, { data: profiles }] = await Promise.all([
+    supabase.from("client_intake_submissions").select("client_profile_id, completed_at, updated_at").in("client_profile_id", clientIds),
+    supabase.from("profiles").select("id, full_name").in("id", userIds),
+  ]);
+
+  const submissionByClientId = new Map((submissions ?? []).map((submission) => [submission.client_profile_id, submission]));
+  const profileByUserId = new Map((profiles ?? []).map((profile) => [profile.id, profile]));
+
+  return clients
+    .filter((client) => {
+      const submission = submissionByClientId.get(client.id);
+      return !submission?.completed_at;
+    })
+    .map((client) => {
+      const submission = submissionByClientId.get(client.id);
+      const profile = profileByUserId.get(client.user_id);
+      return {
+        clientProfileId: client.id,
+        fullName: profile?.full_name ?? "Client",
+        addictionSlug: client.addiction_slug,
+        startedAt: submission?.updated_at ?? null,
+        onboardingCompletedAt: client.onboarding_completed_at,
+      };
+    });
+}

@@ -161,6 +161,16 @@ export type ClientContentReceipt = {
   created_at: string;
 };
 
+export type ClientIntakeSubmission = {
+  id: string;
+  client_profile_id: string;
+  question_set_slug: string;
+  responses: Record<string, string>;
+  completed_at: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
 export type WebPushConsentState = "subscribed" | "dismissed" | "denied" | "unsubscribed";
 
 export type WebPushSubscriptionStatus = "active" | "inactive" | "failed" | "expired";
@@ -360,6 +370,16 @@ export type Database = {
           read_at?: string | null;
         },
         Partial<ClientContentReceipt>
+      >;
+      client_intake_submissions: TableDef<
+        ClientIntakeSubmission,
+        {
+          client_profile_id: string;
+          question_set_slug: string;
+          responses?: Record<string, string>;
+          completed_at?: string | null;
+        },
+        Partial<ClientIntakeSubmission>
       >;
       web_push_subscriptions: TableDef<
         WebPushSubscription,
