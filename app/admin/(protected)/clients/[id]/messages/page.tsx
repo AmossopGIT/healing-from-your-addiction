@@ -20,7 +20,11 @@ export default async function AdminClientMessagesPage({ params }: PageProps) {
       <section className="dashboard-page-header">
         <p className="eyebrow">Messages</p>
         <h1>Secure messages</h1>
-        <p><Link href={`/admin/clients/${id}/`}>Back to client</Link></p>
+        <p>
+          The client receives an email when you reply. You receive an email when they message you.
+          {" "}
+          <Link href={`/admin/clients/${id}/`}>Back to client</Link>
+        </p>
       </section>
       <section className="dashboard-panel">
         <form action={sendClientMessage} className="dashboard-note-form">

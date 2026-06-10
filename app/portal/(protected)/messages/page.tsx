@@ -25,7 +25,7 @@ export default async function PortalMessagesPage() {
       <section className="dashboard-page-header">
         <p className="eyebrow">Messages</p>
         <h1>Secure messages</h1>
-        <p>Private messages between you and Gerald. Not for emergencies.</p>
+        <p>Private messages between you and Gerald. You will receive an email when Gerald replies. Not for emergencies.</p>
       </section>
       <section className="dashboard-panel">
         {clientProfile ? (

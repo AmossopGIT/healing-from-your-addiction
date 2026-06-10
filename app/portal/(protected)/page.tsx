@@ -1,8 +1,17 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { getAuthProfile, getClientProfileForUser } from "@/lib/supabase/auth";
-import { getClientEnrollmentBundle, getClientIntakeSubmission } from "@/lib/dashboard/queries";
+import { PortalActivityFeed } from "@/components/portal/PortalActivityFeed";
+import { PortalDailyRitual } from "@/components/portal/PortalDailyRitual";
+import { PortalGentleReminderPrompt } from "@/components/portal/PortalGentleReminderPrompt";
+import { PortalHomeHero } from "@/components/portal/PortalHomeHero";
+import { PortalNextStepCard } from "@/components/portal/PortalNextStepCard";
+import { PortalProgressPanel } from "@/components/portal/PortalProgressPanel";
+import { PortalQuickActions } from "@/components/portal/PortalQuickActions";
+import { PortalWeeklyPulse } from "@/components/portal/PortalWeeklyPulse";
 import { standardDisclaimer } from "@/lib/constants";
+import { getPortalHomeBundle } from "@/lib/dashboard/queries";
+import { withBasePath } from "@/lib/basePath";
+import { getAuthProfile } from "@/lib/supabase/auth";
 import { createMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = createMetadata({
@@ -13,56 +22,95 @@ export const metadata: Metadata = createMetadata({
 });
 
 type PageProps = {
-  searchParams: Promise<{ onboarded?: string }>;
+  searchParams: Promise<{ onboarded?: string; checkin?: string; goal?: string }>;
+};
+
+const checkInMessages: Record<string, string> = {
+  saved: "Today's check-in has been saved.",
+  invalid: "Please choose a mood and craving level between 0 and 5.",
+  "note-too-long": "Please shorten your check-in note.",
+  failed: "Unable to save your check-in right now.",
 };
 
 export default async function PortalHomePage({ searchParams }: PageProps) {
-  const { onboarded } = await searchParams;
+  const { onboarded, checkin } = await searchParams;
   const profile = await getAuthProfile();
-  const clientProfile = profile ? await getClientProfileForUser(profile.id) : null;
-  const [bundle, intakeSubmission] = await Promise.all([
-    profile ? getClientEnrollmentBundle(profile.id) : Promise.resolve(null),
-    clientProfile ? getClientIntakeSubmission(clientProfile.id) : Promise.resolve(null),
-  ]);
+  const bundle = profile ? await getPortalHomeBundle(profile.id) : null;
+
+  if (!bundle) {
+    return (
+      <div className="dashboard-stack">
+        <p className="dashboard-empty">Your portal is loading. If this persists, sign in again.</p>
+      </div>
+    );
+  }
+
+  const showCheckIn = bundle.stage !== "onboarding";
+  const showProgress = bundle.stage !== "onboarding";
+  const showQuickActions = bundle.stage === "pre_intake" || bundle.stage === "pre_programme" || bundle.stage === "active_programme";
+  const showNextStep = bundle.stage !== "maintenance";
+  const pushPublicKey = process.env.NEXT_PUBLIC_WEB_PUSH_PUBLIC_KEY;
+  const subscribeUrl = withBasePath("/api/push/subscribe/");
+  const serviceWorkerUrl = withBasePath("/sw.js");
 
   return (
-    <div className="dashboard-stack">
-      <section className="dashboard-page-header">
-        <p className="eyebrow">Welcome</p>
-        <h1>Hello{profile?.full_name ? `, ${profile.full_name.split(" ")[0]}` : ""}</h1>
-        <p>This is your private space for programme materials, progress, and secure messages.</p>
-        {onboarded ? (
-          <p className="dashboard-inline-note">
-            Your profile is complete and your portal is ready.{" "}
-            <Link href="/portal/account/">View your profile</Link>
-          </p>
-        ) : null}
-      </section>
-      {!intakeSubmission?.completed_at && clientProfile?.addiction_slug ? (
-        <section className="dashboard-panel dashboard-panel-highlight">
-          <h2>Complete your intake</h2>
-          <p>
-            {intakeSubmission
-              ? "You have started your pre-programme questions. Finish and submit them before your intake conversation."
-              : "Please answer your pre-programme intake questions before your intake conversation with Gerald."}
-          </p>
-          <p>
-            <Link href="/portal/intake/" className="button button-primary button-small">
-              {intakeSubmission ? "Continue intake" : "Start intake"}
-            </Link>
-          </p>
-        </section>
+    <div className="dashboard-stack portal-home-stack">
+      {onboarded ? (
+        <p className="dashboard-inline-note dashboard-success-note">
+          Your profile is complete. <Link href="/portal/account/">View your profile</Link>
+        </p>
       ) : null}
-      <section className="dashboard-panel">
-        <h2>Programme status</h2>
-        {bundle?.enrollment ? (
-          <p>
-            You are enrolled in <strong>{bundle.template?.title}</strong>. Visit your programme to view available sessions.
-          </p>
-        ) : (
-          <p>Your programme will appear here once Gerald assigns it after your intake conversation.</p>
-        )}
-      </section>
+      {checkin && checkInMessages[checkin] ? (
+        <p className={`dashboard-inline-note${checkin === "saved" ? " dashboard-success-note" : ""}`}>
+          {checkInMessages[checkin]}
+        </p>
+      ) : null}
+
+      {bundle.sections.includes("hero") ? <PortalHomeHero hero={bundle.hero} /> : null}
+      {showNextStep && bundle.sections.includes("next_step") ? <PortalNextStepCard nextStep={bundle.nextStep} /> : null}
+      {showQuickActions && bundle.sections.includes("quick_actions") ? (
+        <PortalQuickActions
+          nextSessionHref={bundle.nextSessionHref}
+          nextSessionLabel={bundle.nextSessionLabel}
+        />
+      ) : null}
+      {bundle.sections.includes("daily_ritual") ? (
+        <PortalDailyRitual
+          dailyAffirmation={bundle.dailyAffirmation}
+          affirmationNote={bundle.affirmationNote}
+          todayCheckIn={bundle.todayCheckIn}
+          nextStep={bundle.nextStep}
+          showCheckIn={showCheckIn}
+        />
+      ) : null}
+      {showProgress && bundle.sections.includes("progress") ? (
+        <PortalProgressPanel
+          completedSessionCount={bundle.completedSessionCount}
+          availableSessionCount={bundle.availableSessionCount}
+          engagementStreak={bundle.engagementStreak}
+          pauseCountThisWeek={bundle.pauseCountThisWeek}
+          abstinenceDays={bundle.abstinenceDays}
+          showAbstinence={Boolean(bundle.recoveryGoal?.show_abstinence_counter)}
+          milestones={bundle.milestones}
+        />
+      ) : null}
+      {bundle.sections.includes("weekly_pulse") ? (
+        <PortalWeeklyPulse
+          recentCheckIns={bundle.recentCheckIns}
+          pauseCountThisWeek={bundle.pauseCountThisWeek}
+          engagementStreak={bundle.engagementStreak}
+        />
+      ) : null}
+      {bundle.sections.includes("activity_feed") ? <PortalActivityFeed items={bundle.activityFeed} /> : null}
+      {bundle.sections.includes("gentle_reminder") ? (
+        <PortalGentleReminderPrompt
+          hasPushReminders={bundle.hasPushReminders}
+          pushPublicKey={pushPublicKey}
+          subscribeUrl={subscribeUrl}
+          serviceWorkerUrl={serviceWorkerUrl}
+        />
+      ) : null}
+
       <section className="dashboard-panel dashboard-disclaimer">
         <p>{standardDisclaimer}</p>
       </section>

@@ -9,6 +9,8 @@ export const dashboardFieldMaxLengths = {
   messageBody: 2000,
   clientNotes: 2000,
   intakeResponse: 2000,
+  checkInNote: 500,
+  recoveryGoalNote: 120,
   emergencyContact: 160,
   documentLabel: 120,
   redirectPath: 240,

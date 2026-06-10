@@ -10,6 +10,7 @@ import {
   sanitizeSessionProgressStatus,
   sanitizeUuid,
 } from "@/lib/dashboard/formValidation";
+import { notifySecureMessageRecipients } from "@/lib/dashboard/messageNotifications";
 import { upsertClientContentReceipts } from "@/lib/dashboard/notifications";
 import { redirect } from "next/navigation";
 
@@ -85,11 +86,19 @@ export async function sendClientMessage(formData: FormData) {
   }
   if (!resolvedClientProfileId) redirect(redirectTo);
 
-  await supabase.from("client_messages").insert({
+  const { error: messageError } = await supabase.from("client_messages").insert({
     client_profile_id: resolvedClientProfileId,
     author_id: user.id,
     body,
   });
+
+  if (!messageError) {
+    await notifySecureMessageRecipients({
+      clientProfileId: resolvedClientProfileId,
+      authorId: user.id,
+      body,
+    });
+  }
 
   redirect(redirectTo);
 }

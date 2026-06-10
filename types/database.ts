@@ -171,6 +171,27 @@ export type ClientIntakeSubmission = {
   updated_at: string;
 };
 
+export type CheckInMood = "calm" | "steady" | "low" | "anxious" | "irritable";
+
+export type ClientDailyCheckIn = {
+  id: string;
+  client_profile_id: string;
+  check_in_date: string;
+  mood: CheckInMood;
+  craving_level: number;
+  pause_taken: boolean;
+  note: string | null;
+  created_at: string;
+};
+
+export type ClientRecoveryGoal = {
+  client_profile_id: string;
+  show_abstinence_counter: boolean;
+  abstinence_start_date: string | null;
+  goal_note: string | null;
+  updated_at: string;
+};
+
 export type WebPushConsentState = "subscribed" | "dismissed" | "denied" | "unsubscribed";
 
 export type WebPushSubscriptionStatus = "active" | "inactive" | "failed" | "expired";
@@ -380,6 +401,28 @@ export type Database = {
           completed_at?: string | null;
         },
         Partial<ClientIntakeSubmission>
+      >;
+      client_daily_check_ins: TableDef<
+        ClientDailyCheckIn,
+        {
+          client_profile_id: string;
+          check_in_date: string;
+          mood: CheckInMood;
+          craving_level: number;
+          pause_taken?: boolean;
+          note?: string | null;
+        },
+        Partial<ClientDailyCheckIn>
+      >;
+      client_recovery_goals: TableDef<
+        ClientRecoveryGoal,
+        {
+          client_profile_id: string;
+          show_abstinence_counter?: boolean;
+          abstinence_start_date?: string | null;
+          goal_note?: string | null;
+        },
+        Partial<ClientRecoveryGoal>
       >;
       web_push_subscriptions: TableDef<
         WebPushSubscription,

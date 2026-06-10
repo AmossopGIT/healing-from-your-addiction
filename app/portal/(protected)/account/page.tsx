@@ -3,8 +3,10 @@ import { contactMethods } from "@/lib/constants";
 import { programmeBySlug } from "@/content/programmes";
 import { dashboardFieldMaxLengths } from "@/lib/dashboard/formValidation";
 import { updateClientAccount } from "@/lib/dashboard/portalActions";
+import { updateRecoveryGoal } from "@/lib/portal/engagementActions";
 import { leadFieldMaxLengths } from "@/lib/leads/constraints";
 import { getAuthProfile, getClientProfileForUser } from "@/lib/supabase/auth";
+import { createClient } from "@/lib/supabase/server";
 import { createMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = createMetadata({
@@ -14,7 +16,7 @@ export const metadata: Metadata = createMetadata({
   noIndex: true,
 });
 
-type PageProps = { searchParams: Promise<{ saved?: string; error?: string }> };
+type PageProps = { searchParams: Promise<{ saved?: string; error?: string; goal?: string }> };
 
 const accountErrorMessages: Record<string, string> = {
   "invalid-phone": "Please enter a valid phone or WhatsApp number.",
@@ -22,10 +24,21 @@ const accountErrorMessages: Record<string, string> = {
   "invalid-emergency-contact": "Please shorten the emergency contact details.",
 };
 
+const goalMessages: Record<string, string> = {
+  saved: "Your progress display settings were saved.",
+  "invalid-date": "Please choose a valid start date.",
+  "invalid-note": "Please shorten your goal label.",
+  failed: "Unable to save your progress display settings.",
+};
+
 export default async function PortalAccountPage({ searchParams }: PageProps) {
-  const { saved, error } = await searchParams;
+  const { saved, error, goal } = await searchParams;
   const profile = await getAuthProfile();
   const clientProfile = profile ? await getClientProfileForUser(profile.id) : null;
+  const supabase = await createClient();
+  const { data: recoveryGoal } = clientProfile
+    ? await supabase.from("client_recovery_goals").select("*").eq("client_profile_id", clientProfile.id).maybeSingle()
+    : { data: null };
   const supportFocus = clientProfile?.addiction_slug
     ? programmeBySlug.get(clientProfile.addiction_slug)?.title ?? clientProfile.addiction_slug
     : null;
@@ -36,6 +49,7 @@ export default async function PortalAccountPage({ searchParams }: PageProps) {
         <p className="eyebrow">Account</p>
         <h1>Your profile</h1>
         {saved ? <p className="dashboard-inline-note">Your details were saved.</p> : null}
+        {goal && goalMessages[goal] ? <p className="dashboard-inline-note dashboard-success-note">{goalMessages[goal]}</p> : null}
         {error ? <p className="form-error" role="alert">{accountErrorMessages[error] ?? "Unable to save those details."}</p> : null}
       </section>
       <section className="dashboard-panel">
@@ -78,6 +92,43 @@ export default async function PortalAccountPage({ searchParams }: PageProps) {
           </label>
           <button type="submit" className="button button-primary">Save changes</button>
         </form>
+      </section>
+      <section className="dashboard-panel">
+        <h2>Your progress display</h2>
+        <p className="dashboard-inline-note">
+          Optional: show a days-tracked counter on your portal home. This is private to you and can be restarted anytime.
+        </p>
+        {clientProfile ? (
+          <form action={updateRecoveryGoal} className="dashboard-form">
+            <input type="hidden" name="redirectTo" value="/portal/account/" />
+            <label className="form-field portal-home-checkbox-field">
+              <input
+                type="checkbox"
+                name="showAbstinenceCounter"
+                defaultChecked={recoveryGoal?.show_abstinence_counter ?? false}
+              />
+              <span>Show days-tracked counter on home</span>
+            </label>
+            <label className="form-field">
+              <span>Start date (optional)</span>
+              <input
+                type="date"
+                name="abstinenceStartDate"
+                defaultValue={recoveryGoal?.abstinence_start_date ?? ""}
+              />
+            </label>
+            <label className="form-field">
+              <span>Label (optional)</span>
+              <input
+                name="goalNote"
+                maxLength={dashboardFieldMaxLengths.recoveryGoalNote}
+                defaultValue={recoveryGoal?.goal_note ?? ""}
+                placeholder="e.g. Cannabis-free"
+              />
+            </label>
+            <button type="submit" className="button button-secondary">Save progress display</button>
+          </form>
+        ) : null}
       </section>
     </div>
   );

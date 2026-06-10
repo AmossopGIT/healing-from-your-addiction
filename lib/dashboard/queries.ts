@@ -390,6 +390,9 @@ export async function getClientIntakeSubmissions() {
   })) as ClientIntakeSubmissionRow[];
 }
 
+export { getPortalHomeBundle } from "@/lib/portal/getPortalHomeBundle";
+export type { PortalHomeBundle } from "@/lib/portal/homeState";
+
 export async function getPendingIntakeClients() {
   const supabase = await createClient();
   const { data: clients } = await supabase

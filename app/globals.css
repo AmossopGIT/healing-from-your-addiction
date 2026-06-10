@@ -5239,6 +5239,321 @@ main,
   padding-top: 0.5rem;
 }
 
+.portal-home-stack {
+  gap: 1rem;
+}
+
+.portal-home-hero {
+  display: grid;
+  gap: 1.25rem;
+  align-items: center;
+}
+
+.portal-home-hero-copy h1 {
+  margin: 0.25rem 0 0.5rem;
+}
+
+.portal-home-hero-subtext {
+  color: var(--muted);
+  margin: 0;
+}
+
+.portal-home-hero-metrics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.portal-home-metric {
+  display: grid;
+  gap: 0.2rem;
+  min-width: 88px;
+}
+
+.portal-home-metric-label {
+  font-size: 0.82rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.portal-home-metric-value {
+  font-size: 1.75rem;
+  line-height: 1;
+  color: var(--teal-dark);
+}
+
+.portal-home-hero-art,
+.portal-home-next-step-art {
+  max-width: 160px;
+}
+
+.portal-home-next-step {
+  display: grid;
+  gap: 1rem;
+  align-items: center;
+}
+
+.portal-home-next-step-copy h2 {
+  margin: 0.25rem 0 0.5rem;
+}
+
+.portal-home-action-row {
+  display: flex;
+  gap: 0.75rem;
+  overflow-x: auto;
+  padding-bottom: 0.25rem;
+}
+
+.portal-home-action-chip {
+  min-width: 148px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  padding: 0.85rem;
+  background: var(--surface-strong);
+  display: grid;
+  gap: 0.25rem;
+  text-decoration: none;
+  color: inherit;
+}
+
+.portal-home-action-label {
+  font-weight: 600;
+}
+
+.portal-home-action-detail {
+  font-size: 0.88rem;
+  color: var(--muted);
+}
+
+.portal-home-ring-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.portal-home-ring {
+  --ring-color: var(--teal);
+  --ring-track: var(--teal-soft);
+  display: grid;
+  gap: 0.45rem;
+  justify-items: center;
+  width: 108px;
+}
+
+.portal-home-ring-gold {
+  --ring-color: #a87727;
+  --ring-track: #f1e4cb;
+}
+
+.portal-home-ring-neutral {
+  --ring-color: #5a6963;
+  --ring-track: #ececec;
+}
+
+.portal-home-ring-chart {
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+}
+
+.portal-home-ring-inner {
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  background: #fff;
+  display: grid;
+  place-items: center;
+  font-size: 1rem;
+}
+
+.portal-home-ring-label {
+  font-size: 0.82rem;
+  color: var(--muted);
+  text-align: center;
+}
+
+.portal-home-milestones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.portal-home-milestone {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-pill);
+  padding: 0.25rem 0.65rem;
+  font-size: 0.78rem;
+  color: var(--muted);
+  background: #fff;
+}
+
+.portal-home-milestone.is-achieved {
+  color: var(--teal-dark);
+  border-color: var(--teal-soft);
+  background: var(--teal-soft);
+}
+
+.portal-home-ritual-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.portal-home-ritual-card {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  padding: 1rem;
+  background: var(--surface-strong);
+  display: grid;
+  gap: 0.65rem;
+}
+
+.portal-home-ritual-card-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.portal-home-ritual-done {
+  font-size: 0.78rem;
+  color: var(--teal);
+}
+
+.portal-home-affirmation {
+  margin: 0;
+  font-size: 1.05rem;
+  line-height: 1.5;
+  font-style: italic;
+}
+
+.portal-home-affirmation-note {
+  margin: 0;
+  color: var(--teal-dark);
+  font-size: 0.92rem;
+}
+
+.portal-home-checkin-fieldset {
+  border: 0;
+  padding: 0;
+  margin: 0;
+}
+
+.portal-home-mood-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.portal-home-mood-option {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-pill);
+  padding: 0.35rem 0.65rem;
+  background: #fff;
+  font-size: 0.88rem;
+}
+
+.portal-home-checkbox-field {
+  grid-template-columns: auto 1fr;
+  align-items: center;
+}
+
+.portal-home-activity-groups {
+  display: grid;
+  gap: 1rem;
+}
+
+.portal-home-activity-group h3 {
+  margin: 0 0 0.5rem;
+  font-size: 0.92rem;
+  color: var(--muted);
+}
+
+.portal-home-activity-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 0.65rem;
+}
+
+.portal-home-activity-link {
+  display: grid;
+  gap: 0.2rem;
+  text-decoration: none;
+  color: inherit;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  padding: 0.75rem;
+  background: var(--surface-strong);
+}
+
+.portal-home-pulse-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.portal-home-pulse-stat {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  padding: 0.75rem;
+  background: var(--surface-strong);
+  display: grid;
+  gap: 0.25rem;
+}
+
+.portal-home-pulse-label {
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+
+.portal-home-pulse-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 0.5rem;
+}
+
+.portal-home-pulse-list li {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  font-size: 0.9rem;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 0.45rem;
+}
+
+.portal-home-pulse-pause {
+  color: var(--teal-dark);
+}
+
+.portal-home-reminder-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+}
+
+@media (min-width: 768px) {
+  .portal-home-hero,
+  .portal-home-next-step {
+    grid-template-columns: 1fr auto;
+  }
+
+  .portal-home-ritual-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
 .form-field {
   display: grid;
   gap: 0.35rem;
