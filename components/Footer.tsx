@@ -1,4 +1,5 @@
-﻿import { SiteLink } from "@/components/SiteLink";
+import { SiteLink } from "@/components/SiteLink";
+import { ChatWidgetTrigger } from "@/components/ChatWidgetTrigger";
 import { siteConfig, standardDisclaimer } from "@/lib/constants";
 import { TrackedLink } from "@/components/TrackedLink";
 import { withBasePath } from "@/lib/basePath";
@@ -67,6 +68,9 @@ export function Footer() {
           <div className="footer-col footer-col-contact">
             <h2 className="footer-heading">Contact</h2>
             <div className="footer-chips">
+              <ChatWidgetTrigger className="footer-chip footer-chip-chat">
+                Private chat
+              </ChatWidgetTrigger>
               <TrackedLink
                 href="/need-help/"
                 className="footer-chip"

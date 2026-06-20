@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, KeyboardEvent, useEffect, useMemo, useRef, useState } from "react";
+import { ChatWidgetIcon, chatWidgetOpenEventName } from "@/components/ChatWidgetTrigger";
 import { addictionOptions, contactMethods, emailHref, siteConfig, whatsappHref } from "@/lib/constants";
 import { submitLead as submitLeadRequest } from "@/lib/leads";
 import { leadFieldMaxLengths } from "@/lib/leads/constraints";
@@ -67,7 +68,7 @@ function getAttribution() {
 
 export function ChatLeadWidget() {
   const [open, setOpen] = useState(false);
-  const [isHiddenForLayout, setIsHiddenForLayout] = useState(false);
+  const [isLauncherHidden, setIsLauncherHidden] = useState(true);
   const [step, setStep] = useState<ChatStep>("welcome");
   const [lead, setLead] = useState<ChatLeadState>(initialLead);
   const [inputValue, setInputValue] = useState("");
@@ -235,30 +236,64 @@ export function ChatLeadWidget() {
   useEffect(() => {
     if (typeof window === "undefined") return;
 
+    function onOpenRequest() {
+      openWidget();
+    }
+
+    window.addEventListener(chatWidgetOpenEventName, onOpenRequest);
+
+    return () => window.removeEventListener(chatWidgetOpenEventName, onOpenRequest);
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const hero = document.querySelector(".page-hero-flush");
     const footer = document.querySelector(".site-footer-wrap");
-    if (!footer) return;
+    let heroVisible = Boolean(hero);
+    let footerVisible = false;
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const footerEntry = entries.find((entry) => entry.target === footer);
-        if (!footerEntry) return;
+    function syncLauncherVisibility() {
+      setIsLauncherHidden(heroVisible || footerVisible);
+    }
 
-        const shouldHide = footerEntry.isIntersecting;
-        setIsHiddenForLayout(shouldHide);
-        if (shouldHide) {
-          setOpen(false);
-        }
-      },
-      {
-        // Hide only when the footer enters the lower viewport (fixed header is always "intersecting").
-        rootMargin: "0px 0px -12% 0px",
-        threshold: 0,
-      },
-    );
+    const heroObserver = hero
+      ? new IntersectionObserver(
+          ([entry]) => {
+            heroVisible = entry.isIntersecting;
+            syncLauncherVisibility();
+          },
+          { threshold: 0 },
+        )
+      : null;
 
-    observer.observe(footer);
+    const footerObserver = footer
+      ? new IntersectionObserver(
+          ([entry]) => {
+            footerVisible = entry.isIntersecting;
+            syncLauncherVisibility();
+          },
+          {
+            rootMargin: "0px 0px -12% 0px",
+            threshold: 0,
+          },
+        )
+      : null;
 
-    return () => observer.disconnect();
+    if (hero) {
+      heroObserver?.observe(hero);
+    } else {
+      syncLauncherVisibility();
+    }
+
+    if (footer) {
+      footerObserver?.observe(footer);
+    }
+
+    return () => {
+      heroObserver?.disconnect();
+      footerObserver?.disconnect();
+    };
   }, []);
 
   const showTextInput = step === "fullName" || step === "email" || step === "phone" || step === "message";
@@ -272,7 +307,7 @@ export function ChatLeadWidget() {
           : undefined;
 
   return (
-    <div className={`chat-widget${isHiddenForLayout ? " is-hidden" : ""}`} aria-live="polite">
+    <div className="chat-widget" aria-live="polite">
       {open ? (
         <section
           className="chat-widget-panel"
@@ -468,18 +503,15 @@ export function ChatLeadWidget() {
 
       <button
         type="button"
-        className="chat-widget-launcher"
+        className={`chat-widget-launcher${isLauncherHidden ? " is-hidden" : ""}`}
         aria-label="Open confidential chat"
         aria-expanded={open}
+        aria-hidden={isLauncherHidden}
+        tabIndex={isLauncherHidden ? -1 : 0}
         onClick={open ? closeWidget : openWidget}
         ref={launcherRef}
       >
-        <svg className="chat-widget-icon" viewBox="0 0 24 24" role="presentation" aria-hidden="true" focusable="false">
-          <path
-            d="M12 4C7.03 4 3 7.13 3 11c0 3.87 4.03 7 9 7 0.65 0 1.28-0.06 1.89-0.17 1.1 0.84 2.5 1.4 4.11 1.55-0.54-0.71-0.92-1.67-1.04-2.71C19.42 15.39 21 13.34 21 11c0-3.87-4.03-7-9-7z"
-            fill="currentColor"
-          />
-        </svg>
+        <ChatWidgetIcon className="chat-widget-icon" />
         <span className="visually-hidden">Open private enquiry chat</span>
       </button>
     </div>

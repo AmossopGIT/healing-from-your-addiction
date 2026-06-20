@@ -2,7 +2,7 @@
 import type { ReactNode } from "react";
 import { getRequestSurface } from "@/lib/appSurface.server";
 import { createPageMetadata, createViewport } from "@/lib/seo";
-import { MarketingShell } from "@/components/MarketingShell";
+import { AppSurfaceShell } from "@/components/AppSurfaceShell";
 import { ConsentModeScript } from "@/components/analytics/ConsentModeScript";
 import { headers } from "next/headers";
 import Script from "next/script";
@@ -45,11 +45,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             />
           </noscript>
         ) : null}
-        {appSurface === "public" ? (
-          <MarketingShell currentPath={currentPath} pageSeo={pageSeo}>{children}</MarketingShell>
-        ) : (
-          children
-        )}
+        <AppSurfaceShell initialPath={currentPath} pageSeo={pageSeo}>
+          {children}
+        </AppSurfaceShell>
       </body>
     </html>
   );

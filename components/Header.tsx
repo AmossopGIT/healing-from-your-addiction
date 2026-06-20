@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import { FaBell, FaRegCircleUser } from "react-icons/fa6";
 import hfyaLogo from "@/app/icon.png";
+import { ChatWidgetIcon, ChatWidgetTrigger } from "@/components/ChatWidgetTrigger";
 import { SiteLink } from "@/components/SiteLink";
 import { TrackedLink } from "@/components/TrackedLink";
 import { blogPath, blogPosts } from "@/content/blog";
@@ -69,9 +70,11 @@ export function Header() {
   const [open, setOpen] = useState(false);
   const [portalMenuOpen, setPortalMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [hidden, setHidden] = useState(false);
   const [account, setAccount] = useState<HeaderAccount>(signedOutAccount);
   const pathname = usePathname();
   const portalMenuRef = useRef<HTMLDivElement | null>(null);
+  const lastScrollYRef = useRef(0);
 
   const close = useCallback(() => {
     setOpen(false);
@@ -80,11 +83,26 @@ export function Header() {
 
   useEffect(() => {
     close();
+    setHidden(false);
+    lastScrollYRef.current = window.scrollY;
   }, [pathname, close]);
 
   useEffect(() => {
     function onScroll() {
-      setScrolled(window.scrollY > 20);
+      const currentY = window.scrollY;
+      const delta = currentY - lastScrollYRef.current;
+
+      setScrolled(currentY > 20);
+
+      if (currentY <= 80) {
+        setHidden(false);
+      } else if (delta > 8) {
+        setHidden(true);
+      } else if (delta < -8) {
+        setHidden(false);
+      }
+
+      lastScrollYRef.current = currentY;
     }
 
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -184,6 +202,7 @@ export function Header() {
     "site-header",
     open && "is-open",
     scrolled && "is-scrolled",
+    hidden && "is-hidden",
   ]
     .filter(Boolean)
     .join(" ");
@@ -222,6 +241,10 @@ export function Header() {
             </nav>
             <div className="header-actions">
               <div className="header-utility-links" aria-label="Portal shortcuts">
+                <ChatWidgetTrigger className="header-icon-link" ariaLabel="Open private enquiry chat">
+                  <ChatWidgetIcon className="header-utility-icon" />
+                  <span className="visually-hidden">Private chat</span>
+                </ChatWidgetTrigger>
                 <TrackedLink
                   href={accountHref}
                   className="header-icon-link"
@@ -450,6 +473,10 @@ export function Header() {
                 )}
               </div>
               <div className="mobile-menu-actions">
+                <ChatWidgetTrigger className="button button-secondary" ariaLabel="Open private enquiry chat">
+                  <ChatWidgetIcon className="header-utility-icon" aria-hidden="true" />
+                  <span>Private chat</span>
+                </ChatWidgetTrigger>
                 <TrackedLink
                   href="/need-help/"
                   className="button button-primary"

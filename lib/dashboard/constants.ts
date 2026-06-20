@@ -32,6 +32,7 @@ export const adminNavItems = [
   { href: "/admin/programmes/", label: "Programmes" },
   { href: "/admin/notifications/", label: "Notifications" },
   { href: "/admin/content/", label: "Content" },
+  { href: "/admin/docs/", label: "Docs" },
 ];
 
 export const portalNavItems = [

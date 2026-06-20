@@ -39,6 +39,9 @@ export default async function AdminOverviewPage() {
         <Link className="button button-secondary" href="/admin/content/">
           Content hub
         </Link>
+        <Link className="button button-secondary" href="/admin/docs/">
+          Internal docs
+        </Link>
       </section>
 
       <AnalyticsOverviewStrip />

@@ -146,6 +146,11 @@ export function LoginForm({
           <Link href="/portal/forgot-password/">Forgot your password?</Link>
         </p>
       ) : null}
+      {portal === "client" ? (
+        <p className="auth-alt-link">
+          <Link href="/admin/login/">Staff admin sign in</Link>
+        </p>
+      ) : null}
     </div>
   );
 }
