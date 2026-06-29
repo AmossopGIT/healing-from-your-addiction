@@ -41,11 +41,22 @@ const blogCategorySymbolBySlug: Record<string, string> = {
   "addiction-recovery": "a winding path with small stones and a stable pause point",
   "gambling-addiction": "a subtle card or chip shape with a circular loop and pause point",
   "food-addiction": "a bowl and spoon outline with a gentle loop and pause point",
+  "eft-tapping": "two calm hands near a gentle loop with soft fingertip tap points",
+  "triggers-cravings": "a smooth river stone with a ripple ring and inward spiral toward a pause point",
+  "family-support": "two simple anonymous figures with gentle space between them and a connecting loop",
 };
 
 const blogAltBySlug: Record<string, string> = {
   "signs-of-behavioral-addictions":
-    "Minimal watercolor illustration of a seated figure surrounded by a gambling loop with dice, cards, and a pause point, suggesting behavioral addiction patterns.",
+    "Minimal watercolor illustration of a seated anonymous figure beside a loop with dice, cards, and a pause point, suggesting behavioral addiction patterns.",
+  "signs-of-substance-addictions":
+    "Minimal watercolor illustration of an anonymous figure beside an unlabeled glass within a broken circle and gold pause point, suggesting substance dependence signs.",
+  "one-unified-model-of-addiction":
+    "Minimal watercolor illustration of a circular habit loop with symbolic nodes and a gold pause point, suggesting a unified model of addiction patterns.",
+  "the-core-pattern-behind-all-addictions":
+    "Minimal watercolor illustration of a figure beside a circular stone path with one gold pause stone, suggesting the core pattern behind addictions.",
+  "addictions-develop-from-a-combination-of-biological-psychological-and-environmental-factors":
+    "Minimal watercolor illustration of a stone with ripple rings, leaves, and a path, suggesting biological, psychological, and environmental addiction factors.",
   "when-you-decide-to-heal-gambling":
     "Minimal watercolor illustration of an anonymous figure beside a gentle loop and gold pause stone, suggesting the decision to heal from gambling addiction.",
   "how-to-quit-gambling-when-youve-tried-everything":
@@ -79,6 +90,26 @@ function blogAltText(categorySlug: string, slug?: string) {
 
   if (categorySlug === "healing-program") {
     return "Minimal watercolor illustration of stepping stones and a folder-like shape, suggesting structured healing program progress.";
+  }
+
+  if (categorySlug === "gambling-addiction") {
+    return "Minimal watercolor illustration of dice inside a gentle loop, suggesting gambling habit patterns.";
+  }
+
+  if (categorySlug === "food-addiction") {
+    return "Minimal watercolor illustration of a bowl and spoon with a pause point, suggesting food addiction and emotional eating patterns.";
+  }
+
+  if (categorySlug === "eft-tapping") {
+    return "Minimal watercolor illustration of calm hands near a gentle loop, suggesting EFT tapping and emotional regulation support.";
+  }
+
+  if (categorySlug === "triggers-cravings") {
+    return "Minimal watercolor illustration of a stone with ripples and a spiral, suggesting addiction triggers and cravings awareness.";
+  }
+
+  if (categorySlug === "family-support") {
+    return "Minimal watercolor illustration of two figures beside a gentle loop, suggesting support for family and loved ones affected by addiction.";
   }
 
   return "Minimal watercolor illustration of a winding path and pause point, suggesting steady addiction recovery progress.";
@@ -677,6 +708,56 @@ export const artGallery: readonly ArtGalleryItem[] = [
     prompt: `${basePrompt} Create artwork for behavioral addiction recovery. Show an anonymous figure beside a winding stepping-stone path with one muted gold pause point and soft teal washes. Keep symbolic, calm, and non-stigmatizing.`,
     palette: sharedPalette,
     usage: "Supplementary artwork for Signs of Behavioral Addictions blog article — road and pause point motif.",
+  },
+  {
+    id: "blog-gambling-addiction-support",
+    title: "Gambling Addiction Blog Category",
+    category: "blog-gambling-addiction",
+    src: "/art/watercolor/art-watercolor-blog-gambling-addiction-support.png",
+    alt: "Minimal watercolor illustration of dice inside a gentle loop, suggesting gambling habit patterns.",
+    prompt: `${basePrompt} Create artwork for the Gambling Addiction blog category. Show a subtle card or chip shape with a circular loop and one muted gold pause point. Keep symbolic, calm, and non-stigmatizing.`,
+    palette: sharedPalette,
+    usage: "Hero artwork for Gambling Addiction blog category hub and cards.",
+  },
+  {
+    id: "blog-food-addiction-emotional-eating",
+    title: "Food Addiction Blog Category",
+    category: "blog-food-addiction",
+    src: "/art/watercolor/art-watercolor-blog-food-addiction-emotional-eating.png",
+    alt: "Minimal watercolor illustration of a bowl and spoon with a pause point, suggesting food addiction and emotional eating patterns.",
+    prompt: `${basePrompt} Create artwork for the Food Addiction blog category. Show a bowl and spoon outline with a gentle loop and one muted gold pause point. Keep symbolic, calm, and non-stigmatizing.`,
+    palette: sharedPalette,
+    usage: "Hero artwork for Food Addiction blog category hub and cards.",
+  },
+  {
+    id: "blog-eft-tapping-addiction-support",
+    title: "EFT and Tapping Blog Category",
+    category: "blog-eft-tapping",
+    src: "/art/watercolor/art-watercolor-blog-eft-tapping-addiction-support.png",
+    alt: "Minimal watercolor illustration of calm hands near a gentle loop, suggesting EFT tapping and emotional regulation support.",
+    prompt: `${basePrompt} Create artwork for the EFT and Tapping blog category. Show two calm hands near a gentle loop with soft fingertip tap points and one muted gold pause marker. Keep symbolic, calm, and non-stigmatizing.`,
+    palette: sharedPalette,
+    usage: "Hero artwork for EFT and Tapping blog category hub and cards.",
+  },
+  {
+    id: "blog-understanding-addiction-triggers",
+    title: "Triggers and Cravings Blog Category",
+    category: "blog-triggers-cravings",
+    src: "/art/watercolor/art-watercolor-blog-understanding-addiction-triggers.png",
+    alt: "Minimal watercolor illustration of a stone with ripples and a spiral, suggesting addiction triggers and cravings awareness.",
+    prompt: `${basePrompt} Create artwork for the Triggers and Cravings blog category. Show a smooth river stone with a small ripple ring and a soft inward spiral toward a muted gold pause point. Keep symbolic, calm, and non-stigmatizing.`,
+    palette: sharedPalette,
+    usage: "Hero artwork for Triggers and Cravings blog category hub and cards.",
+  },
+  {
+    id: "blog-supporting-loved-one-addiction",
+    title: "Family and Loved Ones Blog Category",
+    category: "blog-family-support",
+    src: "/art/watercolor/art-watercolor-blog-supporting-loved-one-addiction.png",
+    alt: "Minimal watercolor illustration of two figures beside a gentle loop, suggesting support for family and loved ones affected by addiction.",
+    prompt: `${basePrompt} Create artwork for the Family and Loved Ones blog category. Show two simple anonymous figures with gentle space between them and a soft circular loop with one muted gold pause point. Keep symbolic, calm, and non-stigmatizing.`,
+    palette: sharedPalette,
+    usage: "Hero artwork for Family and Loved Ones blog category hub and cards.",
   },
   ...blogArtEntries,
   ...caseStudyArtEntries,

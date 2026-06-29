@@ -6,7 +6,7 @@ export const blogPostsChunk2: BlogPost[] = [
     "slug": "signs-of-behavioral-addictions",
     "title": "Signs of Behavioral Addictions",
     "description":
-      "Behavioral addictions follow the same trigger–craving–behaviour–reward loop as substances, without chemicals. Learn core warning signs across gambling, screens, food, and more.",
+      "Behavioral addictions follow the same trigger–craving loop as substances, without chemicals. Learn core warning signs across gambling, screens, food, and more.",
     "excerpt":
       "Process addictions don't involve substances—but they activate the same reward system. Here are the core signs that a behaviour may have become a compulsive pattern.",
     "h1": "Signs of Behavioral Addictions",
@@ -250,8 +250,12 @@ export const blogPostsChunk2: BlogPost[] = [
         "artId": "blog-signs-of-behavioral-addictions-recovery-path",
         "paragraphs": [
           "\"The Signs of My Trigger\" is written for this article — not the cross-addictions song. It uses a sad, metaphorical lens (trigger, the road, the pause) to name the same reward loop without a substance: loss of control, cravings, tolerance, harm, and the behavioural addictions listed above.",
-          "The lyric video is in production. When it is live here, it will use calm, pattern-focused framing — not a diagnosis, and not emergency care."
+          "Watch the lyric video below for the full song with synced lyrics — calm, pattern-focused framing, not a diagnosis, and not emergency care."
         ],
+        "video": {
+          "title": "The Signs of My Trigger — behavioural addictions lyric video",
+          "youtubeId": "HGTEOxxwjCI"
+        },
         "h3Items": [],
         "bullets": []
       },
@@ -270,7 +274,8 @@ export const blogPostsChunk2: BlogPost[] = [
   {
     "slug": "signs-of-substance-addictions",
     "title": "Signs of Substance Addictions",
-    "description": "Physical dependence means your body has adapted to a substance and now needs it to function normally. When the substance is reduced or stopped, withdrawal sympt",
+    "description":
+      "Learn the core signs of substance addiction and physical dependence—including tolerance, withdrawal, and when to seek medically appropriate help.",
     "excerpt": "Physical dependence means your body has adapted to a substance and now needs it to function normally. When the substance is reduced or stopped, withdrawal symptoms appear.",
     "h1": "Signs of Substance Addictions",
     "primaryKeyword": "signs of substance addictions",
@@ -479,7 +484,8 @@ export const blogPostsChunk2: BlogPost[] = [
   {
     "slug": "one-unified-model-of-addiction",
     "title": "One Unified Model of Addiction",
-    "description": "Here is a wide range of addictions - substances (alcohol, nicotine, opioids), behaviors (gaming, social media, gambling), and emotional patterns (relationships,",
+    "description":
+      "Substances, gambling, screens, and emotional patterns can share one addiction loop. Understand the unified trigger–craving–behaviour model behind many patterns.",
     "excerpt": "Here is a wide range of addictions – substances (alcohol, nicotine, opioids), behaviors (gaming, social media, gambling), and emotional patterns (relationships, attention, work).",
     "h1": "One Unified Model of Addiction",
     "primaryKeyword": "unified model of addiction",
@@ -644,7 +650,8 @@ export const blogPostsChunk2: BlogPost[] = [
   {
     "slug": "the-core-pattern-behind-all-addictions",
     "title": "The Core Pattern Behind All Addictions",
-    "description": "Different addictions may look completely different on the surface - alcohol, gambling, social media, work - but underneath, they follow the same repeating mecha",
+    "description":
+      "Alcohol, gambling, social media, and work may look different—but many addictions share the same trigger, craving, behaviour, relief, repeat loop underneath.",
     "excerpt": "Different addictions may look completely different on the surface – alcohol, gambling, social media, work – but underneath, they follow the same repeating mechanism.",
     "h1": "The Core Pattern Behind All Addictions",
     "primaryKeyword": "core pattern behind all addictions",
@@ -795,7 +802,8 @@ export const blogPostsChunk2: BlogPost[] = [
   {
     "slug": "addictions-develop-from-a-combination-of-biological-psychological-and-environmental-factors",
     "title": "Addictions develop from a combination of biological, psychological, and environmental factors.",
-    "description": "Addictions don’t appear randomly. They usually develop from a combination of biological, psychological, and environmental factors that shape how a person learns",
+    "description":
+      "Addictions develop from biological, psychological, and environmental factors over time—not random weakness. Understand what shapes coping and reward patterns.",
     "excerpt": "Addictions don’t appear randomly. They usually develop from a combination of biological, psychological, and environmental factors that shape how a person learns to cope, seek reward, and handle discomfort.",
     "h1": "Addictions develop from a combination of biological, psychological, and environmental factors.",
     "primaryKeyword": "why addictions develop biological psychological environmental",
