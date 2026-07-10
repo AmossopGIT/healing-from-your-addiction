@@ -7,7 +7,7 @@ import { isClientOnboardingComplete } from "@/lib/supabase/onboarding";
 import type { Database } from "@/types/database";
 import { getSupabaseAnonKey, getSupabaseUrl } from "@/lib/supabase/env";
 
-const ADMIN_AUTH_PATHS = new Set(["/admin/login/"]);
+const ADMIN_AUTH_PATHS = new Set(["/admin/login/", "/admin/forgot-password/"]);
 const PORTAL_PUBLIC_PATHS = new Set([
   "/portal/login/",
   "/portal/sign-up/",
@@ -116,7 +116,7 @@ export async function middleware(request: NextRequest) {
       const fallback = role ? withBasePath("/portal/") : withBasePath("/portal/login/");
       return NextResponse.redirect(new URL(fallback, request.url));
     }
-    if (pathname === "/admin/login/") {
+    if (pathname === "/admin/login/" || pathname === "/admin/forgot-password/") {
       return NextResponse.redirect(new URL(withBasePath("/admin/"), request.url));
     }
   }

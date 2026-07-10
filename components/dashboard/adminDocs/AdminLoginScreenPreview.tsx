@@ -22,6 +22,9 @@ export function AdminLoginScreenPreview() {
             Sign in
           </button>
         </div>
+        <p className="auth-description">
+          <span>Forgot your password?</span>
+        </p>
       </div>
     </div>
   );

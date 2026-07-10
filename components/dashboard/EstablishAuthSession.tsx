@@ -160,13 +160,18 @@ export function EstablishAuthSession({ children, successPath }: EstablishAuthSes
   if (state === "error") {
     return (
       <div className="auth-card">
-        <p className="eyebrow">Client portal</p>
+        <p className="eyebrow">Private access</p>
         <h1>Link could not be verified</h1>
         <p className="form-error">{errorMessage}</p>
         <p className="auth-description">
-          <Link href="/portal/forgot-password/">Request a new reset link</Link>
+          <Link href="/portal/forgot-password/">Client reset link</Link>
           {" · "}
-          <Link href="/portal/login/">Back to sign in</Link>
+          <Link href="/admin/forgot-password/">Admin reset link</Link>
+        </p>
+        <p className="auth-alt-link">
+          <Link href="/portal/login/">Client sign in</Link>
+          {" · "}
+          <Link href="/admin/login/">Admin sign in</Link>
         </p>
       </div>
     );

@@ -10,7 +10,7 @@ export const metadata: Metadata = createMetadata({
 });
 
 type PageProps = {
-  searchParams: Promise<{ mode?: string }>;
+  searchParams: Promise<{ mode?: string; portal?: string }>;
 };
 
 const pageCopy = {
@@ -25,17 +25,19 @@ const pageCopy = {
 } as const;
 
 export default async function PortalCheckEmailPage({ searchParams }: PageProps) {
-  const { mode } = await searchParams;
+  const { mode, portal } = await searchParams;
   const content = mode === "recovery" ? pageCopy.recovery : pageCopy.signup;
+  const isAdmin = portal === "admin";
+  const signInHref = isAdmin ? "/admin/login/" : "/portal/login/";
 
   return (
     <div className="auth-page">
       <div className="auth-card">
-        <p className="eyebrow">Client portal</p>
+        <p className="eyebrow">{isAdmin ? "Private access" : "Client portal"}</p>
         <h1>{content.title}</h1>
         <p className="auth-description">{content.description}</p>
         <p className="auth-description">
-          Once you are done, return to <Link href="/portal/login/">sign in</Link>.
+          Once you are done, return to <Link href={signInHref}>sign in</Link>.
         </p>
       </div>
     </div>

@@ -9,7 +9,14 @@ export const metadata: Metadata = createMetadata({
   noIndex: true,
 });
 
-export default function AdminLoginPage() {
+type PageProps = {
+  searchParams: Promise<{ saved?: string }>;
+};
+
+export default async function AdminLoginPage({ searchParams }: PageProps) {
+  const { saved } = await searchParams;
+  const notice = saved ? "Your password was saved. Sign in below with your new password." : null;
+
   return (
     <div className="auth-page">
       <LoginForm
@@ -17,6 +24,7 @@ export default function AdminLoginPage() {
         title="Admin sign in"
         description="Sign in to manage leads, notes, and client invitations."
         redirectTo="/admin/"
+        notice={notice}
       />
     </div>
   );

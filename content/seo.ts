@@ -608,6 +608,17 @@ export const seoPages = {
     conversionGoal: "Admin login.",
     noIndex: true,
   },
+  adminForgotPassword: {
+    path: "/admin/forgot-password/",
+    title: "Reset Admin Password | Healing From Your Addiction",
+    description: "Reset admin dashboard password.",
+    primaryKeyword: "admin password reset",
+    secondaryKeywords: [],
+    searchIntent: "Admin access only.",
+    pageType: "dashboard",
+    conversionGoal: "Admin login.",
+    noIndex: true,
+  },
   portalDashboard: {
     path: "/portal/",
     title: "Client Portal | Healing From Your Addiction",

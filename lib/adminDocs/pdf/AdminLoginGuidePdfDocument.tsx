@@ -18,6 +18,9 @@ function LoginScreenPreview() {
           <Text style={styles.fieldLabel}>Password</Text>
           <Text style={styles.fieldBox}>Your secure password</Text>
           <Text style={styles.primaryButton}>Sign in</Text>
+          <Text style={{ ...styles.screenMuted, marginTop: 8, textAlign: "center", color: "#0a3f39", fontWeight: 700 }}>
+            Forgot your password?
+          </Text>
         </View>
       </View>
     </View>

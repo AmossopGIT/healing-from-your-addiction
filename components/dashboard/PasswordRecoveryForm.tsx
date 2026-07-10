@@ -11,12 +11,21 @@ import { createClient, getSupabaseBrowserConfigError } from "@/lib/supabase/clie
 const recoveryCooldownKey = "hfya-portal-recovery-cooldown-until";
 const recoveryCooldownMs = 60_000;
 
-export function PasswordRecoveryForm() {
+type PasswordRecoveryFormProps = {
+  portal?: "admin" | "client";
+};
+
+export function PasswordRecoveryForm({ portal = "client" }: PasswordRecoveryFormProps) {
   const router = useRouter();
   const configError = getSupabaseBrowserConfigError();
   const [email, setEmail] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const isAdmin = portal === "admin";
+  const loginPath = isAdmin ? "/admin/login/" : "/portal/login/";
+  const checkEmailPath = isAdmin
+    ? "/portal/check-email/?mode=recovery&portal=admin"
+    : "/portal/check-email/?mode=recovery";
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -49,14 +58,18 @@ export function PasswordRecoveryForm() {
     }
 
     sessionStorage.setItem(recoveryCooldownKey, String(Date.now() + recoveryCooldownMs));
-    router.push(withBasePath("/portal/check-email/?mode=recovery"));
+    router.push(withBasePath(checkEmailPath));
   }
 
   return (
     <div className="auth-card">
-      <p className="eyebrow">Client portal</p>
+      <p className="eyebrow">{isAdmin ? "Private access" : "Client portal"}</p>
       <h1>Reset your password</h1>
-      <p className="auth-description">Enter the email address you use for the portal and we will send you a secure password reset link.</p>
+      <p className="auth-description">
+        {isAdmin
+          ? "Enter your admin email and we will send you a secure password reset link."
+          : "Enter the email address you use for the portal and we will send you a secure password reset link."}
+      </p>
       <form className="auth-form" onSubmit={handleSubmit}>
         <label className="form-field">
           <span>Email</span>
@@ -69,7 +82,7 @@ export function PasswordRecoveryForm() {
         </button>
       </form>
       <p className="auth-description">
-        Remembered it? <Link href="/portal/login/">Back to sign in</Link>.
+        Remembered it? <Link href={loginPath}>Back to sign in</Link>.
       </p>
     </div>
   );
