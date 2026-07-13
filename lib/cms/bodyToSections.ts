@@ -1,8 +1,10 @@
 import type { BlogSection } from "@/content/blog";
 
+const H1_PATTERN = /^#\s+(.+)$/;
 const H2_PATTERN = /^##\s+(.+)$/;
 const H3_PATTERN = /^###\s+(.+)$/;
-const BULLET_PATTERN = /^[-*]\s+(.+)$/;
+const BULLET_PATTERN = /^[-*•]\s+(.+)$/;
+const NUMBERED_PATTERN = /^\d+[.)]\s+(.+)$/;
 
 function stripEmptyBullets(section: BlogSection): BlogSection {
   return {
@@ -12,7 +14,7 @@ function stripEmptyBullets(section: BlogSection): BlogSection {
   };
 }
 
-/** Convert markdown-lite body text into structured CMS sections. */
+/** Convert markdown-lite body text (ChatGPT / Docs / Word export) into structured CMS sections. */
 export function bodyTextToSections(bodyText: string): BlogSection[] {
   const lines = bodyText.replace(/\r\n/g, "\n").split("\n");
   const sections: BlogSection[] = [];
@@ -61,8 +63,20 @@ export function bodyTextToSections(bodyText: string): BlogSection[] {
     currentSection = { h2: h2.trim(), paragraphs: [], bullets: [] };
   };
 
+  const ensureSection = () => {
+    if (!currentSection) {
+      currentSection = { h2: "Introduction", paragraphs: [], bullets: [] };
+    }
+  };
+
   for (const line of lines) {
     const trimmed = line.trim();
+
+    // ChatGPT often starts with an H1 title — skip it; title lives in the form field above.
+    if (trimmed.match(H1_PATTERN) && !trimmed.match(H2_PATTERN) && !trimmed.match(H3_PATTERN)) {
+      flushParagraph();
+      continue;
+    }
 
     const h2Match = trimmed.match(H2_PATTERN);
     if (h2Match) {
@@ -74,21 +88,17 @@ export function bodyTextToSections(bodyText: string): BlogSection[] {
     if (h3Match) {
       flushParagraph();
       flushH3();
-      if (!currentSection) {
-        currentSection = { h2: "Introduction", paragraphs: [], bullets: [] };
-      }
+      ensureSection();
       currentH3 = { h3: h3Match[1].trim(), bodyLines: [] };
       continue;
     }
 
-    const bulletMatch = trimmed.match(BULLET_PATTERN);
+    const bulletMatch = trimmed.match(BULLET_PATTERN) ?? trimmed.match(NUMBERED_PATTERN);
     if (bulletMatch) {
       flushParagraph();
-      if (!currentSection) {
-        currentSection = { h2: "Introduction", paragraphs: [], bullets: [] };
-      }
-      currentSection.bullets = currentSection.bullets ?? [];
-      currentSection.bullets.push(bulletMatch[1].trim());
+      ensureSection();
+      currentSection!.bullets = currentSection!.bullets ?? [];
+      currentSection!.bullets.push(bulletMatch[1].trim());
       continue;
     }
 
@@ -110,4 +120,14 @@ export function bodyTextToSections(bodyText: string): BlogSection[] {
   }
 
   return sections;
+}
+
+export function sectionsHaveContent(sections: BlogSection[]): boolean {
+  return sections.some(
+    (section) =>
+      section.h2.trim() ||
+      (section.paragraphs ?? []).some((paragraph) => paragraph.trim()) ||
+      (section.bullets ?? []).some((bullet) => bullet.trim()) ||
+      (section.h3Items ?? []).some((item) => item.h3.trim() || item.body.trim()),
+  );
 }

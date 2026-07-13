@@ -79,6 +79,30 @@ Second paragraph.
     expect(sections[0].paragraphs[0]).toContain("First paragraph.");
     expect(sections[1].bullets).toEqual(["Bullet one", "Bullet two"]);
   });
+
+  it("skips ChatGPT H1 titles and accepts numbered lists", () => {
+    const sections = bodyTextToSections(`# Full Article Title From ChatGPT
+
+Intro paragraph before the first H2.
+
+## First real section
+
+Body copy here.
+
+1. First point
+2. Second point
+
+## Second section
+
+Closing copy.`);
+
+    expect(sections).toHaveLength(3);
+    expect(sections[0].h2).toBe("Introduction");
+    expect(sections[0].paragraphs[0]).toContain("Intro paragraph");
+    expect(sections[1].h2).toBe("First real section");
+    expect(sections[1].bullets).toEqual(["First point", "Second point"]);
+    expect(sections[2].h2).toBe("Second section");
+  });
 });
 
 describe("parseBlogTemplateDocument", () => {

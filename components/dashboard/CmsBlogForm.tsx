@@ -122,8 +122,8 @@ export function CmsBlogForm({ post }: CmsBlogFormProps) {
           <ol>
             <li>Import a template (soft or hard), or fill the fields below by hand.</li>
             <li>
-              Write the <strong>excerpt</strong> (short lead under the headline) and the <strong>body</strong>{" "}
-              (article sections).
+              Write the <strong>excerpt</strong> (short lead), then paste the full article into{" "}
+              <strong>Easy paste</strong> under Body — or build section by section.
             </li>
             <li>Pick category and tags, add hero art, check SEO, then save draft.</li>
           </ol>
