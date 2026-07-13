@@ -11,6 +11,7 @@ type CmsHeroArtFieldsProps = {
   defaultArtId: string;
   defaultArtSrc: string;
   defaultArtAlt: string;
+  legend?: string;
   onAltChange?: (value: string) => void;
   onHeroChange?: (values: { heroArtId: string; heroArtSrc: string; heroArtAlt: string }) => void;
 };
@@ -22,6 +23,7 @@ export function CmsHeroArtFields({
   defaultArtId,
   defaultArtSrc,
   defaultArtAlt,
+  legend = "Hero artwork",
   onAltChange,
   onHeroChange,
 }: CmsHeroArtFieldsProps) {
@@ -86,7 +88,7 @@ export function CmsHeroArtFields({
 
   return (
     <fieldset className="cms-fieldset">
-      <legend>Hero artwork</legend>
+      <legend>{legend}</legend>
       <p className="cms-field-help">
         Use existing gallery art or upload a watercolor PNG. Required before publish. Expected ID: <code>{expectedId}</code>
       </p>

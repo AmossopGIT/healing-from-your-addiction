@@ -27,10 +27,14 @@ export function BackfillCmsButton() {
 
   return (
     <div className="dashboard-panel">
-      <h2>Static content migration</h2>
-      <p>Import existing blog posts and case studies from TypeScript content files into the CMS as published entries.</p>
+      <h2>Hard import from static files</h2>
+      <p>
+        Sync blog posts and case studies from the site&apos;s TypeScript content files into the CMS. Use this when drafts
+        are missing after a deploy, or when you need to re-run the static → CMS import. Insert-missing mode preserves
+        existing CMS rows.
+      </p>
       <button type="button" className="button button-secondary" onClick={runBackfill} disabled={isRunning}>
-        {isRunning ? "Running backfill…" : "Backfill static content"}
+        {isRunning ? "Running hard import…" : "Hard import static content"}
       </button>
       {status ? <p className="cms-inline-status">{status}</p> : null}
     </div>

@@ -20,6 +20,10 @@ export default async function NewBlogPostPage({ searchParams }: PageProps) {
       <section className="dashboard-page-header">
         <p className="eyebrow">Content</p>
         <h1>New blog post</h1>
+        <p>
+          Import a finished template, or write the excerpt (short lead) and body (article sections) below. Save as a
+          draft when ready — nothing goes live until you publish from the workflow panel.
+        </p>
         <Link className="card-link" href="/admin/content/blog/">
           Back to blog list
         </Link>

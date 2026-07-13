@@ -36,9 +36,10 @@ export function CmsSectionEditor({ initialSections, onSectionsChange }: CmsSecti
 
   return (
     <fieldset className="cms-fieldset">
-      <legend>Structured sections</legend>
+      <legend>3. Body (article sections)</legend>
       <p className="cms-field-help">
-        Use the formatting toolbar for bold, italic, headings, links, and images. Add YouTube or MP4 video per section below.
+        This is the full article — not the excerpt. Add one section per H2 topic. Use the formatting toolbar for bold,
+        italic, links, and images. Optional H3 subsections and video are under each section.
       </p>
 
       {sections.map((section, index) => (

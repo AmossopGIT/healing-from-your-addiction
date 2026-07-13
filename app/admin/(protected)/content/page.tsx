@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { BackfillCmsButton } from "@/components/dashboard/BackfillCmsButton";
 import { CmsSyncStatus } from "@/components/dashboard/CmsSyncStatus";
 import { isCmsContentEnabled } from "@/lib/cms/featureFlag";
 import { fetchAllCmsBlogPosts, fetchAllCmsCaseStudies } from "@/lib/cms/queries";
@@ -391,6 +392,7 @@ export default async function AdminContentPage() {
         )}
       </section>
 
+      <BackfillCmsButton />
       <CmsSyncStatus />
     </div>
   );
