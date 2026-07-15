@@ -1,28 +1,51 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { BlogSection } from "@/content/blog";
 import { CmsRichTextArea } from "@/components/dashboard/CmsRichTextArea";
-import { bodyTextToSections, sectionsHaveContent } from "@/lib/cms/bodyToSections";
 import { cmsFieldMaxLengths } from "@/lib/cms/formValidation";
 
 type CmsSectionEditorProps = {
   initialSections: BlogSection[];
   onSectionsChange?: (sections: BlogSection[]) => void;
+  /** When true, section cards start collapsed inside a details element (used by blog form). */
+  collapsible?: boolean;
+  defaultOpen?: boolean;
 };
 
 function emptySection(): BlogSection {
   return { h2: "", paragraphs: [""], bullets: [] };
 }
 
-export function CmsSectionEditor({ initialSections, onSectionsChange }: CmsSectionEditorProps) {
-  const fileRef = useRef<HTMLInputElement>(null);
+function sectionsHaveCopy(sections: BlogSection[]): boolean {
+  return sections.some(
+    (section) =>
+      section.h2.trim() ||
+      (section.paragraphs ?? []).some((paragraph) => paragraph.trim()) ||
+      (section.bullets ?? []).some((bullet) => bullet.trim()),
+  );
+}
+
+export function CmsSectionEditor({
+  initialSections,
+  onSectionsChange,
+  collapsible = false,
+  defaultOpen = false,
+}: CmsSectionEditorProps) {
   const [sections, setSections] = useState<BlogSection[]>(initialSections.length ? initialSections : [emptySection()]);
-  const [pasteBody, setPasteBody] = useState("");
-  const [pasteStatus, setPasteStatus] = useState<string | null>(null);
-  const [pasteError, setPasteError] = useState<string | null>(null);
-  const [confirmReplace, setConfirmReplace] = useState(false);
   const sectionsJson = useMemo(() => JSON.stringify(sections, null, 2), [sections]);
+  const headingPreview = sections
+    .map((section) => section.h2.trim())
+    .filter(Boolean)
+    .slice(0, 8);
+  const readyCount = sectionsHaveCopy(sections)
+    ? sections.filter(
+        (section) =>
+          section.h2.trim() ||
+          (section.paragraphs ?? []).some((paragraph) => paragraph.trim()) ||
+          (section.bullets ?? []).some((bullet) => bullet.trim()),
+      ).length
+    : 0;
 
   useEffect(() => {
     onSectionsChange?.(sections);
@@ -40,123 +63,11 @@ export function CmsSectionEditor({ initialSections, onSectionsChange }: CmsSecti
     updateSections((current) => current.map((section, i) => (i === index ? { ...section, ...patch } : section)));
   }
 
-  function applyPastedBody(source: string, force = false) {
-    const trimmed = source.trim();
-    if (!trimmed) {
-      setPasteError("Paste the full article body first.");
-      setPasteStatus(null);
-      return;
-    }
-
-    if (!force && sectionsHaveContent(sections)) {
-      setConfirmReplace(true);
-      setPasteError(null);
-      return;
-    }
-
-    const next = bodyTextToSections(trimmed);
-    if (!next.length) {
-      setPasteError("Could not build sections from that paste.");
-      setPasteStatus(null);
-      return;
-    }
-
-    updateSections(next);
-    setConfirmReplace(false);
-    setPasteError(null);
-    setPasteStatus(
-      `Built ${next.length} section${next.length === 1 ? "" : "s"} from paste. Review below, then save draft.`,
-    );
-    setPasteBody("");
-  }
-
-  async function handleBodyFile(file: File | null) {
-    if (!file) return;
-    const text = await file.text();
-    setPasteBody(text);
-    applyPastedBody(text);
-  }
-
-  return (
-    <fieldset className="cms-fieldset">
-      <legend>3. Body (article)</legend>
+  const editor = (
+    <>
       <p className="cms-field-help">
-        Easiest path: paste the full article from ChatGPT / Docs below. Headings (<code>##</code>), paragraphs, and
-        bullets become sections automatically. Use section cards only if you want to fine-tune afterward.
+        Fine-tune headings, paragraphs, bullets, H3s, or video. Prefer Smart Upload at the top for the full article.
       </p>
-
-      <div className="cms-body-easy-paste">
-        <p className="cms-body-easy-paste-title">Easy paste — full article</p>
-        <p className="cms-field-help">
-          Paste markdown-style copy: use <code>## Heading</code> for each section, blank lines between paragraphs, and{" "}
-          <code>-</code> for bullets. A leading <code># Title</code> is ignored (title is set above).
-        </p>
-        <label className="form-field">
-          <span>Paste full blog body</span>
-          <textarea
-            className="cms-body-easy-paste-textarea"
-            rows={12}
-            value={pasteBody}
-            onChange={(event) => {
-              setPasteBody(event.target.value);
-              setConfirmReplace(false);
-              setPasteError(null);
-            }}
-            placeholder={`## Why people notice the pattern early\n\nFirst paragraph…\n\n## What support can look like\n\nMore content…\n\n- Point one\n- Point two`}
-          />
-        </label>
-        <div className="cms-form-actions">
-          <button
-            type="button"
-            className="button button-primary"
-            disabled={!pasteBody.trim()}
-            onClick={() => applyPastedBody(pasteBody)}
-          >
-            Build sections from paste
-          </button>
-          <button type="button" className="button button-secondary" onClick={() => fileRef.current?.click()}>
-            Upload .txt / .md body
-          </button>
-          <input
-            ref={fileRef}
-            type="file"
-            accept=".txt,.md,text/plain,text/markdown"
-            className="sr-only"
-            onChange={(event) => {
-              void handleBodyFile(event.target.files?.[0] ?? null);
-              event.target.value = "";
-            }}
-          />
-        </div>
-
-        {confirmReplace ? (
-          <div className="cms-import-confirm" role="alertdialog" aria-labelledby="cms-body-replace-title">
-            <p id="cms-body-replace-title">
-              <strong>Replace existing body sections?</strong> This overwrites the section cards and JSON below with
-              what you pasted.
-            </p>
-            <div className="cms-form-actions">
-              <button type="button" className="button button-primary" onClick={() => applyPastedBody(pasteBody, true)}>
-                Yes, replace body
-              </button>
-              <button type="button" className="button button-secondary" onClick={() => setConfirmReplace(false)}>
-                Cancel
-              </button>
-            </div>
-          </div>
-        ) : null}
-
-        {pasteError ? <p className="form-error">{pasteError}</p> : null}
-        {pasteStatus ? <p className="cms-inline-status">{pasteStatus}</p> : null}
-      </div>
-
-      <div className="cms-body-sections-header">
-        <strong>Fine-tune by section</strong>
-        <p className="cms-field-help">
-          Optional. Edit headings, paragraphs, bullets, H3s, or video after paste — or build the article section by
-          section manually.
-        </p>
-      </div>
 
       {sections.map((section, index) => (
         <div key={`section-${index}`} className="cms-section-card">
@@ -335,7 +246,7 @@ export function CmsSectionEditor({ initialSections, onSectionsChange }: CmsSecti
         <summary>Sections JSON (advanced)</summary>
         <div className="cms-section-details-body">
           <p className="cms-field-help">
-            Auto-updates when you paste or edit sections. Only edit this directly if you know the schema.
+            Auto-updates when you edit sections. Only edit this directly if you know the schema.
           </p>
           <label className="form-field">
             <span className="sr-only">Sections JSON</span>
@@ -356,6 +267,35 @@ export function CmsSectionEditor({ initialSections, onSectionsChange }: CmsSecti
           </label>
         </div>
       </details>
+    </>
+  );
+
+  return (
+    <fieldset className="cms-fieldset">
+      <legend>Body</legend>
+      <div className="cms-body-summary">
+        <p className="cms-body-summary-status">
+          {readyCount > 0
+            ? `${readyCount} section${readyCount === 1 ? "" : "s"} ready`
+            : "No body sections yet — use Smart Upload above, or edit sections below."}
+        </p>
+        {headingPreview.length ? (
+          <ul className="cms-body-heading-list">
+            {headingPreview.map((heading) => (
+              <li key={heading}>{heading}</li>
+            ))}
+          </ul>
+        ) : null}
+      </div>
+
+      {collapsible ? (
+        <details className="cms-section-details cms-body-edit-details" open={defaultOpen}>
+          <summary>Edit sections</summary>
+          <div className="cms-section-details-body">{editor}</div>
+        </details>
+      ) : (
+        editor
+      )}
 
       <input type="hidden" name="sectionsJson" value={sectionsJson} readOnly />
     </fieldset>

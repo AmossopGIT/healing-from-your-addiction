@@ -6306,16 +6306,18 @@ main,
   border: 0;
 }
 
-.cms-template-import {
-  border: 1px dashed var(--line);
+.cms-template-import,
+.cms-smart-upload {
+  border: 1px dashed #0f5b52;
   border-radius: var(--radius-sm);
   padding: 1rem;
   display: grid;
   gap: 0.75rem;
-  background: var(--surface-strong);
+  background: #f3f8f6;
 }
 
-.cms-template-import-header {
+.cms-template-import-header,
+.cms-smart-upload-header {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
@@ -6323,7 +6325,8 @@ main,
   align-items: flex-start;
 }
 
-.cms-template-import-title {
+.cms-template-import-title,
+.cms-smart-upload-title {
   font-weight: 700;
   margin: 0 0 0.25rem;
 }
@@ -6332,6 +6335,38 @@ main,
 .cms-template-import-panel {
   display: grid;
   gap: 0.75rem;
+}
+
+.cms-smart-upload-textarea {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 0.9rem;
+  line-height: 1.45;
+  min-height: 12rem;
+}
+
+.cms-body-summary {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.cms-body-summary-status {
+  margin: 0;
+  font-weight: 600;
+}
+
+.cms-body-heading-list {
+  margin: 0;
+  padding-left: 1.2rem;
+  color: var(--ink-muted);
+  font-size: 0.92rem;
+}
+
+.cms-body-edit-details,
+.cms-seo-advanced-details {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  padding: 0.65rem 0.85rem;
+  background: var(--surface-strong);
 }
 
 .cms-import-confirm {

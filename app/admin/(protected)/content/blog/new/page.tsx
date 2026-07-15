@@ -21,8 +21,8 @@ export default async function NewBlogPostPage({ searchParams }: PageProps) {
         <p className="eyebrow">Content</p>
         <h1>New blog post</h1>
         <p>
-          Import a finished template, or write the excerpt (short lead) and body (article sections) below. Save as a
-          draft when ready — nothing goes live until you publish from the workflow panel.
+          Use Smart Upload to paste a ChatGPT article or labeled writer template, review essentials, add hero art, then
+          Save draft. Nothing goes live until you publish from the workflow panel.
         </p>
         <Link className="card-link" href="/admin/content/blog/">
           Back to blog list
