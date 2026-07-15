@@ -6294,6 +6294,75 @@ main,
   align-items: end;
 }
 
+.cms-workflow-steps {
+  list-style: none;
+  margin: 0 0 0.85rem;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.cms-workflow-step {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 0.3rem 0.75rem;
+  font-size: 0.85rem;
+  color: var(--ink-muted);
+  background: #fffdfa;
+}
+
+.cms-workflow-step.is-done {
+  background: #e2eeea;
+  border-color: #0f5b52;
+  color: #0a3f39;
+}
+
+.cms-workflow-step.is-active {
+  background: #0f5b52;
+  border-color: #0f5b52;
+  color: #fffdfa;
+  font-weight: 600;
+}
+
+.cms-workflow-status-line {
+  margin: 0 0 0.35rem;
+}
+
+.cms-workflow-group {
+  border-top: 1px solid var(--line);
+  margin-top: 1rem;
+  padding-top: 0.85rem;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.cms-workflow-group-title {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.cms-workflow-form {
+  display: grid;
+  gap: 0.65rem;
+  max-width: 28rem;
+}
+
+.cms-workflow-history {
+  margin-top: 1rem;
+  border-top: 1px solid var(--line);
+  padding-top: 0.75rem;
+}
+
+.admin-table-pagination {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 0.85rem;
+}
+
 .sr-only {
   position: absolute;
   width: 1px;

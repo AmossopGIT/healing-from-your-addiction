@@ -119,10 +119,11 @@ export const cmsWorkflowStatusLabels: Record<CmsWorkflowStatus, string> = {
 };
 
 export const cmsWorkflowTransitions: Record<CmsWorkflowStatus, CmsWorkflowStatus[]> = {
-  draft: ["in_review"],
-  in_review: ["draft", "approved"],
+  draft: ["in_review", "scheduled", "published"],
+  in_review: ["draft", "approved", "scheduled", "published"],
   approved: ["draft", "scheduled", "published"],
-  scheduled: ["draft", "approved", "published"],
+  // `scheduled` includes itself so staff can reschedule without leaving the status.
+  scheduled: ["draft", "approved", "published", "scheduled"],
   published: ["archived", "draft"],
   archived: ["draft"],
 };

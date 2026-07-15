@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { AdminTablePagination } from "@/components/dashboard/AdminTablePagination";
 import { cmsWorkflowFilterStatuses, fetchCmsCaseStudyList } from "@/lib/cms/listQueries";
+import { buildPageHref, paginateItems, parsePageParam } from "@/lib/cms/pagination";
 import { formatDashboardDate } from "@/lib/dashboard/constants";
 import { createMetadata } from "@/lib/seo";
 import { cmsWorkflowStatusLabels } from "@/types/cms";
@@ -12,19 +14,16 @@ export const metadata: Metadata = createMetadata({
   noIndex: true,
 });
 
-type PageProps = { searchParams: Promise<{ status?: string; q?: string }> };
+type PageProps = { searchParams: Promise<{ status?: string; q?: string; page?: string }> };
 
-function buildCaseStudyHref(params: { status?: string; q?: string }) {
-  const search = new URLSearchParams();
-  if (params.status) search.set("status", params.status);
-  if (params.q) search.set("q", params.q);
-  const query = search.toString();
-  return query ? `/admin/content/case-studies/?${query}` : "/admin/content/case-studies/";
+function buildCaseStudyHref(params: { status?: string; q?: string; page?: number }) {
+  return buildPageHref("/admin/content/case-studies/", { status: params.status, q: params.q }, params.page ?? 1);
 }
 
 export default async function AdminCaseStudyListPage({ searchParams }: PageProps) {
   const filters = await searchParams;
   const { studies, totalCount } = await fetchCmsCaseStudyList(filters);
+  const paged = paginateItems(studies, parsePageParam(filters.page));
   const hasFilters = Boolean(filters.status || filters.q);
 
   return (
@@ -76,37 +75,54 @@ export default async function AdminCaseStudyListPage({ searchParams }: PageProps
       </section>
 
       <section className="dashboard-panel">
-        {studies.length ? (
-          <div className="dashboard-table-wrap">
-            <table className="dashboard-table">
-              <thead>
-                <tr>
-                  <th>Title</th>
-                  <th>Slug</th>
-                  <th>Type</th>
-                  <th>Status</th>
-                  <th>Updated</th>
-                </tr>
-              </thead>
-              <tbody>
-                {studies.map((study) => (
-                  <tr key={study.id}>
-                    <td>
-                      <Link href={`/admin/content/case-studies/${study.id}/`}>{study.title}</Link>
-                    </td>
-                    <td>{study.slug}</td>
-                    <td>{study.case_study_type}</td>
-                    <td>
-                      <span className={`cms-status-badge cms-status-${study.workflow_status}`}>
-                        {cmsWorkflowStatusLabels[study.workflow_status]}
-                      </span>
-                    </td>
-                    <td>{formatDashboardDate(study.updated_at)}</td>
+        {paged.items.length ? (
+          <>
+            <div className="dashboard-table-wrap">
+              <table className="dashboard-table">
+                <thead>
+                  <tr>
+                    <th>Title</th>
+                    <th>Slug</th>
+                    <th>Type</th>
+                    <th>Status</th>
+                    <th>Updated</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody>
+                  {paged.items.map((study) => (
+                    <tr key={study.id}>
+                      <td>
+                        <Link href={`/admin/content/case-studies/${study.id}/`}>{study.title}</Link>
+                      </td>
+                      <td>{study.slug}</td>
+                      <td>{study.case_study_type}</td>
+                      <td>
+                        <span className={`cms-status-badge cms-status-${study.workflow_status}`}>
+                          {cmsWorkflowStatusLabels[study.workflow_status]}
+                        </span>
+                      </td>
+                      <td>{formatDashboardDate(study.updated_at)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <AdminTablePagination
+              page={paged.page}
+              totalPages={paged.totalPages}
+              totalCount={paged.totalCount}
+              prevHref={
+                paged.page > 1
+                  ? buildCaseStudyHref({ status: filters.status, q: filters.q, page: paged.page - 1 })
+                  : null
+              }
+              nextHref={
+                paged.page < paged.totalPages
+                  ? buildCaseStudyHref({ status: filters.status, q: filters.q, page: paged.page + 1 })
+                  : null
+              }
+            />
+          </>
         ) : (
           <p className="dashboard-empty">No case studies match this filter.</p>
         )}

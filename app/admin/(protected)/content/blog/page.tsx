@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { AdminTablePagination } from "@/components/dashboard/AdminTablePagination";
 import { cmsWorkflowFilterStatuses, fetchCmsBlogList } from "@/lib/cms/listQueries";
 import { countInternalLinks } from "@/lib/cms/internalLinks";
+import { buildPageHref, paginateItems, parsePageParam } from "@/lib/cms/pagination";
 import { formatDashboardDate } from "@/lib/dashboard/constants";
 import { createMetadata } from "@/lib/seo";
 import { cmsWorkflowStatusLabels } from "@/types/cms";
@@ -13,24 +15,24 @@ export const metadata: Metadata = createMetadata({
   noIndex: true,
 });
 
-type PageProps = { searchParams: Promise<{ status?: string; q?: string; links?: string }> };
+type PageProps = { searchParams: Promise<{ status?: string; q?: string; links?: string; page?: string }> };
 
-function buildBlogHref(params: { status?: string; q?: string; links?: string }) {
-  const search = new URLSearchParams();
-  if (params.status) search.set("status", params.status);
-  if (params.q) search.set("q", params.q);
-  if (params.links) search.set("links", params.links);
-  const query = search.toString();
-  return query ? `/admin/content/blog/?${query}` : "/admin/content/blog/";
+function buildBlogHref(params: { status?: string; q?: string; links?: string; page?: number }) {
+  return buildPageHref(
+    "/admin/content/blog/",
+    { status: params.status, q: params.q, links: params.links },
+    params.page ?? 1,
+  );
 }
 
 export default async function AdminBlogListPage({ searchParams }: PageProps) {
   const filters = await searchParams;
   const { posts: rawPosts, totalCount } = await fetchCmsBlogList(filters);
-  const posts = filters.links === "missing"
-    ? rawPosts.filter((post) => countInternalLinks(post.sections) < 2)
-    : rawPosts;
+  const filteredPosts =
+    filters.links === "missing" ? rawPosts.filter((post) => countInternalLinks(post.sections) < 2) : rawPosts;
+  const paged = paginateItems(filteredPosts, parsePageParam(filters.page));
   const hasFilters = Boolean(filters.status || filters.q || filters.links);
+  const displayCount = filters.links === "missing" ? filteredPosts.length : totalCount;
 
   return (
     <div className="dashboard-stack">
@@ -39,7 +41,7 @@ export default async function AdminBlogListPage({ searchParams }: PageProps) {
         <h1>Blog posts</h1>
         <p>
           <Link href="/admin/content/">← Content hub</Link>
-          {hasFilters ? ` · Showing ${totalCount} result${totalCount === 1 ? "" : "s"}` : null}
+          {hasFilters ? ` · Showing ${displayCount} result${displayCount === 1 ? "" : "s"}` : null}
         </p>
         <Link className="button button-primary" href="/admin/content/blog/new/">
           New blog post
@@ -48,6 +50,7 @@ export default async function AdminBlogListPage({ searchParams }: PageProps) {
 
       <form className="dashboard-search-form" action="/admin/content/blog/" method="get">
         {filters.status ? <input type="hidden" name="status" value={filters.status} /> : null}
+        {filters.links ? <input type="hidden" name="links" value={filters.links} /> : null}
         <label className="form-field dashboard-search-field">
           <span className="visually-hidden">Search blog posts</span>
           <input type="search" name="q" defaultValue={filters.q ?? ""} placeholder="Search by title" maxLength={80} />
@@ -66,19 +69,22 @@ export default async function AdminBlogListPage({ searchParams }: PageProps) {
         <Link href={buildBlogHref({ q: filters.q, status: filters.status })} className={!filters.links ? "dashboard-filter-active" : "dashboard-filter-link"}>
           All links
         </Link>
-        <Link href={buildBlogHref({ q: filters.q, status: filters.status, links: "missing" })} className={filters.links === "missing" ? "dashboard-filter-active" : "dashboard-filter-link"}>
+        <Link
+          href={buildBlogHref({ q: filters.q, status: filters.status, links: "missing" })}
+          className={filters.links === "missing" ? "dashboard-filter-active" : "dashboard-filter-link"}
+        >
           Missing internal links
         </Link>
       </section>
 
       <section className="dashboard-filter-row">
-        <Link href={buildBlogHref({ q: filters.q })} className={!filters.status ? "dashboard-filter-active" : "dashboard-filter-link"}>
+        <Link href={buildBlogHref({ q: filters.q, links: filters.links })} className={!filters.status ? "dashboard-filter-active" : "dashboard-filter-link"}>
           All
         </Link>
         {cmsWorkflowFilterStatuses.map((status) => (
           <Link
             key={status}
-            href={buildBlogHref({ status, q: filters.q })}
+            href={buildBlogHref({ status, q: filters.q, links: filters.links })}
             className={filters.status === status ? "dashboard-filter-active" : "dashboard-filter-link"}
           >
             {cmsWorkflowStatusLabels[status]}
@@ -87,44 +93,71 @@ export default async function AdminBlogListPage({ searchParams }: PageProps) {
       </section>
 
       <section className="dashboard-panel">
-        {posts.length ? (
-          <div className="dashboard-table-wrap">
-            <table className="dashboard-table">
-              <thead>
-                <tr>
-                  <th>Title</th>
-                  <th>Category</th>
-                  <th>Primary keyword</th>
-                  <th>Links</th>
-                  <th>Status</th>
-                  <th>Published</th>
-                  <th>Updated</th>
-                </tr>
-              </thead>
-              <tbody>
-                {posts.map((post) => {
-                  const linkCount = countInternalLinks(post.sections);
-                  return (
-                  <tr key={post.id}>
-                    <td>
-                      <Link href={`/admin/content/blog/${post.id}/`}>{post.title}</Link>
-                    </td>
-                    <td>{post.category_slug}</td>
-                    <td>{post.primary_keyword || "—"}</td>
-                    <td className={linkCount < 2 ? "dashboard-cell-warn" : undefined}>{linkCount}</td>
-                    <td>
-                      <span className={`cms-status-badge cms-status-${post.workflow_status}`}>
-                        {cmsWorkflowStatusLabels[post.workflow_status]}
-                      </span>
-                    </td>
-                    <td>{post.published_at ? formatDashboardDate(post.published_at) : "—"}</td>
-                    <td>{formatDashboardDate(post.updated_at)}</td>
+        {paged.items.length ? (
+          <>
+            <div className="dashboard-table-wrap">
+              <table className="dashboard-table">
+                <thead>
+                  <tr>
+                    <th>Title</th>
+                    <th>Category</th>
+                    <th>Primary keyword</th>
+                    <th>Links</th>
+                    <th>Status</th>
+                    <th>Published</th>
+                    <th>Updated</th>
                   </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody>
+                  {paged.items.map((post) => {
+                    const linkCount = countInternalLinks(post.sections);
+                    return (
+                      <tr key={post.id}>
+                        <td>
+                          <Link href={`/admin/content/blog/${post.id}/`}>{post.title}</Link>
+                        </td>
+                        <td>{post.category_slug}</td>
+                        <td>{post.primary_keyword || "—"}</td>
+                        <td className={linkCount < 2 ? "dashboard-cell-warn" : undefined}>{linkCount}</td>
+                        <td>
+                          <span className={`cms-status-badge cms-status-${post.workflow_status}`}>
+                            {cmsWorkflowStatusLabels[post.workflow_status]}
+                          </span>
+                        </td>
+                        <td>{post.published_at ? formatDashboardDate(post.published_at) : "—"}</td>
+                        <td>{formatDashboardDate(post.updated_at)}</td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+            <AdminTablePagination
+              page={paged.page}
+              totalPages={paged.totalPages}
+              totalCount={paged.totalCount}
+              prevHref={
+                paged.page > 1
+                  ? buildBlogHref({
+                      status: filters.status,
+                      q: filters.q,
+                      links: filters.links,
+                      page: paged.page - 1,
+                    })
+                  : null
+              }
+              nextHref={
+                paged.page < paged.totalPages
+                  ? buildBlogHref({
+                      status: filters.status,
+                      q: filters.q,
+                      links: filters.links,
+                      page: paged.page + 1,
+                    })
+                  : null
+              }
+            />
+          </>
         ) : (
           <p className="dashboard-empty">No CMS blog posts match this filter.</p>
         )}

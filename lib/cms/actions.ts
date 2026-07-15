@@ -311,6 +311,10 @@ async function transitionContentWorkflow(
       updatePayload.approved_by = user.id;
     }
 
+    if ((toStatus === "draft" || toStatus === "approved") && fromStatus === "scheduled") {
+      updatePayload.scheduled_for = null;
+    }
+
     const { error } = await supabase.from("cms_blog_posts").update(updatePayload).eq("id", id);
     if (error) redirect(`${adminPath}${id}/?error=${encodeURIComponent(error.message)}`);
 
@@ -383,6 +387,10 @@ async function transitionContentWorkflow(
     }
     updatePayload.scheduled_for = scheduledFor;
     updatePayload.approved_by = user.id;
+  }
+
+  if ((toStatus === "draft" || toStatus === "approved") && fromStatus === "scheduled") {
+    updatePayload.scheduled_for = null;
   }
 
   const { error } = await supabase.from("cms_case_studies").update(updatePayload).eq("id", id);

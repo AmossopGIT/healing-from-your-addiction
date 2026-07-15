@@ -157,10 +157,20 @@ Config: `vitest.config.ts`
 | Writer template | `public/templates/blog-post-template.md` |
 | Styles | `app/globals.css` (`.cms-blog-editor-layout`, `.cms-smart-upload`, `.cms-blog-preview`) |
 
-## Workflow reminder
+## Publishing (make an article live)
 
-1. Smart Upload the article (or write essentials by hand)
-2. Check title, excerpt, category, tags, and **Live preview**
-3. Add hero artwork
-4. Glance at **SEO checklist** → **Save draft**
-5. Use workflow panel: review → approve → publish
+After the first save, the edit page shows the **Publishing** panel (`components/dashboard/CmsWorkflowPanel.tsx`).
+
+Staff path:
+
+1. Smart Upload / edit essentials → **Save draft**
+2. In **Publishing**, choose one:
+   - **Publish now (make live)** — goes live immediately (from Draft, In review, Approved, or Scheduled)
+   - **Schedule for later** — pick a datetime; the site shows it when that time is reached
+   - **Submit for review** / **Approve** — optional multi-person path (not required to publish)
+3. Scheduled posts can be **Changed**, **Published now**, or **Cancel schedule**
+4. Live posts can be **Unpublish / archive**
+
+Publish and schedule both run publish validation (SEO, hero alt, sections, etc.). Fix checklist errors if the transition fails.
+
+List pages and the content hub draft/attention tables use pagination (20 rows per page).

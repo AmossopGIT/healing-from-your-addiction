@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { BackfillCmsButton } from "@/components/dashboard/BackfillCmsButton";
-import { CmsSyncStatus } from "@/components/dashboard/CmsSyncStatus";
+import { AdminTablePagination } from "@/components/dashboard/AdminTablePagination";
 import { isCmsContentEnabled } from "@/lib/cms/featureFlag";
+import { buildPageHref, paginateItems, parsePageParam } from "@/lib/cms/pagination";
 import { fetchAllCmsBlogPosts, fetchAllCmsCaseStudies } from "@/lib/cms/queries";
 import { buildStaticInventory } from "@/lib/cms/staticInventory";
 import { formatDashboardDate } from "@/lib/dashboard/constants";
@@ -40,7 +40,10 @@ type RecentContentItem = {
   editHref: string;
 };
 
-export default async function AdminContentPage() {
+type PageProps = { searchParams: Promise<{ draftsPage?: string; attentionPage?: string }> };
+
+export default async function AdminContentPage({ searchParams }: PageProps) {
+  const params = await searchParams;
   const [blogPosts, caseStudies] = await Promise.all([fetchAllCmsBlogPosts(true), fetchAllCmsCaseStudies(true)]);
   const inventory = buildStaticInventory(blogPosts, caseStudies);
 
@@ -157,6 +160,37 @@ export default async function AdminContentPage() {
   const cmsDraftCount =
     inventory.cmsDraftBlogCount + inventory.cmsDraftCaseStudyCount;
 
+  type DraftRow = {
+    key: string;
+    title: string;
+    contentType: "Blog" | "Case study";
+    slug: string;
+    plannedDate: string | null;
+    editHref: string;
+  };
+
+  const draftRows: DraftRow[] = [
+    ...livePublishedBlogs.map((post) => ({
+      key: `blog-${post.id}`,
+      title: post.title,
+      contentType: "Blog" as const,
+      slug: post.slug,
+      plannedDate: post.published_at,
+      editHref: `/admin/content/blog/${post.id}/`,
+    })),
+    ...draftCaseStudies.map((study) => ({
+      key: `case-study-${study.id}`,
+      title: study.title,
+      contentType: "Case study" as const,
+      slug: study.slug,
+      plannedDate: study.published_at,
+      editHref: `/admin/content/case-studies/${study.id}/`,
+    })),
+  ];
+
+  const draftsPage = paginateItems(draftRows, parsePageParam(params.draftsPage));
+  const attentionPage = paginateItems(attention, parsePageParam(params.attentionPage));
+
   return (
     <div className="dashboard-stack">
       <section className="dashboard-page-header">
@@ -271,86 +305,131 @@ export default async function AdminContentPage() {
       <section className="dashboard-panel">
         <h2>Drafts ready to publish</h2>
         <p className="cms-field-help">
-          Synced live content lands here as drafts. Click Edit to review structured sections and SEO, then publish when ready.
+          Drafts land here after sync or save. Click Edit, then use Publishing to make the article live or schedule it.
         </p>
-        {livePublishedBlogs.length || draftCaseStudies.length ? (
-          <div className="dashboard-table-wrap">
-            <table className="dashboard-table">
-              <thead>
-                <tr>
-                  <th>Title</th>
-                  <th>Type</th>
-                  <th>Slug</th>
-                  <th>Planned date</th>
-                  <th>Edit</th>
-                </tr>
-              </thead>
-              <tbody>
-                {livePublishedBlogs.map((post) => (
-                  <tr key={`blog-${post.id}`}>
-                    <td>{post.title}</td>
-                    <td>Blog</td>
-                    <td>{post.slug}</td>
-                    <td>{post.published_at ? formatDashboardDate(post.published_at) : "—"}</td>
-                    <td>
-                      <Link href={`/admin/content/blog/${post.id}/`}>Edit</Link>
-                    </td>
+        {draftsPage.totalCount ? (
+          <>
+            <div className="dashboard-table-wrap">
+              <table className="dashboard-table">
+                <thead>
+                  <tr>
+                    <th>Title</th>
+                    <th>Type</th>
+                    <th>Slug</th>
+                    <th>Planned date</th>
+                    <th>Edit</th>
                   </tr>
-                ))}
-                {draftCaseStudies.map((study) => (
-                  <tr key={`case-study-${study.id}`}>
-                    <td>{study.title}</td>
-                    <td>Case study</td>
-                    <td>{study.slug}</td>
-                    <td>{study.published_at ? formatDashboardDate(study.published_at) : "—"}</td>
-                    <td>
-                      <Link href={`/admin/content/case-studies/${study.id}/`}>Edit</Link>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody>
+                  {draftsPage.items.map((row) => (
+                    <tr key={row.key}>
+                      <td>{row.title}</td>
+                      <td>{row.contentType}</td>
+                      <td>{row.slug}</td>
+                      <td>{row.plannedDate ? formatDashboardDate(row.plannedDate) : "—"}</td>
+                      <td>
+                        <Link href={row.editHref}>Edit</Link>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <AdminTablePagination
+              page={draftsPage.page}
+              totalPages={draftsPage.totalPages}
+              totalCount={draftsPage.totalCount}
+              prevHref={
+                draftsPage.page > 1
+                  ? buildPageHref(
+                      "/admin/content/",
+                      { attentionPage: params.attentionPage },
+                      draftsPage.page - 1,
+                      "draftsPage",
+                    )
+                  : null
+              }
+              nextHref={
+                draftsPage.page < draftsPage.totalPages
+                  ? buildPageHref(
+                      "/admin/content/",
+                      { attentionPage: params.attentionPage },
+                      draftsPage.page + 1,
+                      "draftsPage",
+                    )
+                  : null
+              }
+            />
+          </>
         ) : (
-          <p className="dashboard-empty">No drafts in CMS yet. Sync runs on deploy.</p>
+          <p className="dashboard-empty">No drafts in CMS yet.</p>
         )}
       </section>
 
       <section className="dashboard-panel">
         <h2>Needs attention</h2>
-        {attention.length ? (
-          <div className="dashboard-table-wrap">
-            <table className="dashboard-table">
-              <thead>
-                <tr>
-                  <th>Title</th>
-                  <th>Type</th>
-                  <th>Status</th>
-                  <th>Reason</th>
-                  <th>When</th>
-                </tr>
-              </thead>
-              <tbody>
-                {attention.map((item) => (
-                  <tr key={`${item.contentType}-${item.id}`}>
-                    <td>
-                      <Link href={item.editHref}>{item.title}</Link>
-                    </td>
-                    <td>{item.contentType === "blog" ? "Blog" : "Case study"}</td>
-                    <td>
-                      <span className={`cms-status-badge cms-status-${item.workflowStatus}`}>
-                        {cmsWorkflowStatusLabels[item.workflowStatus]}
-                      </span>
-                    </td>
-                    <td>{item.reason === "in_review" ? "In review" : "Scheduled soon"}</td>
-                    <td>
-                      {item.scheduledFor ? formatDashboardDate(item.scheduledFor) : formatDashboardDate(item.updatedAt)}
-                    </td>
+        {attentionPage.totalCount ? (
+          <>
+            <div className="dashboard-table-wrap">
+              <table className="dashboard-table">
+                <thead>
+                  <tr>
+                    <th>Title</th>
+                    <th>Type</th>
+                    <th>Status</th>
+                    <th>Reason</th>
+                    <th>When</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody>
+                  {attentionPage.items.map((item) => (
+                    <tr key={`${item.contentType}-${item.id}`}>
+                      <td>
+                        <Link href={item.editHref}>{item.title}</Link>
+                      </td>
+                      <td>{item.contentType === "blog" ? "Blog" : "Case study"}</td>
+                      <td>
+                        <span className={`cms-status-badge cms-status-${item.workflowStatus}`}>
+                          {cmsWorkflowStatusLabels[item.workflowStatus]}
+                        </span>
+                      </td>
+                      <td>{item.reason === "in_review" ? "In review" : "Scheduled soon"}</td>
+                      <td>
+                        {item.scheduledFor
+                          ? formatDashboardDate(item.scheduledFor)
+                          : formatDashboardDate(item.updatedAt)}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <AdminTablePagination
+              page={attentionPage.page}
+              totalPages={attentionPage.totalPages}
+              totalCount={attentionPage.totalCount}
+              prevHref={
+                attentionPage.page > 1
+                  ? buildPageHref(
+                      "/admin/content/",
+                      { draftsPage: params.draftsPage },
+                      attentionPage.page - 1,
+                      "attentionPage",
+                    )
+                  : null
+              }
+              nextHref={
+                attentionPage.page < attentionPage.totalPages
+                  ? buildPageHref(
+                      "/admin/content/",
+                      { draftsPage: params.draftsPage },
+                      attentionPage.page + 1,
+                      "attentionPage",
+                    )
+                  : null
+              }
+            />
+          </>
         ) : (
           <p className="dashboard-empty">No content in review or scheduled within the next 7 days.</p>
         )}
@@ -392,8 +471,6 @@ export default async function AdminContentPage() {
         )}
       </section>
 
-      <BackfillCmsButton />
-      <CmsSyncStatus />
     </div>
   );
 }
