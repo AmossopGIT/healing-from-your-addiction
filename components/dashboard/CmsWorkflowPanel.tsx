@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useActionState } from "react";
 import { CmsFormSubmitButton } from "@/components/dashboard/CmsFormSubmitButton";
 import { cmsFieldMaxLengths } from "@/lib/cms/formValidation";
@@ -11,6 +12,8 @@ import type { CmsWorkflowEventRow } from "@/types/cms";
 type CmsWorkflowPanelProps = {
   contentType: "blog" | "case-study";
   contentId: string;
+  /** Public URL slug — used for the View live button when published. */
+  slug: string;
   status: CmsWorkflowStatus;
   scheduledFor: string | null;
   events: CmsWorkflowEventRow[];
@@ -94,6 +97,7 @@ function WorkflowActionForm({
 export function CmsWorkflowPanel({
   contentType,
   contentId,
+  slug,
   status,
   scheduledFor,
   events,
@@ -111,6 +115,8 @@ export function CmsWorkflowPanel({
   const scheduleLabel = status === "scheduled" ? "Change schedule" : "Schedule for later";
   const hasPublishBlockers = publishBlockers.length > 0;
   const showMakeLive = (canPublish || canSchedule) && status !== "published" && status !== "archived";
+  const publicPath = contentType === "blog" ? `/blog/${slug}/` : `/case-studies/${slug}/`;
+  const isLive = status === "published" && Boolean(slug.trim());
 
   return (
     <section className="dashboard-panel cms-workflow-panel">
@@ -139,6 +145,17 @@ export function CmsWorkflowPanel({
         </span>
       </p>
       <p className="cms-field-help">{nextStepCopy(status, scheduledFor)}</p>
+
+      {isLive ? (
+        <div className="cms-workflow-actions cms-view-live-actions">
+          <Link className="button button-primary" href={publicPath} target="_blank" rel="noreferrer">
+            View live page
+          </Link>
+          <p className="cms-field-help cms-view-live-url">
+            Opens <code>{publicPath}</code> in a new tab.
+          </p>
+        </div>
+      ) : null}
 
       {showMakeLive && hasPublishBlockers ? (
         <div className="cms-publish-blockers" role="status">

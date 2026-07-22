@@ -6372,6 +6372,25 @@ main,
   margin: 0;
 }
 
+.cms-view-live-actions {
+  margin: 0.75rem 0 0.25rem;
+  align-items: center;
+}
+
+.cms-view-live-url {
+  flex: 1 1 100%;
+  margin: 0;
+}
+
+.cms-preview-live-link {
+  text-decoration: none;
+}
+
+.cms-preview-live-link:hover,
+.cms-preview-live-link:focus-visible {
+  text-decoration: underline;
+}
+
 .admin-table-pagination {
   display: flex;
   flex-wrap: wrap;

@@ -353,7 +353,7 @@ export function CmsBlogForm({ post, initialError = null }: CmsBlogFormProps) {
           />
           {post ? (
             <Link className="button button-secondary" href={`/blog/${post.slug}/`} target="_blank" rel="noreferrer">
-              Preview public page
+              {post.workflow_status === "published" ? "View live page" : "Preview public page"}
             </Link>
           ) : null}
         </div>
@@ -370,6 +370,7 @@ export function CmsBlogForm({ post, initialError = null }: CmsBlogFormProps) {
         sections={sections}
         heroArtSrc={heroArtSrc}
         heroArtAlt={heroArtAlt}
+        isLive={post?.workflow_status === "published"}
       />
     </div>
   );

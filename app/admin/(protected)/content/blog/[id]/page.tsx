@@ -51,6 +51,7 @@ export default async function EditBlogPostPage({ params, searchParams }: PagePro
       <CmsWorkflowPanel
         contentType="blog"
         contentId={post.id}
+        slug={post.slug}
         status={post.workflow_status}
         scheduledFor={post.scheduled_for}
         events={events}

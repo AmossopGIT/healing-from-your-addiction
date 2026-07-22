@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import type { BlogSection } from "@/content/blog";
 import { blogCategories, blogCategoryBySlug, blogTagBySlug } from "@/content/blog";
 import { ContentArticleBody } from "@/components/ContentArticleBody";
@@ -16,6 +17,8 @@ type CmsBlogPreviewProps = {
   sections: BlogSection[];
   heroArtSrc: string;
   heroArtAlt: string;
+  /** When true, show View live instead of Draft view. */
+  isLive?: boolean;
 };
 
 export function CmsBlogPreview({
@@ -29,6 +32,7 @@ export function CmsBlogPreview({
   sections,
   heroArtSrc,
   heroArtAlt,
+  isLive = false,
 }: CmsBlogPreviewProps) {
   const category = blogCategoryBySlug.get(categorySlug);
   const previewSections = sections.some(
@@ -36,12 +40,19 @@ export function CmsBlogPreview({
   )
     ? sections
     : [{ h2: "Introduction", paragraphs: ["Your article body will appear here as you write."] }];
+  const publicPath = slug ? `/blog/${slug}/` : "";
 
   return (
     <aside className="cms-blog-preview" aria-label="Live blog preview">
       <div className="cms-blog-preview-header">
         <p className="cms-blog-preview-title">Live preview</p>
-        <span className="cms-seo-badge cms-seo-badge-pending">Draft view</span>
+        {isLive && publicPath ? (
+          <Link className="cms-seo-badge cms-seo-badge-ready cms-preview-live-link" href={publicPath} target="_blank" rel="noreferrer">
+            View live
+          </Link>
+        ) : (
+          <span className="cms-seo-badge cms-seo-badge-pending">Draft view</span>
+        )}
       </div>
 
       <div className="cms-blog-preview-scroll">
@@ -52,7 +63,7 @@ export function CmsBlogPreview({
             <ArticleInlineContent text={excerpt.trim() || description.trim() || "Excerpt appears here under the headline."} />
           </p>
           <p className="blog-meta-row">
-            <span>Draft preview</span>
+            <span>{isLive ? "Live on site" : "Draft preview"}</span>
             {category ? (
               <>
                 <span aria-hidden="true">•</span>

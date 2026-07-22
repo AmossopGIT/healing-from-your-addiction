@@ -50,6 +50,7 @@ export default async function EditCaseStudyPage({ params, searchParams }: PagePr
       <CmsWorkflowPanel
         contentType="case-study"
         contentId={study.id}
+        slug={study.slug}
         status={study.workflow_status}
         scheduledFor={study.scheduled_for}
         events={events}
