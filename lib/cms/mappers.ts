@@ -2,6 +2,7 @@ import type { ArtGalleryItem } from "@/content/artGallery";
 import { artGalleryById } from "@/content/artGallery";
 import type { BlogPost } from "@/content/blog";
 import type { CaseStudy } from "@/content/caseStudies";
+import type { PublishableBlogInput, PublishableCaseStudyInput } from "@/lib/cms/validation";
 import type { CmsBlogPostRow, CmsCaseStudyRow } from "@/types/cms";
 
 export function cmsBlogHeroArtId(slug: string) {
@@ -74,4 +75,53 @@ export function resolveContentArt(
     return cmsRowToArtItem(cmsRow, category);
   }
   return undefined;
+}
+
+export function cmsBlogPostToPublishableInput(row: CmsBlogPostRow): PublishableBlogInput {
+  return {
+    slug: row.slug,
+    title: row.title,
+    description: row.description,
+    excerpt: row.excerpt,
+    h1: row.h1,
+    primaryKeyword: row.primary_keyword,
+    secondaryKeywords: row.secondary_keywords,
+    categorySlug: row.category_slug,
+    tagSlugs: row.tag_slugs,
+    sections: row.sections,
+    heroArtId: row.hero_art_id,
+    heroArtSrc: row.hero_art_src,
+    heroArtAlt: row.hero_art_alt,
+    metaTitle: row.meta_title,
+    metaDescription: row.meta_description,
+    searchIntent: row.search_intent,
+    conversionGoal: row.conversion_goal,
+    ogImageAlt: row.og_image_alt,
+  };
+}
+
+export function cmsCaseStudyToPublishableInput(row: CmsCaseStudyRow): PublishableCaseStudyInput {
+  return {
+    slug: row.slug,
+    title: row.title,
+    description: row.description,
+    excerpt: row.excerpt,
+    h1: row.h1,
+    primaryKeyword: row.primary_keyword,
+    secondaryKeywords: row.secondary_keywords,
+    categorySlug: "",
+    tagSlugs: row.tag_slugs,
+    sections: row.sections,
+    heroArtId: row.hero_art_id,
+    heroArtSrc: row.hero_art_src,
+    heroArtAlt: row.hero_art_alt,
+    metaTitle: row.meta_title,
+    metaDescription: row.meta_description,
+    searchIntent: row.search_intent,
+    conversionGoal: row.conversion_goal,
+    ogImageAlt: row.og_image_alt,
+    legacySlug: row.legacy_slug,
+    caseStudyType: row.case_study_type,
+    addictionSlug: row.addiction_slug,
+  };
 }

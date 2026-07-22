@@ -1,6 +1,7 @@
 import { blogCategories, blogTags, type BlogSection } from "@/content/blog";
 import { caseStudies, caseStudyTypes, type CaseStudyType } from "@/content/caseStudies";
 import { programmes } from "@/content/programmes";
+import { slugifyTitle } from "@/lib/cms/slugify";
 import { parseSecondaryKeywords, parseSectionsJson, parseTagSlugs } from "@/lib/cms/validation";
 import type { CmsWorkflowStatus } from "@/types/cms";
 
@@ -22,7 +23,8 @@ export const cmsFieldMaxLengths = {
   workflowNotes: 500,
   sectionHeading: 160,
   sectionText: 2000,
-  sectionsJson: 50000,
+  /** Compact JSON payload size for sections (was 50k and blocked typical ChatGPT articles). */
+  sectionsJson: 250000,
   uploadAlt: 240,
 } as const;
 
@@ -67,7 +69,8 @@ export function sanitizeUuid(value: string | null | undefined) {
 }
 
 export function sanitizeSlug(value: string | null | undefined) {
-  return normalizeSingleLine(value).toLowerCase().slice(0, cmsFieldMaxLengths.slug);
+  // Always produce a URL-safe slug. Staff often paste titles or typed spaces into the slug field.
+  return slugifyTitle(normalizeSingleLine(value)).slice(0, cmsFieldMaxLengths.slug);
 }
 
 export function sanitizeRequiredText(value: string | null | undefined, maxLength: number) {

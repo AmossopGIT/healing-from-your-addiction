@@ -1,16 +1,17 @@
 "use client";
 
 import Link from "next/link";
-import { useRef, useState } from "react";
+import { useActionState, useRef, useState } from "react";
 import { blogCategories } from "@/content/blog";
 import { artGallery } from "@/content/artGallery";
 import { CmsBlogPreview } from "@/components/dashboard/CmsBlogPreview";
 import { CmsBlogSeoChecklist } from "@/components/dashboard/CmsBlogSeoChecklist";
+import { CmsFormSubmitButton } from "@/components/dashboard/CmsFormSubmitButton";
 import { CmsHeroArtFields } from "@/components/dashboard/CmsHeroArtFields";
 import { CmsSectionEditor } from "@/components/dashboard/CmsSectionEditor";
 import { CmsTagPicker } from "@/components/dashboard/CmsTagPicker";
 import { SmartBlogUpload } from "@/components/dashboard/SmartBlogUpload";
-import { saveBlogPostDraft, updateBlogFromForm } from "@/lib/cms/actions";
+import { saveBlogPostDraft, updateBlogFromForm, type CmsFormActionState } from "@/lib/cms/actions";
 import { cmsFieldMaxLengths } from "@/lib/cms/formValidation";
 import { cmsBlogHeroArtId } from "@/lib/cms/mappers";
 import { normalizeBlogSections } from "@/lib/cms/normalizeSections";
@@ -20,6 +21,8 @@ import type { CmsBlogPostRow } from "@/types/cms";
 
 type CmsBlogFormProps = {
   post?: CmsBlogPostRow;
+  /** Optional error from a previous redirect (legacy). Prefer action-state errors. */
+  initialError?: string | null;
 };
 
 const DEFAULT_SEARCH_INTENT = "Read an educational addiction recovery article.";
@@ -32,8 +35,12 @@ function parseKeywordList(raw: string) {
     .filter(Boolean);
 }
 
-export function CmsBlogForm({ post }: CmsBlogFormProps) {
-  const action = post ? updateBlogFromForm : saveBlogPostDraft;
+export function CmsBlogForm({ post, initialError = null }: CmsBlogFormProps) {
+  const [actionState, formAction] = useActionState<CmsFormActionState, FormData>(
+    post ? updateBlogFromForm : saveBlogPostDraft,
+    {},
+  );
+  const formError = actionState.error || initialError;
   const galleryItems = artGallery.filter((item) => item.id.startsWith("blog-") || item.category.includes("blog"));
   const titleInputRef = useRef<HTMLInputElement>(null);
 
@@ -121,8 +128,14 @@ export function CmsBlogForm({ post }: CmsBlogFormProps) {
 
   return (
     <div className="cms-blog-editor-layout">
-      <form action={action} className="dashboard-form cms-content-form cms-blog-editor-main" noValidate>
+      <form action={formAction} className="dashboard-form cms-content-form cms-blog-editor-main" noValidate>
         {post ? <input type="hidden" name="id" value={post.id} /> : null}
+
+        {formError ? (
+          <p className="form-error" role="alert">
+            {formError}
+          </p>
+        ) : null}
 
         <div className="cms-staff-guide">
           <p className="cms-staff-guide-title">Quick path</p>
@@ -329,9 +342,15 @@ export function CmsBlogForm({ post }: CmsBlogFormProps) {
         </fieldset>
 
         <div className="cms-form-actions">
-          <button type="submit" className="button button-primary">
-            {post ? "Save changes" : "Save draft"}
-          </button>
+          {formError ? (
+            <p className="form-error" role="alert">
+              Could not save: {formError}
+            </p>
+          ) : null}
+          <CmsFormSubmitButton
+            idleLabel={post ? "Save changes" : "Save draft"}
+            pendingLabel={post ? "Saving…" : "Saving draft…"}
+          />
           {post ? (
             <Link className="button button-secondary" href={`/blog/${post.slug}/`} target="_blank" rel="noreferrer">
               Preview public page

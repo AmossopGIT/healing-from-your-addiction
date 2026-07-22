@@ -5,7 +5,6 @@ import {
   META_DESC_MAX,
   META_DESC_PUBLISH_MIN,
   META_TITLE_MAX,
-  META_TITLE_MIN,
 } from "@/lib/cms/seoChecklist";
 import type { CmsWorkflowStatus } from "@/types/cms";
 import { cmsWorkflowTransitions } from "@/types/cms";
@@ -43,6 +42,13 @@ function slugPattern(value: string) {
   return /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(value);
 }
 
+function sectionHasBodyCopy(section: BlogSection) {
+  const hasParagraphs = (section.paragraphs ?? []).some((paragraph) => paragraph.trim());
+  const hasBullets = (section.bullets ?? []).some((bullet) => bullet.trim());
+  const hasH3Items = (section.h3Items ?? []).some((item) => item.h3.trim() && item.body.trim());
+  return hasParagraphs || hasBullets || hasH3Items;
+}
+
 function validateSections(sections: BlogSection[], errors: string[]) {
   if (!sections.length) {
     errors.push("At least one content section is required.");
@@ -53,8 +59,9 @@ function validateSections(sections: BlogSection[], errors: string[]) {
     if (!section.h2.trim()) {
       errors.push(`Section ${index + 1} needs an H2 heading.`);
     }
-    if (!section.paragraphs.length || section.paragraphs.every((p) => !p.trim())) {
-      errors.push(`Section ${index + 1} needs at least one paragraph.`);
+    // Listicles from ChatGPT often use bullets without paragraphs — that is valid body copy.
+    if (!sectionHasBodyCopy(section)) {
+      errors.push(`Section ${index + 1} needs at least one paragraph, bullet list, or H3 subsection.`);
     }
   }
 }
@@ -65,9 +72,7 @@ function validateSeoAndArt(input: PublishableBlogInput, errors: string[]) {
   }
   if (!input.title.trim()) errors.push("Title is required.");
   const titleLen = input.title.trim().length;
-  if (titleLen < META_TITLE_MIN) {
-    errors.push(`Title is too short for SEO (${titleLen} chars). Aim for ${META_TITLE_MIN}–${META_TITLE_MAX} characters.`);
-  }
+  // Short titles are allowed to publish; SEO checklist still warns below META_TITLE_MIN.
   if (titleLen > META_TITLE_MAX) {
     errors.push(`Title is too long (${titleLen} chars). Keep the article title under ${META_TITLE_MAX} characters.`);
   }
@@ -93,6 +98,9 @@ function validateSeoAndArt(input: PublishableBlogInput, errors: string[]) {
 export function validateBlogDraft(input: PublishableBlogInput): CmsValidationResult {
   const errors: string[] = [];
   if (!input.slug.trim()) errors.push("Slug is required.");
+  else if (!slugPattern(input.slug)) {
+    errors.push("Slug must use lowercase letters, numbers, and hyphens only.");
+  }
   if (!input.title.trim()) errors.push("Title is required.");
   return errors.length ? { ok: false, errors } : { ok: true };
 }

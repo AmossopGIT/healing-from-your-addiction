@@ -36,6 +36,10 @@ import { createClient } from "@/lib/supabase/server";
 import { logAuditEvent } from "@/lib/supabase/audit";
 import type { CmsBlogPostRow, CmsCaseStudyRow, CmsWorkflowStatus } from "@/types/cms";
 
+export type CmsFormActionState = {
+  error?: string;
+};
+
 type ParsedBlogForm = { error: string } | { input: PublishableBlogInput };
 type ParsedCaseStudyForm = { error: string } | { input: PublishableCaseStudyInput };
 
@@ -172,14 +176,17 @@ function revalidateContentPaths() {
   revalidatePath("/sitemap.xml");
 }
 
-export async function saveBlogPostDraft(formData: FormData) {
+export async function saveBlogPostDraft(
+  _prevState: CmsFormActionState,
+  formData: FormData,
+): Promise<CmsFormActionState> {
   const { supabase, user } = await requireAdminUser();
   const parsed = parseBlogForm(formData);
-  if ("error" in parsed) redirect(`/admin/content/blog/new/?error=${encodeURIComponent(parsed.error)}`);
+  if ("error" in parsed) return { error: parsed.error };
 
   const validation = validateBlogDraft(parsed.input);
   if (!validation.ok) {
-    redirect(`/admin/content/blog/new/?error=${encodeURIComponent(validation.errors.join(" "))}`);
+    return { error: validation.errors.join(" ") };
   }
 
   const input = withDraftDefaults(parsed.input);
@@ -188,7 +195,7 @@ export async function saveBlogPostDraft(formData: FormData) {
 
   if (id) {
     const { error } = await supabase.from("cms_blog_posts").update(row).eq("id", id);
-    if (error) redirect(`/admin/content/blog/${id}/?error=${encodeURIComponent(error.message)}`);
+    if (error) return { error: error.message };
     await logAuditEvent({ userId: user.id, action: "cms_blog_update_draft", resourceType: "cms_blog_post", resourceId: id });
     revalidateContentPaths();
     redirect(`/admin/content/blog/${id}/?saved=1`);
@@ -200,21 +207,24 @@ export async function saveBlogPostDraft(formData: FormData) {
     .select("id")
     .single();
 
-  if (error) redirect(`/admin/content/blog/new/?error=${encodeURIComponent(error.message)}`);
+  if (error) return { error: error.message };
 
   await logAuditEvent({ userId: user.id, action: "cms_blog_create_draft", resourceType: "cms_blog_post", resourceId: data.id });
   revalidateContentPaths();
   redirect(`/admin/content/blog/${data.id}/?saved=1`);
 }
 
-export async function saveCaseStudyDraft(formData: FormData) {
+export async function saveCaseStudyDraft(
+  _prevState: CmsFormActionState,
+  formData: FormData,
+): Promise<CmsFormActionState> {
   const { supabase, user } = await requireAdminUser();
   const parsed = parseCaseStudyForm(formData);
-  if ("error" in parsed) redirect(`/admin/content/case-studies/new/?error=${encodeURIComponent(parsed.error)}`);
+  if ("error" in parsed) return { error: parsed.error };
 
   const validation = validateCaseStudyDraft(parsed.input);
   if (!validation.ok) {
-    redirect(`/admin/content/case-studies/new/?error=${encodeURIComponent(validation.errors.join(" "))}`);
+    return { error: validation.errors.join(" ") };
   }
 
   const id = sanitizeUuid(String(formData.get("id") ?? ""));
@@ -222,7 +232,7 @@ export async function saveCaseStudyDraft(formData: FormData) {
 
   if (id) {
     const { error } = await supabase.from("cms_case_studies").update(row).eq("id", id);
-    if (error) redirect(`/admin/content/case-studies/${id}/?error=${encodeURIComponent(error.message)}`);
+    if (error) return { error: error.message };
     await logAuditEvent({ userId: user.id, action: "cms_case_study_update_draft", resourceType: "cms_case_study", resourceId: id });
     revalidateContentPaths();
     redirect(`/admin/content/case-studies/${id}/?saved=1`);
@@ -234,7 +244,7 @@ export async function saveCaseStudyDraft(formData: FormData) {
     .select("id")
     .single();
 
-  if (error) redirect(`/admin/content/case-studies/new/?error=${encodeURIComponent(error.message)}`);
+  if (error) return { error: error.message };
 
   await logAuditEvent({ userId: user.id, action: "cms_case_study_create_draft", resourceType: "cms_case_study", resourceId: data.id });
   revalidateContentPaths();
@@ -245,7 +255,7 @@ async function transitionContentWorkflow(
   formData: FormData,
   contentType: "blog_post" | "case_study",
   adminPath: string,
-) {
+): Promise<CmsFormActionState> {
   const { supabase, user } = await requireAdminUser();
   const id = sanitizeUuid(String(formData.get("id") ?? ""));
   const toStatus = sanitizeWorkflowStatus(String(formData.get("toStatus") ?? "")) as CmsWorkflowStatus;
@@ -253,15 +263,15 @@ async function transitionContentWorkflow(
   const rawScheduledFor = String(formData.get("scheduledFor") ?? "");
   const scheduledFor = sanitizeScheduledFor(rawScheduledFor);
 
-  if (!id || !toStatus) redirect(adminPath);
+  if (!id || !toStatus) return { error: "Missing content id or workflow status." };
 
   if (contentType === "blog_post") {
     const { data: existing, error: fetchError } = await supabase.from("cms_blog_posts").select("*").eq("id", id).single();
-    if (fetchError || !existing) redirect(`${adminPath}${id}/?error=${encodeURIComponent("Content not found.")}`);
+    if (fetchError || !existing) return { error: "Content not found." };
 
     const fromStatus = existing.workflow_status as CmsWorkflowStatus;
     if (!canTransitionWorkflow(fromStatus, toStatus)) {
-      redirect(`${adminPath}${id}/?error=${encodeURIComponent(`Cannot move from ${fromStatus} to ${toStatus}.`)}`);
+      return { error: `Cannot move from ${fromStatus} to ${toStatus}.` };
     }
 
     if (toStatus === "published" || toStatus === "scheduled") {
@@ -287,7 +297,7 @@ async function transitionContentWorkflow(
       });
 
       if (!publishValidation.ok) {
-        redirect(`${adminPath}${id}/?error=${encodeURIComponent(publishValidation.errors.join(" "))}`);
+        return { error: publishValidation.errors.join(" ") };
       }
     }
 
@@ -305,7 +315,7 @@ async function transitionContentWorkflow(
 
     if (toStatus === "scheduled") {
       if (!rawScheduledFor.trim() || !scheduledFor) {
-        redirect(`${adminPath}${id}/?error=${encodeURIComponent("Scheduled publish date is required.")}`);
+        return { error: "Scheduled publish date is required." };
       }
       updatePayload.scheduled_for = scheduledFor;
       updatePayload.approved_by = user.id;
@@ -316,7 +326,7 @@ async function transitionContentWorkflow(
     }
 
     const { error } = await supabase.from("cms_blog_posts").update(updatePayload).eq("id", id);
-    if (error) redirect(`${adminPath}${id}/?error=${encodeURIComponent(error.message)}`);
+    if (error) return { error: error.message };
 
     await recordWorkflowEvent(supabase, contentType, id, fromStatus, toStatus, user.id, notes);
     await logAuditEvent({
@@ -332,11 +342,11 @@ async function transitionContentWorkflow(
   }
 
   const { data: existing, error: fetchError } = await supabase.from("cms_case_studies").select("*").eq("id", id).single();
-  if (fetchError || !existing) redirect(`${adminPath}${id}/?error=${encodeURIComponent("Content not found.")}`);
+  if (fetchError || !existing) return { error: "Content not found." };
 
   const fromStatus = existing.workflow_status as CmsWorkflowStatus;
   if (!canTransitionWorkflow(fromStatus, toStatus)) {
-    redirect(`${adminPath}${id}/?error=${encodeURIComponent(`Cannot move from ${fromStatus} to ${toStatus}.`)}`);
+    return { error: `Cannot move from ${fromStatus} to ${toStatus}.` };
   }
 
   if (toStatus === "published" || toStatus === "scheduled") {
@@ -365,7 +375,7 @@ async function transitionContentWorkflow(
     });
 
     if (!publishValidation.ok) {
-      redirect(`${adminPath}${id}/?error=${encodeURIComponent(publishValidation.errors.join(" "))}`);
+      return { error: publishValidation.errors.join(" ") };
     }
   }
 
@@ -383,7 +393,7 @@ async function transitionContentWorkflow(
 
   if (toStatus === "scheduled") {
     if (!rawScheduledFor.trim() || !scheduledFor) {
-      redirect(`${adminPath}${id}/?error=${encodeURIComponent("Scheduled publish date is required.")}`);
+      return { error: "Scheduled publish date is required." };
     }
     updatePayload.scheduled_for = scheduledFor;
     updatePayload.approved_by = user.id;
@@ -394,7 +404,7 @@ async function transitionContentWorkflow(
   }
 
   const { error } = await supabase.from("cms_case_studies").update(updatePayload).eq("id", id);
-  if (error) redirect(`${adminPath}${id}/?error=${encodeURIComponent(error.message)}`);
+  if (error) return { error: error.message };
 
   await recordWorkflowEvent(supabase, contentType, id, fromStatus, toStatus, user.id, notes);
   await logAuditEvent({
@@ -409,29 +419,38 @@ async function transitionContentWorkflow(
   redirect(`${adminPath}${id}/?saved=1`);
 }
 
-export async function transitionBlogWorkflow(formData: FormData) {
-  await transitionContentWorkflow(formData, "blog_post", "/admin/content/blog/");
+export async function transitionBlogWorkflow(
+  _prevState: CmsFormActionState,
+  formData: FormData,
+): Promise<CmsFormActionState> {
+  return transitionContentWorkflow(formData, "blog_post", "/admin/content/blog/");
 }
 
-export async function transitionCaseStudyWorkflow(formData: FormData) {
-  await transitionContentWorkflow(formData, "case_study", "/admin/content/case-studies/");
+export async function transitionCaseStudyWorkflow(
+  _prevState: CmsFormActionState,
+  formData: FormData,
+): Promise<CmsFormActionState> {
+  return transitionContentWorkflow(formData, "case_study", "/admin/content/case-studies/");
 }
 
-export async function updateBlogFromForm(formData: FormData) {
+export async function updateBlogFromForm(
+  _prevState: CmsFormActionState,
+  formData: FormData,
+): Promise<CmsFormActionState> {
   const { supabase, user } = await requireAdminUser();
   const parsed = parseBlogForm(formData);
   const id = sanitizeUuid(String(formData.get("id") ?? ""));
   if ("error" in parsed) {
-    redirect(`/admin/content/blog/${id || "new"}/?error=${encodeURIComponent(parsed.error)}`);
+    return { error: parsed.error };
   }
 
   if (!id) {
-    redirect("/admin/content/blog/new/?error=Missing%20id");
+    return { error: "Missing id" };
   }
 
   const validation = validateBlogDraft(parsed.input);
   if (!validation.ok) {
-    redirect(`/admin/content/blog/${id}/?error=${encodeURIComponent(validation.errors.join(" "))}`);
+    return { error: validation.errors.join(" ") };
   }
 
   const { data: existing } = await supabase.from("cms_blog_posts").select("workflow_status").eq("id", id).single();
@@ -439,35 +458,38 @@ export async function updateBlogFromForm(formData: FormData) {
   const row = blogRowFromInput(input, user.id, (existing?.workflow_status as CmsWorkflowStatus) ?? "draft");
 
   const { error } = await supabase.from("cms_blog_posts").update(row).eq("id", id);
-  if (error) redirect(`/admin/content/blog/${id}/?error=${encodeURIComponent(error.message)}`);
+  if (error) return { error: error.message };
 
   await logAuditEvent({ userId: user.id, action: "cms_blog_update", resourceType: "cms_blog_post", resourceId: id });
   revalidateContentPaths();
   redirect(`/admin/content/blog/${id}/?saved=1`);
 }
 
-export async function updateCaseStudyFromForm(formData: FormData) {
+export async function updateCaseStudyFromForm(
+  _prevState: CmsFormActionState,
+  formData: FormData,
+): Promise<CmsFormActionState> {
   const { supabase, user } = await requireAdminUser();
   const parsed = parseCaseStudyForm(formData);
   const id = sanitizeUuid(String(formData.get("id") ?? ""));
   if ("error" in parsed) {
-    redirect(`/admin/content/case-studies/${id || "new"}/?error=${encodeURIComponent(parsed.error)}`);
+    return { error: parsed.error };
   }
 
   if (!id) {
-    redirect("/admin/content/case-studies/new/?error=Missing%20id");
+    return { error: "Missing id" };
   }
 
   const validation = validateCaseStudyDraft(parsed.input);
   if (!validation.ok) {
-    redirect(`/admin/content/case-studies/${id}/?error=${encodeURIComponent(validation.errors.join(" "))}`);
+    return { error: validation.errors.join(" ") };
   }
 
   const { data: existing } = await supabase.from("cms_case_studies").select("workflow_status").eq("id", id).single();
   const row = caseStudyRowFromInput(parsed.input, user.id, (existing?.workflow_status as CmsWorkflowStatus) ?? "draft");
 
   const { error } = await supabase.from("cms_case_studies").update(row).eq("id", id);
-  if (error) redirect(`/admin/content/case-studies/${id}/?error=${encodeURIComponent(error.message)}`);
+  if (error) return { error: error.message };
 
   await logAuditEvent({ userId: user.id, action: "cms_case_study_update", resourceType: "cms_case_study", resourceId: id });
   revalidateContentPaths();

@@ -33,7 +33,9 @@ export function CmsSectionEditor({
   defaultOpen = false,
 }: CmsSectionEditorProps) {
   const [sections, setSections] = useState<BlogSection[]>(initialSections.length ? initialSections : [emptySection()]);
-  const sectionsJson = useMemo(() => JSON.stringify(sections, null, 2), [sections]);
+  // Compact JSON for the hidden submit field (keeps payloads under the server limit).
+  const sectionsJsonCompact = useMemo(() => JSON.stringify(sections), [sections]);
+  const sectionsJsonPretty = useMemo(() => JSON.stringify(sections, null, 2), [sections]);
   const headingPreview = sections
     .map((section) => section.h2.trim())
     .filter(Boolean)
@@ -254,7 +256,7 @@ export function CmsSectionEditor({
               className="cms-json-editor"
               rows={12}
               maxLength={cmsFieldMaxLengths.sectionsJson}
-              value={sectionsJson}
+              value={sectionsJsonPretty}
               onChange={(event) => {
                 try {
                   const parsed = JSON.parse(event.target.value) as BlogSection[];
@@ -264,6 +266,10 @@ export function CmsSectionEditor({
                 }
               }}
             />
+            <span className="cms-field-help">
+              Payload size: {sectionsJsonCompact.length.toLocaleString()} /{" "}
+              {cmsFieldMaxLengths.sectionsJson.toLocaleString()} characters
+            </span>
           </label>
         </div>
       </details>
@@ -297,7 +303,7 @@ export function CmsSectionEditor({
         editor
       )}
 
-      <input type="hidden" name="sectionsJson" value={sectionsJson} readOnly />
+      <input type="hidden" name="sectionsJson" value={sectionsJsonCompact} readOnly />
     </fieldset>
   );
 }

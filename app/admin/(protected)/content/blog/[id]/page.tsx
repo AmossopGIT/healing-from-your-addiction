@@ -3,8 +3,10 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CmsBlogForm } from "@/components/dashboard/CmsBlogForm";
 import { CmsWorkflowPanel } from "@/components/dashboard/CmsWorkflowPanel";
+import { cmsBlogPostToPublishableInput } from "@/lib/cms/mappers";
 import { fetchCmsBlogPostById, fetchWorkflowEvents } from "@/lib/cms/queries";
 import { safeDecodeURIComponent } from "@/lib/cms/safeQueryParam";
+import { validateBlogPublish } from "@/lib/cms/validation";
 import { createMetadata } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
@@ -31,6 +33,9 @@ export default async function EditBlogPostPage({ params, searchParams }: PagePro
   if (!post) notFound();
 
   const events = await fetchWorkflowEvents("blog_post", id);
+  const publishValidation = validateBlogPublish(cmsBlogPostToPublishableInput(post));
+  const publishBlockers = publishValidation.ok ? [] : publishValidation.errors;
+  const legacyError = error ? safeDecodeURIComponent(error) : null;
 
   return (
     <div className="dashboard-stack">
@@ -41,11 +46,18 @@ export default async function EditBlogPostPage({ params, searchParams }: PagePro
           Back to blog list
         </Link>
       </section>
-      {error ? <p className="form-error">{safeDecodeURIComponent(error)}</p> : null}
+      {legacyError ? <p className="form-error">{legacyError}</p> : null}
       {saved ? <p className="cms-inline-status">Saved successfully.</p> : null}
-      <CmsWorkflowPanel contentType="blog" contentId={post.id} status={post.workflow_status} scheduledFor={post.scheduled_for} events={events} />
+      <CmsWorkflowPanel
+        contentType="blog"
+        contentId={post.id}
+        status={post.workflow_status}
+        scheduledFor={post.scheduled_for}
+        events={events}
+        publishBlockers={publishBlockers}
+      />
       <section className="dashboard-panel">
-        <CmsBlogForm post={post} />
+        <CmsBlogForm post={post} initialError={legacyError} />
       </section>
     </div>
   );
@@ -54,4 +66,3 @@ export default async function EditBlogPostPage({ params, searchParams }: PagePro
 export async function generateStaticParams() {
   return [];
 }
-

@@ -6354,6 +6354,24 @@ main,
   padding-top: 0.75rem;
 }
 
+.cms-publish-blockers {
+  margin: 0.75rem 0 0;
+  padding: 0.85rem 1rem;
+  border: 1px solid #c45c26;
+  border-radius: 0.5rem;
+  background: #fff6f0;
+}
+
+.cms-publish-blockers ul {
+  margin: 0.35rem 0 0.5rem;
+  padding-left: 1.2rem;
+}
+
+.cms-form-actions > .form-error {
+  flex: 1 1 100%;
+  margin: 0;
+}
+
 .admin-table-pagination {
   display: flex;
   flex-wrap: wrap;

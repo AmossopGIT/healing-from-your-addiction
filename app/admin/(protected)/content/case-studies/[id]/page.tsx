@@ -3,8 +3,10 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CmsCaseStudyForm } from "@/components/dashboard/CmsCaseStudyForm";
 import { CmsWorkflowPanel } from "@/components/dashboard/CmsWorkflowPanel";
+import { cmsCaseStudyToPublishableInput } from "@/lib/cms/mappers";
 import { fetchCmsCaseStudyById, fetchWorkflowEvents } from "@/lib/cms/queries";
 import { safeDecodeURIComponent } from "@/lib/cms/safeQueryParam";
+import { validateCaseStudyPublish } from "@/lib/cms/validation";
 import { createMetadata } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
@@ -31,6 +33,8 @@ export default async function EditCaseStudyPage({ params, searchParams }: PagePr
   if (!study) notFound();
 
   const events = await fetchWorkflowEvents("case_study", id);
+  const publishValidation = validateCaseStudyPublish(cmsCaseStudyToPublishableInput(study));
+  const publishBlockers = publishValidation.ok ? [] : publishValidation.errors;
 
   return (
     <div className="dashboard-stack">
@@ -49,6 +53,7 @@ export default async function EditCaseStudyPage({ params, searchParams }: PagePr
         status={study.workflow_status}
         scheduledFor={study.scheduled_for}
         events={events}
+        publishBlockers={publishBlockers}
       />
       <section className="dashboard-panel">
         <CmsCaseStudyForm study={study} />
@@ -60,4 +65,3 @@ export default async function EditCaseStudyPage({ params, searchParams }: PagePr
 export async function generateStaticParams() {
   return [];
 }
-

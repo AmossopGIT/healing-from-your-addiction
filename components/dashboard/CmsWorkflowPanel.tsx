@@ -1,7 +1,11 @@
-import { cmsWorkflowStatusLabels, cmsWorkflowTransitions, type CmsWorkflowStatus } from "@/types/cms";
+"use client";
+
+import { useActionState } from "react";
+import { CmsFormSubmitButton } from "@/components/dashboard/CmsFormSubmitButton";
 import { cmsFieldMaxLengths } from "@/lib/cms/formValidation";
-import { transitionBlogWorkflow, transitionCaseStudyWorkflow } from "@/lib/cms/actions";
+import { transitionBlogWorkflow, transitionCaseStudyWorkflow, type CmsFormActionState } from "@/lib/cms/actions";
 import { formatDashboardDate } from "@/lib/dashboard/constants";
+import { cmsWorkflowStatusLabels, cmsWorkflowTransitions, type CmsWorkflowStatus } from "@/types/cms";
 import type { CmsWorkflowEventRow } from "@/types/cms";
 
 type CmsWorkflowPanelProps = {
@@ -10,6 +14,8 @@ type CmsWorkflowPanelProps = {
   status: CmsWorkflowStatus;
   scheduledFor: string | null;
   events: CmsWorkflowEventRow[];
+  /** Precomputed publish blockers so staff see why Publish will fail before clicking. */
+  publishBlockers?: string[];
 };
 
 const STATUS_STEPS: CmsWorkflowStatus[] = ["draft", "in_review", "approved", "published"];
@@ -56,7 +62,43 @@ function toDatetimeLocalValue(iso: string | null): string {
   return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
 }
 
-export function CmsWorkflowPanel({ contentType, contentId, status, scheduledFor, events }: CmsWorkflowPanelProps) {
+function WorkflowActionForm({
+  action,
+  contentId,
+  toStatus,
+  children,
+  className,
+}: {
+  action: (prev: CmsFormActionState, formData: FormData) => Promise<CmsFormActionState>;
+  contentId: string;
+  toStatus: string;
+  children: React.ReactNode;
+  className?: string;
+}) {
+  const [state, formAction] = useActionState(action, {});
+
+  return (
+    <form action={formAction} className={className}>
+      <input type="hidden" name="id" value={contentId} />
+      <input type="hidden" name="toStatus" value={toStatus} />
+      {state.error ? (
+        <p className="form-error" role="alert">
+          {state.error}
+        </p>
+      ) : null}
+      {children}
+    </form>
+  );
+}
+
+export function CmsWorkflowPanel({
+  contentType,
+  contentId,
+  status,
+  scheduledFor,
+  events,
+  publishBlockers = [],
+}: CmsWorkflowPanelProps) {
   const action = contentType === "blog" ? transitionBlogWorkflow : transitionCaseStudyWorkflow;
   const nextStatuses = cmsWorkflowTransitions[status] ?? [];
   const canPublish = nextStatuses.includes("published");
@@ -67,6 +109,8 @@ export function CmsWorkflowPanel({ contentType, contentId, status, scheduledFor,
   const canSendToDraft = nextStatuses.includes("draft") && status !== "draft";
   const canArchive = nextStatuses.includes("archived");
   const scheduleLabel = status === "scheduled" ? "Change schedule" : "Schedule for later";
+  const hasPublishBlockers = publishBlockers.length > 0;
+  const showMakeLive = (canPublish || canSchedule) && status !== "published" && status !== "archived";
 
   return (
     <section className="dashboard-panel cms-workflow-panel">
@@ -96,7 +140,19 @@ export function CmsWorkflowPanel({ contentType, contentId, status, scheduledFor,
       </p>
       <p className="cms-field-help">{nextStepCopy(status, scheduledFor)}</p>
 
-      {(canPublish || canSchedule) && status !== "published" && status !== "archived" ? (
+      {showMakeLive && hasPublishBlockers ? (
+        <div className="cms-publish-blockers" role="status">
+          <p className="form-error">Fix these before Publish / Schedule will succeed:</p>
+          <ul>
+            {publishBlockers.map((blocker) => (
+              <li key={blocker}>{blocker}</li>
+            ))}
+          </ul>
+          <p className="cms-field-help">Edit the form below, Save changes, then return here to publish.</p>
+        </div>
+      ) : null}
+
+      {showMakeLive ? (
         <div className="cms-workflow-group">
           <h3 className="cms-workflow-group-title">Make live</h3>
           {status === "scheduled" && scheduledFor ? (
@@ -106,19 +162,17 @@ export function CmsWorkflowPanel({ contentType, contentId, status, scheduledFor,
           ) : null}
           <div className="cms-workflow-actions">
             {canPublish ? (
-              <form action={action}>
-                <input type="hidden" name="id" value={contentId} />
-                <input type="hidden" name="toStatus" value="published" />
-                <button type="submit" className="button button-primary">
-                  Publish now (make live)
-                </button>
-              </form>
+              <WorkflowActionForm action={action} contentId={contentId} toStatus="published">
+                <CmsFormSubmitButton
+                  idleLabel="Publish now (make live)"
+                  pendingLabel="Publishing…"
+                  disabled={hasPublishBlockers}
+                />
+              </WorkflowActionForm>
             ) : null}
           </div>
           {canSchedule ? (
-            <form action={action} className="cms-workflow-form">
-              <input type="hidden" name="id" value={contentId} />
-              <input type="hidden" name="toStatus" value="scheduled" />
+            <WorkflowActionForm action={action} contentId={contentId} toStatus="scheduled" className="cms-workflow-form">
               <label className="form-field">
                 <span>{scheduleLabel}</span>
                 <input
@@ -126,25 +180,29 @@ export function CmsWorkflowPanel({ contentType, contentId, status, scheduledFor,
                   type="datetime-local"
                   required
                   defaultValue={toDatetimeLocalValue(scheduledFor)}
+                  disabled={hasPublishBlockers}
                 />
               </label>
               <p className="cms-field-help">
                 Uses your local browser time. The site shows the article when that time is reached.
               </p>
-              <button type="submit" className="button button-secondary">
-                {scheduleLabel}
-              </button>
-            </form>
+              <CmsFormSubmitButton
+                idleLabel={scheduleLabel}
+                pendingLabel="Scheduling…"
+                className="button button-secondary"
+                disabled={hasPublishBlockers}
+              />
+            </WorkflowActionForm>
           ) : null}
           {canCancelSchedule ? (
-            <form action={action} className="cms-workflow-form">
-              <input type="hidden" name="id" value={contentId} />
-              <input type="hidden" name="toStatus" value="approved" />
+            <WorkflowActionForm action={action} contentId={contentId} toStatus="approved" className="cms-workflow-form">
               <input type="hidden" name="notes" value="Cancelled schedule" />
-              <button type="submit" className="button button-secondary">
-                Cancel schedule
-              </button>
-            </form>
+              <CmsFormSubmitButton
+                idleLabel="Cancel schedule"
+                pendingLabel="Cancelling…"
+                className="button button-secondary"
+              />
+            </WorkflowActionForm>
           ) : null}
         </div>
       ) : null}
@@ -152,35 +210,31 @@ export function CmsWorkflowPanel({ contentType, contentId, status, scheduledFor,
       {(canReview || canApprove || canSendToDraft) && status !== "published" && status !== "archived" ? (
         <div className="cms-workflow-group">
           <h3 className="cms-workflow-group-title">Review (optional)</h3>
-          <p className="cms-field-help">Use this if someone else should approve before go-live. You can still publish directly above.</p>
+          <p className="cms-field-help">
+            Use this if someone else should approve before go-live. You can still publish directly above.
+          </p>
           <div className="cms-workflow-actions">
             {canReview ? (
-              <form action={action}>
-                <input type="hidden" name="id" value={contentId} />
-                <input type="hidden" name="toStatus" value="in_review" />
-                <button type="submit" className="button button-secondary">
-                  Submit for review
-                </button>
-              </form>
+              <WorkflowActionForm action={action} contentId={contentId} toStatus="in_review">
+                <CmsFormSubmitButton
+                  idleLabel="Submit for review"
+                  pendingLabel="Submitting…"
+                  className="button button-secondary"
+                />
+              </WorkflowActionForm>
             ) : null}
           </div>
           {canApprove ? (
-            <form action={action} className="cms-workflow-form">
-              <input type="hidden" name="id" value={contentId} />
-              <input type="hidden" name="toStatus" value="approved" />
+            <WorkflowActionForm action={action} contentId={contentId} toStatus="approved" className="cms-workflow-form">
               <label className="form-field">
                 <span>Review notes (optional)</span>
                 <input name="notes" maxLength={cmsFieldMaxLengths.workflowNotes} placeholder="Approved for publish" />
               </label>
-              <button type="submit" className="button button-secondary">
-                Approve
-              </button>
-            </form>
+              <CmsFormSubmitButton idleLabel="Approve" pendingLabel="Approving…" className="button button-secondary" />
+            </WorkflowActionForm>
           ) : null}
           {canSendToDraft ? (
-            <form action={action} className="cms-workflow-form">
-              <input type="hidden" name="id" value={contentId} />
-              <input type="hidden" name="toStatus" value="draft" />
+            <WorkflowActionForm action={action} contentId={contentId} toStatus="draft" className="cms-workflow-form">
               <label className="form-field">
                 <span>Revision notes</span>
                 <input
@@ -190,10 +244,12 @@ export function CmsWorkflowPanel({ contentType, contentId, status, scheduledFor,
                   required
                 />
               </label>
-              <button type="submit" className="button button-secondary">
-                Send back to draft
-              </button>
-            </form>
+              <CmsFormSubmitButton
+                idleLabel="Send back to draft"
+                pendingLabel="Sending…"
+                className="button button-secondary"
+              />
+            </WorkflowActionForm>
           ) : null}
         </div>
       ) : null}
@@ -203,18 +259,16 @@ export function CmsWorkflowPanel({ contentType, contentId, status, scheduledFor,
           <h3 className="cms-workflow-group-title">After live</h3>
           <div className="cms-workflow-actions">
             {canArchive ? (
-              <form action={action}>
-                <input type="hidden" name="id" value={contentId} />
-                <input type="hidden" name="toStatus" value="archived" />
-                <button type="submit" className="button button-secondary">
-                  Unpublish / archive
-                </button>
-              </form>
+              <WorkflowActionForm action={action} contentId={contentId} toStatus="archived">
+                <CmsFormSubmitButton
+                  idleLabel="Unpublish / archive"
+                  pendingLabel="Archiving…"
+                  className="button button-secondary"
+                />
+              </WorkflowActionForm>
             ) : null}
             {canSendToDraft && (status === "published" || status === "archived") ? (
-              <form action={action} className="cms-workflow-form">
-                <input type="hidden" name="id" value={contentId} />
-                <input type="hidden" name="toStatus" value="draft" />
+              <WorkflowActionForm action={action} contentId={contentId} toStatus="draft" className="cms-workflow-form">
                 <label className="form-field">
                   <span>Revision notes</span>
                   <input
@@ -224,10 +278,12 @@ export function CmsWorkflowPanel({ contentType, contentId, status, scheduledFor,
                     required
                   />
                 </label>
-                <button type="submit" className="button button-secondary">
-                  Send back to draft
-                </button>
-              </form>
+                <CmsFormSubmitButton
+                  idleLabel="Send back to draft"
+                  pendingLabel="Sending…"
+                  className="button button-secondary"
+                />
+              </WorkflowActionForm>
             ) : null}
           </div>
         </div>

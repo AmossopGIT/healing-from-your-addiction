@@ -1,10 +1,14 @@
+"use client";
+
 import Link from "next/link";
+import { useActionState } from "react";
 import { caseStudies, caseStudyTypes, caseStudyTypeLabels } from "@/content/caseStudies";
 import { artGallery } from "@/content/artGallery";
 import { programmes } from "@/content/programmes";
+import { CmsFormSubmitButton } from "@/components/dashboard/CmsFormSubmitButton";
 import { CmsHeroArtFields } from "@/components/dashboard/CmsHeroArtFields";
 import { CmsSectionEditor } from "@/components/dashboard/CmsSectionEditor";
-import { saveCaseStudyDraft, updateCaseStudyFromForm } from "@/lib/cms/actions";
+import { saveCaseStudyDraft, updateCaseStudyFromForm, type CmsFormActionState } from "@/lib/cms/actions";
 import { cmsFieldMaxLengths } from "@/lib/cms/formValidation";
 import { cmsCaseStudyHeroArtId } from "@/lib/cms/mappers";
 import { normalizeBlogSections } from "@/lib/cms/normalizeSections";
@@ -18,12 +22,20 @@ const addictionOptions = [...new Set([...programmes.map((p) => p.slug), ...caseS
 
 export function CmsCaseStudyForm({ study }: CmsCaseStudyFormProps) {
   const slug = study?.slug ?? "";
-  const action = study ? updateCaseStudyFromForm : saveCaseStudyDraft;
+  const [actionState, formAction] = useActionState<CmsFormActionState, FormData>(
+    study ? updateCaseStudyFromForm : saveCaseStudyDraft,
+    {},
+  );
   const galleryItems = artGallery.filter((item) => item.id.startsWith("case-study-") || item.category.includes("case"));
 
   return (
-    <form action={action} className="dashboard-form cms-content-form">
+    <form action={formAction} className="dashboard-form cms-content-form">
       {study ? <input type="hidden" name="id" value={study.id} /> : null}
+      {actionState.error ? (
+        <p className="form-error" role="alert">
+          {actionState.error}
+        </p>
+      ) : null}
 
       <fieldset className="cms-fieldset">
         <legend>Core content</legend>
@@ -142,9 +154,10 @@ export function CmsCaseStudyForm({ study }: CmsCaseStudyFormProps) {
       <CmsSectionEditor initialSections={normalizeBlogSections(study?.sections ?? [])} />
 
       <div className="cms-form-actions">
-        <button type="submit" className="button button-primary">
-          {study ? "Save changes" : "Save draft"}
-        </button>
+        <CmsFormSubmitButton
+          idleLabel={study ? "Save changes" : "Save draft"}
+          pendingLabel={study ? "Saving…" : "Saving draft…"}
+        />
         {study ? (
           <Link className="button button-secondary" href={`/case-studies/${study.slug}/`} target="_blank" rel="noreferrer">
             Preview static route

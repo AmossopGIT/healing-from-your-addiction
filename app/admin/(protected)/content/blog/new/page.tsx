@@ -28,9 +28,8 @@ export default async function NewBlogPostPage({ searchParams }: PageProps) {
           Back to blog list
         </Link>
       </section>
-      {error ? <p className="form-error">{decodeURIComponent(error)}</p> : null}
       <section className="dashboard-panel">
-        <CmsBlogForm />
+        <CmsBlogForm initialError={error ? decodeURIComponent(error) : null} />
       </section>
     </div>
   );
