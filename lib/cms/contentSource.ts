@@ -17,11 +17,12 @@ import {
   fetchPublishedCmsBlogPosts,
   fetchPublishedCmsCaseStudies,
 } from "@/lib/cms/queries";
-import { isSupabaseServiceConfigured } from "@/lib/supabase/env";
+import { isSupabaseConfigured, isSupabaseServiceConfigured } from "@/lib/supabase/env";
 import type { CmsBlogPostRow, CmsCaseStudyRow } from "@/types/cms";
 
 function cmsReady() {
-  return isCmsContentEnabled() && isSupabaseServiceConfigured();
+  // Prefer service role, but anon + public RLS is enough to render published CMS posts.
+  return isCmsContentEnabled() && (isSupabaseServiceConfigured() || isSupabaseConfigured());
 }
 
 const getPublishedCmsBlogRows = cache(async (): Promise<CmsBlogPostRow[]> => {
