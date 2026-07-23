@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useActionState, useRef, useState } from "react";
+import { useActionState, useMemo, useRef, useState } from "react";
 import { blogCategories } from "@/content/blog";
 import { artGallery } from "@/content/artGallery";
 import { CmsBlogPreview } from "@/components/dashboard/CmsBlogPreview";
@@ -15,6 +15,7 @@ import { saveBlogPostDraft, updateBlogFromForm, type CmsFormActionState } from "
 import { cmsFieldMaxLengths } from "@/lib/cms/formValidation";
 import { cmsBlogHeroArtId } from "@/lib/cms/mappers";
 import { normalizeBlogSections } from "@/lib/cms/normalizeSections";
+import { sectionsHaveContent } from "@/lib/cms/bodyToSections";
 import { slugifyTitle } from "@/lib/cms/slugify";
 import type { SmartBlogImportResult } from "@/lib/cms/smartBlogImport";
 import type { CmsBlogPostRow } from "@/types/cms";
@@ -70,6 +71,9 @@ export function CmsBlogForm({ post, initialError = null }: CmsBlogFormProps) {
   const [nextStepTip, setNextStepTip] = useState<string | null>(null);
 
   const heroArtId = slug ? cmsBlogHeroArtId(slug) : post?.hero_art_id ?? "";
+  // Parent state is the source of truth for save — matches what the side preview shows.
+  const sectionsJson = useMemo(() => JSON.stringify(sections), [sections]);
+  const bodyReady = sectionsHaveContent(sections);
   const hasExistingContent = Boolean(
     title.trim() ||
       excerpt.trim() ||
@@ -216,13 +220,34 @@ export function CmsBlogForm({ post, initialError = null }: CmsBlogFormProps) {
           <CmsTagPicker value={tagSlugs} onChange={setTagSlugs} />
         </fieldset>
 
+        {/* Submit the same sections the preview uses — not a nested editor hidden input. */}
+        <textarea
+          className="sr-only"
+          name="sectionsJson"
+          value={sectionsJson}
+          readOnly
+          aria-hidden="true"
+          tabIndex={-1}
+        />
+
         <CmsSectionEditor
           key={sectionsResetKey}
           initialSections={editorInitialSections}
           onSectionsChange={setSections}
           collapsible
           defaultOpen={false}
+          includeFormField={false}
         />
+        {!bodyReady ? (
+          <p className="cms-field-help">
+            Body is empty — use Smart Upload or expand <strong>Edit sections</strong> before saving, or a placeholder intro will be saved.
+          </p>
+        ) : (
+          <p className="cms-inline-status">
+            Body ready to save ({sections.length} section{sections.length === 1 ? "" : "s"},{" "}
+            {sectionsJson.length.toLocaleString()} characters).
+          </p>
+        )}
 
         <CmsHeroArtFields
           contentKind="blog"

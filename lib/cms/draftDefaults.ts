@@ -1,4 +1,5 @@
 import type { BlogSection } from "@/content/blog";
+import { sectionsHaveContent } from "@/lib/cms/bodyToSections";
 import { cmsBlogHeroArtId } from "@/lib/cms/mappers";
 import type { PublishableBlogInput } from "@/lib/cms/validation";
 
@@ -36,8 +37,7 @@ export function withDraftDefaults(input: PublishableBlogInput): PublishableBlogI
     heroArtAlt:
       input.heroArtAlt.trim() ||
       `Minimal watercolor illustration introducing ${title.toLowerCase()} for readers seeking calm addiction recovery support.`,
-    sections: input.sections.some((section) => section.h2.trim() || section.paragraphs.some((p) => p.trim()))
-      ? input.sections
-      : defaultSections(title),
+    // Keep listicle/bullet/H3 bodies — do not replace them with the placeholder intro.
+    sections: sectionsHaveContent(input.sections) ? input.sections : defaultSections(title),
   };
 }

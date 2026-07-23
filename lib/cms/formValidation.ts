@@ -149,7 +149,7 @@ export function sanitizeScheduledFor(value: string | null | undefined) {
 }
 
 function sanitizeSection(section: BlogSection): BlogSection {
-  const paragraphs = section.paragraphs
+  const paragraphs = (section.paragraphs ?? [])
     .map((paragraph) => normalizeMultiline(paragraph).slice(0, cmsFieldMaxLengths.sectionText))
     .filter(Boolean)
     .slice(0, 20);

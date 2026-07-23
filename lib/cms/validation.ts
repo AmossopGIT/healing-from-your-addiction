@@ -146,7 +146,10 @@ export function parseSectionsJson(raw: string): { sections: BlogSection[] } | { 
       if (typeof (section as BlogSection).h2 !== "string") {
         return { error: "Each section needs an h2 string." };
       }
-      if (!Array.isArray((section as BlogSection).paragraphs)) {
+      const paragraphs = (section as BlogSection).paragraphs;
+      if (paragraphs === undefined) {
+        (section as BlogSection).paragraphs = [];
+      } else if (!Array.isArray(paragraphs)) {
         return { error: "Each section needs a paragraphs array." };
       }
     }

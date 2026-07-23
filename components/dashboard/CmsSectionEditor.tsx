@@ -11,6 +11,11 @@ type CmsSectionEditorProps = {
   /** When true, section cards start collapsed inside a details element (used by blog form). */
   collapsible?: boolean;
   defaultOpen?: boolean;
+  /**
+   * When false, the parent form owns the `sectionsJson` submit field
+   * (recommended for Smart Upload so preview state and save payload stay in sync).
+   */
+  includeFormField?: boolean;
 };
 
 function emptySection(): BlogSection {
@@ -31,6 +36,7 @@ export function CmsSectionEditor({
   onSectionsChange,
   collapsible = false,
   defaultOpen = false,
+  includeFormField = true,
 }: CmsSectionEditorProps) {
   const [sections, setSections] = useState<BlogSection[]>(initialSections.length ? initialSections : [emptySection()]);
   // Compact JSON for the hidden submit field (keeps payloads under the server limit).
@@ -303,7 +309,17 @@ export function CmsSectionEditor({
         editor
       )}
 
-      <input type="hidden" name="sectionsJson" value={sectionsJsonCompact} readOnly />
+      {includeFormField ? (
+        // Textarea survives large ChatGPT article payloads better than input[type=hidden].
+        <textarea
+          className="sr-only"
+          name="sectionsJson"
+          value={sectionsJsonCompact}
+          readOnly
+          aria-hidden="true"
+          tabIndex={-1}
+        />
+      ) : null}
     </fieldset>
   );
 }

@@ -25,4 +25,33 @@ describe("withDraftDefaults", () => {
     expect(result.heroArtSrc).toContain("/art/watercolor/");
     expect(result.sections.length).toBeGreaterThan(0);
   });
+
+  it("keeps bullet-only listicle sections instead of replacing with placeholder", () => {
+    const sections = [
+      {
+        h2: "Genetic Causes",
+        paragraphs: [] as string[],
+        bullets: ["Family history of addiction", "Inherited susceptibility"],
+      },
+    ];
+
+    const result = withDraftDefaults({
+      slug: "addiction-caused-by",
+      title: "Addiction Caused By Common Factors",
+      description: "Discover the real causes of addiction and how healing begins.",
+      excerpt: "Discover the real causes of addiction.",
+      h1: "Addiction Caused By Common Factors",
+      primaryKeyword: "addiction causes",
+      secondaryKeywords: [],
+      categorySlug: "addiction-recovery",
+      tagSlugs: ["addiction-recovery"],
+      sections,
+      heroArtId: "blog-addiction-caused-by",
+      heroArtSrc: "/art/watercolor/art-watercolor-home-hero.png",
+      heroArtAlt: "Minimal watercolor illustration for addiction causes.",
+    });
+
+    expect(result.sections).toEqual(sections);
+    expect(result.sections[0].paragraphs.join("")).not.toContain("Draft article about");
+  });
 });
