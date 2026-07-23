@@ -7,12 +7,24 @@ import { getAdminClientBundle, getClientDocuments } from "@/lib/dashboard/querie
 import { formatDashboardDate } from "@/lib/dashboard/constants";
 import { createMetadata } from "@/lib/seo";
 
+export const dynamic = "force-dynamic";
+
 type PageProps = { params: Promise<{ id: string }>; searchParams: Promise<{ error?: string }> };
 
 const documentErrorMessages: Record<string, string> = {
   "missing-file": "Please choose a file before uploading.",
   "invalid-label": "Please add a shorter document label.",
 };
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { id } = await params;
+  return createMetadata({
+    title: "Client documents | Admin",
+    description: "Client documents.",
+    path: `/admin/clients/${id}/documents/`,
+    noIndex: true,
+  });
+}
 
 export default async function AdminClientDocumentsPage({ params, searchParams }: PageProps) {
   const { id } = await params;
@@ -26,7 +38,9 @@ export default async function AdminClientDocumentsPage({ params, searchParams }:
       <section className="dashboard-page-header">
         <p className="eyebrow">Documents</p>
         <h1>Client documents</h1>
-        <p><Link href={`/admin/clients/${id}/`}>Back to client</Link></p>
+        <p>
+          <Link href={`/admin/clients/${id}/`}>Back to client</Link>
+        </p>
       </section>
       {error ? <p className="form-error">{documentErrorMessages[error] ?? decodeURIComponent(error)}</p> : null}
       <section className="dashboard-panel">
@@ -41,14 +55,21 @@ export default async function AdminClientDocumentsPage({ params, searchParams }:
               placeholder="Week 2 hypnotherapy audio"
             />
           </label>
-          <label className="form-field"><span>File</span><input name="file" type="file" required /></label>
-          <button type="submit" className="button button-primary">Upload document</button>
+          <label className="form-field">
+            <span>File</span>
+            <input name="file" type="file" required />
+          </label>
+          <button type="submit" className="button button-primary">
+            Upload document
+          </button>
         </form>
         <ul className="dashboard-doc-list">
           {documents.map((doc) => (
             <li key={doc.id}>
               <strong>{doc.label}</strong>
-              <p className="dashboard-note-meta">{doc.storage_path} · {formatDashboardDate(doc.created_at)}</p>
+              <p className="dashboard-note-meta">
+                {doc.storage_path} · {formatDashboardDate(doc.created_at)}
+              </p>
             </li>
           ))}
         </ul>
@@ -56,13 +77,3 @@ export default async function AdminClientDocumentsPage({ params, searchParams }:
     </div>
   );
 }
-
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const { id } = await params;
-  return createMetadata({ title: "Client documents | Admin", description: "Client documents.", path: `/admin/clients/${id}/documents/`, noIndex: true });
-}
-
-export async function generateStaticParams() {
-  return [];
-}
-

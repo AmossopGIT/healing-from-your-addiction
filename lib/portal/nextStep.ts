@@ -1,5 +1,6 @@
 import type { PortalNotificationSummary } from "@/lib/dashboard/queries";
-import type { ClientIntakeSubmission, ProgrammeSession, SessionProgress } from "@/types/database";
+import type { ClientConsultation, ClientIntakeSubmission, ProgrammeSession, SessionProgress } from "@/types/database";
+import { isConsultationCompleteStatus } from "@/lib/consultation/schema";
 
 export type PortalNextStep = {
   title: string;
@@ -14,6 +15,7 @@ type NextStepInput = {
   notifications: PortalNotificationSummary | null;
   intakeSubmission: ClientIntakeSubmission | null;
   intakeIncomplete: boolean;
+  consultation: ClientConsultation | null;
   sessions: ProgrammeSession[];
   progressBySessionId: Map<string, SessionProgress>;
   unreadSessionReceipts: Array<{ sessionId: string; sessionNumber: number; title: string }>;
@@ -59,6 +61,21 @@ export function resolvePortalNextStep(input: NextStepInput): PortalNextStep {
     };
   }
 
+  const consultationIncomplete = !input.consultation || !isConsultationCompleteStatus(input.consultation.status);
+
+  if (consultationIncomplete) {
+    const percent = input.consultation?.percent_complete ?? 0;
+    return {
+      title: percent > 0 ? "Continue your consultation form" : "Complete your consultation form",
+      description:
+        "Fill in your hypnotherapy consultation and informed consent before hypnosis or EFT sessions begin.",
+      href: "/portal/consultation/",
+      buttonLabel: percent > 0 ? "Continue consultation" : "Start consultation",
+      artId: "process-understand",
+      priority: 4,
+    };
+  }
+
   const inProgressSession = input.sessions.find((session) => {
     const progress = input.progressBySessionId.get(session.id);
     return progress && progress.status !== "locked" && progress.status !== "completed";
@@ -71,7 +88,7 @@ export function resolvePortalNextStep(input: NextStepInput): PortalNextStep {
       href: `/portal/programme/session/${inProgressSession.session_number}/`,
       buttonLabel: "Continue session",
       artId: "process-integration",
-      priority: 4,
+      priority: 5,
     };
   }
 
@@ -82,18 +99,18 @@ export function resolvePortalNextStep(input: NextStepInput): PortalNextStep {
       href: "/portal/#daily-check-in",
       buttonLabel: "Check in now",
       artId: "pattern-map",
-      priority: 5,
+      priority: 6,
     };
   }
 
   if (!input.hasEnrollment) {
     return {
       title: "Programme coming soon",
-      description: "Gerald will assign your programme after your intake conversation.",
+      description: "Gerald will assign your programme after reviewing your intake and consultation.",
       href: "/portal/messages/",
       buttonLabel: "Message Gerald",
       artId: "process-support",
-      priority: 6,
+      priority: 7,
     };
   }
 
@@ -109,7 +126,7 @@ export function resolvePortalNextStep(input: NextStepInput): PortalNextStep {
       href: `/portal/programme/session/${nextAvailable.session_number}/`,
       buttonLabel: "Open session",
       artId: "process-integration",
-      priority: 7,
+      priority: 8,
     };
   }
 
@@ -119,6 +136,6 @@ export function resolvePortalNextStep(input: NextStepInput): PortalNextStep {
     href: "/portal/programme/",
     buttonLabel: "View programme",
     artId: "pattern-map",
-    priority: 8,
+    priority: 9,
   };
 }

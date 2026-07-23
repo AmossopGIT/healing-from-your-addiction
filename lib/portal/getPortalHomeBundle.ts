@@ -1,6 +1,7 @@
 import { getAuthProfile, getClientProfileForUser } from "@/lib/supabase/auth";
 import { createClient } from "@/lib/supabase/server";
 import {
+  getClientConsultation,
   getClientContentReceipts,
   getClientEnrollmentBundle,
   getClientIntakeSubmission,
@@ -39,6 +40,7 @@ export async function getPortalHomeBundle(userId: string): Promise<PortalHomeBun
   const [
     enrollmentBundle,
     intakeSubmission,
+    consultation,
     notifications,
     messagesWithProfiles,
     checkInsResult,
@@ -47,6 +49,7 @@ export async function getPortalHomeBundle(userId: string): Promise<PortalHomeBun
   ] = await Promise.all([
     getClientEnrollmentBundle(userId),
     getClientIntakeSubmission(clientProfile.id),
+    getClientConsultation(clientProfile.id),
     getPortalNotificationSummary(userId),
     getClientMessages(clientProfile.id),
     supabase
@@ -139,6 +142,7 @@ export async function getPortalHomeBundle(userId: string): Promise<PortalHomeBun
     notifications,
     intakeSubmission,
     intakeIncomplete: !intakeCompleted && Boolean(clientProfile.addiction_slug),
+    consultation,
     sessions,
     progressBySessionId,
     unreadSessionReceipts,

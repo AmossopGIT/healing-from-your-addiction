@@ -171,6 +171,44 @@ export type ClientIntakeSubmission = {
   updated_at: string;
 };
 
+export type ConsultationStatus =
+  | "not_sent"
+  | "sent"
+  | "delivered"
+  | "opened"
+  | "started"
+  | "in_progress"
+  | "completed"
+  | "uploaded";
+
+export type ConsultationCompletionMode = "online" | "upload";
+
+export type ClientConsultation = {
+  id: string;
+  client_profile_id: string;
+  status: ConsultationStatus;
+  sent_at: string | null;
+  delivered_at: string | null;
+  opened_at: string | null;
+  started_at: string | null;
+  completed_at: string | null;
+  current_step: string;
+  percent_complete: number;
+  responses: Record<string, unknown>;
+  signature_name: string | null;
+  signed_at: string | null;
+  upload_storage_path: string | null;
+  upload_file_name: string | null;
+  upload_mime_type: string | null;
+  completion_mode: ConsultationCompletionMode | null;
+  resend_email_id: string | null;
+  practitioner_notes: string | null;
+  practitioner_reviewed_at: string | null;
+  practitioner_reviewed_by: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
 export type CheckInMood = "calm" | "steady" | "low" | "anxious" | "irritable";
 
 export type ClientDailyCheckIn = {
@@ -401,6 +439,32 @@ export type Database = {
           completed_at?: string | null;
         },
         Partial<ClientIntakeSubmission>
+      >;
+      client_consultations: TableDef<
+        ClientConsultation,
+        {
+          client_profile_id: string;
+          status?: ConsultationStatus;
+          sent_at?: string | null;
+          delivered_at?: string | null;
+          opened_at?: string | null;
+          started_at?: string | null;
+          completed_at?: string | null;
+          current_step?: string;
+          percent_complete?: number;
+          responses?: Record<string, unknown>;
+          signature_name?: string | null;
+          signed_at?: string | null;
+          upload_storage_path?: string | null;
+          upload_file_name?: string | null;
+          upload_mime_type?: string | null;
+          completion_mode?: ConsultationCompletionMode | null;
+          resend_email_id?: string | null;
+          practitioner_notes?: string | null;
+          practitioner_reviewed_at?: string | null;
+          practitioner_reviewed_by?: string | null;
+        },
+        Partial<ClientConsultation>
       >;
       client_daily_check_ins: TableDef<
         ClientDailyCheckIn,

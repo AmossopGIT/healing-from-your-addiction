@@ -390,6 +390,63 @@ export async function getClientIntakeSubmissions() {
   })) as ClientIntakeSubmissionRow[];
 }
 
+export type ClientConsultationRow = import("@/types/database").ClientConsultation;
+
+export async function getClientConsultation(clientProfileId: string) {
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from("client_consultations")
+    .select("*")
+    .eq("client_profile_id", clientProfileId)
+    .maybeSingle();
+
+  if (!data) return null;
+
+  return {
+    ...data,
+    responses: (data.responses ?? {}) as Record<string, unknown>,
+  } as ClientConsultationRow;
+}
+
+export async function getClientConsultations() {
+  const supabase = await createClient();
+  const { data } = await supabase.from("client_consultations").select("*").order("updated_at", { ascending: false });
+
+  return (data ?? []).map((row) => ({
+    ...row,
+    responses: (row.responses ?? {}) as Record<string, unknown>,
+  })) as ClientConsultationRow[];
+}
+
+export async function ensureClientConsultation(clientProfileId: string) {
+  const existing = await getClientConsultation(clientProfileId);
+  if (existing) return existing;
+
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("client_consultations")
+    .insert({
+      client_profile_id: clientProfileId,
+      status: "not_sent",
+      current_step: "personal",
+      percent_complete: 0,
+      responses: {},
+    })
+    .select("*")
+    .single();
+
+  if (error || !data) {
+    const raced = await getClientConsultation(clientProfileId);
+    if (raced) return raced;
+    return null;
+  }
+
+  return {
+    ...data,
+    responses: (data.responses ?? {}) as Record<string, unknown>,
+  } as ClientConsultationRow;
+}
+
 export { getPortalHomeBundle } from "@/lib/portal/getPortalHomeBundle";
 export type { PortalHomeBundle } from "@/lib/portal/homeState";
 

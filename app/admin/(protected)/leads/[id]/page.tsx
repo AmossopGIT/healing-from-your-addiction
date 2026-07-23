@@ -11,6 +11,8 @@ import { firstResponseTemplates, resolveFirstResponseTemplate } from "@/lib/lead
 import { createClient } from "@/lib/supabase/server";
 import { createMetadata } from "@/lib/seo";
 
+export const dynamic = "force-dynamic";
+
 type PageProps = { params: Promise<{ id: string }> };
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
@@ -298,6 +300,3 @@ export default async function AdminLeadDetailPage({ params }: PageProps) {
   );
 }
 
-export async function generateStaticParams() {
-  return [];
-}

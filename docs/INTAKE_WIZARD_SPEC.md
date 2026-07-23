@@ -1,87 +1,60 @@
-# Stage 2 portal intake wizard — specification (draft)
+# Stage 2 portal forms — specification
 
 Payment gateway is **out of scope**. Enrolment and payment remain manual after Gerald reviews the lead.
 
 ## Purpose
 
-Replace paper/WhatsApp intake with a structured, saveable wizard in the client portal after:
+After public lead capture and client account creation, the portal collects two Stage-2 artifacts before hypnosis/EFT programme release:
 
-1. Public lead capture (short form — unchanged)
-2. Client account created (signup or admin invite)
-3. Basic onboarding complete (`/portal/onboarding/`)
+1. **Addiction intake** (`/portal/intake/`) — addiction-focus pre-programme questions (kept)
+2. **Hypnotherapy consultation** (`/portal/consultation/`) — full consultation + informed consent from Gerald’s paper form
 
 ## Stages overview
 
 | Stage | Where | Goal |
 | --- | --- | --- |
 | 1 | Public site | Light lead capture — name, contact, concern, triage |
-| 2 | Portal wizard | Full intake — medical profile, symptoms, readiness, goals |
+| 2a | Portal intake | Addiction-specific pre-programme questions |
+| 2b | Portal consultation | Medical/consent consultation form (online wizard or PDF upload) |
 | 3 | Admin | Gerald reviews → assigns programme → releases EFT, affirmations, session docs |
 
-## Wizard requirements
+## Consultation form
+
+### Access
+
+- Portal-only after onboarding
+- Available when Gerald sends the form email **or** the client already has a portal account (invite/signup path)
+- Blank PDF: `/forms/hypnotherapy-client-consultation-form.pdf`
 
 ### UX
 
-- Multi-step wizard with progress indicator (e.g. 6–8 steps)
-- Save partial progress to database on each step
-- Resume from last incomplete step on return
-- Email reminder if incomplete after 48h / 7d (Resend templates — future)
-- Mobile-friendly; same validation patterns as `LeadForm`
+- 8-step wizard with progress indicator (Need Help–style)
+- Autosave / resume
+- Download blank PDF + upload completed PDF/image
+- Export submitted online answers as PDF
+- Safety notice when urgent safety flags are selected
 
-### Data model (proposed)
+### Data model
 
-Table: `client_intake_responses`
+Table: `client_consultations` (migration `014_client_consultations.sql`)
 
-| Column | Type | Notes |
-| --- | --- | --- |
-| id | uuid | PK |
-| client_profile_id | uuid | FK → client_profiles |
-| step_key | text | e.g. `medical_history`, `withdrawal`, `goals` |
-| responses | jsonb | Step answers |
-| completed_at | timestamptz | Null until step submitted |
-| updated_at | timestamptz | |
+Status lifecycle: `not_sent` → `sent` → `delivered` → `opened` → `started` → `in_progress` → `completed` | `uploaded`
 
-Table: `client_intake_progress`
+Email delivery/open updates via Resend webhook (`/api/webhooks/resend/`). Configure `RESEND_WEBHOOK_SECRET` for signature verification.
 
-| Column | Type | Notes |
-| --- | --- | --- |
-| client_profile_id | uuid | PK |
-| current_step | text | |
-| percent_complete | int | |
-| completed_at | timestamptz | Full intake done |
+### Admin
 
-### Suggested steps (pending Gerald’s question list)
+- `/admin/clients/[id]/consultation/` — responses, timeline, send/resend email, practitioner notes, safety banners
+- Clients table shows Consultation status beside Intake
 
-1. **About you** — age, location, occupation (optional)
-2. **Primary pattern** — confirm addiction focus; co-occurring concerns (weight, anxiety, sleep)
-3. **History** — duration, previous treatment, what helped / did not
-4. **Withdrawal & medical** — withdrawal risk, GP involvement, medications (routes to medical pathway if severe)
-5. **Triggers & context** — high-risk times, environments, emotional drivers
-6. **Readiness** — decision to heal, support system, leave/time availability for intensive month
-7. **Goals** — what success looks like; constraints
-8. **Review & submit** — summary; consent to programme communication
+## Addiction intake (unchanged)
 
-### Admin visibility
+- Table: `client_intake_submissions`
+- Route: `/portal/intake/`
+- Status badges: Not started / In progress / Completed
 
-- `/admin/clients/[id]/` shows intake % complete and link to responses
-- Flag clients with `withdrawal_risk` severe for manual review before programme assign
-
-### Deliverables after intake complete (existing flow)
-
-1. Customised 30-question reflection (or integrated into wizard)
-2. 4-week programme outline assigned via admin
-3. EFT script released as programme session
-4. Affirmations released as programme session
-5. First session script unlocked
-
-These map to existing `programme_sessions` content types: `questions`, `overview`, `eft`, `affirmations`, `hypno`.
-
-## Gerald action required
-
-Send the current paper/form question list so step copy and field keys can be finalised before build.
-
-## Out of scope (this spec)
+## Out of scope
 
 - Payment / checkout
-- Automated document generation from answers (manual + template assignment first)
-- Calendar booking (optional Cal.com link on thank-you — separate task)
+- Auto-releasing hypnosis/EFT solely from consultation complete (admin still assigns/releases)
+- Automated incomplete reminders (48h / 7d) — future

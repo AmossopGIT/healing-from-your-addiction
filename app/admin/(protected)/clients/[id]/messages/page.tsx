@@ -7,7 +7,19 @@ import { getAdminClientBundle, getClientMessages } from "@/lib/dashboard/queries
 import { formatDashboardDate } from "@/lib/dashboard/constants";
 import { createMetadata } from "@/lib/seo";
 
+export const dynamic = "force-dynamic";
+
 type PageProps = { params: Promise<{ id: string }> };
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { id } = await params;
+  return createMetadata({
+    title: "Client messages | Admin",
+    description: "Client messages.",
+    path: `/admin/clients/${id}/messages/`,
+    noIndex: true,
+  });
+}
 
 export default async function AdminClientMessagesPage({ params }: PageProps) {
   const { id } = await params;
@@ -21,8 +33,7 @@ export default async function AdminClientMessagesPage({ params }: PageProps) {
         <p className="eyebrow">Messages</p>
         <h1>Secure messages</h1>
         <p>
-          The client receives an email when you reply. You receive an email when they message you.
-          {" "}
+          The client receives an email when you reply. You receive an email when they message you.{" "}
           <Link href={`/admin/clients/${id}/`}>Back to client</Link>
         </p>
       </section>
@@ -34,13 +45,21 @@ export default async function AdminClientMessagesPage({ params }: PageProps) {
             <span>Message to client</span>
             <textarea name="body" rows={4} maxLength={dashboardFieldMaxLengths.messageBody} required />
           </label>
-          <button type="submit" className="button button-primary">Send message</button>
+          <button type="submit" className="button button-primary">
+            Send message
+          </button>
         </form>
         <ul className="dashboard-message-list">
           {messages.map((message) => (
-            <li key={message.id} className={(message.profiles as { role?: string } | null)?.role === "admin" ? "message-admin" : "message-client"}>
+            <li
+              key={message.id}
+              className={(message.profiles as { role?: string } | null)?.role === "admin" ? "message-admin" : "message-client"}
+            >
               <p>{message.body}</p>
-              <p className="dashboard-note-meta">{(message.profiles as { full_name?: string | null; role?: string } | null)?.full_name ?? "User"} · {formatDashboardDate(message.created_at)}</p>
+              <p className="dashboard-note-meta">
+                {(message.profiles as { full_name?: string | null; role?: string } | null)?.full_name ?? "User"} ·{" "}
+                {formatDashboardDate(message.created_at)}
+              </p>
             </li>
           ))}
         </ul>
@@ -48,13 +67,3 @@ export default async function AdminClientMessagesPage({ params }: PageProps) {
     </div>
   );
 }
-
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const { id } = await params;
-  return createMetadata({ title: "Client messages | Admin", description: "Client messages.", path: `/admin/clients/${id}/messages/`, noIndex: true });
-}
-
-export async function generateStaticParams() {
-  return [];
-}
-

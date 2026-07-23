@@ -1,4 +1,4 @@
-:root {
+﻿:root {
   --bg: #f8f4ec;
   --bg-soft: #eee7da;
   --surface: #fffdf9;
@@ -1173,7 +1173,7 @@ body.no-scroll {
 
 .blog-meta-row .blog-category-badge + time::before {
   color: var(--line);
-  content: "·";
+  content: "┬╖";
   margin: 0 0.45rem;
 }
 
@@ -4449,7 +4449,7 @@ main:not(:has(.page-hero-flush)) {
   }
 }
 
-/* Mobile overflow guards — programme landing pages and site-wide */
+/* Mobile overflow guards ΓÇö programme landing pages and site-wide */
 html {
   overflow-x: clip;
 }
@@ -6448,6 +6448,14 @@ main,
   font-size: 0.9rem;
   line-height: 1.45;
   min-height: 12rem;
+}
+
+.cms-smart-body-upload {
+  margin-bottom: 0.85rem;
+}
+
+.cms-smart-body-upload-textarea {
+  min-height: 9rem;
 }
 
 .cms-body-summary {

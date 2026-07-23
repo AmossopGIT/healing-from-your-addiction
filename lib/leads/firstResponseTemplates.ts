@@ -20,7 +20,7 @@ export const firstResponseTemplates: ResponseTemplate[] = [
     label: "Standard email introduction",
     channel: "email",
     buildMessage: (lead) =>
-      `Hello ${lead.full_name}, thank you for your enquiry. I can support you with a structured plan around ${lead.addiction_concern.toLowerCase()}. Please share a suitable time in your preferred callback window so we can begin.`,
+      `Hello ${lead.full_name}, thank you for your enquiry. I can support you with a structured plan around ${(lead.addiction_concern ?? "your concern").toLowerCase()}. Please share a suitable time in your preferred callback window so we can begin.`,
   },
   {
     id: "phone-prep-script",
@@ -41,7 +41,7 @@ export function resolveFirstResponseTemplate(lead: Lead) {
     return firstResponseTemplates[0];
   }
 
-  if (lead.preferred_contact_method.toLowerCase() === "email") {
+  if ((lead.preferred_contact_method ?? "").toLowerCase() === "email") {
     return firstResponseTemplates[1];
   }
 

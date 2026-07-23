@@ -1,10 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { consultationStatusLabels, isConsultationCompleteStatus } from "@/lib/consultation/schema";
 import { formatDashboardDate } from "@/lib/dashboard/constants";
-import { getAdminClientBundle, getClientIntakeSubmission } from "@/lib/dashboard/queries";
+import { getAdminClientBundle, getClientConsultation, getClientIntakeSubmission } from "@/lib/dashboard/queries";
 import { getClientEngagementSummary } from "@/lib/portal/getClientEngagementSummary";
 import { createMetadata } from "@/lib/seo";
+
+export const dynamic = "force-dynamic";
 
 type PageProps = { params: Promise<{ id: string }> };
 
@@ -19,8 +22,25 @@ export default async function AdminClientDetailPage({ params }: PageProps) {
   if (!bundle) notFound();
 
   const { clientProfile, profile, enrollment, template } = bundle;
-  const intakeSubmission = await getClientIntakeSubmission(id);
-  const engagement = await getClientEngagementSummary(id, clientProfile.user_id);
+  const [intakeSubmission, consultation] = await Promise.all([
+    getClientIntakeSubmission(id),
+    getClientConsultation(id),
+  ]);
+
+  let engagement = {
+    engagementStreak: 0,
+    pauseCountThisWeek: 0,
+    abstinenceDays: 0,
+    showAbstinence: false,
+    lastCheckIn: null as Awaited<ReturnType<typeof getClientEngagementSummary>>["lastCheckIn"],
+    recentCheckIns: [] as Awaited<ReturnType<typeof getClientEngagementSummary>>["recentCheckIns"],
+  };
+
+  try {
+    engagement = await getClientEngagementSummary(id, clientProfile.user_id);
+  } catch {
+    // Soft-fail so missing engagement tables/data cannot 500 the whole profile.
+  }
 
   return (
     <div className="dashboard-stack">
@@ -30,18 +50,41 @@ export default async function AdminClientDetailPage({ params }: PageProps) {
         <p>{clientProfile.addiction_slug ? `Focus: ${clientProfile.addiction_slug}` : "Addiction focus not set"}</p>
       </section>
       <div className="dashboard-quick-links">
-        <Link href={`/admin/clients/${id}/intake/`} className="button button-secondary">Intake</Link>
-        <Link href={`/admin/clients/${id}/programme/`} className="button button-secondary">Programme</Link>
-        <Link href={`/admin/clients/${id}/messages/`} className="button button-secondary">Messages</Link>
-        <Link href={`/admin/clients/${id}/documents/`} className="button button-secondary">Documents</Link>
+        <Link href={`/admin/clients/${id}/intake/`} className="button button-secondary">
+          Intake
+        </Link>
+        <Link href={`/admin/clients/${id}/consultation/`} className="button button-secondary">
+          Consultation
+        </Link>
+        <Link href={`/admin/clients/${id}/programme/`} className="button button-secondary">
+          Programme
+        </Link>
+        <Link href={`/admin/clients/${id}/messages/`} className="button button-secondary">
+          Messages
+        </Link>
+        <Link href={`/admin/clients/${id}/documents/`} className="button button-secondary">
+          Documents
+        </Link>
       </div>
       <section className="dashboard-panel">
         <h2>Details</h2>
         <dl className="dashboard-dl">
-          <div><dt>Phone</dt><dd>{profile?.phone ?? "—"}</dd></div>
-          <div><dt>Preferred contact</dt><dd>{clientProfile.preferred_contact_method ?? "—"}</dd></div>
-          <div><dt>Emergency contact</dt><dd>{clientProfile.emergency_contact ?? "—"}</dd></div>
-          <div><dt>Programme</dt><dd>{enrollment ? template?.title ?? "Assigned" : "Not enrolled"}</dd></div>
+          <div>
+            <dt>Phone</dt>
+            <dd>{profile?.phone ?? "—"}</dd>
+          </div>
+          <div>
+            <dt>Preferred contact</dt>
+            <dd>{clientProfile.preferred_contact_method ?? "—"}</dd>
+          </div>
+          <div>
+            <dt>Emergency contact</dt>
+            <dd>{clientProfile.emergency_contact ?? "—"}</dd>
+          </div>
+          <div>
+            <dt>Programme</dt>
+            <dd>{enrollment ? template?.title ?? "Assigned" : "Not enrolled"}</dd>
+          </div>
           <div>
             <dt>Intake</dt>
             <dd>
@@ -57,21 +100,59 @@ export default async function AdminClientDetailPage({ params }: PageProps) {
               )}
             </dd>
           </div>
+          <div>
+            <dt>Consultation</dt>
+            <dd>
+              {consultation ? (
+                <>
+                  <span className={`status-badge status-badge-consultation-${consultation.status}`}>
+                    {consultationStatusLabels[consultation.status]}
+                  </span>
+                  {!isConsultationCompleteStatus(consultation.status) ? ` · ${consultation.percent_complete}%` : null}
+                </>
+              ) : (
+                <span className="status-badge status-badge-consultation-not_sent">Not sent</span>
+              )}
+            </dd>
+          </div>
         </dl>
         {intakeSubmission ? (
           <p className="dashboard-inline-note">
             <Link href={`/admin/clients/${id}/intake/`}>View intake responses</Link>
           </p>
         ) : null}
-        {clientProfile.lead_id ? <p className="dashboard-inline-note"><Link href={`/admin/leads/${clientProfile.lead_id}/`}>View originating lead</Link></p> : null}
+        <p className="dashboard-inline-note">
+          <Link href={`/admin/clients/${id}/consultation/`}>View consultation form</Link>
+        </p>
+        {clientProfile.lead_id ? (
+          <p className="dashboard-inline-note">
+            <Link href={`/admin/leads/${clientProfile.lead_id}/`}>View originating lead</Link>
+          </p>
+        ) : null}
       </section>
       <section className="dashboard-panel">
         <h2>Portal engagement</h2>
         <dl className="dashboard-dl">
-          <div><dt>Rhythm streak</dt><dd>{engagement.engagementStreak > 0 ? `${engagement.engagementStreak} day${engagement.engagementStreak === 1 ? "" : "s"}` : "—"}</dd></div>
-          <div><dt>Pauses this week</dt><dd>{engagement.pauseCountThisWeek}</dd></div>
-          <div><dt>Last check-in</dt><dd>{engagement.lastCheckIn ? formatDashboardDate(engagement.lastCheckIn.created_at) : "—"}</dd></div>
-          <div><dt>Days tracked</dt><dd>{engagement.showAbstinence ? `${engagement.abstinenceDays} days` : "Not enabled"}</dd></div>
+          <div>
+            <dt>Rhythm streak</dt>
+            <dd>
+              {engagement.engagementStreak > 0
+                ? `${engagement.engagementStreak} day${engagement.engagementStreak === 1 ? "" : "s"}`
+                : "—"}
+            </dd>
+          </div>
+          <div>
+            <dt>Pauses this week</dt>
+            <dd>{engagement.pauseCountThisWeek}</dd>
+          </div>
+          <div>
+            <dt>Last check-in</dt>
+            <dd>{engagement.lastCheckIn ? formatDashboardDate(engagement.lastCheckIn.created_at) : "—"}</dd>
+          </div>
+          <div>
+            <dt>Days tracked</dt>
+            <dd>{engagement.showAbstinence ? `${engagement.abstinenceDays} days` : "Not enabled"}</dd>
+          </div>
         </dl>
         {engagement.recentCheckIns.length ? (
           <ul className="portal-home-pulse-list">
@@ -90,9 +171,5 @@ export default async function AdminClientDetailPage({ params }: PageProps) {
       </section>
     </div>
   );
-}
-
-export async function generateStaticParams() {
-  return [];
 }
 

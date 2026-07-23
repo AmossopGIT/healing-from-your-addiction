@@ -47,7 +47,13 @@ export function AdminIntakeView({ submission, addictionSlug }: AdminIntakeViewPr
             {section.questions.map((question) => (
               <article key={question.id} className="intake-answer-item">
                 <p className="intake-question-label">{question.text}</p>
-                <p className="intake-answer-text">{responses[question.id]?.trim() || "—"}</p>
+                  <p className="intake-answer-text">
+                    {typeof responses[question.id] === "string"
+                      ? responses[question.id].trim() || "—"
+                      : responses[question.id] == null
+                        ? "—"
+                        : String(responses[question.id])}
+                  </p>
               </article>
             ))}
           </div>

@@ -5,6 +5,8 @@ import { AdminIntakeView } from "@/components/dashboard/AdminIntakeView";
 import { getAdminClientBundle, getClientIntakeSubmission } from "@/lib/dashboard/queries";
 import { createMetadata } from "@/lib/seo";
 
+export const dynamic = "force-dynamic";
+
 type PageProps = { params: Promise<{ id: string }> };
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
@@ -36,6 +38,9 @@ export default async function AdminClientIntakePage({ params }: PageProps) {
         <Link href={`/admin/clients/${id}/`} className="button button-secondary">
           Client profile
         </Link>
+        <Link href={`/admin/clients/${id}/consultation/`} className="button button-secondary">
+          Consultation
+        </Link>
         <Link href={`/admin/clients/${id}/programme/`} className="button button-secondary">
           Programme
         </Link>
@@ -49,8 +54,4 @@ export default async function AdminClientIntakePage({ params }: PageProps) {
       </section>
     </div>
   );
-}
-
-export async function generateStaticParams() {
-  return [];
 }

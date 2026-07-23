@@ -1,9 +1,8 @@
 import type { ReactNode } from "react";
 
+export const dynamic = "force-dynamic";
+export const dynamicParams = true;
+
 export default function AdminLeadIdLayout({ children }: { children: ReactNode }) {
   return children;
-}
-
-export async function generateStaticParams() {
-  return [];
 }

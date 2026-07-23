@@ -39,6 +39,7 @@ export const portalNavItems = [
   { href: "/portal/", label: "Home" },
   { href: "/portal/programme/", label: "Programme" },
   { href: "/portal/intake/", label: "Intake" },
+  { href: "/portal/consultation/", label: "Consultation" },
   { href: "/portal/messages/", label: "Messages" },
   { href: "/portal/resources/", label: "Resources" },
   { href: "/portal/account/", label: "Account" },

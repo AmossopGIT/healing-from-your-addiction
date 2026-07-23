@@ -1,19 +1,33 @@
 function toDateKey(value: string | Date) {
   const date = typeof value === "string" ? new Date(value) : value;
+  if (Number.isNaN(date.getTime())) {
+    return null;
+  }
   return date.toISOString().slice(0, 10);
 }
 
 function addDays(dateKey: string, days: number) {
   const date = new Date(`${dateKey}T12:00:00.000Z`);
+  if (Number.isNaN(date.getTime())) {
+    return dateKey;
+  }
   date.setUTCDate(date.getUTCDate() + days);
   return date.toISOString().slice(0, 10);
 }
 
 export function computeEngagementStreak(activityDates: string[]) {
-  const uniqueDates = [...new Set(activityDates.map(toDateKey))].sort();
+  const uniqueDates = [
+    ...new Set(
+      activityDates
+        .map(toDateKey)
+        .filter((value): value is string => Boolean(value)),
+    ),
+  ].sort();
   if (!uniqueDates.length) return 0;
 
   const today = toDateKey(new Date());
+  if (!today) return 0;
+
   const latest = uniqueDates[uniqueDates.length - 1];
   if (latest !== today && latest !== addDays(today, -1)) {
     return 0;
@@ -36,6 +50,7 @@ export function countPausesThisWeek(checkIns: Array<{ check_in_date: string; pau
   weekStart.setUTCDate(weekStart.getUTCDate() - 6);
 
   const weekStartKey = toDateKey(weekStart);
+  if (!weekStartKey) return 0;
 
   return checkIns.filter((checkIn) => checkIn.check_in_date >= weekStartKey && checkIn.pause_taken).length;
 }
