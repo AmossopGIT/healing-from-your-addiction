@@ -1,4 +1,4 @@
-﻿:root {
+:root {
   --bg: #f8f4ec;
   --bg-soft: #eee7da;
   --surface: #fffdf9;
@@ -1173,7 +1173,7 @@ body.no-scroll {
 
 .blog-meta-row .blog-category-badge + time::before {
   color: var(--line);
-  content: "┬╖";
+  content: "·";
   margin: 0 0.45rem;
 }
 
@@ -4449,7 +4449,7 @@ main:not(:has(.page-hero-flush)) {
   }
 }
 
-/* Mobile overflow guards ΓÇö programme landing pages and site-wide */
+/* Mobile overflow guards — programme landing pages and site-wide */
 html {
   overflow-x: clip;
 }
@@ -5174,6 +5174,161 @@ main,
 .status-badge-intake-complete { background: #d7efe8; }
 .status-badge-intake-in-progress { background: #f2e4c7; }
 .status-badge-intake-not-started { background: #ececec; }
+.status-badge-consultation-not_sent { background: #ececec; }
+.status-badge-consultation-sent { background: #e2eeea; }
+.status-badge-consultation-delivered { background: #e2eeea; }
+.status-badge-consultation-opened { background: #f2e4c7; }
+.status-badge-consultation-started,
+.status-badge-consultation-in_progress { background: #f2e4c7; }
+.status-badge-consultation-completed,
+.status-badge-consultation-uploaded { background: #d7efe8; }
+
+.consultation-wizard {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.consultation-wizard-progress {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.consultation-alt-path {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.consultation-alt-path h3 {
+  margin: 0;
+  font-size: 1.05rem;
+}
+
+.consultation-alt-actions,
+.consultation-complete-actions,
+.consultation-admin-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: flex-end;
+}
+
+.consultation-upload-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: flex-end;
+}
+
+.consultation-step-fields {
+  display: grid;
+  gap: 1rem;
+}
+
+.consultation-fieldset {
+  border: 0;
+  padding: 0;
+  margin: 0;
+}
+
+.consultation-fieldset legend {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.consultation-option-list {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.consultation-option {
+  display: flex;
+  gap: 0.6rem;
+  align-items: flex-start;
+  line-height: 1.4;
+}
+
+.consultation-safety-notice,
+.consultation-safety-banner {
+  padding: 0.9rem 1rem;
+  border-radius: 10px;
+  background: #f8efe3;
+  border: 1px solid #e4d2b0;
+  color: #3c3224;
+}
+
+.consultation-safety-banner-urgent {
+  background: #f7e4e1;
+  border-color: #e0b4ad;
+}
+
+.consultation-timeline {
+  list-style: none;
+  margin: 1rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 0.5rem;
+}
+
+.consultation-timeline li {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.55rem 0.75rem;
+  border-radius: 8px;
+  background: #f7f3ea;
+  color: #5a5a5a;
+}
+
+.consultation-timeline li.is-done {
+  background: #e2eeea;
+  color: #17231f;
+}
+
+.consultation-readonly {
+  display: grid;
+  gap: 1rem;
+}
+
+.admin-error-page,
+.admin-error-shell {
+  min-height: 50vh;
+}
+
+.admin-error-shell {
+  display: grid;
+  place-items: center;
+  padding: 2rem;
+  background: #f7f3ea;
+}
+
+.admin-error-card {
+  max-width: 32rem;
+  width: 100%;
+  background: #fffdfa;
+  border-radius: 16px;
+  padding: 1.5rem;
+  display: grid;
+  gap: 0.85rem;
+  box-shadow: 0 10px 30px rgba(23, 35, 31, 0.08);
+}
+
+.admin-error-digest {
+  font-size: 0.92rem;
+}
+
+.admin-error-digest code,
+.admin-error-detail {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.85rem;
+}
+
+.admin-error-detail {
+  white-space: pre-wrap;
+  background: #f7f3ea;
+  padding: 0.75rem;
+  border-radius: 8px;
+  overflow: auto;
+}
 
 .dashboard-success-note {
   color: var(--teal);
