@@ -3,7 +3,9 @@
 import { useEffect, useMemo, useState } from "react";
 import type { BlogSection } from "@/content/blog";
 import { CmsRichTextArea } from "@/components/dashboard/CmsRichTextArea";
+import { SmartBodyUpload } from "@/components/dashboard/SmartBodyUpload";
 import { cmsFieldMaxLengths } from "@/lib/cms/formValidation";
+import { bodyHasReplaceableContent } from "@/lib/cms/smartBodyImport";
 
 type CmsSectionEditorProps = {
   initialSections: BlogSection[];
@@ -74,7 +76,8 @@ export function CmsSectionEditor({
   const editor = (
     <>
       <p className="cms-field-help">
-        Fine-tune headings, paragraphs, bullets, H3s, or video. Prefer Smart Upload at the top for the full article.
+        Fine-tune headings, paragraphs, bullets, H3s, or video after Smart Body Upload (or the top Smart Upload for the
+        full form).
       </p>
 
       {sections.map((section, index) => (
@@ -285,11 +288,15 @@ export function CmsSectionEditor({
   return (
     <fieldset className="cms-fieldset">
       <legend>Body</legend>
+      <SmartBodyUpload
+        hasExistingBody={bodyHasReplaceableContent(sections)}
+        onImport={(nextSections) => updateSections(nextSections.length ? nextSections : [emptySection()])}
+      />
       <div className="cms-body-summary">
         <p className="cms-body-summary-status">
           {readyCount > 0
             ? `${readyCount} section${readyCount === 1 ? "" : "s"} ready`
-            : "No body sections yet — use Smart Upload above, or edit sections below."}
+            : "No body sections yet — use Smart Body Upload above, or edit sections below."}
         </p>
         {headingPreview.length ? (
           <ul className="cms-body-heading-list">

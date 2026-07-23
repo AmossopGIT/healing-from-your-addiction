@@ -144,7 +144,10 @@ export function CmsBlogForm({ post, initialError = null }: CmsBlogFormProps) {
         <div className="cms-staff-guide">
           <p className="cms-staff-guide-title">Quick path</p>
           <ol>
-            <li>Paste or upload the article in Smart Upload.</li>
+            <li>
+              Paste the full article in Smart Upload <em>or</em> fill Essentials manually and paste the body with Smart
+              Body Upload.
+            </li>
             <li>Check title, excerpt, category, and tags.</li>
             <li>Add hero art, glance at SEO, then Save draft.</li>
           </ol>
@@ -240,7 +243,8 @@ export function CmsBlogForm({ post, initialError = null }: CmsBlogFormProps) {
         />
         {!bodyReady ? (
           <p className="cms-field-help">
-            Body is empty — use Smart Upload or expand <strong>Edit sections</strong> before saving, or a placeholder intro will be saved.
+            Body is empty — use Smart Body Upload, top Smart Upload, or expand <strong>Edit sections</strong> before
+            saving, or a placeholder intro will be saved.
           </p>
         ) : (
           <p className="cms-inline-status">
