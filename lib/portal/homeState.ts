@@ -5,10 +5,13 @@ import type { PortalActivityItem } from "@/lib/portal/activityFeed";
 import type { PortalNotificationSummary } from "@/lib/dashboard/queries";
 import type {
   ClientDailyCheckIn,
+  ClientHomeworkEntry,
   ClientIntakeSubmission,
   ClientProfile,
   ClientRecoveryGoal,
   Enrollment,
+  HomeworkTone,
+  ProgrammeHomeworkTask,
   ProgrammeSession,
   ProgrammeTemplate,
   SessionProgress,
@@ -75,6 +78,11 @@ export type PortalHomeBundle = {
   nextSessionLabel: string | null;
   hasPushReminders: boolean;
   firstName: string | null;
+  pointsTotal: number;
+  homeworkTasks: ProgrammeHomeworkTask[];
+  todayHomeworkEntries: ClientHomeworkEntry[];
+  homeworkTone: HomeworkTone;
+  needsSchedule: boolean;
 };
 
 function timeGreeting() {

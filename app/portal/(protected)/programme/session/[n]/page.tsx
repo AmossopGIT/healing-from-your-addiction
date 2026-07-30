@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { ReadOnView } from "@/components/dashboard/ReadOnView";
 import { SessionContent } from "@/components/dashboard/SessionContent";
 import { dashboardFieldMaxLengths } from "@/lib/dashboard/formValidation";
@@ -37,13 +38,46 @@ export default async function PortalSessionPage({ params }: PageProps) {
     );
   }
 
+  if (!bundle.schedule) {
+    redirect("/portal/programme/schedule/");
+  }
+
   return (
     <div className="dashboard-stack">
       <ReadOnView endpoint="/api/portal/content/read/" payload={{ contentId: session.id, contentKind: "session" }} />
       <section className="dashboard-page-header">
         <p className="eyebrow">Session {session.session_number}</p>
         <h1>{session.title}</h1>
+        {progress.scheduled_at ? (
+          <p className="dashboard-inline-note">
+            Scheduled {new Intl.DateTimeFormat("en-ZA", { dateStyle: "medium", timeStyle: "short" }).format(new Date(progress.scheduled_at))}
+            {progress.duration_minutes ? ` · ${progress.duration_minutes} minutes` : null}
+          </p>
+        ) : null}
       </section>
+
+      {bundle.schedule?.meet_url ? (
+        <section className="dashboard-panel">
+          <h2>Join session</h2>
+          <p>
+            <a href={bundle.schedule.meet_url} target="_blank" rel="noreferrer" className="button button-primary button-small">
+              Open Google Meet
+            </a>
+          </p>
+        </section>
+      ) : null}
+
+      {progress.recording_url ? (
+        <section className="dashboard-panel">
+          <h2>Session recording</h2>
+          <p>
+            <a href={progress.recording_url} target="_blank" rel="noreferrer" className="button button-secondary button-small">
+              {progress.recording_label || "Play or download recording"}
+            </a>
+          </p>
+        </section>
+      ) : null}
+
       <section className="dashboard-panel">
         <SessionContent contentRef={session.content_ref} contentType={session.content_type} />
       </section>

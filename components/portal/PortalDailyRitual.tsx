@@ -1,8 +1,10 @@
 import Link from "next/link";
 import type { DailyAffirmation } from "@/lib/portal/dailyAffirmation";
 import type { PortalNextStep } from "@/lib/portal/nextStep";
-import type { ClientDailyCheckIn } from "@/types/database";
+import type { ClientDailyCheckIn, ClientHomeworkEntry, HomeworkTone, ProgrammeHomeworkTask } from "@/types/database";
 import { PortalCheckInForm } from "@/components/portal/PortalCheckInForm";
+import { toggleHomeworkTask } from "@/lib/dashboard/homeworkActions";
+import { homeworkFramingCopy } from "@/lib/programme/homework";
 
 type PortalDailyRitualProps = {
   dailyAffirmation: DailyAffirmation | null;
@@ -10,6 +12,10 @@ type PortalDailyRitualProps = {
   todayCheckIn: ClientDailyCheckIn | null;
   nextStep: PortalNextStep;
   showCheckIn: boolean;
+  homeworkTasks?: ProgrammeHomeworkTask[];
+  todayHomeworkEntries?: ClientHomeworkEntry[];
+  homeworkTone?: HomeworkTone;
+  pointsTotal?: number;
 };
 
 export function PortalDailyRitual({
@@ -18,11 +24,21 @@ export function PortalDailyRitual({
   todayCheckIn,
   nextStep,
   showCheckIn,
+  homeworkTasks = [],
+  todayHomeworkEntries = [],
+  homeworkTone = "standard",
+  pointsTotal = 0,
 }: PortalDailyRitualProps) {
+  const entryByTask = new Map(todayHomeworkEntries.map((entry) => [entry.task_id, entry]));
+  const dailyTasks = homeworkTasks.filter((task) => task.cadence === "daily");
+
   return (
     <section className="portal-home-ritual dashboard-panel" id="daily-check-in">
       <h2>Daily ritual</h2>
-      <p className="dashboard-inline-note">Three small steps you can finish in under a minute.</p>
+      <p className="dashboard-inline-note">
+        {homeworkFramingCopy(homeworkTone)}
+        {pointsTotal > 0 ? ` · ${pointsTotal} practice points` : null}
+      </p>
       <div className="portal-home-ritual-grid">
         {showCheckIn ? (
           <article className="portal-home-ritual-card">
@@ -49,14 +65,43 @@ export function PortalDailyRitual({
           )}
         </article>
 
-        <article className="portal-home-ritual-card">
-          <p className="eyebrow">Micro-action</p>
-          <h3>One small step</h3>
-          <p>{nextStep.description}</p>
-          <Link href={nextStep.href} className="button button-secondary button-small">
-            {nextStep.buttonLabel}
-          </Link>
-        </article>
+        {dailyTasks.length > 0 ? (
+          <article className="portal-home-ritual-card">
+            <p className="eyebrow">Practice</p>
+            <h3>Today's ticks</h3>
+            <ul className="dashboard-session-list">
+              {dailyTasks.map((task) => {
+                const entry = entryByTask.get(task.id);
+                const done = Boolean(entry?.completed);
+                return (
+                  <li key={task.id} className="dashboard-session-item">
+                    <div>
+                      <strong>{task.title}</strong>
+                      <p>{done ? `Done · +${entry?.points_awarded ?? task.points} pts` : `${task.points} pts`}</p>
+                    </div>
+                    <form action={toggleHomeworkTask}>
+                      <input type="hidden" name="taskId" value={task.id} />
+                      <input type="hidden" name="completed" value={done ? "false" : "true"} />
+                      <input type="hidden" name="redirectTo" value="/portal/" />
+                      <button type="submit" className="button button-small button-secondary">
+                        {done ? "Undo" : "Mark done"}
+                      </button>
+                    </form>
+                  </li>
+                );
+              })}
+            </ul>
+          </article>
+        ) : (
+          <article className="portal-home-ritual-card">
+            <p className="eyebrow">Micro-action</p>
+            <h3>One small step</h3>
+            <p>{nextStep.description}</p>
+            <Link href={nextStep.href} className="button button-secondary button-small">
+              {nextStep.buttonLabel}
+            </Link>
+          </article>
+        )}
       </div>
     </section>
   );

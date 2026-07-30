@@ -21,6 +21,7 @@ type NextStepInput = {
   unreadSessionReceipts: Array<{ sessionId: string; sessionNumber: number; title: string }>;
   checkInDoneToday: boolean;
   hasEnrollment: boolean;
+  needsSchedule?: boolean;
 };
 
 export function resolvePortalNextStep(input: NextStepInput): PortalNextStep {
@@ -73,6 +74,17 @@ export function resolvePortalNextStep(input: NextStepInput): PortalNextStep {
       buttonLabel: percent > 0 ? "Continue consultation" : "Start consultation",
       artId: "process-understand",
       priority: 4,
+    };
+  }
+
+  if (input.hasEnrollment && input.needsSchedule) {
+    return {
+      title: "Choose your session time",
+      description: "Pick Tuesday or Friday at 11:00 or 16:00 so your eight sessions can be dated.",
+      href: "/portal/programme/schedule/",
+      buttonLabel: "Choose schedule",
+      artId: "process-support",
+      priority: 4.5,
     };
   }
 

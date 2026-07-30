@@ -22,7 +22,7 @@ export const metadata: Metadata = createMetadata({
 });
 
 type PageProps = {
-  searchParams: Promise<{ onboarded?: string; checkin?: string; goal?: string }>;
+  searchParams: Promise<{ onboarded?: string; checkin?: string; goal?: string; homework?: string }>;
 };
 
 const checkInMessages: Record<string, string> = {
@@ -32,8 +32,15 @@ const checkInMessages: Record<string, string> = {
   failed: "Unable to save your check-in right now.",
 };
 
+const homeworkMessages: Record<string, string> = {
+  saved: "Practice tick saved.",
+  invalid: "That practice task could not be updated.",
+  "note-too-long": "Please shorten your practice note.",
+  failed: "Unable to save your practice tick right now.",
+};
+
 export default async function PortalHomePage({ searchParams }: PageProps) {
-  const { onboarded, checkin } = await searchParams;
+  const { onboarded, checkin, homework } = await searchParams;
   const profile = await getAuthProfile();
   const bundle = profile ? await getPortalHomeBundle(profile.id) : null;
 
@@ -65,6 +72,11 @@ export default async function PortalHomePage({ searchParams }: PageProps) {
           {checkInMessages[checkin]}
         </p>
       ) : null}
+      {homework && homeworkMessages[homework] ? (
+        <p className={`dashboard-inline-note${homework === "saved" ? " dashboard-success-note" : ""}`}>
+          {homeworkMessages[homework]}
+        </p>
+      ) : null}
 
       {bundle.sections.includes("hero") ? <PortalHomeHero hero={bundle.hero} /> : null}
       {showNextStep && bundle.sections.includes("next_step") ? <PortalNextStepCard nextStep={bundle.nextStep} /> : null}
@@ -81,6 +93,10 @@ export default async function PortalHomePage({ searchParams }: PageProps) {
           todayCheckIn={bundle.todayCheckIn}
           nextStep={bundle.nextStep}
           showCheckIn={showCheckIn}
+          homeworkTasks={bundle.homeworkTasks}
+          todayHomeworkEntries={bundle.todayHomeworkEntries}
+          homeworkTone={bundle.homeworkTone}
+          pointsTotal={bundle.pointsTotal}
         />
       ) : null}
       {showProgress && bundle.sections.includes("progress") ? (
@@ -91,6 +107,7 @@ export default async function PortalHomePage({ searchParams }: PageProps) {
           pauseCountThisWeek={bundle.pauseCountThisWeek}
           abstinenceDays={bundle.abstinenceDays}
           showAbstinence={Boolean(bundle.recoveryGoal?.show_abstinence_counter)}
+          pointsTotal={bundle.pointsTotal}
           milestones={bundle.milestones}
         />
       ) : null}

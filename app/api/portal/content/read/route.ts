@@ -22,7 +22,10 @@ export async function POST(request: Request) {
 
   const body = (await request.json().catch(() => ({}))) as ReadRequestBody;
   const contentId = body.contentId?.trim();
-  const contentKind = body.contentKind === "document" || body.contentKind === "session" ? body.contentKind : null;
+  const contentKind =
+    body.contentKind === "document" || body.contentKind === "session" || body.contentKind === "programme_doc"
+      ? body.contentKind
+      : null;
 
   if (!contentId || !contentKind) {
     return NextResponse.json({ ok: false }, { status: 400 });

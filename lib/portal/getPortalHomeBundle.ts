@@ -20,7 +20,8 @@ import {
 } from "@/lib/portal/homeState";
 import { buildPortalMilestones } from "@/lib/portal/milestones";
 import { resolvePortalNextStep } from "@/lib/portal/nextStep";
-import type { ClientDailyCheckIn, ClientRecoveryGoal } from "@/types/database";
+import { homeworkToneForProgrammeWeek } from "@/lib/programme/homework";
+import type { ClientDailyCheckIn, ClientHomeworkEntry, ClientRecoveryGoal } from "@/types/database";
 
 function todayIsoDate() {
   return new Date().toISOString().slice(0, 10);
@@ -148,6 +149,7 @@ export async function getPortalHomeBundle(userId: string): Promise<PortalHomeBun
     unreadSessionReceipts,
     checkInDoneToday: Boolean(todayCheckIn),
     hasEnrollment: Boolean(enrollmentBundle?.enrollment),
+    needsSchedule: Boolean(enrollmentBundle?.enrollment && !enrollmentBundle.schedule),
   });
 
   if (stage === "onboarding") {
@@ -249,6 +251,14 @@ export async function getPortalHomeBundle(userId: string): Promise<PortalHomeBun
   const hasPushReminders =
     pushResult.data?.consent_state === "subscribed" && pushCategories.includes("gentle_reminders");
 
+  const today = todayIsoDate();
+  const todayHomeworkEntries = (enrollmentBundle?.homeworkEntries ?? []).filter(
+    (entry) => entry.entry_date === today,
+  ) as ClientHomeworkEntry[];
+  const homeworkTasks = enrollmentBundle?.homeworkTasks ?? [];
+  const pointsTotal = enrollmentBundle?.pointsTotal ?? 0;
+  const homeworkTone = homeworkToneForProgrammeWeek(currentWeekNumber);
+
   return {
     profile,
     clientProfile,
@@ -277,11 +287,24 @@ export async function getPortalHomeBundle(userId: string): Promise<PortalHomeBun
     currentWeekNumber,
     milestones,
     activityFeed,
-    nextSessionHref: nextAvailableSession
-      ? `/portal/programme/session/${nextAvailableSession.session_number}/`
-      : null,
-    nextSessionLabel: nextAvailableSession?.title ?? null,
+    nextSessionHref: enrollmentBundle?.schedule
+      ? nextAvailableSession
+        ? `/portal/programme/session/${nextAvailableSession.session_number}/`
+        : null
+      : enrollmentBundle?.enrollment
+        ? "/portal/programme/schedule/"
+        : null,
+    nextSessionLabel: enrollmentBundle?.schedule
+      ? nextAvailableSession?.title ?? null
+      : enrollmentBundle?.enrollment
+        ? "Choose your session time"
+        : null,
     hasPushReminders,
     firstName,
+    pointsTotal,
+    homeworkTasks,
+    todayHomeworkEntries,
+    homeworkTone,
+    needsSchedule: Boolean(enrollmentBundle?.enrollment && !enrollmentBundle.schedule),
   };
 }

@@ -5334,6 +5334,10 @@ main,
   color: var(--teal);
 }
 
+.dashboard-error-note {
+  color: var(--danger, #8a2f2f);
+}
+
 .dashboard-panel-highlight {
   border-color: var(--teal-soft);
   background: linear-gradient(180deg, #fffdfa 0%, var(--surface-strong) 100%);

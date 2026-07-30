@@ -2,12 +2,17 @@ import { createClient } from "@/lib/supabase/server";
 import type {
   ClientContentReceipt,
   ClientDocument,
+  ClientHomeworkEntry,
   ClientIntakeSubmission,
   ClientMessage,
+  ClientPointsLedgerEntry,
   ClientProfile,
   Enrollment,
+  EnrollmentSchedule,
   PortalContentKind,
   Profile,
+  ProgrammeDoc,
+  ProgrammeHomeworkTask,
   ProgrammeSession,
   ProgrammeTemplate,
   SessionProgress,
@@ -119,6 +124,11 @@ export async function getClientEnrollmentBundle(userId: string) {
       template: null as ProgrammeTemplate | null,
       sessions: [] as ProgrammeSession[],
       progress: [] as SessionProgress[],
+      schedule: null as EnrollmentSchedule | null,
+      homeworkTasks: [] as ProgrammeHomeworkTask[],
+      homeworkEntries: [] as ClientHomeworkEntry[],
+      pointsTotal: 0,
+      programmeDocs: [] as ProgrammeDoc[],
     };
   }
 
@@ -130,7 +140,37 @@ export async function getClientEnrollmentBundle(userId: string) {
     .eq("template_id", enrollment.template_id)
     .order("sort_order", { ascending: true });
 
-  const { data: progress } = await supabase.from("session_progress").select("*").eq("enrollment_id", enrollment.id);
+  const [
+    { data: progress },
+    { data: schedule },
+    { data: homeworkTasks },
+    { data: homeworkEntries },
+    { data: pointsRows },
+    { data: programmeDocs },
+  ] = await Promise.all([
+    supabase.from("session_progress").select("*").eq("enrollment_id", enrollment.id),
+    supabase.from("enrollment_schedules").select("*").eq("enrollment_id", enrollment.id).maybeSingle(),
+    supabase
+      .from("programme_homework_tasks")
+      .select("*")
+      .eq("template_id", enrollment.template_id)
+      .order("sort_order", { ascending: true }),
+    supabase
+      .from("client_homework_entries")
+      .select("*")
+      .eq("enrollment_id", enrollment.id)
+      .order("entry_date", { ascending: false }),
+    supabase.from("client_points_ledger").select("points").eq("client_profile_id", clientProfile.id),
+    template?.addiction_slug
+      ? supabase
+          .from("programme_docs")
+          .select("*")
+          .eq("addiction_slug", template.addiction_slug)
+          .order("sort_order", { ascending: true })
+      : Promise.resolve({ data: [] as ProgrammeDoc[] }),
+  ]);
+
+  const pointsTotal = (pointsRows ?? []).reduce((sum, row) => sum + (row.points ?? 0), 0);
 
   return {
     clientProfile,
@@ -138,6 +178,11 @@ export async function getClientEnrollmentBundle(userId: string) {
     template: template ?? null,
     sessions: sessions ?? [],
     progress: progress ?? [],
+    schedule: (schedule as EnrollmentSchedule | null) ?? null,
+    homeworkTasks: (homeworkTasks as ProgrammeHomeworkTask[]) ?? [],
+    homeworkEntries: (homeworkEntries as ClientHomeworkEntry[]) ?? [],
+    pointsTotal,
+    programmeDocs: (programmeDocs as ProgrammeDoc[]) ?? [],
   };
 }
 
@@ -165,20 +210,66 @@ export async function getAdminClientBundle(clientProfileId: string) {
   let template: ProgrammeTemplate | null = null;
   let sessions: ProgrammeSession[] = [];
   let progress: SessionProgress[] = [];
+  let schedule: EnrollmentSchedule | null = null;
+  let homeworkTasks: ProgrammeHomeworkTask[] = [];
+  let homeworkEntries: ClientHomeworkEntry[] = [];
+  let pointsTotal = 0;
+  let programmeDocs: ProgrammeDoc[] = [];
+  let pointsLedger: ClientPointsLedgerEntry[] = [];
 
   if (enrollment) {
     const templateResult = await supabase.from("programme_templates").select("*").eq("id", enrollment.template_id).single();
     template = templateResult.data ?? null;
 
-    const sessionsResult = await supabase
-      .from("programme_sessions")
-      .select("*")
-      .eq("template_id", enrollment.template_id)
-      .order("sort_order", { ascending: true });
-    sessions = sessionsResult.data ?? [];
+    const [
+      sessionsResult,
+      progressResult,
+      scheduleResult,
+      homeworkTasksResult,
+      homeworkEntriesResult,
+      pointsResult,
+      docsResult,
+    ] = await Promise.all([
+      supabase
+        .from("programme_sessions")
+        .select("*")
+        .eq("template_id", enrollment.template_id)
+        .order("sort_order", { ascending: true }),
+      supabase.from("session_progress").select("*").eq("enrollment_id", enrollment.id),
+      supabase.from("enrollment_schedules").select("*").eq("enrollment_id", enrollment.id).maybeSingle(),
+      supabase
+        .from("programme_homework_tasks")
+        .select("*")
+        .eq("template_id", enrollment.template_id)
+        .order("sort_order", { ascending: true }),
+      supabase
+        .from("client_homework_entries")
+        .select("*")
+        .eq("enrollment_id", enrollment.id)
+        .order("entry_date", { ascending: false }),
+      supabase
+        .from("client_points_ledger")
+        .select("*")
+        .eq("client_profile_id", clientProfileId)
+        .order("created_at", { ascending: false })
+        .limit(50),
+      template?.addiction_slug
+        ? supabase
+            .from("programme_docs")
+            .select("*")
+            .eq("addiction_slug", template.addiction_slug)
+            .order("sort_order", { ascending: true })
+        : Promise.resolve({ data: [] as ProgrammeDoc[] }),
+    ]);
 
-    const progressResult = await supabase.from("session_progress").select("*").eq("enrollment_id", enrollment.id);
+    sessions = sessionsResult.data ?? [];
     progress = progressResult.data ?? [];
+    schedule = scheduleResult.data ?? null;
+    homeworkTasks = homeworkTasksResult.data ?? [];
+    homeworkEntries = homeworkEntriesResult.data ?? [];
+    pointsLedger = pointsResult.data ?? [];
+    pointsTotal = pointsLedger.reduce((sum, row) => sum + (row.points ?? 0), 0);
+    programmeDocs = docsResult.data ?? [];
   }
 
   return {
@@ -189,6 +280,12 @@ export async function getAdminClientBundle(clientProfileId: string) {
     templates: templates ?? [],
     sessions,
     progress,
+    schedule,
+    homeworkTasks,
+    homeworkEntries,
+    pointsTotal,
+    pointsLedger,
+    programmeDocs,
   };
 }
 

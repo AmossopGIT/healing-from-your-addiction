@@ -32,6 +32,7 @@ type PortalProgressPanelProps = {
   pauseCountThisWeek: number;
   abstinenceDays: number;
   showAbstinence: boolean;
+  pointsTotal?: number;
   milestones: Array<{ id: string; label: string; achieved: boolean }>;
 };
 
@@ -42,12 +43,14 @@ export function PortalProgressPanel({
   pauseCountThisWeek,
   abstinenceDays,
   showAbstinence,
+  pointsTotal = 0,
   milestones,
 }: PortalProgressPanelProps) {
   const programmeProgress = availableSessionCount > 0 ? completedSessionCount / availableSessionCount : 0;
   const rhythmProgress = Math.min(engagementStreak / 7, 1);
   const pauseProgress = Math.min(pauseCountThisWeek / 7, 1);
   const abstinenceProgress = showAbstinence ? Math.min(abstinenceDays / 30, 1) : 0;
+  const pointsProgress = Math.min(pointsTotal / 100, 1);
 
   return (
     <section className="portal-home-progress dashboard-panel">
@@ -62,6 +65,9 @@ export function PortalProgressPanel({
         ) : null}
         <ProgressRing label="Rhythm" value={engagementStreak > 0 ? String(engagementStreak) : "—"} progress={rhythmProgress} />
         <ProgressRing label="Pauses this week" value={String(pauseCountThisWeek)} progress={pauseProgress} accent="gold" />
+        {pointsTotal > 0 || availableSessionCount > 0 ? (
+          <ProgressRing label="Practice points" value={String(pointsTotal)} progress={pointsProgress} accent="gold" />
+        ) : null}
         {showAbstinence ? (
           <ProgressRing label="Days tracked" value={String(abstinenceDays)} progress={abstinenceProgress} accent="neutral" />
         ) : null}

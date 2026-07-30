@@ -15,7 +15,9 @@ export type SessionProgressStatus = "locked" | "available" | "in_progress" | "co
 
 export type ProgrammeContentType = "hypno" | "eft" | "affirmations" | "questions" | "overview";
 
-export type PortalContentKind = "document" | "session";
+export type CheckInMood = "calm" | "steady" | "low" | "anxious" | "irritable";
+
+export type PortalContentKind = "document" | "session" | "programme_doc";
 
 export type Profile = {
   id: string;
@@ -129,6 +131,82 @@ export type SessionProgress = {
   completed_at: string | null;
   client_notes: string | null;
   unlocked_at: string | null;
+  scheduled_at: string | null;
+  duration_minutes: number | null;
+  recording_url: string | null;
+  recording_storage_path: string | null;
+  recording_label: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
+export type ProgrammeWeekday = "tue" | "fri";
+export type ProgrammeTimeSlot = "11:00" | "16:00";
+
+export type EnrollmentSchedule = {
+  id: string;
+  enrollment_id: string;
+  weekday: ProgrammeWeekday;
+  time_slot: ProgrammeTimeSlot;
+  meet_url: string;
+  first_session_at: string;
+  timezone: string;
+  created_at: string;
+  updated_at: string;
+};
+
+export type HomeworkTaskType = "eft_daily" | "affirmations_daily" | "reflection" | "custom";
+export type HomeworkCadence = "daily" | "per_session" | "once";
+export type HomeworkTone = "rigid" | "playful" | "standard";
+
+export type ProgrammeHomeworkTask = {
+  id: string;
+  template_id: string;
+  task_key: string;
+  title: string;
+  description: string | null;
+  task_type: HomeworkTaskType;
+  week_number: number | null;
+  cadence: HomeworkCadence;
+  points: number;
+  tone: HomeworkTone;
+  sort_order: number;
+  created_at: string;
+};
+
+export type ClientHomeworkEntry = {
+  id: string;
+  client_profile_id: string;
+  enrollment_id: string;
+  task_id: string;
+  entry_date: string;
+  completed: boolean;
+  mood: CheckInMood | null;
+  note: string | null;
+  points_awarded: number;
+  created_at: string;
+  updated_at: string;
+};
+
+export type ClientPointsLedgerEntry = {
+  id: string;
+  client_profile_id: string;
+  points: number;
+  reason: string;
+  source_type: string | null;
+  source_id: string | null;
+  created_at: string;
+};
+
+export type ProgrammeDoc = {
+  id: string;
+  addiction_slug: string;
+  slug: string;
+  title: string;
+  summary: string | null;
+  body_markdown: string;
+  week_number: number | null;
+  sort_order: number;
   created_at: string;
   updated_at: string;
 };
@@ -208,8 +286,6 @@ export type ClientConsultation = {
   created_at: string;
   updated_at: string;
 };
-
-export type CheckInMood = "calm" | "steady" | "low" | "anxious" | "irritable";
 
 export type ClientDailyCheckIn = {
   id: string;
@@ -414,8 +490,79 @@ export type Database = {
           completed_at?: string | null;
           client_notes?: string | null;
           unlocked_at?: string | null;
+          scheduled_at?: string | null;
+          duration_minutes?: number | null;
+          recording_url?: string | null;
+          recording_storage_path?: string | null;
+          recording_label?: string | null;
         },
         Partial<SessionProgress>
+      >;
+      enrollment_schedules: TableDef<
+        EnrollmentSchedule,
+        {
+          enrollment_id: string;
+          weekday: ProgrammeWeekday;
+          time_slot: ProgrammeTimeSlot;
+          meet_url: string;
+          first_session_at: string;
+          timezone?: string;
+        },
+        Partial<EnrollmentSchedule>
+      >;
+      programme_homework_tasks: TableDef<
+        ProgrammeHomeworkTask,
+        {
+          template_id: string;
+          task_key: string;
+          title: string;
+          description?: string | null;
+          task_type: HomeworkTaskType;
+          week_number?: number | null;
+          cadence?: HomeworkCadence;
+          points?: number;
+          tone?: HomeworkTone;
+          sort_order?: number;
+        },
+        Partial<ProgrammeHomeworkTask>
+      >;
+      client_homework_entries: TableDef<
+        ClientHomeworkEntry,
+        {
+          client_profile_id: string;
+          enrollment_id: string;
+          task_id: string;
+          entry_date: string;
+          completed?: boolean;
+          mood?: CheckInMood | null;
+          note?: string | null;
+          points_awarded?: number;
+        },
+        Partial<ClientHomeworkEntry>
+      >;
+      client_points_ledger: TableDef<
+        ClientPointsLedgerEntry,
+        {
+          client_profile_id: string;
+          points: number;
+          reason: string;
+          source_type?: string | null;
+          source_id?: string | null;
+        },
+        Partial<ClientPointsLedgerEntry>
+      >;
+      programme_docs: TableDef<
+        ProgrammeDoc,
+        {
+          addiction_slug: string;
+          slug: string;
+          title: string;
+          summary?: string | null;
+          body_markdown?: string;
+          week_number?: number | null;
+          sort_order?: number;
+        },
+        Partial<ProgrammeDoc>
       >;
       client_messages: TableDef<ClientMessage, { client_profile_id: string; author_id: string; body: string }, Partial<ClientMessage>>;
       client_documents: TableDef<ClientDocument, { client_profile_id: string; storage_path: string; label: string; uploaded_by: string }, Partial<ClientDocument>>;
