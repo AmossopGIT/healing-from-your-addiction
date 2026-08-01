@@ -149,7 +149,7 @@ export function CmsBlogForm({ post, initialError = null }: CmsBlogFormProps) {
               Body Upload.
             </li>
             <li>Check title, excerpt, category, and tags.</li>
-            <li>Add hero art, glance at SEO, then Save draft.</li>
+            <li>Add hero art, glance at SEO, then Save draft — or use Save &amp; publish when it is ready.</li>
           </ol>
         </div>
 
@@ -380,6 +380,15 @@ export function CmsBlogForm({ post, initialError = null }: CmsBlogFormProps) {
             idleLabel={post ? "Save changes" : "Save draft"}
             pendingLabel={post ? "Saving…" : "Saving draft…"}
           />
+          {post?.workflow_status !== "published" ? (
+            <CmsFormSubmitButton
+              idleLabel={post ? "Save changes & publish" : "Save & publish"}
+              pendingLabel="Saving and publishing…"
+              className="button button-secondary"
+              name="workflowIntent"
+              value="publish"
+            />
+          ) : null}
           {post ? (
             <Link className="button button-secondary" href={`/blog/${post.slug}/`} target="_blank" rel="noreferrer">
               {post.workflow_status === "published" ? "View live page" : "Preview public page"}

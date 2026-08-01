@@ -190,26 +190,43 @@ export async function saveBlogPostDraft(
   }
 
   const input = withDraftDefaults(parsed.input);
+  const publishRequested = formData.get("workflowIntent") === "publish";
+  if (publishRequested) {
+    const publishValidation = validateBlogPublish(input);
+    if (!publishValidation.ok) {
+      return { error: publishValidation.errors.join(" ") };
+    }
+  }
   const id = sanitizeUuid(String(formData.get("id") ?? ""));
-  const row = blogRowFromInput(input, user.id, "draft");
+  const workflowStatus: CmsWorkflowStatus = publishRequested ? "published" : "draft";
+  const row = blogRowFromInput(input, user.id, workflowStatus);
+  const publishFields = publishRequested
+    ? { published_at: new Date().toISOString(), approved_by: user.id, scheduled_for: null }
+    : {};
 
   if (id) {
-    const { error } = await supabase.from("cms_blog_posts").update(row).eq("id", id);
+    const { error } = await supabase.from("cms_blog_posts").update({ ...row, ...publishFields }).eq("id", id);
     if (error) return { error: error.message };
     await logAuditEvent({ userId: user.id, action: "cms_blog_update_draft", resourceType: "cms_blog_post", resourceId: id });
+    if (publishRequested) {
+      await recordWorkflowEvent(supabase, "blog_post", id, "draft", "published", user.id);
+    }
     revalidateContentPaths();
     redirect(`/admin/content/blog/${id}/?saved=1`);
   }
 
   const { data, error } = await supabase
     .from("cms_blog_posts")
-    .insert({ ...row, created_by: user.id })
+    .insert({ ...row, ...publishFields, created_by: user.id })
     .select("id")
     .single();
 
   if (error) return { error: error.message };
 
   await logAuditEvent({ userId: user.id, action: "cms_blog_create_draft", resourceType: "cms_blog_post", resourceId: data.id });
+  if (publishRequested) {
+    await recordWorkflowEvent(supabase, "blog_post", data.id, null, "published", user.id);
+  }
   revalidateContentPaths();
   redirect(`/admin/content/blog/${data.id}/?saved=1`);
 }
@@ -455,12 +472,27 @@ export async function updateBlogFromForm(
 
   const { data: existing } = await supabase.from("cms_blog_posts").select("workflow_status").eq("id", id).single();
   const input = withDraftDefaults(parsed.input);
-  const row = blogRowFromInput(input, user.id, (existing?.workflow_status as CmsWorkflowStatus) ?? "draft");
+  const existingStatus = (existing?.workflow_status as CmsWorkflowStatus) ?? "draft";
+  const publishRequested = formData.get("workflowIntent") === "publish";
+  if (publishRequested) {
+    const publishValidation = validateBlogPublish(input);
+    if (!publishValidation.ok) {
+      return { error: publishValidation.errors.join(" ") };
+    }
+  }
+  const nextStatus: CmsWorkflowStatus = publishRequested ? "published" : existingStatus;
+  const row = blogRowFromInput(input, user.id, nextStatus);
+  const publishFields = publishRequested
+    ? { published_at: new Date().toISOString(), approved_by: user.id, scheduled_for: null }
+    : {};
 
-  const { error } = await supabase.from("cms_blog_posts").update(row).eq("id", id);
+  const { error } = await supabase.from("cms_blog_posts").update({ ...row, ...publishFields }).eq("id", id);
   if (error) return { error: error.message };
 
   await logAuditEvent({ userId: user.id, action: "cms_blog_update", resourceType: "cms_blog_post", resourceId: id });
+  if (publishRequested && existingStatus !== "published") {
+    await recordWorkflowEvent(supabase, "blog_post", id, existingStatus, "published", user.id);
+  }
   revalidateContentPaths();
   redirect(`/admin/content/blog/${id}/?saved=1`);
 }

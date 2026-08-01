@@ -22,7 +22,8 @@ export default async function NewBlogPostPage({ searchParams }: PageProps) {
         <h1>New blog post</h1>
         <p>
           Use Smart Upload for the full form, or fill Essentials manually and use Smart Body Upload for the article body.
-          Add hero art, then Save draft. Nothing goes live until you publish from the workflow panel.
+          Add hero art, then Save draft or use Save &amp; publish. Publishing will show a clear error if anything is
+          still missing.
         </p>
         <Link className="card-link" href="/admin/content/blog/">
           Back to blog list
