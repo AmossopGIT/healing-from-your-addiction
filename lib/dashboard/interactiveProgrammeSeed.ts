@@ -19,6 +19,8 @@ export async function seedInteractiveProgrammes(options?: { publish?: boolean; s
   let homeworkUpserted = 0;
 
   for (const programme of selected) {
+    const reviewApproved = programme.reviewStatus === "approved";
+    const shouldPublish = publish && reviewApproved;
     const existing = await supabase
       .from("programme_templates")
       .select("id, version")
@@ -30,9 +32,9 @@ export async function seedInteractiveProgrammes(options?: { publish?: boolean; s
       title: programme.title,
       session_count: programme.cadence?.liveSessionCount ?? 8,
       category: programme.category,
-      status: publish ? ("published" as const) : programme.needsManualReview ? ("draft" as const) : ("ready" as const),
+      status: shouldPublish ? ("published" as const) : programme.needsManualReview ? ("draft" as const) : ("ready" as const),
       version: programme.version,
-      published_at: publish ? new Date().toISOString() : null,
+      published_at: shouldPublish ? new Date().toISOString() : null,
       description: programme.description,
       safety_json: programme.safety,
       week_count: programme.weekCount,
@@ -67,11 +69,11 @@ export async function seedInteractiveProgrammes(options?: { publish?: boolean; s
       {
         template_id: templateId!,
         version: programme.version,
-        status: publish ? "published" : "draft",
+        status: shouldPublish ? "published" : "draft",
         content_json: programme,
         source_checksum: programme.sourceChecksum ?? null,
         review_status: programme.reviewStatus ?? "pending",
-        published_at: publish ? new Date().toISOString() : null,
+        published_at: shouldPublish ? new Date().toISOString() : null,
       },
       { onConflict: "template_id,version" },
     );

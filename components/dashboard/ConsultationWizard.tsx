@@ -163,10 +163,12 @@ export function ConsultationWizard({ consultation, clientName, clientEmail }: Co
 
       <div className="consultation-alt-path dashboard-panel">
         <h3>Prefer paper?</h3>
-        <p>Download the blank form, complete it offline, then upload a PDF or photo here.</p>
+        <p>
+          Download the current printable form, complete the same sections offline, then upload a PDF or clear photo here.
+        </p>
         <div className="consultation-alt-actions">
           <a className="button button-secondary button-small" href={CONSULTATION_BLANK_PDF_PATH} download>
-            Download blank PDF
+            Download current form PDF
           </a>
           <form action={uploadCompletedConsultationForm} encType="multipart/form-data" className="consultation-upload-form">
             <label className="form-field">

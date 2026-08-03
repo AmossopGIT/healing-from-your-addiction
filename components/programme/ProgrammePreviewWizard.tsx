@@ -24,9 +24,6 @@ export function ProgrammePreviewWizard({ definition, activity }: ProgrammePrevie
 
   return (
     <div className="dashboard-stack">
-      <p className="dashboard-inline-note">
-        Preview mode uses the real client wizard. Answers stay local and never write progress, private answers, or analytics.
-      </p>
       {message ? <p className="dashboard-inline-note">{message}</p> : null}
       <ActivityWizard
         activity={activity}

@@ -42,10 +42,12 @@ describe("interactive programmes", () => {
     expect(summary.currentActivity?.id).toBe(gambling!.activities[0]?.id);
   });
 
-  it("marks vector-print PDFs as OCR-extracted and flags wording review", () => {
+  it("marks vector-print PDFs as OCR-extracted with provenance retained after approval", () => {
     const ocr = interactiveProgrammes.filter((programme) => programme.sourceStatus === "ocr-extracted");
     expect(ocr.map((programme) => programme.slug).sort()).toEqual(["cannabis", "nicotine", "opioid"]);
-    expect(ocr.every((programme) => programme.needsManualReview === true)).toBe(true);
+    expect(ocr.find((programme) => programme.slug === "cannabis")?.needsManualReview).toBe(false);
+    expect(ocr.find((programme) => programme.slug === "nicotine")?.needsManualReview).toBe(true);
+    expect(ocr.find((programme) => programme.slug === "opioid")?.needsManualReview).toBe(true);
   });
 
   it("splits private answers from public progress metadata", () => {

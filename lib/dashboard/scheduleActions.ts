@@ -17,6 +17,7 @@ import type { ProgrammeTimeSlot, ProgrammeWeekday } from "@/types/database";
 
 const WEEKDAYS = new Set<ProgrammeWeekday>(["tue", "fri"]);
 const SLOTS = new Set<ProgrammeTimeSlot>(["11:00", "16:00"]);
+const MAX_CLIENTS_PER_SLOT = 12;
 
 /** Pickers submit a single combined radio; older forms may still post two fields. */
 function readSlotSelection(formData: FormData) {
@@ -130,6 +131,22 @@ async function applyScheduleToProgress(
   }
 }
 
+async function hasScheduleCapacity(
+  supabase: Awaited<ReturnType<typeof createClient>>,
+  weekday: ProgrammeWeekday,
+  timeSlot: ProgrammeTimeSlot,
+  excludeEnrollmentId?: string,
+) {
+  let query = supabase
+    .from("enrollment_schedules")
+    .select("enrollment_id", { count: "exact", head: true })
+    .eq("weekday", weekday)
+    .eq("time_slot", timeSlot);
+  if (excludeEnrollmentId) query = query.neq("enrollment_id", excludeEnrollmentId);
+  const { count, error } = await query;
+  return !error && (count ?? 0) < MAX_CLIENTS_PER_SLOT;
+}
+
 export async function saveEnrollmentSchedule(formData: FormData) {
   const selection = readSlotSelection(formData);
 
@@ -139,6 +156,9 @@ export async function saveEnrollmentSchedule(formData: FormData) {
 
   const { weekday, timeSlot } = selection;
   const { supabase, enrollment } = await requireClientEnrollment();
+  if (!(await hasScheduleCapacity(supabase, weekday, timeSlot, enrollment.id))) {
+    redirect("/portal/programme/schedule/?error=slot-full");
+  }
   const meetUrl = getMeetUrlForTimeSlot(timeSlot);
   const firstSessionAt = computeFirstSessionAt({
     fromDate: enrollment.start_date,
@@ -195,6 +215,9 @@ export async function adminSaveEnrollmentSchedule(formData: FormData) {
   const { data: enrollment } = await supabase.from("enrollments").select("*").eq("id", enrollmentId).single();
   if (!enrollment || enrollment.client_profile_id !== clientProfileId) {
     redirect(`/admin/clients/${clientProfileId}/programme/?error=not-found`);
+  }
+  if (!(await hasScheduleCapacity(supabase, weekday, timeSlot, enrollmentId))) {
+    redirect(`/admin/clients/${clientProfileId}/programme/?error=slot-full`);
   }
 
   const meetUrl = getMeetUrlForTimeSlot(timeSlot);

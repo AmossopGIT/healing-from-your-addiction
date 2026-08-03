@@ -32,7 +32,7 @@ export async function GET(_request: Request, context: RouteContext) {
     return NextResponse.json({ error: "not-started" }, { status: 404 });
   }
 
-  const pdf = buildConsultationAnswersPdf(consultation, bundle.profile?.full_name ?? "Client");
+  const pdf = await buildConsultationAnswersPdf(consultation, bundle.profile?.full_name ?? "Client");
   return new NextResponse(new Uint8Array(pdf), {
     headers: {
       "Content-Type": "application/pdf",

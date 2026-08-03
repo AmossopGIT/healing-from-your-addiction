@@ -23,6 +23,8 @@ export function ProgrammeJourneyShell({
 }: ProgrammeJourneyShellProps) {
   const summary = summarizeJourney(definition, progressRows, currentActivityId);
   const progressById = new Map(progressRows.map((row) => [row.activity_id, row]));
+  const activities = definition.activities.slice().sort((a, b) => a.sortOrder - b.sortOrder);
+  const activeActivityId = currentActivityId || summary.currentActivity?.id;
 
   return (
     <div className="programme-journey-shell">
@@ -60,23 +62,57 @@ export function ProgrammeJourneyShell({
       </section>
 
       <section className="dashboard-panel">
-        <h2>Weekly modules</h2>
+        <div className="dashboard-panel-header">
+          <div>
+            <p className="eyebrow">Your full programme map</p>
+            <h2>Weekly modules</h2>
+          </div>
+          <span className="dashboard-inline-note">
+            {summary.completedActivities} of {summary.totalActivities} complete
+          </span>
+        </div>
+        <p className="dashboard-inline-note">
+          Follow the highlighted step. Completed activities stay available for review, while future steps unlock as you go.
+        </p>
         <div className="programme-module-grid">
           {definition.modules.map((module) => {
-            const moduleActivities = definition.activities.filter((activity) => activity.moduleId === module.id);
+            const moduleActivities = activities.filter((activity) => activity.moduleId === module.id);
             const completed = moduleActivities.filter((activity) => progressById.get(activity.id)?.status === "completed").length;
+            const moduleHasCurrent = moduleActivities.some((activity) => activity.id === activeActivityId);
             return (
-              <article key={module.id} className="programme-module-card">
+              <article key={module.id} className={`programme-module-card${moduleHasCurrent ? " is-current" : ""}`}>
                 <p className="eyebrow">Week {module.number}</p>
                 <h3>{module.title}</h3>
                 <p>{module.theme}</p>
                 <p className="dashboard-inline-note">
                   {completed}/{moduleActivities.length} complete
                 </p>
-                <ul className="programme-focus-list">
-                  {module.focus.slice(0, 3).map((item) => (
-                    <li key={item}>{item}</li>
-                  ))}
+                <ul className="programme-module-activities">
+                  {moduleActivities.map((activity) => {
+                    const progress = progressById.get(activity.id);
+                    const status = progress?.status ?? "locked";
+                    const isCurrent = activity.id === activeActivityId;
+                    const canOpen = audience === "admin" || status !== "locked";
+                    const href =
+                      audience === "client"
+                        ? `/portal/programme/journey/${activity.id}/`
+                        : clientProfileId
+                          ? `/admin/clients/${clientProfileId}/programme/#activity-${activity.id}`
+                          : undefined;
+                    return (
+                      <li key={activity.id} className={isCurrent ? "is-current" : undefined}>
+                        <span className={`programme-module-activity-marker is-${status}`} aria-hidden="true" />
+                        {canOpen && href ? (
+                          <Link href={href} aria-current={isCurrent ? "step" : undefined}>
+                            {activityLabel(activity)}
+                          </Link>
+                        ) : (
+                          <span>{activityLabel(activity)}</span>
+                        )}
+                        {isCurrent ? <small>Next for you</small> : <small>{status}</small>}
+                      </li>
+                    );
+                  })}
                 </ul>
               </article>
             );

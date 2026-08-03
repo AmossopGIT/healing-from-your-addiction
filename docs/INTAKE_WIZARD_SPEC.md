@@ -24,7 +24,7 @@ After public lead capture and client account creation, the portal collects two S
 
 - Portal-only after onboarding
 - Available when Gerald sends the form email **or** the client already has a portal account (invite/signup path)
-- Blank PDF: `/forms/hypnotherapy-client-consultation-form.pdf`
+- Blank PDF: `/api/portal/consultation/blank/` (generated from the current consultation schema and styled for the current portal)
 
 ### UX
 

@@ -29,6 +29,7 @@ import {
 } from "@/lib/programme/schedule";
 import { homeworkToneForProgrammeWeek, homeworkFramingCopy } from "@/lib/programme/homework";
 import { createMetadata } from "@/lib/seo";
+import { sanitizeUuid } from "@/lib/dashboard/formValidation";
 
 export const dynamic = "force-dynamic";
 
@@ -43,6 +44,7 @@ type PageProps = {
     unlocked?: string;
     skipped?: string;
     flagged?: string;
+    enrollmentId?: string;
   }>;
 };
 
@@ -82,8 +84,9 @@ function dayInitial(dayKey: string) {
 
 export default async function AdminClientProgrammePage({ params, searchParams }: PageProps) {
   const { id } = await params;
-  const { scheduled, recordingSaved, docReleased, error, assigned, unlocked, skipped, flagged } = await searchParams;
-  const bundle = await getAdminClientBundle(id);
+  const { scheduled, recordingSaved, docReleased, error, assigned, unlocked, skipped, flagged, enrollmentId } =
+    await searchParams;
+  const bundle = await getAdminClientBundle(id, sanitizeUuid(enrollmentId ?? ""));
   if (!bundle) notFound();
 
   const {
@@ -103,6 +106,7 @@ export default async function AdminClientProgrammePage({ params, searchParams }:
     sharedPrivateAnswers,
     dailyCheckIns,
     activityEvents,
+    enrollmentHistory,
     dataErrors,
   } = bundle;
 
@@ -193,6 +197,35 @@ export default async function AdminClientProgrammePage({ params, searchParams }:
           <Link href={`/admin/clients/${id}/programme/`} className="button button-small button-secondary">
             Refresh results
           </Link>
+        </section>
+      ) : null}
+      {enrollmentHistory.length > 1 ? (
+        <section className="dashboard-panel">
+          <h2>Programme history</h2>
+          <p className="dashboard-inline-note">
+            Older enrolments are preserved and are not merged into the current results.
+          </p>
+          <ul className="dashboard-session-list">
+            {enrollmentHistory.map((history) => (
+              <li key={history.id} className="dashboard-session-item">
+                <div>
+                  <strong>{history.id === enrollment?.id ? "Current enrolment" : "Historical enrolment"}</strong>
+                  <p className="dashboard-inline-note">
+                    Version {history.programme_version ?? "—"} · {history.status} · created {history.created_at.slice(0, 10)}
+                    {history.journey_completed_at ? ` · completed ${history.journey_completed_at.slice(0, 10)}` : ""}
+                  </p>
+                  {history.id !== enrollment?.id ? (
+                    <Link
+                      href={`/admin/clients/${id}/programme/?enrollmentId=${history.id}`}
+                      className="button button-small button-secondary"
+                    >
+                      Review this journey
+                    </Link>
+                  ) : null}
+                </div>
+              </li>
+            ))}
+          </ul>
         </section>
       ) : null}
 

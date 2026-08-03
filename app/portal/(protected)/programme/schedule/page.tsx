@@ -26,6 +26,7 @@ type PageProps = {
 const errorMessages: Record<string, string> = {
   "invalid-slot": "Please choose one of the four session times below.",
   "save-failed": "We could not save your schedule right now. Please try again.",
+  "slot-full": "That coaching slot is currently full. Please choose another available time.",
 };
 
 export default async function PortalProgrammeSchedulePage({ searchParams }: PageProps) {

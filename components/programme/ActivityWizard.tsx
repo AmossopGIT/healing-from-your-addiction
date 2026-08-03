@@ -152,7 +152,9 @@ export function ActivityWizard({
   return (
     <section className="need-help-wizard programme-activity-wizard">
       {previewMode ? (
-        <p className="dashboard-inline-note">Preview mode — answers stay on this page and are not saved to a client.</p>
+        <p className="programme-activity-preview-note dashboard-inline-note">
+          Preview mode — answers stay on this page and are not saved to a client.
+        </p>
       ) : null}
       <div className="need-help-wizard-progress" aria-hidden="true">
         <div className="need-help-wizard-progress-bar">
@@ -160,19 +162,22 @@ export function ActivityWizard({
         </div>
         <p className="need-help-wizard-progress-label">{progressPercent}% complete</p>
       </div>
-      <p className="eyebrow">
-        Week {activity.weekNumber}
-        {activity.dayNumber && activity.dayNumber > 0 ? ` · Day ${activity.dayNumber}` : ""}
-        {activity.origin === "platform" ? " · Extra practice" : ""}
-      </p>
-      <h2 ref={headingRef} tabIndex={-1}>
-        {activity.title}
-      </h2>
-
-      {status === "completed" && !previewMode ? (
-        <p className="dashboard-inline-note dashboard-success-note">You have completed this activity. You can revisit your answers below.</p>
-      ) : null}
-      {previewSaved ? <p className="dashboard-inline-note dashboard-success-note">Preview completed locally.</p> : null}
+      <div className="programme-activity-header">
+        <p className="eyebrow">
+          Week {activity.weekNumber}
+          {activity.dayNumber && activity.dayNumber > 0 ? ` · Day ${activity.dayNumber}` : ""}
+          {activity.origin === "platform" ? " · Extra practice" : ""}
+        </p>
+        <h2 ref={headingRef} tabIndex={-1}>
+          {activity.title}
+        </h2>
+        {status === "completed" && !previewMode ? (
+          <p className="dashboard-inline-note dashboard-success-note">
+            You have completed this activity. You can revisit your answers below.
+          </p>
+        ) : null}
+        {previewSaved ? <p className="dashboard-inline-note dashboard-success-note">Preview completed locally.</p> : null}
+      </div>
 
       {current === "content" ? (
         <div className="programme-activity-content">
@@ -309,9 +314,9 @@ export function ActivityWizard({
         </div>
       )}
 
-      {error ? <p className="dashboard-inline-note dashboard-error-note">{error}</p> : null}
+      {error ? <p className="programme-activity-feedback dashboard-inline-note dashboard-error-note">{error}</p> : null}
 
-      <div className="need-help-wizard-actions">
+      <div className="need-help-wizard-actions programme-activity-actions">
         <button type="button" className="button button-secondary" disabled={step === 0 || pending} onClick={() => setStep((value) => Math.max(0, value - 1))}>
           Back
         </button>

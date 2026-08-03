@@ -37,7 +37,7 @@ export type ConsultationStep = {
   fields: ConsultationField[];
 };
 
-export const CONSULTATION_BLANK_PDF_PATH = "/forms/hypnotherapy-client-consultation-form.pdf";
+export const CONSULTATION_BLANK_PDF_PATH = "/api/portal/consultation/blank/";
 
 export const CONSULTATION_STEPS: ConsultationStep[] = [
   {

@@ -113,6 +113,29 @@ export default async function PortalProgrammePage({ searchParams }: PageProps) {
         </p>
       </section>
 
+      {bundle.enrollmentHistory.length > 1 ? (
+        <section className="dashboard-panel">
+          <h2>Your programme history</h2>
+          <p className="dashboard-inline-note">
+            Previous journeys remain preserved. Your current journey is shown first.
+          </p>
+          <ul className="dashboard-session-list">
+            {bundle.enrollmentHistory.map((history, index) => (
+              <li key={history.id} className="dashboard-session-item">
+                <div>
+                  <strong>{index === 0 ? "Current journey" : "Previous journey"}</strong>
+                  <p className="dashboard-inline-note">
+                    Version {history.programme_version ?? "—"} · {history.status} · started{" "}
+                    {history.journey_started_at?.slice(0, 10) ?? "not started"}
+                    {history.journey_completed_at ? ` · completed ${history.journey_completed_at.slice(0, 10)}` : ""}
+                  </p>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
+
       {scheduled ? (
         <p className="dashboard-inline-note dashboard-success-note">
           Your sessions are booked. They are listed below — you can add them to your own calendar.

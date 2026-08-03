@@ -10,6 +10,7 @@ import { createClient } from "@/lib/supabase/server";
 import { getAuthProfile } from "@/lib/supabase/auth";
 import { createMetadata } from "@/lib/seo";
 import type { ClientActivityProgress } from "@/types/database";
+import { recordProgrammeEvent } from "@/lib/programme/interactive/events";
 
 export const dynamic = "force-dynamic";
 
@@ -78,6 +79,23 @@ export default async function PortalProgrammeActivityPage({ params, searchParams
   if (!progress || progress.status === "locked") {
     redirect("/portal/programme/?error=locked");
   }
+
+  const eventNow = new Date();
+  await recordProgrammeEvent({
+    supabase,
+    enrollmentId: bundle.enrollment.id,
+    clientProfileId: bundle.clientProfile.id,
+    programmeSlug: definition.slug,
+    programmeVersion: definition.version,
+    moduleId: activity.moduleId,
+    activityId: activity.id,
+    eventType: progress.started_at ? "viewed" : "started",
+    actorRole: "client",
+    actorId: profile.id,
+    idempotencyKey: progress.started_at
+      ? `${bundle.enrollment.id}:${activity.id}:viewed:${eventNow.toISOString().slice(0, 10)}`
+      : `${bundle.enrollment.id}:${activity.id}:started`,
+  });
 
   return (
     <div className="dashboard-stack">

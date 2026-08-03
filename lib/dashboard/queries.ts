@@ -121,6 +121,11 @@ export async function getClientEnrollmentBundle(userId: string) {
     .order("created_at", { ascending: false })
     .limit(1)
     .maybeSingle();
+  const { data: enrollmentHistory } = await supabase
+    .from("enrollments")
+    .select("id, template_id, status, programme_version, created_at, journey_started_at, journey_completed_at, last_activity_at")
+    .eq("client_profile_id", clientProfile.id)
+    .order("created_at", { ascending: false });
 
   if (!enrollment) {
     return {
@@ -136,6 +141,7 @@ export async function getClientEnrollmentBundle(userId: string) {
       programmeDocs: [] as ProgrammeDoc[],
       activityProgress: [] as ClientActivityProgress[],
       activityEvents: [] as ProgrammeActivityEvent[],
+      enrollmentHistory: enrollmentHistory ?? [],
     };
   }
 
@@ -201,12 +207,16 @@ export async function getClientEnrollmentBundle(userId: string) {
     programmeDocs: (programmeDocs as ProgrammeDoc[]) ?? [],
     activityProgress: (activityProgress as ClientActivityProgress[]) ?? [],
     activityEvents: (activityEvents as ProgrammeActivityEvent[]) ?? [],
+    enrollmentHistory: enrollmentHistory ?? [],
   };
 }
 
-export async function getAdminClientBundle(clientProfileId: string) {
+export async function getAdminClientBundle(clientProfileId: string, requestedEnrollmentId?: string | null) {
   const supabase = await createClient();
   const dataErrors: string[] = [];
+  const {
+    data: { user: adminUser },
+  } = await supabase.auth.getUser();
 
   const { data: clientProfile, error: clientProfileError } = await supabase
     .from("client_profiles")
@@ -226,14 +236,22 @@ export async function getAdminClientBundle(clientProfileId: string) {
     .single();
   if (profileError) dataErrors.push(`Profile: ${profileError.message}`);
 
-  const { data: enrollment, error: enrollmentError } = await supabase
+  let enrollmentQuery = supabase
     .from("enrollments")
     .select("*")
-    .eq("client_profile_id", clientProfileId)
+    .eq("client_profile_id", clientProfileId);
+  if (requestedEnrollmentId) enrollmentQuery = enrollmentQuery.eq("id", requestedEnrollmentId);
+  const { data: enrollment, error: enrollmentError } = await enrollmentQuery
     .order("created_at", { ascending: false })
     .limit(1)
     .maybeSingle();
   if (enrollmentError) dataErrors.push(`Enrollment: ${enrollmentError.message}`);
+  const { data: enrollmentHistory, error: enrollmentHistoryError } = await supabase
+    .from("enrollments")
+    .select("id, template_id, status, programme_version, created_at, journey_started_at, journey_completed_at, last_activity_at")
+    .eq("client_profile_id", clientProfileId)
+    .order("created_at", { ascending: false });
+  if (enrollmentHistoryError) dataErrors.push(`Enrollment history: ${enrollmentHistoryError.message}`);
 
   const { data: templates, error: templatesError } = await supabase
     .from("programme_templates")
@@ -366,6 +384,18 @@ export async function getAdminClientBundle(clientProfileId: string) {
     sharedPrivateAnswers = (privateAnswersResult.data as ClientActivityPrivateAnswer[]) ?? [];
     dailyCheckIns = (checkInsResult.data as ClientDailyCheckIn[]) ?? [];
     activityEvents = (activityEventsResult.data as ProgrammeActivityEvent[]) ?? [];
+    if (adminUser && sharedPrivateAnswers.length) {
+      const { error: auditError } = await supabase.from("private_answer_access_audit").insert(
+        sharedPrivateAnswers.map((answer) => ({
+          progress_id: answer.progress_id,
+          enrollment_id: answer.enrollment_id,
+          client_profile_id: answer.client_profile_id,
+          accessed_by: adminUser.id,
+          reason: "programme_review",
+        })),
+      );
+      if (auditError) dataErrors.push(`Private answer audit: ${auditError.message}`);
+    }
   }
 
   return {
@@ -387,6 +417,7 @@ export async function getAdminClientBundle(clientProfileId: string) {
     sharedPrivateAnswers,
     dailyCheckIns,
     activityEvents,
+    enrollmentHistory: enrollmentHistory ?? [],
     dataErrors,
   };
 }

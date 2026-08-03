@@ -164,6 +164,16 @@ export type ClientActivityPrivateAnswer = {
   updated_at: string;
 };
 
+export type PrivateAnswerAccessAudit = {
+  id: string;
+  progress_id: string;
+  enrollment_id: string;
+  client_profile_id: string;
+  accessed_by: string;
+  accessed_at: string;
+  reason: string;
+};
+
 export type ProgrammeActivityEventType =
   | "started"
   | "viewed"
@@ -697,6 +707,17 @@ export type Database = {
           shared_with_admin?: boolean;
         },
         Partial<ClientActivityPrivateAnswer>
+      >;
+      private_answer_access_audit: TableDef<
+        PrivateAnswerAccessAudit,
+        {
+          progress_id: string;
+          enrollment_id: string;
+          client_profile_id: string;
+          accessed_by: string;
+          reason?: string;
+        },
+        Partial<PrivateAnswerAccessAudit>
       >;
       programme_activity_events: TableDef<
         ProgrammeActivityEvent,
