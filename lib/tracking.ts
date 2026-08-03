@@ -101,3 +101,31 @@ export function trackEmailClick(linkLocation: string, email?: string) {
 export function trackPhoneClick(linkLocation: string) {
   pushDataLayer("phone_click", { link_location: linkLocation });
 }
+
+export type ProgrammeTrackingPayload = {
+  programme_slug?: string;
+  programme_version?: number;
+  module_id?: string;
+  activity_id?: string;
+  activity_type?: string;
+  event_id?: string;
+  [key: string]: unknown;
+};
+
+/**
+ * Consent-aware programme analytics observation layer only.
+ * Never treat this as completion truth — server programme_activity_events is authoritative.
+ * Never pass free-text answers or clinical notes.
+ */
+export function trackProgrammeEvent(eventName: string, payload: ProgrammeTrackingPayload = {}) {
+  const safePayload: ProgrammeTrackingPayload = {
+    programme_slug: payload.programme_slug,
+    programme_version: payload.programme_version,
+    module_id: payload.module_id,
+    activity_id: payload.activity_id,
+    activity_type: payload.activity_type,
+    event_id: payload.event_id,
+  };
+
+  pushDataLayer(eventName, safePayload);
+}

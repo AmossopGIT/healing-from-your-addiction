@@ -397,7 +397,7 @@ export const artGallery: readonly ArtGalleryItem[] = [
     alt: "Minimal watercolor illustration of a magnifying glass over a gentle loop, suggesting understanding a pattern.",
     prompt: `${basePrompt} Show a magnifying glass over a gentle circular pathway to suggest understanding the pattern.`,
     palette: sharedPalette,
-    usage: "Process step artwork for pattern mapping and awareness.",
+    usage: "Process step artwork for pattern mapping, awareness, and the Addiction Healing Readiness Assessment.",
   },
   {
     id: "process-support",

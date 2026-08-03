@@ -1,0 +1,1963 @@
+{
+  "slug": "social-media",
+  "title": "Social Media Addiction",
+  "category": "behavioral",
+  "status": "ready",
+  "version": 2,
+  "sourceFile": "Social media addiction.pdf",
+  "sourceStatus": "extracted",
+  "needsManualReview": false,
+  "description": "These daily affirmations are designed to support individuals recovering from social media addiction.\nHealing is a journey of reclaiming your time, attention, self-worth, and emotional well-being. These\naffirmations encourage mindful technology use, authentic self-acceptance, healthy relationships, and\nintentional living. They are intended to complement digital wellness practices, counseling, accountability,\nand supportive relationships.",
+  "safety": {
+    "disclaimer": "This programme complements counselling, hypnotherapy, EFT, and trusted accountability. It is not a medical cure.",
+    "reminder": "Social media is a valuable tool when used with intention and healthy boundaries. If social media use\nis affecting your mental health, sleep, relationships, work, or self-esteem, reaching out to a mental\nhealth professional, trusted friend, or support group can help. Recovery is not about eliminating\ntechnology-it is about using it in ways that support your well-being, values, and goals. Every\nintentional choice is a step toward greater freedom and balance.\n• \n• \n• \n• \n• \n• \n• \n• \n• \n• \n•",
+    "escalation": null,
+    "requiresMedicalSupportNotice": false
+  },
+  "weekCount": 4,
+  "dayCount": 20,
+  "modules": [
+    {
+      "id": "social-media-week-1",
+      "number": 1,
+      "title": "Awareness & Commitment",
+      "theme": "Choosing Presence Over Scrolling",
+      "focus": [
+        "I recognize when social media enhances my life and when it distracts me.",
+        "I choose intentional use instead of automatic scrolling.",
+        "Every mindful choice strengthens my self-control."
+      ]
+    },
+    {
+      "id": "social-media-week-2",
+      "number": 2,
+      "title": "Healing & Self-Acceptance",
+      "theme": "Reconnecting with My Authentic Self",
+      "focus": [
+        "I embrace my authentic self without comparison.",
+        "I value real relationships over online approval.",
+        "My confidence grows from within."
+      ]
+    },
+    {
+      "id": "social-media-week-3",
+      "number": 3,
+      "title": "Strength & Growth",
+      "theme": "Creating Healthy Habits",
+      "focus": [
+        "I create healthy boundaries with technology.",
+        "I replace screen time with meaningful activities.",
+        "I protect my attention because it is one of my greatest strengths."
+      ]
+    },
+    {
+      "id": "social-media-week-4",
+      "number": 4,
+      "title": "Freedom & Purpose",
+      "theme": "Living Intentionally",
+      "focus": [
+        "I live intentionally and with purpose.",
+        "My life is richer when I am fully present.",
+        "I choose balance, gratitude, and authentic connection every day."
+      ]
+    }
+  ],
+  "activities": [
+    {
+      "id": "social-media-orientation",
+      "moduleId": "social-media-week-1",
+      "type": "orientation",
+      "title": "Begin your healing journey",
+      "dayNumber": 0,
+      "weekNumber": 1,
+      "points": 10,
+      "sortOrder": 0,
+      "prompt": "These daily affirmations are designed to support individuals recovering from social media addiction.\nHealing is a journey of reclaiming your time, attention, self-worth, and emotional well-being. These\naffirmations encourage mindful technology use, authentic self-acceptance, healthy relationships, and\nintentional living. They are intended to complement digital wellness practices, counseling, accountability,\nand supportive relationships.",
+      "fields": [
+        {
+          "key": "intention",
+          "label": "What would a freer week look like for you?",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "social-media-week-1-focus",
+      "moduleId": "social-media-week-1",
+      "type": "weekly_focus",
+      "title": "Week 1 focus: Awareness & Commitment",
+      "dayNumber": null,
+      "weekNumber": 1,
+      "points": 8,
+      "sortOrder": 1,
+      "prompt": "Choosing Presence Over Scrolling",
+      "focusItems": [
+        "I recognize when social media enhances my life and when it distracts me.",
+        "I choose intentional use instead of automatic scrolling.",
+        "Every mindful choice strengthens my self-control."
+      ],
+      "fields": [
+        {
+          "key": "focus_choice",
+          "label": "Which focus statement will guide you this week?",
+          "kind": "single_choice",
+          "required": true,
+          "options": [
+            "I recognize when social media enhances my life and when it distracts me.",
+            "I choose intentional use instead of automatic scrolling.",
+            "Every mindful choice strengthens my self-control."
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "support_plan",
+          "label": "One small action that will support this focus",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "social-media-day-1",
+      "moduleId": "social-media-week-1",
+      "type": "daily_affirmation",
+      "title": "Day 1 affirmation",
+      "dayNumber": 1,
+      "weekNumber": 1,
+      "points": 5,
+      "sortOrder": 2,
+      "affirmation": "Today, I choose to be fully present in my life instead of constantly seeking validation online.",
+      "fields": [
+        {
+          "key": "mood",
+          "label": "How are you feeling right now?",
+          "kind": "mood",
+          "required": true,
+          "options": [
+            "calm",
+            "steady",
+            "low",
+            "anxious",
+            "irritable"
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "urge_level",
+          "label": "Urge intensity right now (0-5)",
+          "kind": "scale",
+          "required": true,
+          "min": 0,
+          "max": 5,
+          "privateByDefault": false
+        },
+        {
+          "key": "pause_taken",
+          "label": "I took a short pause before reacting",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        },
+        {
+          "key": "practice_done",
+          "label": "I sat with today's affirmation",
+          "kind": "checkbox",
+          "required": true,
+          "privateByDefault": false
+        },
+        {
+          "key": "private_note",
+          "label": "Optional private note (only shared if you choose)",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share today's note with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "social-media-day-2",
+      "moduleId": "social-media-week-1",
+      "type": "daily_affirmation",
+      "title": "Day 2 affirmation",
+      "dayNumber": 2,
+      "weekNumber": 1,
+      "points": 5,
+      "sortOrder": 3,
+      "affirmation": "My worth is not measured by likes, followers, comments, or shares. My value comes from who I am.",
+      "fields": [
+        {
+          "key": "mood",
+          "label": "How are you feeling right now?",
+          "kind": "mood",
+          "required": true,
+          "options": [
+            "calm",
+            "steady",
+            "low",
+            "anxious",
+            "irritable"
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "urge_level",
+          "label": "Urge intensity right now (0-5)",
+          "kind": "scale",
+          "required": true,
+          "min": 0,
+          "max": 5,
+          "privateByDefault": false
+        },
+        {
+          "key": "pause_taken",
+          "label": "I took a short pause before reacting",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        },
+        {
+          "key": "practice_done",
+          "label": "I sat with today's affirmation",
+          "kind": "checkbox",
+          "required": true,
+          "privateByDefault": false
+        },
+        {
+          "key": "private_note",
+          "label": "Optional private note (only shared if you choose)",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share today's note with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "social-media-day-3",
+      "moduleId": "social-media-week-1",
+      "type": "daily_affirmation",
+      "title": "Day 3 affirmation",
+      "dayNumber": 3,
+      "weekNumber": 1,
+      "points": 5,
+      "sortOrder": 4,
+      "affirmation": "I am stronger than the urge to check my phone. I choose presence over distraction.",
+      "fields": [
+        {
+          "key": "mood",
+          "label": "How are you feeling right now?",
+          "kind": "mood",
+          "required": true,
+          "options": [
+            "calm",
+            "steady",
+            "low",
+            "anxious",
+            "irritable"
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "urge_level",
+          "label": "Urge intensity right now (0-5)",
+          "kind": "scale",
+          "required": true,
+          "min": 0,
+          "max": 5,
+          "privateByDefault": false
+        },
+        {
+          "key": "pause_taken",
+          "label": "I took a short pause before reacting",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        },
+        {
+          "key": "practice_done",
+          "label": "I sat with today's affirmation",
+          "kind": "checkbox",
+          "required": true,
+          "privateByDefault": false
+        },
+        {
+          "key": "private_note",
+          "label": "Optional private note (only shared if you choose)",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share today's note with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "social-media-day-3-trigger-map",
+      "moduleId": "social-media-week-1",
+      "type": "trigger_map",
+      "title": "Day 3 trigger map",
+      "dayNumber": 3,
+      "weekNumber": 1,
+      "points": 10,
+      "sortOrder": 5,
+      "prompt": "Map the loop gently: trigger, urge, old response, and a wiser next step.",
+      "fields": [
+        {
+          "key": "trigger",
+          "label": "What usually triggers the urge?",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        },
+        {
+          "key": "urge",
+          "label": "What does the urge feel like in your body?",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        },
+        {
+          "key": "replacement",
+          "label": "What healthier response can you try next time?",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        }
+      ],
+      "origin": "platform"
+    },
+    {
+      "id": "social-media-day-4",
+      "moduleId": "social-media-week-1",
+      "type": "daily_affirmation",
+      "title": "Day 4 affirmation",
+      "dayNumber": 4,
+      "weekNumber": 1,
+      "points": 5,
+      "sortOrder": 6,
+      "affirmation": "I release the fear of missing out and embrace the joy of living in the present moment.",
+      "fields": [
+        {
+          "key": "mood",
+          "label": "How are you feeling right now?",
+          "kind": "mood",
+          "required": true,
+          "options": [
+            "calm",
+            "steady",
+            "low",
+            "anxious",
+            "irritable"
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "urge_level",
+          "label": "Urge intensity right now (0-5)",
+          "kind": "scale",
+          "required": true,
+          "min": 0,
+          "max": 5,
+          "privateByDefault": false
+        },
+        {
+          "key": "pause_taken",
+          "label": "I took a short pause before reacting",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        },
+        {
+          "key": "practice_done",
+          "label": "I sat with today's affirmation",
+          "kind": "checkbox",
+          "required": true,
+          "privateByDefault": false
+        },
+        {
+          "key": "private_note",
+          "label": "Optional private note (only shared if you choose)",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share today's note with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "social-media-day-5",
+      "moduleId": "social-media-week-1",
+      "type": "daily_affirmation",
+      "title": "Day 5 affirmation",
+      "dayNumber": 5,
+      "weekNumber": 1,
+      "points": 5,
+      "sortOrder": 7,
+      "affirmation": "Every moment I spend offline strengthens my peace, focus, and emotional well-being.",
+      "fields": [
+        {
+          "key": "mood",
+          "label": "How are you feeling right now?",
+          "kind": "mood",
+          "required": true,
+          "options": [
+            "calm",
+            "steady",
+            "low",
+            "anxious",
+            "irritable"
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "urge_level",
+          "label": "Urge intensity right now (0-5)",
+          "kind": "scale",
+          "required": true,
+          "min": 0,
+          "max": 5,
+          "privateByDefault": false
+        },
+        {
+          "key": "pause_taken",
+          "label": "I took a short pause before reacting",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        },
+        {
+          "key": "practice_done",
+          "label": "I sat with today's affirmation",
+          "kind": "checkbox",
+          "required": true,
+          "privateByDefault": false
+        },
+        {
+          "key": "private_note",
+          "label": "Optional private note (only shared if you choose)",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share today's note with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "social-media-day-5-reflection",
+      "moduleId": "social-media-week-1",
+      "type": "reflection",
+      "title": "Day 5 recovery reflection",
+      "dayNumber": 5,
+      "weekNumber": 1,
+      "points": 8,
+      "sortOrder": 8,
+      "prompt": "Today I chose to be present. Every time I set my phone down, enjoyed a real\nconversation, appreciated a quiet moment, or invested my energy in what truly\nmatters, I strengthened my well-being. I celebrate today's progress, release today's\ndistractions, and welcome tomorrow with clarity, gratitude, and intention.",
+      "fields": [
+        {
+          "key": "what_helped",
+          "label": "What helped you choose a healthier option today?",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share this reflection with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "social-media-week-2-focus",
+      "moduleId": "social-media-week-2",
+      "type": "weekly_focus",
+      "title": "Week 2 focus: Healing & Self-Acceptance",
+      "dayNumber": null,
+      "weekNumber": 2,
+      "points": 8,
+      "sortOrder": 9,
+      "prompt": "Reconnecting with My Authentic Self",
+      "focusItems": [
+        "I embrace my authentic self without comparison.",
+        "I value real relationships over online approval.",
+        "My confidence grows from within."
+      ],
+      "fields": [
+        {
+          "key": "focus_choice",
+          "label": "Which focus statement will guide you this week?",
+          "kind": "single_choice",
+          "required": true,
+          "options": [
+            "I embrace my authentic self without comparison.",
+            "I value real relationships over online approval.",
+            "My confidence grows from within."
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "support_plan",
+          "label": "One small action that will support this focus",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "social-media-day-6",
+      "moduleId": "social-media-week-2",
+      "type": "daily_affirmation",
+      "title": "Day 6 affirmation",
+      "dayNumber": 6,
+      "weekNumber": 2,
+      "points": 5,
+      "sortOrder": 10,
+      "affirmation": "I accept myself completely without comparing my life to the carefully curated lives of others.",
+      "fields": [
+        {
+          "key": "mood",
+          "label": "How are you feeling right now?",
+          "kind": "mood",
+          "required": true,
+          "options": [
+            "calm",
+            "steady",
+            "low",
+            "anxious",
+            "irritable"
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "urge_level",
+          "label": "Urge intensity right now (0-5)",
+          "kind": "scale",
+          "required": true,
+          "min": 0,
+          "max": 5,
+          "privateByDefault": false
+        },
+        {
+          "key": "pause_taken",
+          "label": "I took a short pause before reacting",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        },
+        {
+          "key": "practice_done",
+          "label": "I sat with today's affirmation",
+          "kind": "checkbox",
+          "required": true,
+          "privateByDefault": false
+        },
+        {
+          "key": "private_note",
+          "label": "Optional private note (only shared if you choose)",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share today's note with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "social-media-day-7",
+      "moduleId": "social-media-week-2",
+      "type": "daily_affirmation",
+      "title": "Day 7 affirmation",
+      "dayNumber": 7,
+      "weekNumber": 2,
+      "points": 5,
+      "sortOrder": 11,
+      "affirmation": "I forgive myself for time lost and focus on creating meaningful moments today.",
+      "fields": [
+        {
+          "key": "mood",
+          "label": "How are you feeling right now?",
+          "kind": "mood",
+          "required": true,
+          "options": [
+            "calm",
+            "steady",
+            "low",
+            "anxious",
+            "irritable"
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "urge_level",
+          "label": "Urge intensity right now (0-5)",
+          "kind": "scale",
+          "required": true,
+          "min": 0,
+          "max": 5,
+          "privateByDefault": false
+        },
+        {
+          "key": "pause_taken",
+          "label": "I took a short pause before reacting",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        },
+        {
+          "key": "practice_done",
+          "label": "I sat with today's affirmation",
+          "kind": "checkbox",
+          "required": true,
+          "privateByDefault": false
+        },
+        {
+          "key": "private_note",
+          "label": "Optional private note (only shared if you choose)",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share today's note with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "social-media-day-8",
+      "moduleId": "social-media-week-2",
+      "type": "daily_affirmation",
+      "title": "Day 8 affirmation",
+      "dayNumber": 8,
+      "weekNumber": 2,
+      "points": 5,
+      "sortOrder": 12,
+      "affirmation": "I deserve genuine relationships, real conversations, and authentic experiences.",
+      "fields": [
+        {
+          "key": "mood",
+          "label": "How are you feeling right now?",
+          "kind": "mood",
+          "required": true,
+          "options": [
+            "calm",
+            "steady",
+            "low",
+            "anxious",
+            "irritable"
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "urge_level",
+          "label": "Urge intensity right now (0-5)",
+          "kind": "scale",
+          "required": true,
+          "min": 0,
+          "max": 5,
+          "privateByDefault": false
+        },
+        {
+          "key": "pause_taken",
+          "label": "I took a short pause before reacting",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        },
+        {
+          "key": "practice_done",
+          "label": "I sat with today's affirmation",
+          "kind": "checkbox",
+          "required": true,
+          "privateByDefault": false
+        },
+        {
+          "key": "private_note",
+          "label": "Optional private note (only shared if you choose)",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share today's note with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "social-media-day-8-trigger-map",
+      "moduleId": "social-media-week-2",
+      "type": "trigger_map",
+      "title": "Day 8 trigger map",
+      "dayNumber": 8,
+      "weekNumber": 2,
+      "points": 10,
+      "sortOrder": 13,
+      "prompt": "Map the loop gently: trigger, urge, old response, and a wiser next step.",
+      "fields": [
+        {
+          "key": "trigger",
+          "label": "What usually triggers the urge?",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        },
+        {
+          "key": "urge",
+          "label": "What does the urge feel like in your body?",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        },
+        {
+          "key": "replacement",
+          "label": "What healthier response can you try next time?",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        }
+      ],
+      "origin": "platform"
+    },
+    {
+      "id": "social-media-day-9",
+      "moduleId": "social-media-week-2",
+      "type": "daily_affirmation",
+      "title": "Day 9 affirmation",
+      "dayNumber": 9,
+      "weekNumber": 2,
+      "points": 5,
+      "sortOrder": 14,
+      "affirmation": "I can experience boredom, loneliness, or stress without escaping into social media.",
+      "fields": [
+        {
+          "key": "mood",
+          "label": "How are you feeling right now?",
+          "kind": "mood",
+          "required": true,
+          "options": [
+            "calm",
+            "steady",
+            "low",
+            "anxious",
+            "irritable"
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "urge_level",
+          "label": "Urge intensity right now (0-5)",
+          "kind": "scale",
+          "required": true,
+          "min": 0,
+          "max": 5,
+          "privateByDefault": false
+        },
+        {
+          "key": "pause_taken",
+          "label": "I took a short pause before reacting",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        },
+        {
+          "key": "practice_done",
+          "label": "I sat with today's affirmation",
+          "kind": "checkbox",
+          "required": true,
+          "privateByDefault": false
+        },
+        {
+          "key": "private_note",
+          "label": "Optional private note (only shared if you choose)",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share today's note with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "social-media-day-10",
+      "moduleId": "social-media-week-2",
+      "type": "daily_affirmation",
+      "title": "Day 10 affirmation",
+      "dayNumber": 10,
+      "weekNumber": 2,
+      "points": 5,
+      "sortOrder": 15,
+      "affirmation": "My happiness grows when I focus on gratitude, purpose, and the people around me.",
+      "fields": [
+        {
+          "key": "mood",
+          "label": "How are you feeling right now?",
+          "kind": "mood",
+          "required": true,
+          "options": [
+            "calm",
+            "steady",
+            "low",
+            "anxious",
+            "irritable"
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "urge_level",
+          "label": "Urge intensity right now (0-5)",
+          "kind": "scale",
+          "required": true,
+          "min": 0,
+          "max": 5,
+          "privateByDefault": false
+        },
+        {
+          "key": "pause_taken",
+          "label": "I took a short pause before reacting",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        },
+        {
+          "key": "practice_done",
+          "label": "I sat with today's affirmation",
+          "kind": "checkbox",
+          "required": true,
+          "privateByDefault": false
+        },
+        {
+          "key": "private_note",
+          "label": "Optional private note (only shared if you choose)",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share today's note with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "social-media-day-10-reflection",
+      "moduleId": "social-media-week-2",
+      "type": "reflection",
+      "title": "Day 10 recovery reflection",
+      "dayNumber": 10,
+      "weekNumber": 2,
+      "points": 8,
+      "sortOrder": 16,
+      "prompt": "Today I chose to be present. Every time I set my phone down, enjoyed a real\nconversation, appreciated a quiet moment, or invested my energy in what truly\nmatters, I strengthened my well-being. I celebrate today's progress, release today's\ndistractions, and welcome tomorrow with clarity, gratitude, and intention.",
+      "fields": [
+        {
+          "key": "what_helped",
+          "label": "What helped you choose a healthier option today?",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share this reflection with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "social-media-day-10-values",
+      "moduleId": "social-media-week-2",
+      "type": "values_select",
+      "title": "Day 10 values check",
+      "dayNumber": 10,
+      "weekNumber": 2,
+      "points": 8,
+      "sortOrder": 17,
+      "prompt": "Choose the values you want your next choices to protect.",
+      "fields": [
+        {
+          "key": "values",
+          "label": "Values that matter most right now",
+          "kind": "multi_choice",
+          "required": true,
+          "options": [
+            "Peace",
+            "Honesty",
+            "Health",
+            "Family",
+            "Self-respect",
+            "Financial stability",
+            "Presence",
+            "Purpose"
+          ],
+          "privateByDefault": false
+        }
+      ],
+      "origin": "platform"
+    },
+    {
+      "id": "social-media-week-3-focus",
+      "moduleId": "social-media-week-3",
+      "type": "weekly_focus",
+      "title": "Week 3 focus: Strength & Growth",
+      "dayNumber": null,
+      "weekNumber": 3,
+      "points": 8,
+      "sortOrder": 18,
+      "prompt": "Creating Healthy Habits",
+      "focusItems": [
+        "I create healthy boundaries with technology.",
+        "I replace screen time with meaningful activities.",
+        "I protect my attention because it is one of my greatest strengths."
+      ],
+      "fields": [
+        {
+          "key": "focus_choice",
+          "label": "Which focus statement will guide you this week?",
+          "kind": "single_choice",
+          "required": true,
+          "options": [
+            "I create healthy boundaries with technology.",
+            "I replace screen time with meaningful activities.",
+            "I protect my attention because it is one of my greatest strengths."
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "support_plan",
+          "label": "One small action that will support this focus",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "social-media-day-11",
+      "moduleId": "social-media-week-3",
+      "type": "daily_affirmation",
+      "title": "Day 11 affirmation",
+      "dayNumber": 11,
+      "weekNumber": 3,
+      "points": 5,
+      "sortOrder": 19,
+      "affirmation": "I am in control of my attention, and I choose where my time and energy go.",
+      "fields": [
+        {
+          "key": "mood",
+          "label": "How are you feeling right now?",
+          "kind": "mood",
+          "required": true,
+          "options": [
+            "calm",
+            "steady",
+            "low",
+            "anxious",
+            "irritable"
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "urge_level",
+          "label": "Urge intensity right now (0-5)",
+          "kind": "scale",
+          "required": true,
+          "min": 0,
+          "max": 5,
+          "privateByDefault": false
+        },
+        {
+          "key": "pause_taken",
+          "label": "I took a short pause before reacting",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        },
+        {
+          "key": "practice_done",
+          "label": "I sat with today's affirmation",
+          "kind": "checkbox",
+          "required": true,
+          "privateByDefault": false
+        },
+        {
+          "key": "private_note",
+          "label": "Optional private note (only shared if you choose)",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share today's note with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "social-media-day-12",
+      "moduleId": "social-media-week-3",
+      "type": "daily_affirmation",
+      "title": "Day 12 affirmation",
+      "dayNumber": 12,
+      "weekNumber": 3,
+      "points": 5,
+      "sortOrder": 20,
+      "affirmation": "I replace endless scrolling with activities that nourish my mind, body, and spirit.",
+      "fields": [
+        {
+          "key": "mood",
+          "label": "How are you feeling right now?",
+          "kind": "mood",
+          "required": true,
+          "options": [
+            "calm",
+            "steady",
+            "low",
+            "anxious",
+            "irritable"
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "urge_level",
+          "label": "Urge intensity right now (0-5)",
+          "kind": "scale",
+          "required": true,
+          "min": 0,
+          "max": 5,
+          "privateByDefault": false
+        },
+        {
+          "key": "pause_taken",
+          "label": "I took a short pause before reacting",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        },
+        {
+          "key": "practice_done",
+          "label": "I sat with today's affirmation",
+          "kind": "checkbox",
+          "required": true,
+          "privateByDefault": false
+        },
+        {
+          "key": "private_note",
+          "label": "Optional private note (only shared if you choose)",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share today's note with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "social-media-day-13",
+      "moduleId": "social-media-week-3",
+      "type": "daily_affirmation",
+      "title": "Day 13 affirmation",
+      "dayNumber": 13,
+      "weekNumber": 3,
+      "points": 5,
+      "sortOrder": 21,
+      "affirmation": "Every healthy boundary I set with social media strengthens my confidence and self-discipline.",
+      "fields": [
+        {
+          "key": "mood",
+          "label": "How are you feeling right now?",
+          "kind": "mood",
+          "required": true,
+          "options": [
+            "calm",
+            "steady",
+            "low",
+            "anxious",
+            "irritable"
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "urge_level",
+          "label": "Urge intensity right now (0-5)",
+          "kind": "scale",
+          "required": true,
+          "min": 0,
+          "max": 5,
+          "privateByDefault": false
+        },
+        {
+          "key": "pause_taken",
+          "label": "I took a short pause before reacting",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        },
+        {
+          "key": "practice_done",
+          "label": "I sat with today's affirmation",
+          "kind": "checkbox",
+          "required": true,
+          "privateByDefault": false
+        },
+        {
+          "key": "private_note",
+          "label": "Optional private note (only shared if you choose)",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share today's note with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "social-media-day-13-trigger-map",
+      "moduleId": "social-media-week-3",
+      "type": "trigger_map",
+      "title": "Day 13 trigger map",
+      "dayNumber": 13,
+      "weekNumber": 3,
+      "points": 10,
+      "sortOrder": 22,
+      "prompt": "Map the loop gently: trigger, urge, old response, and a wiser next step.",
+      "fields": [
+        {
+          "key": "trigger",
+          "label": "What usually triggers the urge?",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        },
+        {
+          "key": "urge",
+          "label": "What does the urge feel like in your body?",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        },
+        {
+          "key": "replacement",
+          "label": "What healthier response can you try next time?",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        }
+      ],
+      "origin": "platform"
+    },
+    {
+      "id": "social-media-day-14",
+      "moduleId": "social-media-week-3",
+      "type": "daily_affirmation",
+      "title": "Day 14 affirmation",
+      "dayNumber": 14,
+      "weekNumber": 3,
+      "points": 5,
+      "sortOrder": 23,
+      "affirmation": "I choose meaningful connections in real life over constant digital engagement.",
+      "fields": [
+        {
+          "key": "mood",
+          "label": "How are you feeling right now?",
+          "kind": "mood",
+          "required": true,
+          "options": [
+            "calm",
+            "steady",
+            "low",
+            "anxious",
+            "irritable"
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "urge_level",
+          "label": "Urge intensity right now (0-5)",
+          "kind": "scale",
+          "required": true,
+          "min": 0,
+          "max": 5,
+          "privateByDefault": false
+        },
+        {
+          "key": "pause_taken",
+          "label": "I took a short pause before reacting",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        },
+        {
+          "key": "practice_done",
+          "label": "I sat with today's affirmation",
+          "kind": "checkbox",
+          "required": true,
+          "privateByDefault": false
+        },
+        {
+          "key": "private_note",
+          "label": "Optional private note (only shared if you choose)",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share today's note with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "social-media-day-15",
+      "moduleId": "social-media-week-3",
+      "type": "daily_affirmation",
+      "title": "Day 15 affirmation",
+      "dayNumber": 15,
+      "weekNumber": 3,
+      "points": 5,
+      "sortOrder": 24,
+      "affirmation": "The more present I become, the richer and more fulfilling my life becomes.",
+      "fields": [
+        {
+          "key": "mood",
+          "label": "How are you feeling right now?",
+          "kind": "mood",
+          "required": true,
+          "options": [
+            "calm",
+            "steady",
+            "low",
+            "anxious",
+            "irritable"
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "urge_level",
+          "label": "Urge intensity right now (0-5)",
+          "kind": "scale",
+          "required": true,
+          "min": 0,
+          "max": 5,
+          "privateByDefault": false
+        },
+        {
+          "key": "pause_taken",
+          "label": "I took a short pause before reacting",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        },
+        {
+          "key": "practice_done",
+          "label": "I sat with today's affirmation",
+          "kind": "checkbox",
+          "required": true,
+          "privateByDefault": false
+        },
+        {
+          "key": "private_note",
+          "label": "Optional private note (only shared if you choose)",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share today's note with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "social-media-day-15-reflection",
+      "moduleId": "social-media-week-3",
+      "type": "reflection",
+      "title": "Day 15 recovery reflection",
+      "dayNumber": 15,
+      "weekNumber": 3,
+      "points": 8,
+      "sortOrder": 25,
+      "prompt": "Today I chose to be present. Every time I set my phone down, enjoyed a real\nconversation, appreciated a quiet moment, or invested my energy in what truly\nmatters, I strengthened my well-being. I celebrate today's progress, release today's\ndistractions, and welcome tomorrow with clarity, gratitude, and intention.",
+      "fields": [
+        {
+          "key": "what_helped",
+          "label": "What helped you choose a healthier option today?",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share this reflection with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "social-media-day-15-values",
+      "moduleId": "social-media-week-3",
+      "type": "values_select",
+      "title": "Day 15 values check",
+      "dayNumber": 15,
+      "weekNumber": 3,
+      "points": 8,
+      "sortOrder": 26,
+      "prompt": "Choose the values you want your next choices to protect.",
+      "fields": [
+        {
+          "key": "values",
+          "label": "Values that matter most right now",
+          "kind": "multi_choice",
+          "required": true,
+          "options": [
+            "Peace",
+            "Honesty",
+            "Health",
+            "Family",
+            "Self-respect",
+            "Financial stability",
+            "Presence",
+            "Purpose"
+          ],
+          "privateByDefault": false
+        }
+      ],
+      "origin": "platform"
+    },
+    {
+      "id": "social-media-week-4-focus",
+      "moduleId": "social-media-week-4",
+      "type": "weekly_focus",
+      "title": "Week 4 focus: Freedom & Purpose",
+      "dayNumber": null,
+      "weekNumber": 4,
+      "points": 8,
+      "sortOrder": 27,
+      "prompt": "Living Intentionally",
+      "focusItems": [
+        "I live intentionally and with purpose.",
+        "My life is richer when I am fully present.",
+        "I choose balance, gratitude, and authentic connection every day."
+      ],
+      "fields": [
+        {
+          "key": "focus_choice",
+          "label": "Which focus statement will guide you this week?",
+          "kind": "single_choice",
+          "required": true,
+          "options": [
+            "I live intentionally and with purpose.",
+            "My life is richer when I am fully present.",
+            "I choose balance, gratitude, and authentic connection every day."
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "support_plan",
+          "label": "One small action that will support this focus",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "social-media-day-16",
+      "moduleId": "social-media-week-4",
+      "type": "daily_affirmation",
+      "title": "Day 16 affirmation",
+      "dayNumber": 16,
+      "weekNumber": 4,
+      "points": 5,
+      "sortOrder": 28,
+      "affirmation": "Technology is a tool that supports my goals-it does not control my thoughts, emotions, or time.",
+      "fields": [
+        {
+          "key": "mood",
+          "label": "How are you feeling right now?",
+          "kind": "mood",
+          "required": true,
+          "options": [
+            "calm",
+            "steady",
+            "low",
+            "anxious",
+            "irritable"
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "urge_level",
+          "label": "Urge intensity right now (0-5)",
+          "kind": "scale",
+          "required": true,
+          "min": 0,
+          "max": 5,
+          "privateByDefault": false
+        },
+        {
+          "key": "pause_taken",
+          "label": "I took a short pause before reacting",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        },
+        {
+          "key": "practice_done",
+          "label": "I sat with today's affirmation",
+          "kind": "checkbox",
+          "required": true,
+          "privateByDefault": false
+        },
+        {
+          "key": "private_note",
+          "label": "Optional private note (only shared if you choose)",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share today's note with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "social-media-day-17",
+      "moduleId": "social-media-week-4",
+      "type": "daily_affirmation",
+      "title": "Day 17 affirmation",
+      "dayNumber": 17,
+      "weekNumber": 4,
+      "points": 5,
+      "sortOrder": 29,
+      "affirmation": "I choose experiences over endless updates and meaningful memories over endless scrolling.",
+      "fields": [
+        {
+          "key": "mood",
+          "label": "How are you feeling right now?",
+          "kind": "mood",
+          "required": true,
+          "options": [
+            "calm",
+            "steady",
+            "low",
+            "anxious",
+            "irritable"
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "urge_level",
+          "label": "Urge intensity right now (0-5)",
+          "kind": "scale",
+          "required": true,
+          "min": 0,
+          "max": 5,
+          "privateByDefault": false
+        },
+        {
+          "key": "pause_taken",
+          "label": "I took a short pause before reacting",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        },
+        {
+          "key": "practice_done",
+          "label": "I sat with today's affirmation",
+          "kind": "checkbox",
+          "required": true,
+          "privateByDefault": false
+        },
+        {
+          "key": "private_note",
+          "label": "Optional private note (only shared if you choose)",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share today's note with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "social-media-day-18",
+      "moduleId": "social-media-week-4",
+      "type": "daily_affirmation",
+      "title": "Day 18 affirmation",
+      "dayNumber": 18,
+      "weekNumber": 4,
+      "points": 5,
+      "sortOrder": 30,
+      "affirmation": "I celebrate every moment I choose real life over virtual distraction.",
+      "fields": [
+        {
+          "key": "mood",
+          "label": "How are you feeling right now?",
+          "kind": "mood",
+          "required": true,
+          "options": [
+            "calm",
+            "steady",
+            "low",
+            "anxious",
+            "irritable"
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "urge_level",
+          "label": "Urge intensity right now (0-5)",
+          "kind": "scale",
+          "required": true,
+          "min": 0,
+          "max": 5,
+          "privateByDefault": false
+        },
+        {
+          "key": "pause_taken",
+          "label": "I took a short pause before reacting",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        },
+        {
+          "key": "practice_done",
+          "label": "I sat with today's affirmation",
+          "kind": "checkbox",
+          "required": true,
+          "privateByDefault": false
+        },
+        {
+          "key": "private_note",
+          "label": "Optional private note (only shared if you choose)",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share today's note with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "social-media-day-18-trigger-map",
+      "moduleId": "social-media-week-4",
+      "type": "trigger_map",
+      "title": "Day 18 trigger map",
+      "dayNumber": 18,
+      "weekNumber": 4,
+      "points": 10,
+      "sortOrder": 31,
+      "prompt": "Map the loop gently: trigger, urge, old response, and a wiser next step.",
+      "fields": [
+        {
+          "key": "trigger",
+          "label": "What usually triggers the urge?",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        },
+        {
+          "key": "urge",
+          "label": "What does the urge feel like in your body?",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        },
+        {
+          "key": "replacement",
+          "label": "What healthier response can you try next time?",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        }
+      ],
+      "origin": "platform"
+    },
+    {
+      "id": "social-media-day-19",
+      "moduleId": "social-media-week-4",
+      "type": "daily_affirmation",
+      "title": "Day 19 affirmation",
+      "dayNumber": 19,
+      "weekNumber": 4,
+      "points": 5,
+      "sortOrder": 32,
+      "affirmation": "I am creating a balanced life where my attention is guided by purpose, not habit.",
+      "fields": [
+        {
+          "key": "mood",
+          "label": "How are you feeling right now?",
+          "kind": "mood",
+          "required": true,
+          "options": [
+            "calm",
+            "steady",
+            "low",
+            "anxious",
+            "irritable"
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "urge_level",
+          "label": "Urge intensity right now (0-5)",
+          "kind": "scale",
+          "required": true,
+          "min": 0,
+          "max": 5,
+          "privateByDefault": false
+        },
+        {
+          "key": "pause_taken",
+          "label": "I took a short pause before reacting",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        },
+        {
+          "key": "practice_done",
+          "label": "I sat with today's affirmation",
+          "kind": "checkbox",
+          "required": true,
+          "privateByDefault": false
+        },
+        {
+          "key": "private_note",
+          "label": "Optional private note (only shared if you choose)",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share today's note with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "social-media-day-20",
+      "moduleId": "social-media-week-4",
+      "type": "daily_affirmation",
+      "title": "Day 20 affirmation",
+      "dayNumber": 20,
+      "weekNumber": 4,
+      "points": 5,
+      "sortOrder": 33,
+      "affirmation": "Today, I honor myself by choosing mindfulness, authentic relationships, personal growth, and\nfreedom from unhealthy social media habits.",
+      "fields": [
+        {
+          "key": "mood",
+          "label": "How are you feeling right now?",
+          "kind": "mood",
+          "required": true,
+          "options": [
+            "calm",
+            "steady",
+            "low",
+            "anxious",
+            "irritable"
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "urge_level",
+          "label": "Urge intensity right now (0-5)",
+          "kind": "scale",
+          "required": true,
+          "min": 0,
+          "max": 5,
+          "privateByDefault": false
+        },
+        {
+          "key": "pause_taken",
+          "label": "I took a short pause before reacting",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        },
+        {
+          "key": "practice_done",
+          "label": "I sat with today's affirmation",
+          "kind": "checkbox",
+          "required": true,
+          "privateByDefault": false
+        },
+        {
+          "key": "private_note",
+          "label": "Optional private note (only shared if you choose)",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share today's note with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "social-media-day-20-reflection",
+      "moduleId": "social-media-week-4",
+      "type": "reflection",
+      "title": "Day 20 recovery reflection",
+      "dayNumber": 20,
+      "weekNumber": 4,
+      "points": 8,
+      "sortOrder": 34,
+      "prompt": "Today I chose to be present. Every time I set my phone down, enjoyed a real\nconversation, appreciated a quiet moment, or invested my energy in what truly\nmatters, I strengthened my well-being. I celebrate today's progress, release today's\ndistractions, and welcome tomorrow with clarity, gratitude, and intention.",
+      "fields": [
+        {
+          "key": "what_helped",
+          "label": "What helped you choose a healthier option today?",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share this reflection with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "social-media-closing",
+      "moduleId": "social-media-week-4",
+      "type": "closing",
+      "title": "Closing affirmation and forward plan",
+      "dayNumber": 20,
+      "weekNumber": 4,
+      "points": 15,
+      "sortOrder": 35,
+      "affirmation": "I am not defined by my online presence or the opinions of others. I am defined by my character, my\nvalues, and my ability to live with purpose and authenticity. Every day I choose mindful technology\nuse, I reclaim my time, strengthen my relationships, and deepen my connection with myself and the\nworld around me. One moment, one choice, and one day at a time, I am creating a life of balance,\nconfidence, freedom, and genuine fulfillment.",
+      "fields": [
+        {
+          "key": "keep_doing",
+          "label": "What will you keep practising after this journey?",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        },
+        {
+          "key": "support_needed",
+          "label": "What support do you still want?",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share this closing plan with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    }
+  ],
+  "dailyReflection": "Today I chose to be present. Every time I set my phone down, enjoyed a real\nconversation, appreciated a quiet moment, or invested my energy in what truly\nmatters, I strengthened my well-being. I celebrate today's progress, release today's\ndistractions, and welcome tomorrow with clarity, gratitude, and intention.",
+  "closingAffirmation": "I am not defined by my online presence or the opinions of others. I am defined by my character, my\nvalues, and my ability to live with purpose and authenticity. Every day I choose mindful technology\nuse, I reclaim my time, strengthen my relationships, and deepen my connection with myself and the\nworld around me. One moment, one choice, and one day at a time, I am creating a life of balance,\nconfidence, freedom, and genuine fulfillment.",
+  "homeworkDefaults": [
+    {
+      "taskKey": "affirmations_daily",
+      "title": "Today's affirmation",
+      "taskType": "affirmations_daily",
+      "points": 5
+    },
+    {
+      "taskKey": "eft_daily",
+      "title": "EFT tapping",
+      "taskType": "eft_daily",
+      "points": 5
+    }
+  ],
+  "reviewStatus": "approved",
+  "sourceExcerpt": "Social Media Addiction\nThese daily affirmations are designed to support individuals recovering from social media addiction.\nHealing is a journey of reclaiming your time, attention, self-worth, and emotional well-being. These\naffirmations encourage mindful technology use, authenti",
+  "sourceChecksum": "8501e10d915fe088",
+  "cadence": {
+    "activityCadence": "daily",
+    "liveSessionCount": 8,
+    "liveSessionWeekdays": [
+      "tue",
+      "fri"
+    ],
+    "liveSessionTimeSlots": [
+      "11:00",
+      "16:00"
+    ],
+    "timezone": "Africa/Johannesburg",
+    "firstSessionDurationMinutes": 90,
+    "standardSessionDurationMinutes": 45
+  },
+  "dailyCheckIn": {
+    "includeMood": true,
+    "includeUrge": true,
+    "includePause": true,
+    "includePrivateNote": true,
+    "urgeMin": 0,
+    "urgeMax": 5,
+    "highUrgeThreshold": 4
+  },
+  "structure": {
+    "slug": "social-media",
+    "expectedWeekCount": 4,
+    "expectedDayCount": 20,
+    "sourceActivityTypes": [
+      "orientation",
+      "weekly_focus",
+      "daily_affirmation",
+      "reflection",
+      "closing"
+    ],
+    "optionalPlatformActivityTypes": [
+      "trigger_map",
+      "values_select"
+    ],
+    "reflectionDays": [
+      5,
+      10,
+      15,
+      20
+    ],
+    "platformExerciseDays": [
+      3,
+      8,
+      10,
+      13,
+      15,
+      18
+    ],
+    "reviewRequired": false
+  }
+}

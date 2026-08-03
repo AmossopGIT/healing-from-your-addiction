@@ -1,0 +1,1963 @@
+{
+  "slug": "adrenaline",
+  "title": "Adrenaline Addiction (Thrill-Seeking Behaviors)",
+  "category": "behavioral",
+  "status": "ready",
+  "version": 2,
+  "sourceFile": "Adrenaline addiction (thrill-seeking behaviors).pdf",
+  "sourceStatus": "extracted",
+  "needsManualReview": false,
+  "description": "These daily affirmations are designed to support individuals recovering from unhealthy thrill-seeking\nbehaviors and adrenaline addiction. Recovery is a journey of finding excitement through purpose rather\nthan danger , developing emotional balance, making wise decisions, and discovering lasting fulfillment\nwithout unnecessary risk. These affirmations encourage self-awareness, courage, resilience, patience, and\nintentional living. They are intended to complement professional counseling, healthy adventure activities,\nstress management, and support from trusted family, friends, or recovery communities.",
+  "safety": {
+    "disclaimer": "This programme complements counselling, hypnotherapy, EFT, and trusted accountability. It is not a medical cure.",
+    "reminder": "Adventure, challenge, and excitement can be healthy and life-giving when pursued with preparation,\nwisdom, and appropriate safety. Recovery from unhealthy thrill-seeking is not about avoiding\nadventure-it is about choosing experiences that enrich your life without placing yourself or others\nat unnecessary risk. With self-awareness, healthy coping strategies, supportive relationships, and\nprofessional guidance when needed, you can build a life filled with meaningful excitement,\nemotional balance, and lasting well-being. Every wise choice is a powerful step toward a healthier,\nmore fulfilling future.",
+    "escalation": null,
+    "requiresMedicalSupportNotice": false
+  },
+  "weekCount": 4,
+  "dayCount": 20,
+  "modules": [
+    {
+      "id": "adrenaline-week-1",
+      "number": 1,
+      "title": "Awareness & Commitment",
+      "theme": "Choosing Wisdom Over Impulse",
+      "focus": [
+        "I recognize the difference between healthy adventure and unnecessary risk.",
+        "My life and well-being are worth protecting.",
+        "Every wise decision strengthens my recovery."
+      ]
+    },
+    {
+      "id": "adrenaline-week-2",
+      "number": 2,
+      "title": "Healing & Self-Compassion",
+      "theme": "Discovering Lasting Fulfillment",
+      "focus": [
+        "I discover joy through meaningful experiences.",
+        "I learn healthy ways to cope with stress and emotional discomfort.",
+        "I replace impulsive reactions with thoughtful responses."
+      ]
+    },
+    {
+      "id": "adrenaline-week-3",
+      "number": 3,
+      "title": "Strength & Growth",
+      "theme": "Building Self-Control",
+      "focus": [
+        "Self-control is a sign of true courage.",
+        "I pursue challenges that help me grow without causing harm.",
+        "Every intentional choice strengthens my confidence and resilience."
+      ]
+    },
+    {
+      "id": "adrenaline-week-4",
+      "number": 4,
+      "title": "Freedom & Purpose",
+      "theme": "Living with Purpose",
+      "focus": [
+        "I build a life filled with purpose, balance, and meaningful adventure.",
+        "My courage is measured by my wisdom and integrity.",
+        "I embrace a future guided by thoughtful decisions, healthy excitement, and lasting fulfillment."
+      ]
+    }
+  ],
+  "activities": [
+    {
+      "id": "adrenaline-orientation",
+      "moduleId": "adrenaline-week-1",
+      "type": "orientation",
+      "title": "Begin your healing journey",
+      "dayNumber": 0,
+      "weekNumber": 1,
+      "points": 10,
+      "sortOrder": 0,
+      "prompt": "These daily affirmations are designed to support individuals recovering from unhealthy thrill-seeking\nbehaviors and adrenaline addiction. Recovery is a journey of finding excitement through purpose rather\nthan danger , developing emotional balance, making wise decisions, and discovering lasting fulfillment\nwithout unnecessary risk. These affirmations encourage self-awareness, courage, resilience, patience, and\nintentional living. They are intended to complement professional counseling, healthy adventure activities,\nstress management, and support from trusted family, friends, or recovery communities.",
+      "fields": [
+        {
+          "key": "intention",
+          "label": "What would a freer week look like for you?",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "adrenaline-week-1-focus",
+      "moduleId": "adrenaline-week-1",
+      "type": "weekly_focus",
+      "title": "Week 1 focus: Awareness & Commitment",
+      "dayNumber": null,
+      "weekNumber": 1,
+      "points": 8,
+      "sortOrder": 1,
+      "prompt": "Choosing Wisdom Over Impulse",
+      "focusItems": [
+        "I recognize the difference between healthy adventure and unnecessary risk.",
+        "My life and well-being are worth protecting.",
+        "Every wise decision strengthens my recovery."
+      ],
+      "fields": [
+        {
+          "key": "focus_choice",
+          "label": "Which focus statement will guide you this week?",
+          "kind": "single_choice",
+          "required": true,
+          "options": [
+            "I recognize the difference between healthy adventure and unnecessary risk.",
+            "My life and well-being are worth protecting.",
+            "Every wise decision strengthens my recovery."
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "support_plan",
+          "label": "One small action that will support this focus",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "adrenaline-day-1",
+      "moduleId": "adrenaline-week-1",
+      "type": "daily_affirmation",
+      "title": "Day 1 affirmation",
+      "dayNumber": 1,
+      "weekNumber": 1,
+      "points": 5,
+      "sortOrder": 2,
+      "affirmation": "Today, I choose wisdom over unnecessary risk. My life is valuable, and I protect it with every decision\nI make.",
+      "fields": [
+        {
+          "key": "mood",
+          "label": "How are you feeling right now?",
+          "kind": "mood",
+          "required": true,
+          "options": [
+            "calm",
+            "steady",
+            "low",
+            "anxious",
+            "irritable"
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "urge_level",
+          "label": "Urge intensity right now (0-5)",
+          "kind": "scale",
+          "required": true,
+          "min": 0,
+          "max": 5,
+          "privateByDefault": false
+        },
+        {
+          "key": "pause_taken",
+          "label": "I took a short pause before reacting",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        },
+        {
+          "key": "practice_done",
+          "label": "I sat with today's affirmation",
+          "kind": "checkbox",
+          "required": true,
+          "privateByDefault": false
+        },
+        {
+          "key": "private_note",
+          "label": "Optional private note (only shared if you choose)",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share today's note with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "adrenaline-day-2",
+      "moduleId": "adrenaline-week-1",
+      "type": "daily_affirmation",
+      "title": "Day 2 affirmation",
+      "dayNumber": 2,
+      "weekNumber": 1,
+      "points": 5,
+      "sortOrder": 3,
+      "affirmation": "I am stronger than the urge to chase excitement through dangerous or impulsive choices.",
+      "fields": [
+        {
+          "key": "mood",
+          "label": "How are you feeling right now?",
+          "kind": "mood",
+          "required": true,
+          "options": [
+            "calm",
+            "steady",
+            "low",
+            "anxious",
+            "irritable"
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "urge_level",
+          "label": "Urge intensity right now (0-5)",
+          "kind": "scale",
+          "required": true,
+          "min": 0,
+          "max": 5,
+          "privateByDefault": false
+        },
+        {
+          "key": "pause_taken",
+          "label": "I took a short pause before reacting",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        },
+        {
+          "key": "practice_done",
+          "label": "I sat with today's affirmation",
+          "kind": "checkbox",
+          "required": true,
+          "privateByDefault": false
+        },
+        {
+          "key": "private_note",
+          "label": "Optional private note (only shared if you choose)",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share today's note with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "adrenaline-day-3",
+      "moduleId": "adrenaline-week-1",
+      "type": "daily_affirmation",
+      "title": "Day 3 affirmation",
+      "dayNumber": 3,
+      "weekNumber": 1,
+      "points": 5,
+      "sortOrder": 4,
+      "affirmation": "My worth is not measured by how fearless I appear but by the wisdom and integrity with which I live.",
+      "fields": [
+        {
+          "key": "mood",
+          "label": "How are you feeling right now?",
+          "kind": "mood",
+          "required": true,
+          "options": [
+            "calm",
+            "steady",
+            "low",
+            "anxious",
+            "irritable"
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "urge_level",
+          "label": "Urge intensity right now (0-5)",
+          "kind": "scale",
+          "required": true,
+          "min": 0,
+          "max": 5,
+          "privateByDefault": false
+        },
+        {
+          "key": "pause_taken",
+          "label": "I took a short pause before reacting",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        },
+        {
+          "key": "practice_done",
+          "label": "I sat with today's affirmation",
+          "kind": "checkbox",
+          "required": true,
+          "privateByDefault": false
+        },
+        {
+          "key": "private_note",
+          "label": "Optional private note (only shared if you choose)",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share today's note with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "adrenaline-day-3-trigger-map",
+      "moduleId": "adrenaline-week-1",
+      "type": "trigger_map",
+      "title": "Day 3 trigger map",
+      "dayNumber": 3,
+      "weekNumber": 1,
+      "points": 10,
+      "sortOrder": 5,
+      "prompt": "Map the loop gently: trigger, urge, old response, and a wiser next step.",
+      "fields": [
+        {
+          "key": "trigger",
+          "label": "What usually triggers the urge?",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        },
+        {
+          "key": "urge",
+          "label": "What does the urge feel like in your body?",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        },
+        {
+          "key": "replacement",
+          "label": "What healthier response can you try next time?",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        }
+      ],
+      "origin": "platform"
+    },
+    {
+      "id": "adrenaline-day-4",
+      "moduleId": "adrenaline-week-1",
+      "type": "daily_affirmation",
+      "title": "Day 4 affirmation",
+      "dayNumber": 4,
+      "weekNumber": 1,
+      "points": 5,
+      "sortOrder": 6,
+      "affirmation": "I release the belief that I need constant excitement to feel alive. Peace, purpose, and balance bring\nlasting fulfillment.",
+      "fields": [
+        {
+          "key": "mood",
+          "label": "How are you feeling right now?",
+          "kind": "mood",
+          "required": true,
+          "options": [
+            "calm",
+            "steady",
+            "low",
+            "anxious",
+            "irritable"
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "urge_level",
+          "label": "Urge intensity right now (0-5)",
+          "kind": "scale",
+          "required": true,
+          "min": 0,
+          "max": 5,
+          "privateByDefault": false
+        },
+        {
+          "key": "pause_taken",
+          "label": "I took a short pause before reacting",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        },
+        {
+          "key": "practice_done",
+          "label": "I sat with today's affirmation",
+          "kind": "checkbox",
+          "required": true,
+          "privateByDefault": false
+        },
+        {
+          "key": "private_note",
+          "label": "Optional private note (only shared if you choose)",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share today's note with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "adrenaline-day-5",
+      "moduleId": "adrenaline-week-1",
+      "type": "daily_affirmation",
+      "title": "Day 5 affirmation",
+      "dayNumber": 5,
+      "weekNumber": 1,
+      "points": 5,
+      "sortOrder": 7,
+      "affirmation": "Every thoughtful decision I make strengthens my confidence, self-control, and future.",
+      "fields": [
+        {
+          "key": "mood",
+          "label": "How are you feeling right now?",
+          "kind": "mood",
+          "required": true,
+          "options": [
+            "calm",
+            "steady",
+            "low",
+            "anxious",
+            "irritable"
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "urge_level",
+          "label": "Urge intensity right now (0-5)",
+          "kind": "scale",
+          "required": true,
+          "min": 0,
+          "max": 5,
+          "privateByDefault": false
+        },
+        {
+          "key": "pause_taken",
+          "label": "I took a short pause before reacting",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        },
+        {
+          "key": "practice_done",
+          "label": "I sat with today's affirmation",
+          "kind": "checkbox",
+          "required": true,
+          "privateByDefault": false
+        },
+        {
+          "key": "private_note",
+          "label": "Optional private note (only shared if you choose)",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share today's note with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "adrenaline-day-5-reflection",
+      "moduleId": "adrenaline-week-1",
+      "type": "reflection",
+      "title": "Day 5 recovery reflection",
+      "dayNumber": 5,
+      "weekNumber": 1,
+      "points": 8,
+      "sortOrder": 8,
+      "prompt": "Today I chose wisdom over impulse. Every time I paused, considered the consequences,\nor chose a healthier challenge, I strengthened my recovery. I celebrate today's\nprogress, release today's mistakes without judgment, and welcome tomorrow with\n3\ncourage, clarity, and purpose. True strength is found in wise choices that protect the life\nI am building.",
+      "fields": [
+        {
+          "key": "what_helped",
+          "label": "What helped you choose a healthier option today?",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share this reflection with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "adrenaline-week-2-focus",
+      "moduleId": "adrenaline-week-2",
+      "type": "weekly_focus",
+      "title": "Week 2 focus: Healing & Self-Compassion",
+      "dayNumber": null,
+      "weekNumber": 2,
+      "points": 8,
+      "sortOrder": 9,
+      "prompt": "Discovering Lasting Fulfillment",
+      "focusItems": [
+        "I discover joy through meaningful experiences.",
+        "I learn healthy ways to cope with stress and emotional discomfort.",
+        "I replace impulsive reactions with thoughtful responses."
+      ],
+      "fields": [
+        {
+          "key": "focus_choice",
+          "label": "Which focus statement will guide you this week?",
+          "kind": "single_choice",
+          "required": true,
+          "options": [
+            "I discover joy through meaningful experiences.",
+            "I learn healthy ways to cope with stress and emotional discomfort.",
+            "I replace impulsive reactions with thoughtful responses."
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "support_plan",
+          "label": "One small action that will support this focus",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "adrenaline-day-6",
+      "moduleId": "adrenaline-week-2",
+      "type": "daily_affirmation",
+      "title": "Day 6 affirmation",
+      "dayNumber": 6,
+      "weekNumber": 2,
+      "points": 5,
+      "sortOrder": 10,
+      "affirmation": "I deserve a life filled with meaningful experiences, healthy adventure, and genuine joy.",
+      "fields": [
+        {
+          "key": "mood",
+          "label": "How are you feeling right now?",
+          "kind": "mood",
+          "required": true,
+          "options": [
+            "calm",
+            "steady",
+            "low",
+            "anxious",
+            "irritable"
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "urge_level",
+          "label": "Urge intensity right now (0-5)",
+          "kind": "scale",
+          "required": true,
+          "min": 0,
+          "max": 5,
+          "privateByDefault": false
+        },
+        {
+          "key": "pause_taken",
+          "label": "I took a short pause before reacting",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        },
+        {
+          "key": "practice_done",
+          "label": "I sat with today's affirmation",
+          "kind": "checkbox",
+          "required": true,
+          "privateByDefault": false
+        },
+        {
+          "key": "private_note",
+          "label": "Optional private note (only shared if you choose)",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share today's note with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "adrenaline-day-7",
+      "moduleId": "adrenaline-week-2",
+      "type": "daily_affirmation",
+      "title": "Day 7 affirmation",
+      "dayNumber": 7,
+      "weekNumber": 2,
+      "points": 5,
+      "sortOrder": 11,
+      "affirmation": "I forgive myself for past impulsive choices and choose growth over regret.",
+      "fields": [
+        {
+          "key": "mood",
+          "label": "How are you feeling right now?",
+          "kind": "mood",
+          "required": true,
+          "options": [
+            "calm",
+            "steady",
+            "low",
+            "anxious",
+            "irritable"
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "urge_level",
+          "label": "Urge intensity right now (0-5)",
+          "kind": "scale",
+          "required": true,
+          "min": 0,
+          "max": 5,
+          "privateByDefault": false
+        },
+        {
+          "key": "pause_taken",
+          "label": "I took a short pause before reacting",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        },
+        {
+          "key": "practice_done",
+          "label": "I sat with today's affirmation",
+          "kind": "checkbox",
+          "required": true,
+          "privateByDefault": false
+        },
+        {
+          "key": "private_note",
+          "label": "Optional private note (only shared if you choose)",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share today's note with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "adrenaline-day-8",
+      "moduleId": "adrenaline-week-2",
+      "type": "daily_affirmation",
+      "title": "Day 8 affirmation",
+      "dayNumber": 8,
+      "weekNumber": 2,
+      "points": 5,
+      "sortOrder": 12,
+      "affirmation": "I can experience boredom, stress, or emotional discomfort without seeking unnecessary risks.",
+      "fields": [
+        {
+          "key": "mood",
+          "label": "How are you feeling right now?",
+          "kind": "mood",
+          "required": true,
+          "options": [
+            "calm",
+            "steady",
+            "low",
+            "anxious",
+            "irritable"
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "urge_level",
+          "label": "Urge intensity right now (0-5)",
+          "kind": "scale",
+          "required": true,
+          "min": 0,
+          "max": 5,
+          "privateByDefault": false
+        },
+        {
+          "key": "pause_taken",
+          "label": "I took a short pause before reacting",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        },
+        {
+          "key": "practice_done",
+          "label": "I sat with today's affirmation",
+          "kind": "checkbox",
+          "required": true,
+          "privateByDefault": false
+        },
+        {
+          "key": "private_note",
+          "label": "Optional private note (only shared if you choose)",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share today's note with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "adrenaline-day-8-trigger-map",
+      "moduleId": "adrenaline-week-2",
+      "type": "trigger_map",
+      "title": "Day 8 trigger map",
+      "dayNumber": 8,
+      "weekNumber": 2,
+      "points": 10,
+      "sortOrder": 13,
+      "prompt": "Map the loop gently: trigger, urge, old response, and a wiser next step.",
+      "fields": [
+        {
+          "key": "trigger",
+          "label": "What usually triggers the urge?",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        },
+        {
+          "key": "urge",
+          "label": "What does the urge feel like in your body?",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        },
+        {
+          "key": "replacement",
+          "label": "What healthier response can you try next time?",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        }
+      ],
+      "origin": "platform"
+    },
+    {
+      "id": "adrenaline-day-9",
+      "moduleId": "adrenaline-week-2",
+      "type": "daily_affirmation",
+      "title": "Day 9 affirmation",
+      "dayNumber": 9,
+      "weekNumber": 2,
+      "points": 5,
+      "sortOrder": 14,
+      "affirmation": "I am learning to find excitement through creativity, learning, service, relationships, and personal\ngrowth.",
+      "fields": [
+        {
+          "key": "mood",
+          "label": "How are you feeling right now?",
+          "kind": "mood",
+          "required": true,
+          "options": [
+            "calm",
+            "steady",
+            "low",
+            "anxious",
+            "irritable"
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "urge_level",
+          "label": "Urge intensity right now (0-5)",
+          "kind": "scale",
+          "required": true,
+          "min": 0,
+          "max": 5,
+          "privateByDefault": false
+        },
+        {
+          "key": "pause_taken",
+          "label": "I took a short pause before reacting",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        },
+        {
+          "key": "practice_done",
+          "label": "I sat with today's affirmation",
+          "kind": "checkbox",
+          "required": true,
+          "privateByDefault": false
+        },
+        {
+          "key": "private_note",
+          "label": "Optional private note (only shared if you choose)",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share today's note with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "adrenaline-day-10",
+      "moduleId": "adrenaline-week-2",
+      "type": "daily_affirmation",
+      "title": "Day 10 affirmation",
+      "dayNumber": 10,
+      "weekNumber": 2,
+      "points": 5,
+      "sortOrder": 15,
+      "affirmation": "Every healthy decision I make strengthens my emotional resilience and inner peace.",
+      "fields": [
+        {
+          "key": "mood",
+          "label": "How are you feeling right now?",
+          "kind": "mood",
+          "required": true,
+          "options": [
+            "calm",
+            "steady",
+            "low",
+            "anxious",
+            "irritable"
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "urge_level",
+          "label": "Urge intensity right now (0-5)",
+          "kind": "scale",
+          "required": true,
+          "min": 0,
+          "max": 5,
+          "privateByDefault": false
+        },
+        {
+          "key": "pause_taken",
+          "label": "I took a short pause before reacting",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        },
+        {
+          "key": "practice_done",
+          "label": "I sat with today's affirmation",
+          "kind": "checkbox",
+          "required": true,
+          "privateByDefault": false
+        },
+        {
+          "key": "private_note",
+          "label": "Optional private note (only shared if you choose)",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share today's note with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "adrenaline-day-10-reflection",
+      "moduleId": "adrenaline-week-2",
+      "type": "reflection",
+      "title": "Day 10 recovery reflection",
+      "dayNumber": 10,
+      "weekNumber": 2,
+      "points": 8,
+      "sortOrder": 16,
+      "prompt": "Today I chose wisdom over impulse. Every time I paused, considered the consequences,\nor chose a healthier challenge, I strengthened my recovery. I celebrate today's\nprogress, release today's mistakes without judgment, and welcome tomorrow with\n3\ncourage, clarity, and purpose. True strength is found in wise choices that protect the life\nI am building.",
+      "fields": [
+        {
+          "key": "what_helped",
+          "label": "What helped you choose a healthier option today?",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share this reflection with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "adrenaline-day-10-values",
+      "moduleId": "adrenaline-week-2",
+      "type": "values_select",
+      "title": "Day 10 values check",
+      "dayNumber": 10,
+      "weekNumber": 2,
+      "points": 8,
+      "sortOrder": 17,
+      "prompt": "Choose the values you want your next choices to protect.",
+      "fields": [
+        {
+          "key": "values",
+          "label": "Values that matter most right now",
+          "kind": "multi_choice",
+          "required": true,
+          "options": [
+            "Peace",
+            "Honesty",
+            "Health",
+            "Family",
+            "Self-respect",
+            "Financial stability",
+            "Presence",
+            "Purpose"
+          ],
+          "privateByDefault": false
+        }
+      ],
+      "origin": "platform"
+    },
+    {
+      "id": "adrenaline-week-3-focus",
+      "moduleId": "adrenaline-week-3",
+      "type": "weekly_focus",
+      "title": "Week 3 focus: Strength & Growth",
+      "dayNumber": null,
+      "weekNumber": 3,
+      "points": 8,
+      "sortOrder": 18,
+      "prompt": "Building Self-Control",
+      "focusItems": [
+        "Self-control is a sign of true courage.",
+        "I pursue challenges that help me grow without causing harm.",
+        "Every intentional choice strengthens my confidence and resilience."
+      ],
+      "fields": [
+        {
+          "key": "focus_choice",
+          "label": "Which focus statement will guide you this week?",
+          "kind": "single_choice",
+          "required": true,
+          "options": [
+            "Self-control is a sign of true courage.",
+            "I pursue challenges that help me grow without causing harm.",
+            "Every intentional choice strengthens my confidence and resilience."
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "support_plan",
+          "label": "One small action that will support this focus",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "adrenaline-day-11",
+      "moduleId": "adrenaline-week-3",
+      "type": "daily_affirmation",
+      "title": "Day 11 affirmation",
+      "dayNumber": 11,
+      "weekNumber": 3,
+      "points": 5,
+      "sortOrder": 19,
+      "affirmation": "I am in control of my thoughts, emotions, and actions. My choices reflect my values rather than my\nimpulses.",
+      "fields": [
+        {
+          "key": "mood",
+          "label": "How are you feeling right now?",
+          "kind": "mood",
+          "required": true,
+          "options": [
+            "calm",
+            "steady",
+            "low",
+            "anxious",
+            "irritable"
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "urge_level",
+          "label": "Urge intensity right now (0-5)",
+          "kind": "scale",
+          "required": true,
+          "min": 0,
+          "max": 5,
+          "privateByDefault": false
+        },
+        {
+          "key": "pause_taken",
+          "label": "I took a short pause before reacting",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        },
+        {
+          "key": "practice_done",
+          "label": "I sat with today's affirmation",
+          "kind": "checkbox",
+          "required": true,
+          "privateByDefault": false
+        },
+        {
+          "key": "private_note",
+          "label": "Optional private note (only shared if you choose)",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share today's note with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "adrenaline-day-12",
+      "moduleId": "adrenaline-week-3",
+      "type": "daily_affirmation",
+      "title": "Day 12 affirmation",
+      "dayNumber": 12,
+      "weekNumber": 3,
+      "points": 5,
+      "sortOrder": 20,
+      "affirmation": "I replace reckless behavior with healthy challenges that build my character, confidence, and well-\nbeing.",
+      "fields": [
+        {
+          "key": "mood",
+          "label": "How are you feeling right now?",
+          "kind": "mood",
+          "required": true,
+          "options": [
+            "calm",
+            "steady",
+            "low",
+            "anxious",
+            "irritable"
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "urge_level",
+          "label": "Urge intensity right now (0-5)",
+          "kind": "scale",
+          "required": true,
+          "min": 0,
+          "max": 5,
+          "privateByDefault": false
+        },
+        {
+          "key": "pause_taken",
+          "label": "I took a short pause before reacting",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        },
+        {
+          "key": "practice_done",
+          "label": "I sat with today's affirmation",
+          "kind": "checkbox",
+          "required": true,
+          "privateByDefault": false
+        },
+        {
+          "key": "private_note",
+          "label": "Optional private note (only shared if you choose)",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share today's note with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "adrenaline-day-13",
+      "moduleId": "adrenaline-week-3",
+      "type": "daily_affirmation",
+      "title": "Day 13 affirmation",
+      "dayNumber": 13,
+      "weekNumber": 3,
+      "points": 5,
+      "sortOrder": 21,
+      "affirmation": "Every urge I manage with patience and wisdom strengthens my resilience and self-discipline.",
+      "fields": [
+        {
+          "key": "mood",
+          "label": "How are you feeling right now?",
+          "kind": "mood",
+          "required": true,
+          "options": [
+            "calm",
+            "steady",
+            "low",
+            "anxious",
+            "irritable"
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "urge_level",
+          "label": "Urge intensity right now (0-5)",
+          "kind": "scale",
+          "required": true,
+          "min": 0,
+          "max": 5,
+          "privateByDefault": false
+        },
+        {
+          "key": "pause_taken",
+          "label": "I took a short pause before reacting",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        },
+        {
+          "key": "practice_done",
+          "label": "I sat with today's affirmation",
+          "kind": "checkbox",
+          "required": true,
+          "privateByDefault": false
+        },
+        {
+          "key": "private_note",
+          "label": "Optional private note (only shared if you choose)",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share today's note with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "adrenaline-day-13-trigger-map",
+      "moduleId": "adrenaline-week-3",
+      "type": "trigger_map",
+      "title": "Day 13 trigger map",
+      "dayNumber": 13,
+      "weekNumber": 3,
+      "points": 10,
+      "sortOrder": 22,
+      "prompt": "Map the loop gently: trigger, urge, old response, and a wiser next step.",
+      "fields": [
+        {
+          "key": "trigger",
+          "label": "What usually triggers the urge?",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        },
+        {
+          "key": "urge",
+          "label": "What does the urge feel like in your body?",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        },
+        {
+          "key": "replacement",
+          "label": "What healthier response can you try next time?",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        }
+      ],
+      "origin": "platform"
+    },
+    {
+      "id": "adrenaline-day-14",
+      "moduleId": "adrenaline-week-3",
+      "type": "daily_affirmation",
+      "title": "Day 14 affirmation",
+      "dayNumber": 14,
+      "weekNumber": 3,
+      "points": 5,
+      "sortOrder": 23,
+      "affirmation": "I choose long-term fulfillment over short-lived excitement.",
+      "fields": [
+        {
+          "key": "mood",
+          "label": "How are you feeling right now?",
+          "kind": "mood",
+          "required": true,
+          "options": [
+            "calm",
+            "steady",
+            "low",
+            "anxious",
+            "irritable"
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "urge_level",
+          "label": "Urge intensity right now (0-5)",
+          "kind": "scale",
+          "required": true,
+          "min": 0,
+          "max": 5,
+          "privateByDefault": false
+        },
+        {
+          "key": "pause_taken",
+          "label": "I took a short pause before reacting",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        },
+        {
+          "key": "practice_done",
+          "label": "I sat with today's affirmation",
+          "kind": "checkbox",
+          "required": true,
+          "privateByDefault": false
+        },
+        {
+          "key": "private_note",
+          "label": "Optional private note (only shared if you choose)",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share today's note with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "adrenaline-day-15",
+      "moduleId": "adrenaline-week-3",
+      "type": "daily_affirmation",
+      "title": "Day 15 affirmation",
+      "dayNumber": 15,
+      "weekNumber": 3,
+      "points": 5,
+      "sortOrder": 24,
+      "affirmation": "Every balanced decision I make creates a stronger, healthier, and more purposeful life.",
+      "fields": [
+        {
+          "key": "mood",
+          "label": "How are you feeling right now?",
+          "kind": "mood",
+          "required": true,
+          "options": [
+            "calm",
+            "steady",
+            "low",
+            "anxious",
+            "irritable"
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "urge_level",
+          "label": "Urge intensity right now (0-5)",
+          "kind": "scale",
+          "required": true,
+          "min": 0,
+          "max": 5,
+          "privateByDefault": false
+        },
+        {
+          "key": "pause_taken",
+          "label": "I took a short pause before reacting",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        },
+        {
+          "key": "practice_done",
+          "label": "I sat with today's affirmation",
+          "kind": "checkbox",
+          "required": true,
+          "privateByDefault": false
+        },
+        {
+          "key": "private_note",
+          "label": "Optional private note (only shared if you choose)",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share today's note with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "adrenaline-day-15-reflection",
+      "moduleId": "adrenaline-week-3",
+      "type": "reflection",
+      "title": "Day 15 recovery reflection",
+      "dayNumber": 15,
+      "weekNumber": 3,
+      "points": 8,
+      "sortOrder": 25,
+      "prompt": "Today I chose wisdom over impulse. Every time I paused, considered the consequences,\nor chose a healthier challenge, I strengthened my recovery. I celebrate today's\nprogress, release today's mistakes without judgment, and welcome tomorrow with\n3\ncourage, clarity, and purpose. True strength is found in wise choices that protect the life\nI am building.",
+      "fields": [
+        {
+          "key": "what_helped",
+          "label": "What helped you choose a healthier option today?",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share this reflection with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "adrenaline-day-15-values",
+      "moduleId": "adrenaline-week-3",
+      "type": "values_select",
+      "title": "Day 15 values check",
+      "dayNumber": 15,
+      "weekNumber": 3,
+      "points": 8,
+      "sortOrder": 26,
+      "prompt": "Choose the values you want your next choices to protect.",
+      "fields": [
+        {
+          "key": "values",
+          "label": "Values that matter most right now",
+          "kind": "multi_choice",
+          "required": true,
+          "options": [
+            "Peace",
+            "Honesty",
+            "Health",
+            "Family",
+            "Self-respect",
+            "Financial stability",
+            "Presence",
+            "Purpose"
+          ],
+          "privateByDefault": false
+        }
+      ],
+      "origin": "platform"
+    },
+    {
+      "id": "adrenaline-week-4-focus",
+      "moduleId": "adrenaline-week-4",
+      "type": "weekly_focus",
+      "title": "Week 4 focus: Freedom & Purpose",
+      "dayNumber": null,
+      "weekNumber": 4,
+      "points": 8,
+      "sortOrder": 27,
+      "prompt": "Living with Purpose",
+      "focusItems": [
+        "I build a life filled with purpose, balance, and meaningful adventure.",
+        "My courage is measured by my wisdom and integrity.",
+        "I embrace a future guided by thoughtful decisions, healthy excitement, and lasting fulfillment."
+      ],
+      "fields": [
+        {
+          "key": "focus_choice",
+          "label": "Which focus statement will guide you this week?",
+          "kind": "single_choice",
+          "required": true,
+          "options": [
+            "I build a life filled with purpose, balance, and meaningful adventure.",
+            "My courage is measured by my wisdom and integrity.",
+            "I embrace a future guided by thoughtful decisions, healthy excitement, and lasting fulfillment."
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "support_plan",
+          "label": "One small action that will support this focus",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "adrenaline-day-16",
+      "moduleId": "adrenaline-week-4",
+      "type": "daily_affirmation",
+      "title": "Day 16 affirmation",
+      "dayNumber": 16,
+      "weekNumber": 4,
+      "points": 5,
+      "sortOrder": 28,
+      "affirmation": "I am creating a life where adventure is guided by wisdom, preparation, and respect for myself and\nothers.",
+      "fields": [
+        {
+          "key": "mood",
+          "label": "How are you feeling right now?",
+          "kind": "mood",
+          "required": true,
+          "options": [
+            "calm",
+            "steady",
+            "low",
+            "anxious",
+            "irritable"
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "urge_level",
+          "label": "Urge intensity right now (0-5)",
+          "kind": "scale",
+          "required": true,
+          "min": 0,
+          "max": 5,
+          "privateByDefault": false
+        },
+        {
+          "key": "pause_taken",
+          "label": "I took a short pause before reacting",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        },
+        {
+          "key": "practice_done",
+          "label": "I sat with today's affirmation",
+          "kind": "checkbox",
+          "required": true,
+          "privateByDefault": false
+        },
+        {
+          "key": "private_note",
+          "label": "Optional private note (only shared if you choose)",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share today's note with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "adrenaline-day-17",
+      "moduleId": "adrenaline-week-4",
+      "type": "daily_affirmation",
+      "title": "Day 17 affirmation",
+      "dayNumber": 17,
+      "weekNumber": 4,
+      "points": 5,
+      "sortOrder": 29,
+      "affirmation": "My future is built through intentional choices that protect my health, relationships, and dreams.",
+      "fields": [
+        {
+          "key": "mood",
+          "label": "How are you feeling right now?",
+          "kind": "mood",
+          "required": true,
+          "options": [
+            "calm",
+            "steady",
+            "low",
+            "anxious",
+            "irritable"
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "urge_level",
+          "label": "Urge intensity right now (0-5)",
+          "kind": "scale",
+          "required": true,
+          "min": 0,
+          "max": 5,
+          "privateByDefault": false
+        },
+        {
+          "key": "pause_taken",
+          "label": "I took a short pause before reacting",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        },
+        {
+          "key": "practice_done",
+          "label": "I sat with today's affirmation",
+          "kind": "checkbox",
+          "required": true,
+          "privateByDefault": false
+        },
+        {
+          "key": "private_note",
+          "label": "Optional private note (only shared if you choose)",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share today's note with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "adrenaline-day-18",
+      "moduleId": "adrenaline-week-4",
+      "type": "daily_affirmation",
+      "title": "Day 18 affirmation",
+      "dayNumber": 18,
+      "weekNumber": 4,
+      "points": 5,
+      "sortOrder": 30,
+      "affirmation": "I celebrate every victory because lasting courage is shown through wise decisions, not reckless\nactions.",
+      "fields": [
+        {
+          "key": "mood",
+          "label": "How are you feeling right now?",
+          "kind": "mood",
+          "required": true,
+          "options": [
+            "calm",
+            "steady",
+            "low",
+            "anxious",
+            "irritable"
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "urge_level",
+          "label": "Urge intensity right now (0-5)",
+          "kind": "scale",
+          "required": true,
+          "min": 0,
+          "max": 5,
+          "privateByDefault": false
+        },
+        {
+          "key": "pause_taken",
+          "label": "I took a short pause before reacting",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        },
+        {
+          "key": "practice_done",
+          "label": "I sat with today's affirmation",
+          "kind": "checkbox",
+          "required": true,
+          "privateByDefault": false
+        },
+        {
+          "key": "private_note",
+          "label": "Optional private note (only shared if you choose)",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share today's note with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "adrenaline-day-18-trigger-map",
+      "moduleId": "adrenaline-week-4",
+      "type": "trigger_map",
+      "title": "Day 18 trigger map",
+      "dayNumber": 18,
+      "weekNumber": 4,
+      "points": 10,
+      "sortOrder": 31,
+      "prompt": "Map the loop gently: trigger, urge, old response, and a wiser next step.",
+      "fields": [
+        {
+          "key": "trigger",
+          "label": "What usually triggers the urge?",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        },
+        {
+          "key": "urge",
+          "label": "What does the urge feel like in your body?",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        },
+        {
+          "key": "replacement",
+          "label": "What healthier response can you try next time?",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        }
+      ],
+      "origin": "platform"
+    },
+    {
+      "id": "adrenaline-day-19",
+      "moduleId": "adrenaline-week-4",
+      "type": "daily_affirmation",
+      "title": "Day 19 affirmation",
+      "dayNumber": 19,
+      "weekNumber": 4,
+      "points": 5,
+      "sortOrder": 32,
+      "affirmation": "I embrace meaningful goals, healthy challenges, and authentic experiences that enrich my life.",
+      "fields": [
+        {
+          "key": "mood",
+          "label": "How are you feeling right now?",
+          "kind": "mood",
+          "required": true,
+          "options": [
+            "calm",
+            "steady",
+            "low",
+            "anxious",
+            "irritable"
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "urge_level",
+          "label": "Urge intensity right now (0-5)",
+          "kind": "scale",
+          "required": true,
+          "min": 0,
+          "max": 5,
+          "privateByDefault": false
+        },
+        {
+          "key": "pause_taken",
+          "label": "I took a short pause before reacting",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        },
+        {
+          "key": "practice_done",
+          "label": "I sat with today's affirmation",
+          "kind": "checkbox",
+          "required": true,
+          "privateByDefault": false
+        },
+        {
+          "key": "private_note",
+          "label": "Optional private note (only shared if you choose)",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share today's note with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "adrenaline-day-20",
+      "moduleId": "adrenaline-week-4",
+      "type": "daily_affirmation",
+      "title": "Day 20 affirmation",
+      "dayNumber": 20,
+      "weekNumber": 4,
+      "points": 5,
+      "sortOrder": 33,
+      "affirmation": "Today, I honor myself by choosing balance, courage, responsibility, and lasting freedom from\nunhealthy thrill-seeking behaviors.",
+      "fields": [
+        {
+          "key": "mood",
+          "label": "How are you feeling right now?",
+          "kind": "mood",
+          "required": true,
+          "options": [
+            "calm",
+            "steady",
+            "low",
+            "anxious",
+            "irritable"
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "urge_level",
+          "label": "Urge intensity right now (0-5)",
+          "kind": "scale",
+          "required": true,
+          "min": 0,
+          "max": 5,
+          "privateByDefault": false
+        },
+        {
+          "key": "pause_taken",
+          "label": "I took a short pause before reacting",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        },
+        {
+          "key": "practice_done",
+          "label": "I sat with today's affirmation",
+          "kind": "checkbox",
+          "required": true,
+          "privateByDefault": false
+        },
+        {
+          "key": "private_note",
+          "label": "Optional private note (only shared if you choose)",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share today's note with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "adrenaline-day-20-reflection",
+      "moduleId": "adrenaline-week-4",
+      "type": "reflection",
+      "title": "Day 20 recovery reflection",
+      "dayNumber": 20,
+      "weekNumber": 4,
+      "points": 8,
+      "sortOrder": 34,
+      "prompt": "Today I chose wisdom over impulse. Every time I paused, considered the consequences,\nor chose a healthier challenge, I strengthened my recovery. I celebrate today's\nprogress, release today's mistakes without judgment, and welcome tomorrow with\n3\ncourage, clarity, and purpose. True strength is found in wise choices that protect the life\nI am building.",
+      "fields": [
+        {
+          "key": "what_helped",
+          "label": "What helped you choose a healthier option today?",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share this reflection with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "adrenaline-closing",
+      "moduleId": "adrenaline-week-4",
+      "type": "closing",
+      "title": "Closing affirmation and forward plan",
+      "dayNumber": 20,
+      "weekNumber": 4,
+      "points": 15,
+      "sortOrder": 35,
+      "affirmation": "I am not defined by the risks I take or the excitement I chase. I am defined by my courage to live\nwisely, my commitment to protect my well-being, and my determination to build a meaningful life.\nEvery day I choose balance, I strengthen my character, deepen my inner peace, and discover that\ntrue fulfillment comes through purpose, healthy challenges, loving relationships, and intentional\nliving. One decision, one day, and one step at a time, I am creating a life of courage, freedom,\nresilience, and lasting joy.",
+      "fields": [
+        {
+          "key": "keep_doing",
+          "label": "What will you keep practising after this journey?",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        },
+        {
+          "key": "support_needed",
+          "label": "What support do you still want?",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share this closing plan with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    }
+  ],
+  "dailyReflection": "Today I chose wisdom over impulse. Every time I paused, considered the consequences,\nor chose a healthier challenge, I strengthened my recovery. I celebrate today's\nprogress, release today's mistakes without judgment, and welcome tomorrow with\n3\ncourage, clarity, and purpose. True strength is found in wise choices that protect the life\nI am building.",
+  "closingAffirmation": "I am not defined by the risks I take or the excitement I chase. I am defined by my courage to live\nwisely, my commitment to protect my well-being, and my determination to build a meaningful life.\nEvery day I choose balance, I strengthen my character, deepen my inner peace, and discover that\ntrue fulfillment comes through purpose, healthy challenges, loving relationships, and intentional\nliving. One decision, one day, and one step at a time, I am creating a life of courage, freedom,\nresilience, and lasting joy.",
+  "homeworkDefaults": [
+    {
+      "taskKey": "affirmations_daily",
+      "title": "Today's affirmation",
+      "taskType": "affirmations_daily",
+      "points": 5
+    },
+    {
+      "taskKey": "eft_daily",
+      "title": "EFT tapping",
+      "taskType": "eft_daily",
+      "points": 5
+    }
+  ],
+  "reviewStatus": "approved",
+  "sourceExcerpt": "Adrenaline Addiction (Thrill-Seeking Behaviors)\nThese daily affirmations are designed to support individuals recovering from unhealthy thrill-seeking\nbehaviors and adrenaline addiction. Recovery is a journey of finding excitement through purpose rather\nthan danger , developing em",
+  "sourceChecksum": "402583bfeb6a8949",
+  "cadence": {
+    "activityCadence": "daily",
+    "liveSessionCount": 8,
+    "liveSessionWeekdays": [
+      "tue",
+      "fri"
+    ],
+    "liveSessionTimeSlots": [
+      "11:00",
+      "16:00"
+    ],
+    "timezone": "Africa/Johannesburg",
+    "firstSessionDurationMinutes": 90,
+    "standardSessionDurationMinutes": 45
+  },
+  "dailyCheckIn": {
+    "includeMood": true,
+    "includeUrge": true,
+    "includePause": true,
+    "includePrivateNote": true,
+    "urgeMin": 0,
+    "urgeMax": 5,
+    "highUrgeThreshold": 4
+  },
+  "structure": {
+    "slug": "adrenaline",
+    "expectedWeekCount": 4,
+    "expectedDayCount": 20,
+    "sourceActivityTypes": [
+      "orientation",
+      "weekly_focus",
+      "daily_affirmation",
+      "reflection",
+      "closing"
+    ],
+    "optionalPlatformActivityTypes": [
+      "trigger_map",
+      "values_select"
+    ],
+    "reflectionDays": [
+      5,
+      10,
+      15,
+      20
+    ],
+    "platformExerciseDays": [
+      3,
+      8,
+      10,
+      13,
+      15,
+      18
+    ],
+    "reviewRequired": false
+  }
+}

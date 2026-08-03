@@ -1,0 +1,1963 @@
+{
+  "slug": "work",
+  "title": "Work Addiction (Workaholism)",
+  "category": "behavioral",
+  "status": "ready",
+  "version": 2,
+  "sourceFile": "Work addiction (workaholism).pdf",
+  "sourceStatus": "extracted",
+  "needsManualReview": false,
+  "description": "These daily affirmations are designed to support individuals recovering from work addiction, also known as\nworkaholism. Recovery is a journey of restoring balance, prioritizing well-being, nurturing meaningful\nrelationships, and recognizing that your worth extends far beyond your productivity. These affirmations\nencourage self-awareness, healthy boundaries, emotional resilience, and intentional living. They are\nintended to complement professional counseling, coaching, stress management practices, and support\nfrom trusted family, friends, or colleagues.",
+  "safety": {
+    "disclaimer": "This programme complements counselling, hypnotherapy, EFT, and trusted accountability. It is not a medical cure.",
+    "reminder": "Meaningful work can be deeply rewarding, but true success includes physical health, emotional well-\nbeing, rest, relationships, and personal fulfillment. If work has become a source of chronic stress,\nburnout, or has begun to interfere with your relationships or quality of life, seeking support from a\nmental health professional, coach, or trusted mentor can help restore balance. Recovery from work\naddiction is not about caring less about your work-it is about caring more for yourself and the life\nyou are working so hard to build.\n• \n• \n• \n• \n• \n• \n• \n• \n• \n• \n•",
+    "escalation": null,
+    "requiresMedicalSupportNotice": false
+  },
+  "weekCount": 4,
+  "dayCount": 20,
+  "modules": [
+    {
+      "id": "work-week-1",
+      "number": 1,
+      "title": "Awareness & Commitment",
+      "theme": "Choosing Balance Over Busyness",
+      "focus": [
+        "I recognize when work begins to replace balance.",
+        "My identity is greater than my career .",
+        "Rest is a necessity, not a reward."
+      ]
+    },
+    {
+      "id": "work-week-2",
+      "number": 2,
+      "title": "Healing & Self-Compassion",
+      "theme": "Reconnecting with What Truly Matters",
+      "focus": [
+        "I care for my emotional, physical, and spiritual well-being.",
+        "I nurture relationships that enrich my life.",
+        "I give myself permission to slow down."
+      ]
+    },
+    {
+      "id": "work-week-3",
+      "number": 3,
+      "title": "Strength & Growth",
+      "theme": "Building Healthy Boundaries",
+      "focus": [
+        "Healthy boundaries protect my peace.",
+        "I work with intention rather than compulsion.",
+        "Balance allows me to perform with greater clarity and purpose."
+      ]
+    },
+    {
+      "id": "work-week-4",
+      "number": 4,
+      "title": "Freedom & Purpose",
+      "theme": "Living with Purpose and Balance",
+      "focus": [
+        "My life is measured by love, purpose, health, and joy-not just productivity.",
+        "I create time for rest, recreation, and meaningful experiences.",
+        "I embrace a future built on balance, fulfillment, and lasting well-being."
+      ]
+    }
+  ],
+  "activities": [
+    {
+      "id": "work-orientation",
+      "moduleId": "work-week-1",
+      "type": "orientation",
+      "title": "Begin your healing journey",
+      "dayNumber": 0,
+      "weekNumber": 1,
+      "points": 10,
+      "sortOrder": 0,
+      "prompt": "These daily affirmations are designed to support individuals recovering from work addiction, also known as\nworkaholism. Recovery is a journey of restoring balance, prioritizing well-being, nurturing meaningful\nrelationships, and recognizing that your worth extends far beyond your productivity. These affirmations\nencourage self-awareness, healthy boundaries, emotional resilience, and intentional living. They are\nintended to complement professional counseling, coaching, stress management practices, and support\nfrom trusted family, friends, or colleagues.",
+      "fields": [
+        {
+          "key": "intention",
+          "label": "What would a freer week look like for you?",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "work-week-1-focus",
+      "moduleId": "work-week-1",
+      "type": "weekly_focus",
+      "title": "Week 1 focus: Awareness & Commitment",
+      "dayNumber": null,
+      "weekNumber": 1,
+      "points": 8,
+      "sortOrder": 1,
+      "prompt": "Choosing Balance Over Busyness",
+      "focusItems": [
+        "I recognize when work begins to replace balance.",
+        "My identity is greater than my career .",
+        "Rest is a necessity, not a reward."
+      ],
+      "fields": [
+        {
+          "key": "focus_choice",
+          "label": "Which focus statement will guide you this week?",
+          "kind": "single_choice",
+          "required": true,
+          "options": [
+            "I recognize when work begins to replace balance.",
+            "My identity is greater than my career .",
+            "Rest is a necessity, not a reward."
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "support_plan",
+          "label": "One small action that will support this focus",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "work-day-1",
+      "moduleId": "work-week-1",
+      "type": "daily_affirmation",
+      "title": "Day 1 affirmation",
+      "dayNumber": 1,
+      "weekNumber": 1,
+      "points": 5,
+      "sortOrder": 2,
+      "affirmation": "Today, I choose balance over constant busyness. My well-being is just as important as my work.",
+      "fields": [
+        {
+          "key": "mood",
+          "label": "How are you feeling right now?",
+          "kind": "mood",
+          "required": true,
+          "options": [
+            "calm",
+            "steady",
+            "low",
+            "anxious",
+            "irritable"
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "urge_level",
+          "label": "Urge intensity right now (0-5)",
+          "kind": "scale",
+          "required": true,
+          "min": 0,
+          "max": 5,
+          "privateByDefault": false
+        },
+        {
+          "key": "pause_taken",
+          "label": "I took a short pause before reacting",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        },
+        {
+          "key": "practice_done",
+          "label": "I sat with today's affirmation",
+          "kind": "checkbox",
+          "required": true,
+          "privateByDefault": false
+        },
+        {
+          "key": "private_note",
+          "label": "Optional private note (only shared if you choose)",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share today's note with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "work-day-2",
+      "moduleId": "work-week-1",
+      "type": "daily_affirmation",
+      "title": "Day 2 affirmation",
+      "dayNumber": 2,
+      "weekNumber": 1,
+      "points": 5,
+      "sortOrder": 3,
+      "affirmation": "My worth is not determined by my productivity, achievements, or job title. I am valuable simply\nbecause I am me.",
+      "fields": [
+        {
+          "key": "mood",
+          "label": "How are you feeling right now?",
+          "kind": "mood",
+          "required": true,
+          "options": [
+            "calm",
+            "steady",
+            "low",
+            "anxious",
+            "irritable"
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "urge_level",
+          "label": "Urge intensity right now (0-5)",
+          "kind": "scale",
+          "required": true,
+          "min": 0,
+          "max": 5,
+          "privateByDefault": false
+        },
+        {
+          "key": "pause_taken",
+          "label": "I took a short pause before reacting",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        },
+        {
+          "key": "practice_done",
+          "label": "I sat with today's affirmation",
+          "kind": "checkbox",
+          "required": true,
+          "privateByDefault": false
+        },
+        {
+          "key": "private_note",
+          "label": "Optional private note (only shared if you choose)",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share today's note with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "work-day-3",
+      "moduleId": "work-week-1",
+      "type": "daily_affirmation",
+      "title": "Day 3 affirmation",
+      "dayNumber": 3,
+      "weekNumber": 1,
+      "points": 5,
+      "sortOrder": 4,
+      "affirmation": "I give myself permission to rest without guilt, knowing that rest renews my strength and creativity.",
+      "fields": [
+        {
+          "key": "mood",
+          "label": "How are you feeling right now?",
+          "kind": "mood",
+          "required": true,
+          "options": [
+            "calm",
+            "steady",
+            "low",
+            "anxious",
+            "irritable"
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "urge_level",
+          "label": "Urge intensity right now (0-5)",
+          "kind": "scale",
+          "required": true,
+          "min": 0,
+          "max": 5,
+          "privateByDefault": false
+        },
+        {
+          "key": "pause_taken",
+          "label": "I took a short pause before reacting",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        },
+        {
+          "key": "practice_done",
+          "label": "I sat with today's affirmation",
+          "kind": "checkbox",
+          "required": true,
+          "privateByDefault": false
+        },
+        {
+          "key": "private_note",
+          "label": "Optional private note (only shared if you choose)",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share today's note with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "work-day-3-trigger-map",
+      "moduleId": "work-week-1",
+      "type": "trigger_map",
+      "title": "Day 3 trigger map",
+      "dayNumber": 3,
+      "weekNumber": 1,
+      "points": 10,
+      "sortOrder": 5,
+      "prompt": "Map the loop gently: trigger, urge, old response, and a wiser next step.",
+      "fields": [
+        {
+          "key": "trigger",
+          "label": "What usually triggers the urge?",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        },
+        {
+          "key": "urge",
+          "label": "What does the urge feel like in your body?",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        },
+        {
+          "key": "replacement",
+          "label": "What healthier response can you try next time?",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        }
+      ],
+      "origin": "platform"
+    },
+    {
+      "id": "work-day-4",
+      "moduleId": "work-week-1",
+      "type": "daily_affirmation",
+      "title": "Day 4 affirmation",
+      "dayNumber": 4,
+      "weekNumber": 1,
+      "points": 5,
+      "sortOrder": 6,
+      "affirmation": "I choose to work with purpose, not from pressure, fear, or the need to prove myself.",
+      "fields": [
+        {
+          "key": "mood",
+          "label": "How are you feeling right now?",
+          "kind": "mood",
+          "required": true,
+          "options": [
+            "calm",
+            "steady",
+            "low",
+            "anxious",
+            "irritable"
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "urge_level",
+          "label": "Urge intensity right now (0-5)",
+          "kind": "scale",
+          "required": true,
+          "min": 0,
+          "max": 5,
+          "privateByDefault": false
+        },
+        {
+          "key": "pause_taken",
+          "label": "I took a short pause before reacting",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        },
+        {
+          "key": "practice_done",
+          "label": "I sat with today's affirmation",
+          "kind": "checkbox",
+          "required": true,
+          "privateByDefault": false
+        },
+        {
+          "key": "private_note",
+          "label": "Optional private note (only shared if you choose)",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share today's note with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "work-day-5",
+      "moduleId": "work-week-1",
+      "type": "daily_affirmation",
+      "title": "Day 5 affirmation",
+      "dayNumber": 5,
+      "weekNumber": 1,
+      "points": 5,
+      "sortOrder": 7,
+      "affirmation": "Every healthy boundary I establish creates space for greater peace, joy, and fulfillment.",
+      "fields": [
+        {
+          "key": "mood",
+          "label": "How are you feeling right now?",
+          "kind": "mood",
+          "required": true,
+          "options": [
+            "calm",
+            "steady",
+            "low",
+            "anxious",
+            "irritable"
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "urge_level",
+          "label": "Urge intensity right now (0-5)",
+          "kind": "scale",
+          "required": true,
+          "min": 0,
+          "max": 5,
+          "privateByDefault": false
+        },
+        {
+          "key": "pause_taken",
+          "label": "I took a short pause before reacting",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        },
+        {
+          "key": "practice_done",
+          "label": "I sat with today's affirmation",
+          "kind": "checkbox",
+          "required": true,
+          "privateByDefault": false
+        },
+        {
+          "key": "private_note",
+          "label": "Optional private note (only shared if you choose)",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share today's note with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "work-day-5-reflection",
+      "moduleId": "work-week-1",
+      "type": "reflection",
+      "title": "Day 5 recovery reflection",
+      "dayNumber": 5,
+      "weekNumber": 1,
+      "points": 8,
+      "sortOrder": 8,
+      "prompt": "Today I chose balance. Every healthy boundary I set, every moment I rested, and every\nmeaningful connection I made strengthened my well-being. I release the pressure to\nconstantly achieve, celebrate today's progress, and welcome tomorrow with gratitude,\npurpose, and peace. My life is about more than what I accomplish-it is about how fully\nI live.",
+      "fields": [
+        {
+          "key": "what_helped",
+          "label": "What helped you choose a healthier option today?",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share this reflection with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "work-week-2-focus",
+      "moduleId": "work-week-2",
+      "type": "weekly_focus",
+      "title": "Week 2 focus: Healing & Self-Compassion",
+      "dayNumber": null,
+      "weekNumber": 2,
+      "points": 8,
+      "sortOrder": 9,
+      "prompt": "Reconnecting with What Truly Matters",
+      "focusItems": [
+        "I care for my emotional, physical, and spiritual well-being.",
+        "I nurture relationships that enrich my life.",
+        "I give myself permission to slow down."
+      ],
+      "fields": [
+        {
+          "key": "focus_choice",
+          "label": "Which focus statement will guide you this week?",
+          "kind": "single_choice",
+          "required": true,
+          "options": [
+            "I care for my emotional, physical, and spiritual well-being.",
+            "I nurture relationships that enrich my life.",
+            "I give myself permission to slow down."
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "support_plan",
+          "label": "One small action that will support this focus",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "work-day-6",
+      "moduleId": "work-week-2",
+      "type": "daily_affirmation",
+      "title": "Day 6 affirmation",
+      "dayNumber": 6,
+      "weekNumber": 2,
+      "points": 5,
+      "sortOrder": 10,
+      "affirmation": "I deserve a life that includes meaningful work, loving relationships, rest, and personal joy.",
+      "fields": [
+        {
+          "key": "mood",
+          "label": "How are you feeling right now?",
+          "kind": "mood",
+          "required": true,
+          "options": [
+            "calm",
+            "steady",
+            "low",
+            "anxious",
+            "irritable"
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "urge_level",
+          "label": "Urge intensity right now (0-5)",
+          "kind": "scale",
+          "required": true,
+          "min": 0,
+          "max": 5,
+          "privateByDefault": false
+        },
+        {
+          "key": "pause_taken",
+          "label": "I took a short pause before reacting",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        },
+        {
+          "key": "practice_done",
+          "label": "I sat with today's affirmation",
+          "kind": "checkbox",
+          "required": true,
+          "privateByDefault": false
+        },
+        {
+          "key": "private_note",
+          "label": "Optional private note (only shared if you choose)",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share today's note with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "work-day-7",
+      "moduleId": "work-week-2",
+      "type": "daily_affirmation",
+      "title": "Day 7 affirmation",
+      "dayNumber": 7,
+      "weekNumber": 2,
+      "points": 5,
+      "sortOrder": 11,
+      "affirmation": "I forgive myself for neglecting my needs and choose to care for my whole self with compassion.",
+      "fields": [
+        {
+          "key": "mood",
+          "label": "How are you feeling right now?",
+          "kind": "mood",
+          "required": true,
+          "options": [
+            "calm",
+            "steady",
+            "low",
+            "anxious",
+            "irritable"
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "urge_level",
+          "label": "Urge intensity right now (0-5)",
+          "kind": "scale",
+          "required": true,
+          "min": 0,
+          "max": 5,
+          "privateByDefault": false
+        },
+        {
+          "key": "pause_taken",
+          "label": "I took a short pause before reacting",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        },
+        {
+          "key": "practice_done",
+          "label": "I sat with today's affirmation",
+          "kind": "checkbox",
+          "required": true,
+          "privateByDefault": false
+        },
+        {
+          "key": "private_note",
+          "label": "Optional private note (only shared if you choose)",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share today's note with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "work-day-8",
+      "moduleId": "work-week-2",
+      "type": "daily_affirmation",
+      "title": "Day 8 affirmation",
+      "dayNumber": 8,
+      "weekNumber": 2,
+      "points": 5,
+      "sortOrder": 12,
+      "affirmation": "I can slow down without falling behind. Balance helps me perform at my best.",
+      "fields": [
+        {
+          "key": "mood",
+          "label": "How are you feeling right now?",
+          "kind": "mood",
+          "required": true,
+          "options": [
+            "calm",
+            "steady",
+            "low",
+            "anxious",
+            "irritable"
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "urge_level",
+          "label": "Urge intensity right now (0-5)",
+          "kind": "scale",
+          "required": true,
+          "min": 0,
+          "max": 5,
+          "privateByDefault": false
+        },
+        {
+          "key": "pause_taken",
+          "label": "I took a short pause before reacting",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        },
+        {
+          "key": "practice_done",
+          "label": "I sat with today's affirmation",
+          "kind": "checkbox",
+          "required": true,
+          "privateByDefault": false
+        },
+        {
+          "key": "private_note",
+          "label": "Optional private note (only shared if you choose)",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share today's note with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "work-day-8-trigger-map",
+      "moduleId": "work-week-2",
+      "type": "trigger_map",
+      "title": "Day 8 trigger map",
+      "dayNumber": 8,
+      "weekNumber": 2,
+      "points": 10,
+      "sortOrder": 13,
+      "prompt": "Map the loop gently: trigger, urge, old response, and a wiser next step.",
+      "fields": [
+        {
+          "key": "trigger",
+          "label": "What usually triggers the urge?",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        },
+        {
+          "key": "urge",
+          "label": "What does the urge feel like in your body?",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        },
+        {
+          "key": "replacement",
+          "label": "What healthier response can you try next time?",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        }
+      ],
+      "origin": "platform"
+    },
+    {
+      "id": "work-day-9",
+      "moduleId": "work-week-2",
+      "type": "daily_affirmation",
+      "title": "Day 9 affirmation",
+      "dayNumber": 9,
+      "weekNumber": 2,
+      "points": 5,
+      "sortOrder": 14,
+      "affirmation": "I choose presence with the people I love over constant availability to my work.",
+      "fields": [
+        {
+          "key": "mood",
+          "label": "How are you feeling right now?",
+          "kind": "mood",
+          "required": true,
+          "options": [
+            "calm",
+            "steady",
+            "low",
+            "anxious",
+            "irritable"
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "urge_level",
+          "label": "Urge intensity right now (0-5)",
+          "kind": "scale",
+          "required": true,
+          "min": 0,
+          "max": 5,
+          "privateByDefault": false
+        },
+        {
+          "key": "pause_taken",
+          "label": "I took a short pause before reacting",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        },
+        {
+          "key": "practice_done",
+          "label": "I sat with today's affirmation",
+          "kind": "checkbox",
+          "required": true,
+          "privateByDefault": false
+        },
+        {
+          "key": "private_note",
+          "label": "Optional private note (only shared if you choose)",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share today's note with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "work-day-10",
+      "moduleId": "work-week-2",
+      "type": "daily_affirmation",
+      "title": "Day 10 affirmation",
+      "dayNumber": 10,
+      "weekNumber": 2,
+      "points": 5,
+      "sortOrder": 15,
+      "affirmation": "My health, happiness, and relationships are valuable investments, not distractions from success.",
+      "fields": [
+        {
+          "key": "mood",
+          "label": "How are you feeling right now?",
+          "kind": "mood",
+          "required": true,
+          "options": [
+            "calm",
+            "steady",
+            "low",
+            "anxious",
+            "irritable"
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "urge_level",
+          "label": "Urge intensity right now (0-5)",
+          "kind": "scale",
+          "required": true,
+          "min": 0,
+          "max": 5,
+          "privateByDefault": false
+        },
+        {
+          "key": "pause_taken",
+          "label": "I took a short pause before reacting",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        },
+        {
+          "key": "practice_done",
+          "label": "I sat with today's affirmation",
+          "kind": "checkbox",
+          "required": true,
+          "privateByDefault": false
+        },
+        {
+          "key": "private_note",
+          "label": "Optional private note (only shared if you choose)",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share today's note with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "work-day-10-reflection",
+      "moduleId": "work-week-2",
+      "type": "reflection",
+      "title": "Day 10 recovery reflection",
+      "dayNumber": 10,
+      "weekNumber": 2,
+      "points": 8,
+      "sortOrder": 16,
+      "prompt": "Today I chose balance. Every healthy boundary I set, every moment I rested, and every\nmeaningful connection I made strengthened my well-being. I release the pressure to\nconstantly achieve, celebrate today's progress, and welcome tomorrow with gratitude,\npurpose, and peace. My life is about more than what I accomplish-it is about how fully\nI live.",
+      "fields": [
+        {
+          "key": "what_helped",
+          "label": "What helped you choose a healthier option today?",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share this reflection with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "work-day-10-values",
+      "moduleId": "work-week-2",
+      "type": "values_select",
+      "title": "Day 10 values check",
+      "dayNumber": 10,
+      "weekNumber": 2,
+      "points": 8,
+      "sortOrder": 17,
+      "prompt": "Choose the values you want your next choices to protect.",
+      "fields": [
+        {
+          "key": "values",
+          "label": "Values that matter most right now",
+          "kind": "multi_choice",
+          "required": true,
+          "options": [
+            "Peace",
+            "Honesty",
+            "Health",
+            "Family",
+            "Self-respect",
+            "Financial stability",
+            "Presence",
+            "Purpose"
+          ],
+          "privateByDefault": false
+        }
+      ],
+      "origin": "platform"
+    },
+    {
+      "id": "work-week-3-focus",
+      "moduleId": "work-week-3",
+      "type": "weekly_focus",
+      "title": "Week 3 focus: Strength & Growth",
+      "dayNumber": null,
+      "weekNumber": 3,
+      "points": 8,
+      "sortOrder": 18,
+      "prompt": "Building Healthy Boundaries",
+      "focusItems": [
+        "Healthy boundaries protect my peace.",
+        "I work with intention rather than compulsion.",
+        "Balance allows me to perform with greater clarity and purpose."
+      ],
+      "fields": [
+        {
+          "key": "focus_choice",
+          "label": "Which focus statement will guide you this week?",
+          "kind": "single_choice",
+          "required": true,
+          "options": [
+            "Healthy boundaries protect my peace.",
+            "I work with intention rather than compulsion.",
+            "Balance allows me to perform with greater clarity and purpose."
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "support_plan",
+          "label": "One small action that will support this focus",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "work-day-11",
+      "moduleId": "work-week-3",
+      "type": "daily_affirmation",
+      "title": "Day 11 affirmation",
+      "dayNumber": 11,
+      "weekNumber": 3,
+      "points": 5,
+      "sortOrder": 19,
+      "affirmation": "I am in control of my schedule. I choose work that supports my life instead of consuming it.",
+      "fields": [
+        {
+          "key": "mood",
+          "label": "How are you feeling right now?",
+          "kind": "mood",
+          "required": true,
+          "options": [
+            "calm",
+            "steady",
+            "low",
+            "anxious",
+            "irritable"
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "urge_level",
+          "label": "Urge intensity right now (0-5)",
+          "kind": "scale",
+          "required": true,
+          "min": 0,
+          "max": 5,
+          "privateByDefault": false
+        },
+        {
+          "key": "pause_taken",
+          "label": "I took a short pause before reacting",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        },
+        {
+          "key": "practice_done",
+          "label": "I sat with today's affirmation",
+          "kind": "checkbox",
+          "required": true,
+          "privateByDefault": false
+        },
+        {
+          "key": "private_note",
+          "label": "Optional private note (only shared if you choose)",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share today's note with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "work-day-12",
+      "moduleId": "work-week-3",
+      "type": "daily_affirmation",
+      "title": "Day 12 affirmation",
+      "dayNumber": 12,
+      "weekNumber": 3,
+      "points": 5,
+      "sortOrder": 20,
+      "affirmation": "I replace overworking with healthy habits that nourish my mind, body, and spirit.",
+      "fields": [
+        {
+          "key": "mood",
+          "label": "How are you feeling right now?",
+          "kind": "mood",
+          "required": true,
+          "options": [
+            "calm",
+            "steady",
+            "low",
+            "anxious",
+            "irritable"
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "urge_level",
+          "label": "Urge intensity right now (0-5)",
+          "kind": "scale",
+          "required": true,
+          "min": 0,
+          "max": 5,
+          "privateByDefault": false
+        },
+        {
+          "key": "pause_taken",
+          "label": "I took a short pause before reacting",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        },
+        {
+          "key": "practice_done",
+          "label": "I sat with today's affirmation",
+          "kind": "checkbox",
+          "required": true,
+          "privateByDefault": false
+        },
+        {
+          "key": "private_note",
+          "label": "Optional private note (only shared if you choose)",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share today's note with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "work-day-13",
+      "moduleId": "work-week-3",
+      "type": "daily_affirmation",
+      "title": "Day 13 affirmation",
+      "dayNumber": 13,
+      "weekNumber": 3,
+      "points": 5,
+      "sortOrder": 21,
+      "affirmation": "Every time I say 'no' to unnecessary work, I say 'yes' to my health and well-being.",
+      "fields": [
+        {
+          "key": "mood",
+          "label": "How are you feeling right now?",
+          "kind": "mood",
+          "required": true,
+          "options": [
+            "calm",
+            "steady",
+            "low",
+            "anxious",
+            "irritable"
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "urge_level",
+          "label": "Urge intensity right now (0-5)",
+          "kind": "scale",
+          "required": true,
+          "min": 0,
+          "max": 5,
+          "privateByDefault": false
+        },
+        {
+          "key": "pause_taken",
+          "label": "I took a short pause before reacting",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        },
+        {
+          "key": "practice_done",
+          "label": "I sat with today's affirmation",
+          "kind": "checkbox",
+          "required": true,
+          "privateByDefault": false
+        },
+        {
+          "key": "private_note",
+          "label": "Optional private note (only shared if you choose)",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share today's note with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "work-day-13-trigger-map",
+      "moduleId": "work-week-3",
+      "type": "trigger_map",
+      "title": "Day 13 trigger map",
+      "dayNumber": 13,
+      "weekNumber": 3,
+      "points": 10,
+      "sortOrder": 22,
+      "prompt": "Map the loop gently: trigger, urge, old response, and a wiser next step.",
+      "fields": [
+        {
+          "key": "trigger",
+          "label": "What usually triggers the urge?",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        },
+        {
+          "key": "urge",
+          "label": "What does the urge feel like in your body?",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        },
+        {
+          "key": "replacement",
+          "label": "What healthier response can you try next time?",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        }
+      ],
+      "origin": "platform"
+    },
+    {
+      "id": "work-day-14",
+      "moduleId": "work-week-3",
+      "type": "daily_affirmation",
+      "title": "Day 14 affirmation",
+      "dayNumber": 14,
+      "weekNumber": 3,
+      "points": 5,
+      "sortOrder": 23,
+      "affirmation": "I trust that my value is not diminished when I take time to rest, recharge, and enjoy life.",
+      "fields": [
+        {
+          "key": "mood",
+          "label": "How are you feeling right now?",
+          "kind": "mood",
+          "required": true,
+          "options": [
+            "calm",
+            "steady",
+            "low",
+            "anxious",
+            "irritable"
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "urge_level",
+          "label": "Urge intensity right now (0-5)",
+          "kind": "scale",
+          "required": true,
+          "min": 0,
+          "max": 5,
+          "privateByDefault": false
+        },
+        {
+          "key": "pause_taken",
+          "label": "I took a short pause before reacting",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        },
+        {
+          "key": "practice_done",
+          "label": "I sat with today's affirmation",
+          "kind": "checkbox",
+          "required": true,
+          "privateByDefault": false
+        },
+        {
+          "key": "private_note",
+          "label": "Optional private note (only shared if you choose)",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share today's note with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "work-day-15",
+      "moduleId": "work-week-3",
+      "type": "daily_affirmation",
+      "title": "Day 15 affirmation",
+      "dayNumber": 15,
+      "weekNumber": 3,
+      "points": 5,
+      "sortOrder": 24,
+      "affirmation": "Success is measured by the quality of my life, not by the number of hours I work.",
+      "fields": [
+        {
+          "key": "mood",
+          "label": "How are you feeling right now?",
+          "kind": "mood",
+          "required": true,
+          "options": [
+            "calm",
+            "steady",
+            "low",
+            "anxious",
+            "irritable"
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "urge_level",
+          "label": "Urge intensity right now (0-5)",
+          "kind": "scale",
+          "required": true,
+          "min": 0,
+          "max": 5,
+          "privateByDefault": false
+        },
+        {
+          "key": "pause_taken",
+          "label": "I took a short pause before reacting",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        },
+        {
+          "key": "practice_done",
+          "label": "I sat with today's affirmation",
+          "kind": "checkbox",
+          "required": true,
+          "privateByDefault": false
+        },
+        {
+          "key": "private_note",
+          "label": "Optional private note (only shared if you choose)",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share today's note with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "work-day-15-reflection",
+      "moduleId": "work-week-3",
+      "type": "reflection",
+      "title": "Day 15 recovery reflection",
+      "dayNumber": 15,
+      "weekNumber": 3,
+      "points": 8,
+      "sortOrder": 25,
+      "prompt": "Today I chose balance. Every healthy boundary I set, every moment I rested, and every\nmeaningful connection I made strengthened my well-being. I release the pressure to\nconstantly achieve, celebrate today's progress, and welcome tomorrow with gratitude,\npurpose, and peace. My life is about more than what I accomplish-it is about how fully\nI live.",
+      "fields": [
+        {
+          "key": "what_helped",
+          "label": "What helped you choose a healthier option today?",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share this reflection with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "work-day-15-values",
+      "moduleId": "work-week-3",
+      "type": "values_select",
+      "title": "Day 15 values check",
+      "dayNumber": 15,
+      "weekNumber": 3,
+      "points": 8,
+      "sortOrder": 26,
+      "prompt": "Choose the values you want your next choices to protect.",
+      "fields": [
+        {
+          "key": "values",
+          "label": "Values that matter most right now",
+          "kind": "multi_choice",
+          "required": true,
+          "options": [
+            "Peace",
+            "Honesty",
+            "Health",
+            "Family",
+            "Self-respect",
+            "Financial stability",
+            "Presence",
+            "Purpose"
+          ],
+          "privateByDefault": false
+        }
+      ],
+      "origin": "platform"
+    },
+    {
+      "id": "work-week-4-focus",
+      "moduleId": "work-week-4",
+      "type": "weekly_focus",
+      "title": "Week 4 focus: Freedom & Purpose",
+      "dayNumber": null,
+      "weekNumber": 4,
+      "points": 8,
+      "sortOrder": 27,
+      "prompt": "Living with Purpose and Balance",
+      "focusItems": [
+        "My life is measured by love, purpose, health, and joy-not just productivity.",
+        "I create time for rest, recreation, and meaningful experiences.",
+        "I embrace a future built on balance, fulfillment, and lasting well-being."
+      ],
+      "fields": [
+        {
+          "key": "focus_choice",
+          "label": "Which focus statement will guide you this week?",
+          "kind": "single_choice",
+          "required": true,
+          "options": [
+            "My life is measured by love, purpose, health, and joy-not just productivity.",
+            "I create time for rest, recreation, and meaningful experiences.",
+            "I embrace a future built on balance, fulfillment, and lasting well-being."
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "support_plan",
+          "label": "One small action that will support this focus",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "work-day-16",
+      "moduleId": "work-week-4",
+      "type": "daily_affirmation",
+      "title": "Day 16 affirmation",
+      "dayNumber": 16,
+      "weekNumber": 4,
+      "points": 5,
+      "sortOrder": 28,
+      "affirmation": "I am creating a balanced life where work supports my purpose instead of defining my identity.",
+      "fields": [
+        {
+          "key": "mood",
+          "label": "How are you feeling right now?",
+          "kind": "mood",
+          "required": true,
+          "options": [
+            "calm",
+            "steady",
+            "low",
+            "anxious",
+            "irritable"
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "urge_level",
+          "label": "Urge intensity right now (0-5)",
+          "kind": "scale",
+          "required": true,
+          "min": 0,
+          "max": 5,
+          "privateByDefault": false
+        },
+        {
+          "key": "pause_taken",
+          "label": "I took a short pause before reacting",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        },
+        {
+          "key": "practice_done",
+          "label": "I sat with today's affirmation",
+          "kind": "checkbox",
+          "required": true,
+          "privateByDefault": false
+        },
+        {
+          "key": "private_note",
+          "label": "Optional private note (only shared if you choose)",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share today's note with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "work-day-17",
+      "moduleId": "work-week-4",
+      "type": "daily_affirmation",
+      "title": "Day 17 affirmation",
+      "dayNumber": 17,
+      "weekNumber": 4,
+      "points": 5,
+      "sortOrder": 29,
+      "affirmation": "I celebrate my accomplishments while remembering that my greatest achievements include love,\nhealth, and inner peace.",
+      "fields": [
+        {
+          "key": "mood",
+          "label": "How are you feeling right now?",
+          "kind": "mood",
+          "required": true,
+          "options": [
+            "calm",
+            "steady",
+            "low",
+            "anxious",
+            "irritable"
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "urge_level",
+          "label": "Urge intensity right now (0-5)",
+          "kind": "scale",
+          "required": true,
+          "min": 0,
+          "max": 5,
+          "privateByDefault": false
+        },
+        {
+          "key": "pause_taken",
+          "label": "I took a short pause before reacting",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        },
+        {
+          "key": "practice_done",
+          "label": "I sat with today's affirmation",
+          "kind": "checkbox",
+          "required": true,
+          "privateByDefault": false
+        },
+        {
+          "key": "private_note",
+          "label": "Optional private note (only shared if you choose)",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share today's note with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "work-day-18",
+      "moduleId": "work-week-4",
+      "type": "daily_affirmation",
+      "title": "Day 18 affirmation",
+      "dayNumber": 18,
+      "weekNumber": 4,
+      "points": 5,
+      "sortOrder": 30,
+      "affirmation": "I embrace rest as an essential part of living a healthy, productive, and meaningful life.",
+      "fields": [
+        {
+          "key": "mood",
+          "label": "How are you feeling right now?",
+          "kind": "mood",
+          "required": true,
+          "options": [
+            "calm",
+            "steady",
+            "low",
+            "anxious",
+            "irritable"
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "urge_level",
+          "label": "Urge intensity right now (0-5)",
+          "kind": "scale",
+          "required": true,
+          "min": 0,
+          "max": 5,
+          "privateByDefault": false
+        },
+        {
+          "key": "pause_taken",
+          "label": "I took a short pause before reacting",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        },
+        {
+          "key": "practice_done",
+          "label": "I sat with today's affirmation",
+          "kind": "checkbox",
+          "required": true,
+          "privateByDefault": false
+        },
+        {
+          "key": "private_note",
+          "label": "Optional private note (only shared if you choose)",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share today's note with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "work-day-18-trigger-map",
+      "moduleId": "work-week-4",
+      "type": "trigger_map",
+      "title": "Day 18 trigger map",
+      "dayNumber": 18,
+      "weekNumber": 4,
+      "points": 10,
+      "sortOrder": 31,
+      "prompt": "Map the loop gently: trigger, urge, old response, and a wiser next step.",
+      "fields": [
+        {
+          "key": "trigger",
+          "label": "What usually triggers the urge?",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        },
+        {
+          "key": "urge",
+          "label": "What does the urge feel like in your body?",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        },
+        {
+          "key": "replacement",
+          "label": "What healthier response can you try next time?",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        }
+      ],
+      "origin": "platform"
+    },
+    {
+      "id": "work-day-19",
+      "moduleId": "work-week-4",
+      "type": "daily_affirmation",
+      "title": "Day 19 affirmation",
+      "dayNumber": 19,
+      "weekNumber": 4,
+      "points": 5,
+      "sortOrder": 32,
+      "affirmation": "I choose to be fully present in each moment, knowing that life is happening beyond my work.",
+      "fields": [
+        {
+          "key": "mood",
+          "label": "How are you feeling right now?",
+          "kind": "mood",
+          "required": true,
+          "options": [
+            "calm",
+            "steady",
+            "low",
+            "anxious",
+            "irritable"
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "urge_level",
+          "label": "Urge intensity right now (0-5)",
+          "kind": "scale",
+          "required": true,
+          "min": 0,
+          "max": 5,
+          "privateByDefault": false
+        },
+        {
+          "key": "pause_taken",
+          "label": "I took a short pause before reacting",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        },
+        {
+          "key": "practice_done",
+          "label": "I sat with today's affirmation",
+          "kind": "checkbox",
+          "required": true,
+          "privateByDefault": false
+        },
+        {
+          "key": "private_note",
+          "label": "Optional private note (only shared if you choose)",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share today's note with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "work-day-20",
+      "moduleId": "work-week-4",
+      "type": "daily_affirmation",
+      "title": "Day 20 affirmation",
+      "dayNumber": 20,
+      "weekNumber": 4,
+      "points": 5,
+      "sortOrder": 33,
+      "affirmation": "Today, I honor myself by choosing balance, healthy boundaries, meaningful relationships, and lasting\nwell-being over constant busyness.",
+      "fields": [
+        {
+          "key": "mood",
+          "label": "How are you feeling right now?",
+          "kind": "mood",
+          "required": true,
+          "options": [
+            "calm",
+            "steady",
+            "low",
+            "anxious",
+            "irritable"
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "urge_level",
+          "label": "Urge intensity right now (0-5)",
+          "kind": "scale",
+          "required": true,
+          "min": 0,
+          "max": 5,
+          "privateByDefault": false
+        },
+        {
+          "key": "pause_taken",
+          "label": "I took a short pause before reacting",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        },
+        {
+          "key": "practice_done",
+          "label": "I sat with today's affirmation",
+          "kind": "checkbox",
+          "required": true,
+          "privateByDefault": false
+        },
+        {
+          "key": "private_note",
+          "label": "Optional private note (only shared if you choose)",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share today's note with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "work-day-20-reflection",
+      "moduleId": "work-week-4",
+      "type": "reflection",
+      "title": "Day 20 recovery reflection",
+      "dayNumber": 20,
+      "weekNumber": 4,
+      "points": 8,
+      "sortOrder": 34,
+      "prompt": "Today I chose balance. Every healthy boundary I set, every moment I rested, and every\nmeaningful connection I made strengthened my well-being. I release the pressure to\nconstantly achieve, celebrate today's progress, and welcome tomorrow with gratitude,\npurpose, and peace. My life is about more than what I accomplish-it is about how fully\nI live.",
+      "fields": [
+        {
+          "key": "what_helped",
+          "label": "What helped you choose a healthier option today?",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share this reflection with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "work-closing",
+      "moduleId": "work-week-4",
+      "type": "closing",
+      "title": "Closing affirmation and forward plan",
+      "dayNumber": 20,
+      "weekNumber": 4,
+      "points": 15,
+      "sortOrder": 35,
+      "affirmation": "I am not defined by my workload, achievements, or productivity. I am defined by my character, my\nvalues, and my ability to live with purpose and balance. Every day I choose healthy boundaries, I\nstrengthen my well-being, deepen my relationships, and create a life that honors both meaningful\nwork and meaningful living. One decision, one day, and one step at a time, I am building a life of\nbalance, fulfillment, freedom, and lasting peace.",
+      "fields": [
+        {
+          "key": "keep_doing",
+          "label": "What will you keep practising after this journey?",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        },
+        {
+          "key": "support_needed",
+          "label": "What support do you still want?",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share this closing plan with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    }
+  ],
+  "dailyReflection": "Today I chose balance. Every healthy boundary I set, every moment I rested, and every\nmeaningful connection I made strengthened my well-being. I release the pressure to\nconstantly achieve, celebrate today's progress, and welcome tomorrow with gratitude,\npurpose, and peace. My life is about more than what I accomplish-it is about how fully\nI live.",
+  "closingAffirmation": "I am not defined by my workload, achievements, or productivity. I am defined by my character, my\nvalues, and my ability to live with purpose and balance. Every day I choose healthy boundaries, I\nstrengthen my well-being, deepen my relationships, and create a life that honors both meaningful\nwork and meaningful living. One decision, one day, and one step at a time, I am building a life of\nbalance, fulfillment, freedom, and lasting peace.",
+  "homeworkDefaults": [
+    {
+      "taskKey": "affirmations_daily",
+      "title": "Today's affirmation",
+      "taskType": "affirmations_daily",
+      "points": 5
+    },
+    {
+      "taskKey": "eft_daily",
+      "title": "EFT tapping",
+      "taskType": "eft_daily",
+      "points": 5
+    }
+  ],
+  "reviewStatus": "approved",
+  "sourceExcerpt": "Work Addiction (Workaholism)\nThese daily affirmations are designed to support individuals recovering from work addiction, also known as\nworkaholism. Recovery is a journey of restoring balance, prioritizing well-being, nurturing meaningful\nrelationships, and recognizing that your ",
+  "sourceChecksum": "ee35f269e9e234a6",
+  "cadence": {
+    "activityCadence": "daily",
+    "liveSessionCount": 8,
+    "liveSessionWeekdays": [
+      "tue",
+      "fri"
+    ],
+    "liveSessionTimeSlots": [
+      "11:00",
+      "16:00"
+    ],
+    "timezone": "Africa/Johannesburg",
+    "firstSessionDurationMinutes": 90,
+    "standardSessionDurationMinutes": 45
+  },
+  "dailyCheckIn": {
+    "includeMood": true,
+    "includeUrge": true,
+    "includePause": true,
+    "includePrivateNote": true,
+    "urgeMin": 0,
+    "urgeMax": 5,
+    "highUrgeThreshold": 4
+  },
+  "structure": {
+    "slug": "work",
+    "expectedWeekCount": 4,
+    "expectedDayCount": 20,
+    "sourceActivityTypes": [
+      "orientation",
+      "weekly_focus",
+      "daily_affirmation",
+      "reflection",
+      "closing"
+    ],
+    "optionalPlatformActivityTypes": [
+      "trigger_map",
+      "values_select"
+    ],
+    "reflectionDays": [
+      5,
+      10,
+      15,
+      20
+    ],
+    "platformExerciseDays": [
+      3,
+      8,
+      10,
+      13,
+      15,
+      18
+    ],
+    "reviewRequired": false
+  }
+}

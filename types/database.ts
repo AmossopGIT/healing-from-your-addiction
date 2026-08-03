@@ -90,12 +90,119 @@ export type ClientProfile = {
   created_at: string;
 };
 
+export type ProgrammeTemplateStatus = "draft" | "ready" | "published";
+export type ProgrammeTemplateCategory = "behavioral" | "substance";
+
+export type ProgrammeReviewStatus = "pending" | "approved" | "changes_requested";
+
 export type ProgrammeTemplate = {
   id: string;
   addiction_slug: string;
   title: string;
   session_count: number;
   source_case_study_slug: string | null;
+  created_at: string;
+  category: ProgrammeTemplateCategory;
+  status: ProgrammeTemplateStatus;
+  version: number;
+  published_at: string | null;
+  description: string | null;
+  safety_json: Record<string, unknown>;
+  week_count: number;
+  day_count: number;
+  content_json: Record<string, unknown>;
+  review_status: ProgrammeReviewStatus;
+  reviewed_at: string | null;
+  reviewed_by: string | null;
+  review_notes: string | null;
+  cadence_json: Record<string, unknown>;
+  draft_content_json: Record<string, unknown> | null;
+  source_checksum: string | null;
+};
+
+export type ProgrammeVersionStatus = "draft" | "ready" | "published" | "archived";
+
+export type ProgrammeVersion = {
+  id: string;
+  template_id: string;
+  version: number;
+  status: ProgrammeVersionStatus;
+  content_json: Record<string, unknown>;
+  source_checksum: string | null;
+  review_status: ProgrammeReviewStatus;
+  created_by: string | null;
+  published_at: string | null;
+  created_at: string;
+};
+
+export type ActivityProgressStatus = "locked" | "available" | "in_progress" | "completed" | "skipped";
+
+export type ClientActivityProgress = {
+  id: string;
+  enrollment_id: string;
+  activity_id: string;
+  status: ActivityProgressStatus;
+  responses: Record<string, unknown>;
+  public_responses: Record<string, unknown>;
+  shared_with_admin: boolean;
+  points_awarded: number;
+  started_at: string | null;
+  completed_at: string | null;
+  skipped_reason: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
+export type ClientActivityPrivateAnswer = {
+  id: string;
+  progress_id: string;
+  enrollment_id: string;
+  client_profile_id: string;
+  private_responses: Record<string, unknown>;
+  shared_with_admin: boolean;
+  created_at: string;
+  updated_at: string;
+};
+
+export type ProgrammeActivityEventType =
+  | "started"
+  | "viewed"
+  | "saved"
+  | "completed"
+  | "unlocked"
+  | "skipped"
+  | "paused"
+  | "resumed"
+  | "safety_flag"
+  | "module_completed"
+  | "programme_completed";
+
+export type ProgrammeActivityEvent = {
+  id: string;
+  enrollment_id: string;
+  client_profile_id: string;
+  programme_slug: string | null;
+  programme_version: number | null;
+  module_id: string | null;
+  activity_id: string | null;
+  event_type: ProgrammeActivityEventType;
+  actor_role: "client" | "admin" | "system";
+  actor_id: string | null;
+  idempotency_key: string;
+  metadata: Record<string, unknown>;
+  occurred_at: string;
+  created_at: string;
+};
+
+export type ProgrammeAdminFlag = {
+  id: string;
+  enrollment_id: string;
+  client_profile_id: string;
+  flag_type: "safety" | "inactive" | "support" | "note";
+  severity: "info" | "watch" | "urgent";
+  note: string;
+  created_by: string | null;
+  resolved_at: string | null;
   created_at: string;
 };
 
@@ -121,6 +228,12 @@ export type Enrollment = {
   admin_id: string | null;
   created_at: string;
   updated_at: string;
+  programme_version: number | null;
+  current_activity_id: string | null;
+  content_snapshot: Record<string, unknown> | null;
+  journey_started_at: string | null;
+  journey_completed_at: string | null;
+  last_activity_at: string | null;
 };
 
 export type SessionProgress = {
@@ -247,6 +360,73 @@ export type ClientIntakeSubmission = {
   completed_at: string | null;
   created_at: string;
   updated_at: string;
+};
+
+export type ReadinessBand = "needs_support_first" | "developing" | "mostly_ready" | "fully_ready";
+
+export type ReadinessReviewStatus = "unreviewed" | "in_review" | "reviewed" | "follow_up_needed";
+
+export type ReadinessNextStep =
+  | "programme_enquiry"
+  | "motivation_work"
+  | "trigger_mapping"
+  | "emotional_regulation"
+  | "urgent_safety";
+
+export type ReadinessAssessment = {
+  id: string;
+  client_profile_id: string;
+  assessment_version: number;
+  responses: Record<string, unknown>;
+  commitment_score: number;
+  self_awareness_score: number;
+  emotional_capacity_score: number;
+  readiness_product: number;
+  readiness_index: number | null;
+  readiness_band: ReadinessBand;
+  focus_areas: string[];
+  attempt_number: number;
+  is_current: boolean;
+  urgent_safety: boolean;
+  next_step: ReadinessNextStep | null;
+  privacy_consent_at: string | null;
+  review_status: ReadinessReviewStatus;
+  practitioner_notes: string | null;
+  recommended_focus: string | null;
+  follow_up_on: string | null;
+  reviewed_at: string | null;
+  reviewed_by: string | null;
+  retention_until: string | null;
+  completed_at: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
+export type ReadinessAssessmentDraft = {
+  id: string;
+  token_hash: string;
+  ciphertext: string;
+  iv: string;
+  auth_tag: string;
+  assessment_version: number;
+  email_hint: string | null;
+  client_profile_id: string | null;
+  claimed_at: string | null;
+  expires_at: string;
+  created_at: string;
+  updated_at: string;
+};
+
+export type AdminNotification = {
+  id: string;
+  kind: "readiness_completed" | "message" | "consultation" | "note";
+  title: string;
+  body: string;
+  href: string | null;
+  client_profile_id: string | null;
+  source_id: string | null;
+  read_at: string | null;
+  created_at: string;
 };
 
 export type ConsultationStatus =
@@ -453,8 +633,101 @@ export type Database = {
       >;
       programme_templates: TableDef<
         ProgrammeTemplate,
-        { addiction_slug: string; title: string; session_count?: number; source_case_study_slug?: string | null },
+        {
+          addiction_slug: string;
+          title: string;
+          session_count?: number;
+          source_case_study_slug?: string | null;
+          category?: ProgrammeTemplateCategory;
+          status?: ProgrammeTemplateStatus;
+          version?: number;
+          published_at?: string | null;
+          description?: string | null;
+          safety_json?: Record<string, unknown>;
+          week_count?: number;
+          day_count?: number;
+          content_json?: Record<string, unknown>;
+          review_status?: ProgrammeReviewStatus;
+          reviewed_at?: string | null;
+          reviewed_by?: string | null;
+          review_notes?: string | null;
+          cadence_json?: Record<string, unknown>;
+          draft_content_json?: Record<string, unknown> | null;
+          source_checksum?: string | null;
+        },
         Partial<ProgrammeTemplate>
+      >;
+      programme_versions: TableDef<
+        ProgrammeVersion,
+        {
+          template_id: string;
+          version: number;
+          status?: ProgrammeVersionStatus;
+          content_json?: Record<string, unknown>;
+          source_checksum?: string | null;
+          review_status?: ProgrammeReviewStatus;
+          created_by?: string | null;
+          published_at?: string | null;
+        },
+        Partial<ProgrammeVersion>
+      >;
+      client_activity_progress: TableDef<
+        ClientActivityProgress,
+        {
+          enrollment_id: string;
+          activity_id: string;
+          status?: ActivityProgressStatus;
+          responses?: Record<string, unknown>;
+          public_responses?: Record<string, unknown>;
+          shared_with_admin?: boolean;
+          points_awarded?: number;
+          started_at?: string | null;
+          completed_at?: string | null;
+          skipped_reason?: string | null;
+        },
+        Partial<ClientActivityProgress>
+      >;
+      client_activity_private_answers: TableDef<
+        ClientActivityPrivateAnswer,
+        {
+          progress_id: string;
+          enrollment_id: string;
+          client_profile_id: string;
+          private_responses?: Record<string, unknown>;
+          shared_with_admin?: boolean;
+        },
+        Partial<ClientActivityPrivateAnswer>
+      >;
+      programme_activity_events: TableDef<
+        ProgrammeActivityEvent,
+        {
+          enrollment_id: string;
+          client_profile_id: string;
+          programme_slug?: string | null;
+          programme_version?: number | null;
+          module_id?: string | null;
+          activity_id?: string | null;
+          event_type: ProgrammeActivityEventType;
+          actor_role?: ProgrammeActivityEvent["actor_role"];
+          actor_id?: string | null;
+          idempotency_key: string;
+          metadata?: Record<string, unknown>;
+          occurred_at?: string;
+        },
+        Partial<ProgrammeActivityEvent>
+      >;
+      programme_admin_flags: TableDef<
+        ProgrammeAdminFlag,
+        {
+          enrollment_id: string;
+          client_profile_id: string;
+          flag_type: ProgrammeAdminFlag["flag_type"];
+          severity?: ProgrammeAdminFlag["severity"];
+          note: string;
+          created_by?: string | null;
+          resolved_at?: string | null;
+        },
+        Partial<ProgrammeAdminFlag>
       >;
       programme_sessions: TableDef<
         ProgrammeSession,
@@ -478,6 +751,12 @@ export type Database = {
           start_date?: string | null;
           current_session_number?: number;
           admin_id?: string | null;
+          programme_version?: number | null;
+          current_activity_id?: string | null;
+          content_snapshot?: Record<string, unknown> | null;
+          journey_started_at?: string | null;
+          journey_completed_at?: string | null;
+          last_activity_at?: string | null;
         },
         Partial<Enrollment>
       >;
@@ -586,6 +865,63 @@ export type Database = {
           completed_at?: string | null;
         },
         Partial<ClientIntakeSubmission>
+      >;
+      readiness_assessments: TableDef<
+        ReadinessAssessment,
+        {
+          client_profile_id: string;
+          assessment_version?: number;
+          responses?: Record<string, unknown>;
+          commitment_score: number;
+          self_awareness_score: number;
+          emotional_capacity_score: number;
+          readiness_product: number;
+          readiness_index?: number | null;
+          readiness_band: ReadinessBand;
+          focus_areas?: string[];
+          attempt_number?: number;
+          is_current?: boolean;
+          urgent_safety?: boolean;
+          next_step?: ReadinessNextStep | null;
+          privacy_consent_at?: string | null;
+          review_status?: ReadinessReviewStatus;
+          practitioner_notes?: string | null;
+          recommended_focus?: string | null;
+          follow_up_on?: string | null;
+          reviewed_at?: string | null;
+          reviewed_by?: string | null;
+          retention_until?: string | null;
+          completed_at?: string | null;
+        },
+        Partial<ReadinessAssessment>
+      >;
+      readiness_assessment_drafts: TableDef<
+        ReadinessAssessmentDraft,
+        {
+          token_hash: string;
+          ciphertext: string;
+          iv: string;
+          auth_tag: string;
+          assessment_version?: number;
+          email_hint?: string | null;
+          client_profile_id?: string | null;
+          claimed_at?: string | null;
+          expires_at: string;
+        },
+        Partial<ReadinessAssessmentDraft>
+      >;
+      admin_notifications: TableDef<
+        AdminNotification,
+        {
+          kind: AdminNotification["kind"];
+          title: string;
+          body: string;
+          href?: string | null;
+          client_profile_id?: string | null;
+          source_id?: string | null;
+          read_at?: string | null;
+        },
+        Partial<AdminNotification>
       >;
       client_consultations: TableDef<
         ClientConsultation,

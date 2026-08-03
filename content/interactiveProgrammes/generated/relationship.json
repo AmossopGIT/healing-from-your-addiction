@@ -1,0 +1,1963 @@
+{
+  "slug": "relationship",
+  "title": "Relationship Addiction (Codependency)",
+  "category": "behavioral",
+  "status": "ready",
+  "version": 2,
+  "sourceFile": "Relationship addiction (codependency).pdf",
+  "sourceStatus": "extracted",
+  "needsManualReview": false,
+  "description": "These daily affirmations are designed to support individuals healing from relationship addiction and\ncodependent patterns. Recovery is a journey of discovering your identity, developing healthy boundaries,\nbuilding emotional independence, and creating relationships rooted in mutual respect, trust, and\nauthenticity. These affirmations encourage self-worth, emotional resilience, self-compassion, and balanced,\nhealthy connections. They are intended to complement professional counseling, support groups, personal\nreflection, and the encouragement of trusted family and friends.",
+  "safety": {
+    "disclaimer": "This programme complements counselling, hypnotherapy, EFT, and trusted accountability. It is not a medical cure.",
+    "reminder": "Healing from relationship addiction and codependency is a journey of rediscovering yourself while\nlearning to build healthy, balanced relationships. It is not about becoming emotionally distant or\navoiding connection-it is about developing relationships where both people can thrive with mutual\nrespect, responsibility, and healthy boundaries. With the support of a qualified therapist, support\n• \n• \n• \n• \n• \n• \n• \n• \n• \n• \n• \n• \n4\ngroup, or trusted mentor, lasting healing is possible. Every act of self-respect and every healthy\nboundary is a meaningful step toward emotional freedom, authentic love, and lifelong well-being.",
+    "escalation": null,
+    "requiresMedicalSupportNotice": false
+  },
+  "weekCount": 4,
+  "dayCount": 20,
+  "modules": [
+    {
+      "id": "relationship-week-1",
+      "number": 1,
+      "title": "Awareness & Commitment",
+      "theme": "Rediscovering My Identity",
+      "focus": [
+        "I recognize that my identity is separate from my relationships.",
+        "I choose self-respect over people-pleasing.",
+        "Healthy boundaries are acts of love toward myself and others."
+      ]
+    },
+    {
+      "id": "relationship-week-2",
+      "number": 2,
+      "title": "Healing & Self-Compassion",
+      "theme": "Loving Myself First",
+      "focus": [
+        "I treat myself with kindness and patience.",
+        "I allow myself to receive love without losing myself.",
+        "I release guilt for prioritizing my well-being."
+      ]
+    },
+    {
+      "id": "relationship-week-3",
+      "number": 3,
+      "title": "Strength & Growth",
+      "theme": "Building Healthy Relationships",
+      "focus": [
+        "I communicate honestly and respectfully.",
+        "I trust others to take responsibility for their own choices.",
+        "My confidence grows every time I honor my values."
+      ]
+    },
+    {
+      "id": "relationship-week-4",
+      "number": 4,
+      "title": "Freedom & Purpose",
+      "theme": "Living with Healthy Love",
+      "focus": [
+        "I build relationships based on mutual respect and healthy interdependence.",
+        "I value connection without sacrificing my identity.",
+        "I embrace a future filled with balance, authenticity, emotional freedom, and lasting peace."
+      ]
+    }
+  ],
+  "activities": [
+    {
+      "id": "relationship-orientation",
+      "moduleId": "relationship-week-1",
+      "type": "orientation",
+      "title": "Begin your healing journey",
+      "dayNumber": 0,
+      "weekNumber": 1,
+      "points": 10,
+      "sortOrder": 0,
+      "prompt": "These daily affirmations are designed to support individuals healing from relationship addiction and\ncodependent patterns. Recovery is a journey of discovering your identity, developing healthy boundaries,\nbuilding emotional independence, and creating relationships rooted in mutual respect, trust, and\nauthenticity. These affirmations encourage self-worth, emotional resilience, self-compassion, and balanced,\nhealthy connections. They are intended to complement professional counseling, support groups, personal\nreflection, and the encouragement of trusted family and friends.",
+      "fields": [
+        {
+          "key": "intention",
+          "label": "What would a freer week look like for you?",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "relationship-week-1-focus",
+      "moduleId": "relationship-week-1",
+      "type": "weekly_focus",
+      "title": "Week 1 focus: Awareness & Commitment",
+      "dayNumber": null,
+      "weekNumber": 1,
+      "points": 8,
+      "sortOrder": 1,
+      "prompt": "Rediscovering My Identity",
+      "focusItems": [
+        "I recognize that my identity is separate from my relationships.",
+        "I choose self-respect over people-pleasing.",
+        "Healthy boundaries are acts of love toward myself and others."
+      ],
+      "fields": [
+        {
+          "key": "focus_choice",
+          "label": "Which focus statement will guide you this week?",
+          "kind": "single_choice",
+          "required": true,
+          "options": [
+            "I recognize that my identity is separate from my relationships.",
+            "I choose self-respect over people-pleasing.",
+            "Healthy boundaries are acts of love toward myself and others."
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "support_plan",
+          "label": "One small action that will support this focus",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "relationship-day-1",
+      "moduleId": "relationship-week-1",
+      "type": "daily_affirmation",
+      "title": "Day 1 affirmation",
+      "dayNumber": 1,
+      "weekNumber": 1,
+      "points": 5,
+      "sortOrder": 2,
+      "affirmation": "Today, I choose to honor my own needs, feelings, and well-being. My healing begins with caring for\nmyself.",
+      "fields": [
+        {
+          "key": "mood",
+          "label": "How are you feeling right now?",
+          "kind": "mood",
+          "required": true,
+          "options": [
+            "calm",
+            "steady",
+            "low",
+            "anxious",
+            "irritable"
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "urge_level",
+          "label": "Urge intensity right now (0-5)",
+          "kind": "scale",
+          "required": true,
+          "min": 0,
+          "max": 5,
+          "privateByDefault": false
+        },
+        {
+          "key": "pause_taken",
+          "label": "I took a short pause before reacting",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        },
+        {
+          "key": "practice_done",
+          "label": "I sat with today's affirmation",
+          "kind": "checkbox",
+          "required": true,
+          "privateByDefault": false
+        },
+        {
+          "key": "private_note",
+          "label": "Optional private note (only shared if you choose)",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share today's note with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "relationship-day-2",
+      "moduleId": "relationship-week-1",
+      "type": "daily_affirmation",
+      "title": "Day 2 affirmation",
+      "dayNumber": 2,
+      "weekNumber": 1,
+      "points": 5,
+      "sortOrder": 3,
+      "affirmation": "My worth is not determined by another person's approval, affection, or presence. I am valuable\nexactly as I am.",
+      "fields": [
+        {
+          "key": "mood",
+          "label": "How are you feeling right now?",
+          "kind": "mood",
+          "required": true,
+          "options": [
+            "calm",
+            "steady",
+            "low",
+            "anxious",
+            "irritable"
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "urge_level",
+          "label": "Urge intensity right now (0-5)",
+          "kind": "scale",
+          "required": true,
+          "min": 0,
+          "max": 5,
+          "privateByDefault": false
+        },
+        {
+          "key": "pause_taken",
+          "label": "I took a short pause before reacting",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        },
+        {
+          "key": "practice_done",
+          "label": "I sat with today's affirmation",
+          "kind": "checkbox",
+          "required": true,
+          "privateByDefault": false
+        },
+        {
+          "key": "private_note",
+          "label": "Optional private note (only shared if you choose)",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share today's note with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "relationship-day-3",
+      "moduleId": "relationship-week-1",
+      "type": "daily_affirmation",
+      "title": "Day 3 affirmation",
+      "dayNumber": 3,
+      "weekNumber": 1,
+      "points": 5,
+      "sortOrder": 4,
+      "affirmation": "I am a complete person with my own identity, dreams, strengths, and purpose.",
+      "fields": [
+        {
+          "key": "mood",
+          "label": "How are you feeling right now?",
+          "kind": "mood",
+          "required": true,
+          "options": [
+            "calm",
+            "steady",
+            "low",
+            "anxious",
+            "irritable"
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "urge_level",
+          "label": "Urge intensity right now (0-5)",
+          "kind": "scale",
+          "required": true,
+          "min": 0,
+          "max": 5,
+          "privateByDefault": false
+        },
+        {
+          "key": "pause_taken",
+          "label": "I took a short pause before reacting",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        },
+        {
+          "key": "practice_done",
+          "label": "I sat with today's affirmation",
+          "kind": "checkbox",
+          "required": true,
+          "privateByDefault": false
+        },
+        {
+          "key": "private_note",
+          "label": "Optional private note (only shared if you choose)",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share today's note with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "relationship-day-3-trigger-map",
+      "moduleId": "relationship-week-1",
+      "type": "trigger_map",
+      "title": "Day 3 trigger map",
+      "dayNumber": 3,
+      "weekNumber": 1,
+      "points": 10,
+      "sortOrder": 5,
+      "prompt": "Map the loop gently: trigger, urge, old response, and a wiser next step.",
+      "fields": [
+        {
+          "key": "trigger",
+          "label": "What usually triggers the urge?",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        },
+        {
+          "key": "urge",
+          "label": "What does the urge feel like in your body?",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        },
+        {
+          "key": "replacement",
+          "label": "What healthier response can you try next time?",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        }
+      ],
+      "origin": "platform"
+    },
+    {
+      "id": "relationship-day-4",
+      "moduleId": "relationship-week-1",
+      "type": "daily_affirmation",
+      "title": "Day 4 affirmation",
+      "dayNumber": 4,
+      "weekNumber": 1,
+      "points": 5,
+      "sortOrder": 6,
+      "affirmation": "I release the need to rescue, fix, or control others. I trust each person to be responsible for their own\njourney.",
+      "fields": [
+        {
+          "key": "mood",
+          "label": "How are you feeling right now?",
+          "kind": "mood",
+          "required": true,
+          "options": [
+            "calm",
+            "steady",
+            "low",
+            "anxious",
+            "irritable"
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "urge_level",
+          "label": "Urge intensity right now (0-5)",
+          "kind": "scale",
+          "required": true,
+          "min": 0,
+          "max": 5,
+          "privateByDefault": false
+        },
+        {
+          "key": "pause_taken",
+          "label": "I took a short pause before reacting",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        },
+        {
+          "key": "practice_done",
+          "label": "I sat with today's affirmation",
+          "kind": "checkbox",
+          "required": true,
+          "privateByDefault": false
+        },
+        {
+          "key": "private_note",
+          "label": "Optional private note (only shared if you choose)",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share today's note with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "relationship-day-5",
+      "moduleId": "relationship-week-1",
+      "type": "daily_affirmation",
+      "title": "Day 5 affirmation",
+      "dayNumber": 5,
+      "weekNumber": 1,
+      "points": 5,
+      "sortOrder": 7,
+      "affirmation": "Every healthy boundary I establish strengthens my confidence, peace, and emotional freedom.",
+      "fields": [
+        {
+          "key": "mood",
+          "label": "How are you feeling right now?",
+          "kind": "mood",
+          "required": true,
+          "options": [
+            "calm",
+            "steady",
+            "low",
+            "anxious",
+            "irritable"
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "urge_level",
+          "label": "Urge intensity right now (0-5)",
+          "kind": "scale",
+          "required": true,
+          "min": 0,
+          "max": 5,
+          "privateByDefault": false
+        },
+        {
+          "key": "pause_taken",
+          "label": "I took a short pause before reacting",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        },
+        {
+          "key": "practice_done",
+          "label": "I sat with today's affirmation",
+          "kind": "checkbox",
+          "required": true,
+          "privateByDefault": false
+        },
+        {
+          "key": "private_note",
+          "label": "Optional private note (only shared if you choose)",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share today's note with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "relationship-day-5-reflection",
+      "moduleId": "relationship-week-1",
+      "type": "reflection",
+      "title": "Day 5 recovery reflection",
+      "dayNumber": 5,
+      "weekNumber": 1,
+      "points": 8,
+      "sortOrder": 8,
+      "prompt": "Today I chose to honor myself. Every time I respected my own needs, expressed my\nfeelings honestly, or maintained a healthy boundary, I strengthened my recovery. I\ncelebrate today's progress, release today's fears without judgment, and welcome\ntomorrow with greater confidence, peace, and self-love. Healthy relationships begin\nwith a healthy relationship with myself.",
+      "fields": [
+        {
+          "key": "what_helped",
+          "label": "What helped you choose a healthier option today?",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share this reflection with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "relationship-week-2-focus",
+      "moduleId": "relationship-week-2",
+      "type": "weekly_focus",
+      "title": "Week 2 focus: Healing & Self-Compassion",
+      "dayNumber": null,
+      "weekNumber": 2,
+      "points": 8,
+      "sortOrder": 9,
+      "prompt": "Loving Myself First",
+      "focusItems": [
+        "I treat myself with kindness and patience.",
+        "I allow myself to receive love without losing myself.",
+        "I release guilt for prioritizing my well-being."
+      ],
+      "fields": [
+        {
+          "key": "focus_choice",
+          "label": "Which focus statement will guide you this week?",
+          "kind": "single_choice",
+          "required": true,
+          "options": [
+            "I treat myself with kindness and patience.",
+            "I allow myself to receive love without losing myself.",
+            "I release guilt for prioritizing my well-being."
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "support_plan",
+          "label": "One small action that will support this focus",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "relationship-day-6",
+      "moduleId": "relationship-week-2",
+      "type": "daily_affirmation",
+      "title": "Day 6 affirmation",
+      "dayNumber": 6,
+      "weekNumber": 2,
+      "points": 5,
+      "sortOrder": 10,
+      "affirmation": "I deserve relationships that are built on mutual love, respect, honesty, and healthy interdependence.",
+      "fields": [
+        {
+          "key": "mood",
+          "label": "How are you feeling right now?",
+          "kind": "mood",
+          "required": true,
+          "options": [
+            "calm",
+            "steady",
+            "low",
+            "anxious",
+            "irritable"
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "urge_level",
+          "label": "Urge intensity right now (0-5)",
+          "kind": "scale",
+          "required": true,
+          "min": 0,
+          "max": 5,
+          "privateByDefault": false
+        },
+        {
+          "key": "pause_taken",
+          "label": "I took a short pause before reacting",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        },
+        {
+          "key": "practice_done",
+          "label": "I sat with today's affirmation",
+          "kind": "checkbox",
+          "required": true,
+          "privateByDefault": false
+        },
+        {
+          "key": "private_note",
+          "label": "Optional private note (only shared if you choose)",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share today's note with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "relationship-day-7",
+      "moduleId": "relationship-week-2",
+      "type": "daily_affirmation",
+      "title": "Day 7 affirmation",
+      "dayNumber": 7,
+      "weekNumber": 2,
+      "points": 5,
+      "sortOrder": 11,
+      "affirmation": "I forgive myself for losing myself in relationships and choose to reconnect with who I truly am.",
+      "fields": [
+        {
+          "key": "mood",
+          "label": "How are you feeling right now?",
+          "kind": "mood",
+          "required": true,
+          "options": [
+            "calm",
+            "steady",
+            "low",
+            "anxious",
+            "irritable"
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "urge_level",
+          "label": "Urge intensity right now (0-5)",
+          "kind": "scale",
+          "required": true,
+          "min": 0,
+          "max": 5,
+          "privateByDefault": false
+        },
+        {
+          "key": "pause_taken",
+          "label": "I took a short pause before reacting",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        },
+        {
+          "key": "practice_done",
+          "label": "I sat with today's affirmation",
+          "kind": "checkbox",
+          "required": true,
+          "privateByDefault": false
+        },
+        {
+          "key": "private_note",
+          "label": "Optional private note (only shared if you choose)",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share today's note with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "relationship-day-8",
+      "moduleId": "relationship-week-2",
+      "type": "daily_affirmation",
+      "title": "Day 8 affirmation",
+      "dayNumber": 8,
+      "weekNumber": 2,
+      "points": 5,
+      "sortOrder": 12,
+      "affirmation": "I can experience loneliness, disappointment, or rejection without abandoning myself.",
+      "fields": [
+        {
+          "key": "mood",
+          "label": "How are you feeling right now?",
+          "kind": "mood",
+          "required": true,
+          "options": [
+            "calm",
+            "steady",
+            "low",
+            "anxious",
+            "irritable"
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "urge_level",
+          "label": "Urge intensity right now (0-5)",
+          "kind": "scale",
+          "required": true,
+          "min": 0,
+          "max": 5,
+          "privateByDefault": false
+        },
+        {
+          "key": "pause_taken",
+          "label": "I took a short pause before reacting",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        },
+        {
+          "key": "practice_done",
+          "label": "I sat with today's affirmation",
+          "kind": "checkbox",
+          "required": true,
+          "privateByDefault": false
+        },
+        {
+          "key": "private_note",
+          "label": "Optional private note (only shared if you choose)",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share today's note with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "relationship-day-8-trigger-map",
+      "moduleId": "relationship-week-2",
+      "type": "trigger_map",
+      "title": "Day 8 trigger map",
+      "dayNumber": 8,
+      "weekNumber": 2,
+      "points": 10,
+      "sortOrder": 13,
+      "prompt": "Map the loop gently: trigger, urge, old response, and a wiser next step.",
+      "fields": [
+        {
+          "key": "trigger",
+          "label": "What usually triggers the urge?",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        },
+        {
+          "key": "urge",
+          "label": "What does the urge feel like in your body?",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        },
+        {
+          "key": "replacement",
+          "label": "What healthier response can you try next time?",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        }
+      ],
+      "origin": "platform"
+    },
+    {
+      "id": "relationship-day-9",
+      "moduleId": "relationship-week-2",
+      "type": "daily_affirmation",
+      "title": "Day 9 affirmation",
+      "dayNumber": 9,
+      "weekNumber": 2,
+      "points": 5,
+      "sortOrder": 14,
+      "affirmation": "My happiness begins within me and grows through self-love, purpose, and meaningful connections.",
+      "fields": [
+        {
+          "key": "mood",
+          "label": "How are you feeling right now?",
+          "kind": "mood",
+          "required": true,
+          "options": [
+            "calm",
+            "steady",
+            "low",
+            "anxious",
+            "irritable"
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "urge_level",
+          "label": "Urge intensity right now (0-5)",
+          "kind": "scale",
+          "required": true,
+          "min": 0,
+          "max": 5,
+          "privateByDefault": false
+        },
+        {
+          "key": "pause_taken",
+          "label": "I took a short pause before reacting",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        },
+        {
+          "key": "practice_done",
+          "label": "I sat with today's affirmation",
+          "kind": "checkbox",
+          "required": true,
+          "privateByDefault": false
+        },
+        {
+          "key": "private_note",
+          "label": "Optional private note (only shared if you choose)",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share today's note with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "relationship-day-10",
+      "moduleId": "relationship-week-2",
+      "type": "daily_affirmation",
+      "title": "Day 10 affirmation",
+      "dayNumber": 10,
+      "weekNumber": 2,
+      "points": 5,
+      "sortOrder": 15,
+      "affirmation": "Every act of self-care strengthens my confidence and reminds me that I matter too.",
+      "fields": [
+        {
+          "key": "mood",
+          "label": "How are you feeling right now?",
+          "kind": "mood",
+          "required": true,
+          "options": [
+            "calm",
+            "steady",
+            "low",
+            "anxious",
+            "irritable"
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "urge_level",
+          "label": "Urge intensity right now (0-5)",
+          "kind": "scale",
+          "required": true,
+          "min": 0,
+          "max": 5,
+          "privateByDefault": false
+        },
+        {
+          "key": "pause_taken",
+          "label": "I took a short pause before reacting",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        },
+        {
+          "key": "practice_done",
+          "label": "I sat with today's affirmation",
+          "kind": "checkbox",
+          "required": true,
+          "privateByDefault": false
+        },
+        {
+          "key": "private_note",
+          "label": "Optional private note (only shared if you choose)",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share today's note with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "relationship-day-10-reflection",
+      "moduleId": "relationship-week-2",
+      "type": "reflection",
+      "title": "Day 10 recovery reflection",
+      "dayNumber": 10,
+      "weekNumber": 2,
+      "points": 8,
+      "sortOrder": 16,
+      "prompt": "Today I chose to honor myself. Every time I respected my own needs, expressed my\nfeelings honestly, or maintained a healthy boundary, I strengthened my recovery. I\ncelebrate today's progress, release today's fears without judgment, and welcome\ntomorrow with greater confidence, peace, and self-love. Healthy relationships begin\nwith a healthy relationship with myself.",
+      "fields": [
+        {
+          "key": "what_helped",
+          "label": "What helped you choose a healthier option today?",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share this reflection with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "relationship-day-10-values",
+      "moduleId": "relationship-week-2",
+      "type": "values_select",
+      "title": "Day 10 values check",
+      "dayNumber": 10,
+      "weekNumber": 2,
+      "points": 8,
+      "sortOrder": 17,
+      "prompt": "Choose the values you want your next choices to protect.",
+      "fields": [
+        {
+          "key": "values",
+          "label": "Values that matter most right now",
+          "kind": "multi_choice",
+          "required": true,
+          "options": [
+            "Peace",
+            "Honesty",
+            "Health",
+            "Family",
+            "Self-respect",
+            "Financial stability",
+            "Presence",
+            "Purpose"
+          ],
+          "privateByDefault": false
+        }
+      ],
+      "origin": "platform"
+    },
+    {
+      "id": "relationship-week-3-focus",
+      "moduleId": "relationship-week-3",
+      "type": "weekly_focus",
+      "title": "Week 3 focus: Strength & Growth",
+      "dayNumber": null,
+      "weekNumber": 3,
+      "points": 8,
+      "sortOrder": 18,
+      "prompt": "Building Healthy Relationships",
+      "focusItems": [
+        "I communicate honestly and respectfully.",
+        "I trust others to take responsibility for their own choices.",
+        "My confidence grows every time I honor my values."
+      ],
+      "fields": [
+        {
+          "key": "focus_choice",
+          "label": "Which focus statement will guide you this week?",
+          "kind": "single_choice",
+          "required": true,
+          "options": [
+            "I communicate honestly and respectfully.",
+            "I trust others to take responsibility for their own choices.",
+            "My confidence grows every time I honor my values."
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "support_plan",
+          "label": "One small action that will support this focus",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "relationship-day-11",
+      "moduleId": "relationship-week-3",
+      "type": "daily_affirmation",
+      "title": "Day 11 affirmation",
+      "dayNumber": 11,
+      "weekNumber": 3,
+      "points": 5,
+      "sortOrder": 19,
+      "affirmation": "I am responsible for my own emotions, choices, and growth-not for managing someone else's life.",
+      "fields": [
+        {
+          "key": "mood",
+          "label": "How are you feeling right now?",
+          "kind": "mood",
+          "required": true,
+          "options": [
+            "calm",
+            "steady",
+            "low",
+            "anxious",
+            "irritable"
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "urge_level",
+          "label": "Urge intensity right now (0-5)",
+          "kind": "scale",
+          "required": true,
+          "min": 0,
+          "max": 5,
+          "privateByDefault": false
+        },
+        {
+          "key": "pause_taken",
+          "label": "I took a short pause before reacting",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        },
+        {
+          "key": "practice_done",
+          "label": "I sat with today's affirmation",
+          "kind": "checkbox",
+          "required": true,
+          "privateByDefault": false
+        },
+        {
+          "key": "private_note",
+          "label": "Optional private note (only shared if you choose)",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share today's note with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "relationship-day-12",
+      "moduleId": "relationship-week-3",
+      "type": "daily_affirmation",
+      "title": "Day 12 affirmation",
+      "dayNumber": 12,
+      "weekNumber": 3,
+      "points": 5,
+      "sortOrder": 20,
+      "affirmation": "I communicate my needs honestly, respectfully, and confidently. My voice deserves to be heard.",
+      "fields": [
+        {
+          "key": "mood",
+          "label": "How are you feeling right now?",
+          "kind": "mood",
+          "required": true,
+          "options": [
+            "calm",
+            "steady",
+            "low",
+            "anxious",
+            "irritable"
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "urge_level",
+          "label": "Urge intensity right now (0-5)",
+          "kind": "scale",
+          "required": true,
+          "min": 0,
+          "max": 5,
+          "privateByDefault": false
+        },
+        {
+          "key": "pause_taken",
+          "label": "I took a short pause before reacting",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        },
+        {
+          "key": "practice_done",
+          "label": "I sat with today's affirmation",
+          "kind": "checkbox",
+          "required": true,
+          "privateByDefault": false
+        },
+        {
+          "key": "private_note",
+          "label": "Optional private note (only shared if you choose)",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share today's note with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "relationship-day-13",
+      "moduleId": "relationship-week-3",
+      "type": "daily_affirmation",
+      "title": "Day 13 affirmation",
+      "dayNumber": 13,
+      "weekNumber": 3,
+      "points": 5,
+      "sortOrder": 21,
+      "affirmation": "Every healthy choice I make strengthens my emotional independence and self-respect.",
+      "fields": [
+        {
+          "key": "mood",
+          "label": "How are you feeling right now?",
+          "kind": "mood",
+          "required": true,
+          "options": [
+            "calm",
+            "steady",
+            "low",
+            "anxious",
+            "irritable"
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "urge_level",
+          "label": "Urge intensity right now (0-5)",
+          "kind": "scale",
+          "required": true,
+          "min": 0,
+          "max": 5,
+          "privateByDefault": false
+        },
+        {
+          "key": "pause_taken",
+          "label": "I took a short pause before reacting",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        },
+        {
+          "key": "practice_done",
+          "label": "I sat with today's affirmation",
+          "kind": "checkbox",
+          "required": true,
+          "privateByDefault": false
+        },
+        {
+          "key": "private_note",
+          "label": "Optional private note (only shared if you choose)",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share today's note with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "relationship-day-13-trigger-map",
+      "moduleId": "relationship-week-3",
+      "type": "trigger_map",
+      "title": "Day 13 trigger map",
+      "dayNumber": 13,
+      "weekNumber": 3,
+      "points": 10,
+      "sortOrder": 22,
+      "prompt": "Map the loop gently: trigger, urge, old response, and a wiser next step.",
+      "fields": [
+        {
+          "key": "trigger",
+          "label": "What usually triggers the urge?",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        },
+        {
+          "key": "urge",
+          "label": "What does the urge feel like in your body?",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        },
+        {
+          "key": "replacement",
+          "label": "What healthier response can you try next time?",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        }
+      ],
+      "origin": "platform"
+    },
+    {
+      "id": "relationship-day-14",
+      "moduleId": "relationship-week-3",
+      "type": "daily_affirmation",
+      "title": "Day 14 affirmation",
+      "dayNumber": 14,
+      "weekNumber": 3,
+      "points": 5,
+      "sortOrder": 23,
+      "affirmation": "I choose relationships where love is freely given, not earned through sacrifice, people-pleasing, or\nself-neglect.",
+      "fields": [
+        {
+          "key": "mood",
+          "label": "How are you feeling right now?",
+          "kind": "mood",
+          "required": true,
+          "options": [
+            "calm",
+            "steady",
+            "low",
+            "anxious",
+            "irritable"
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "urge_level",
+          "label": "Urge intensity right now (0-5)",
+          "kind": "scale",
+          "required": true,
+          "min": 0,
+          "max": 5,
+          "privateByDefault": false
+        },
+        {
+          "key": "pause_taken",
+          "label": "I took a short pause before reacting",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        },
+        {
+          "key": "practice_done",
+          "label": "I sat with today's affirmation",
+          "kind": "checkbox",
+          "required": true,
+          "privateByDefault": false
+        },
+        {
+          "key": "private_note",
+          "label": "Optional private note (only shared if you choose)",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share today's note with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "relationship-day-15",
+      "moduleId": "relationship-week-3",
+      "type": "daily_affirmation",
+      "title": "Day 15 affirmation",
+      "dayNumber": 15,
+      "weekNumber": 3,
+      "points": 5,
+      "sortOrder": 24,
+      "affirmation": "My confidence grows every time I honor my values and remain true to myself.",
+      "fields": [
+        {
+          "key": "mood",
+          "label": "How are you feeling right now?",
+          "kind": "mood",
+          "required": true,
+          "options": [
+            "calm",
+            "steady",
+            "low",
+            "anxious",
+            "irritable"
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "urge_level",
+          "label": "Urge intensity right now (0-5)",
+          "kind": "scale",
+          "required": true,
+          "min": 0,
+          "max": 5,
+          "privateByDefault": false
+        },
+        {
+          "key": "pause_taken",
+          "label": "I took a short pause before reacting",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        },
+        {
+          "key": "practice_done",
+          "label": "I sat with today's affirmation",
+          "kind": "checkbox",
+          "required": true,
+          "privateByDefault": false
+        },
+        {
+          "key": "private_note",
+          "label": "Optional private note (only shared if you choose)",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share today's note with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "relationship-day-15-reflection",
+      "moduleId": "relationship-week-3",
+      "type": "reflection",
+      "title": "Day 15 recovery reflection",
+      "dayNumber": 15,
+      "weekNumber": 3,
+      "points": 8,
+      "sortOrder": 25,
+      "prompt": "Today I chose to honor myself. Every time I respected my own needs, expressed my\nfeelings honestly, or maintained a healthy boundary, I strengthened my recovery. I\ncelebrate today's progress, release today's fears without judgment, and welcome\ntomorrow with greater confidence, peace, and self-love. Healthy relationships begin\nwith a healthy relationship with myself.",
+      "fields": [
+        {
+          "key": "what_helped",
+          "label": "What helped you choose a healthier option today?",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share this reflection with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "relationship-day-15-values",
+      "moduleId": "relationship-week-3",
+      "type": "values_select",
+      "title": "Day 15 values check",
+      "dayNumber": 15,
+      "weekNumber": 3,
+      "points": 8,
+      "sortOrder": 26,
+      "prompt": "Choose the values you want your next choices to protect.",
+      "fields": [
+        {
+          "key": "values",
+          "label": "Values that matter most right now",
+          "kind": "multi_choice",
+          "required": true,
+          "options": [
+            "Peace",
+            "Honesty",
+            "Health",
+            "Family",
+            "Self-respect",
+            "Financial stability",
+            "Presence",
+            "Purpose"
+          ],
+          "privateByDefault": false
+        }
+      ],
+      "origin": "platform"
+    },
+    {
+      "id": "relationship-week-4-focus",
+      "moduleId": "relationship-week-4",
+      "type": "weekly_focus",
+      "title": "Week 4 focus: Freedom & Purpose",
+      "dayNumber": null,
+      "weekNumber": 4,
+      "points": 8,
+      "sortOrder": 27,
+      "prompt": "Living with Healthy Love",
+      "focusItems": [
+        "I build relationships based on mutual respect and healthy interdependence.",
+        "I value connection without sacrificing my identity.",
+        "I embrace a future filled with balance, authenticity, emotional freedom, and lasting peace."
+      ],
+      "fields": [
+        {
+          "key": "focus_choice",
+          "label": "Which focus statement will guide you this week?",
+          "kind": "single_choice",
+          "required": true,
+          "options": [
+            "I build relationships based on mutual respect and healthy interdependence.",
+            "I value connection without sacrificing my identity.",
+            "I embrace a future filled with balance, authenticity, emotional freedom, and lasting peace."
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "support_plan",
+          "label": "One small action that will support this focus",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "relationship-day-16",
+      "moduleId": "relationship-week-4",
+      "type": "daily_affirmation",
+      "title": "Day 16 affirmation",
+      "dayNumber": 16,
+      "weekNumber": 4,
+      "points": 5,
+      "sortOrder": 28,
+      "affirmation": "I am creating relationships that support my growth, peace, and authentic self-expression.",
+      "fields": [
+        {
+          "key": "mood",
+          "label": "How are you feeling right now?",
+          "kind": "mood",
+          "required": true,
+          "options": [
+            "calm",
+            "steady",
+            "low",
+            "anxious",
+            "irritable"
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "urge_level",
+          "label": "Urge intensity right now (0-5)",
+          "kind": "scale",
+          "required": true,
+          "min": 0,
+          "max": 5,
+          "privateByDefault": false
+        },
+        {
+          "key": "pause_taken",
+          "label": "I took a short pause before reacting",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        },
+        {
+          "key": "practice_done",
+          "label": "I sat with today's affirmation",
+          "kind": "checkbox",
+          "required": true,
+          "privateByDefault": false
+        },
+        {
+          "key": "private_note",
+          "label": "Optional private note (only shared if you choose)",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share today's note with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "relationship-day-17",
+      "moduleId": "relationship-week-4",
+      "type": "daily_affirmation",
+      "title": "Day 17 affirmation",
+      "dayNumber": 17,
+      "weekNumber": 4,
+      "points": 5,
+      "sortOrder": 29,
+      "affirmation": "I trust myself to make wise relationship choices that reflect my values and protect my well-being.",
+      "fields": [
+        {
+          "key": "mood",
+          "label": "How are you feeling right now?",
+          "kind": "mood",
+          "required": true,
+          "options": [
+            "calm",
+            "steady",
+            "low",
+            "anxious",
+            "irritable"
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "urge_level",
+          "label": "Urge intensity right now (0-5)",
+          "kind": "scale",
+          "required": true,
+          "min": 0,
+          "max": 5,
+          "privateByDefault": false
+        },
+        {
+          "key": "pause_taken",
+          "label": "I took a short pause before reacting",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        },
+        {
+          "key": "practice_done",
+          "label": "I sat with today's affirmation",
+          "kind": "checkbox",
+          "required": true,
+          "privateByDefault": false
+        },
+        {
+          "key": "private_note",
+          "label": "Optional private note (only shared if you choose)",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share today's note with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "relationship-day-18",
+      "moduleId": "relationship-week-4",
+      "type": "daily_affirmation",
+      "title": "Day 18 affirmation",
+      "dayNumber": 18,
+      "weekNumber": 4,
+      "points": 5,
+      "sortOrder": 30,
+      "affirmation": "I celebrate my progress because every healthy boundary brings greater freedom and peace.",
+      "fields": [
+        {
+          "key": "mood",
+          "label": "How are you feeling right now?",
+          "kind": "mood",
+          "required": true,
+          "options": [
+            "calm",
+            "steady",
+            "low",
+            "anxious",
+            "irritable"
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "urge_level",
+          "label": "Urge intensity right now (0-5)",
+          "kind": "scale",
+          "required": true,
+          "min": 0,
+          "max": 5,
+          "privateByDefault": false
+        },
+        {
+          "key": "pause_taken",
+          "label": "I took a short pause before reacting",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        },
+        {
+          "key": "practice_done",
+          "label": "I sat with today's affirmation",
+          "kind": "checkbox",
+          "required": true,
+          "privateByDefault": false
+        },
+        {
+          "key": "private_note",
+          "label": "Optional private note (only shared if you choose)",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share today's note with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "relationship-day-18-trigger-map",
+      "moduleId": "relationship-week-4",
+      "type": "trigger_map",
+      "title": "Day 18 trigger map",
+      "dayNumber": 18,
+      "weekNumber": 4,
+      "points": 10,
+      "sortOrder": 31,
+      "prompt": "Map the loop gently: trigger, urge, old response, and a wiser next step.",
+      "fields": [
+        {
+          "key": "trigger",
+          "label": "What usually triggers the urge?",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        },
+        {
+          "key": "urge",
+          "label": "What does the urge feel like in your body?",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        },
+        {
+          "key": "replacement",
+          "label": "What healthier response can you try next time?",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        }
+      ],
+      "origin": "platform"
+    },
+    {
+      "id": "relationship-day-19",
+      "moduleId": "relationship-week-4",
+      "type": "daily_affirmation",
+      "title": "Day 19 affirmation",
+      "dayNumber": 19,
+      "weekNumber": 4,
+      "points": 5,
+      "sortOrder": 32,
+      "affirmation": "I embrace love that is balanced, respectful, supportive, and life-giving.",
+      "fields": [
+        {
+          "key": "mood",
+          "label": "How are you feeling right now?",
+          "kind": "mood",
+          "required": true,
+          "options": [
+            "calm",
+            "steady",
+            "low",
+            "anxious",
+            "irritable"
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "urge_level",
+          "label": "Urge intensity right now (0-5)",
+          "kind": "scale",
+          "required": true,
+          "min": 0,
+          "max": 5,
+          "privateByDefault": false
+        },
+        {
+          "key": "pause_taken",
+          "label": "I took a short pause before reacting",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        },
+        {
+          "key": "practice_done",
+          "label": "I sat with today's affirmation",
+          "kind": "checkbox",
+          "required": true,
+          "privateByDefault": false
+        },
+        {
+          "key": "private_note",
+          "label": "Optional private note (only shared if you choose)",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share today's note with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "relationship-day-20",
+      "moduleId": "relationship-week-4",
+      "type": "daily_affirmation",
+      "title": "Day 20 affirmation",
+      "dayNumber": 20,
+      "weekNumber": 4,
+      "points": 5,
+      "sortOrder": 33,
+      "affirmation": "Today, I honor myself by choosing self-respect, healthy boundaries, emotional freedom, and\nrelationships built on mutual care and trust.",
+      "fields": [
+        {
+          "key": "mood",
+          "label": "How are you feeling right now?",
+          "kind": "mood",
+          "required": true,
+          "options": [
+            "calm",
+            "steady",
+            "low",
+            "anxious",
+            "irritable"
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "urge_level",
+          "label": "Urge intensity right now (0-5)",
+          "kind": "scale",
+          "required": true,
+          "min": 0,
+          "max": 5,
+          "privateByDefault": false
+        },
+        {
+          "key": "pause_taken",
+          "label": "I took a short pause before reacting",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        },
+        {
+          "key": "practice_done",
+          "label": "I sat with today's affirmation",
+          "kind": "checkbox",
+          "required": true,
+          "privateByDefault": false
+        },
+        {
+          "key": "private_note",
+          "label": "Optional private note (only shared if you choose)",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share today's note with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "relationship-day-20-reflection",
+      "moduleId": "relationship-week-4",
+      "type": "reflection",
+      "title": "Day 20 recovery reflection",
+      "dayNumber": 20,
+      "weekNumber": 4,
+      "points": 8,
+      "sortOrder": 34,
+      "prompt": "Today I chose to honor myself. Every time I respected my own needs, expressed my\nfeelings honestly, or maintained a healthy boundary, I strengthened my recovery. I\ncelebrate today's progress, release today's fears without judgment, and welcome\ntomorrow with greater confidence, peace, and self-love. Healthy relationships begin\nwith a healthy relationship with myself.",
+      "fields": [
+        {
+          "key": "what_helped",
+          "label": "What helped you choose a healthier option today?",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share this reflection with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "relationship-closing",
+      "moduleId": "relationship-week-4",
+      "type": "closing",
+      "title": "Closing affirmation and forward plan",
+      "dayNumber": 20,
+      "weekNumber": 4,
+      "points": 15,
+      "sortOrder": 35,
+      "affirmation": "I am not defined by another person's approval, choices, or ability to love me. I am defined by my\ncharacter, my values, and my growing capacity to love myself with compassion and respect. Every\nday I choose healthy boundaries, I strengthen my confidence, deepen my emotional freedom, and\ncreate relationships built on trust, honesty, and mutual care. One choice, one conversation, and one\nday at a time, I am creating a life of balance, self-worth, authentic love, and lasting fulfillment.",
+      "fields": [
+        {
+          "key": "keep_doing",
+          "label": "What will you keep practising after this journey?",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        },
+        {
+          "key": "support_needed",
+          "label": "What support do you still want?",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share this closing plan with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    }
+  ],
+  "dailyReflection": "Today I chose to honor myself. Every time I respected my own needs, expressed my\nfeelings honestly, or maintained a healthy boundary, I strengthened my recovery. I\ncelebrate today's progress, release today's fears without judgment, and welcome\ntomorrow with greater confidence, peace, and self-love. Healthy relationships begin\nwith a healthy relationship with myself.",
+  "closingAffirmation": "I am not defined by another person's approval, choices, or ability to love me. I am defined by my\ncharacter, my values, and my growing capacity to love myself with compassion and respect. Every\nday I choose healthy boundaries, I strengthen my confidence, deepen my emotional freedom, and\ncreate relationships built on trust, honesty, and mutual care. One choice, one conversation, and one\nday at a time, I am creating a life of balance, self-worth, authentic love, and lasting fulfillment.",
+  "homeworkDefaults": [
+    {
+      "taskKey": "affirmations_daily",
+      "title": "Today's affirmation",
+      "taskType": "affirmations_daily",
+      "points": 5
+    },
+    {
+      "taskKey": "eft_daily",
+      "title": "EFT tapping",
+      "taskType": "eft_daily",
+      "points": 5
+    }
+  ],
+  "reviewStatus": "approved",
+  "sourceExcerpt": "Relationship Addiction (Codependency)\nThese daily affirmations are designed to support individuals healing from relationship addiction and\ncodependent patterns. Recovery is a journey of discovering your identity, developing healthy boundaries,\nbuilding emotional independence, and",
+  "sourceChecksum": "027c8dd95cc301f8",
+  "cadence": {
+    "activityCadence": "daily",
+    "liveSessionCount": 8,
+    "liveSessionWeekdays": [
+      "tue",
+      "fri"
+    ],
+    "liveSessionTimeSlots": [
+      "11:00",
+      "16:00"
+    ],
+    "timezone": "Africa/Johannesburg",
+    "firstSessionDurationMinutes": 90,
+    "standardSessionDurationMinutes": 45
+  },
+  "dailyCheckIn": {
+    "includeMood": true,
+    "includeUrge": true,
+    "includePause": true,
+    "includePrivateNote": true,
+    "urgeMin": 0,
+    "urgeMax": 5,
+    "highUrgeThreshold": 4
+  },
+  "structure": {
+    "slug": "relationship",
+    "expectedWeekCount": 4,
+    "expectedDayCount": 20,
+    "sourceActivityTypes": [
+      "orientation",
+      "weekly_focus",
+      "daily_affirmation",
+      "reflection",
+      "closing"
+    ],
+    "optionalPlatformActivityTypes": [
+      "trigger_map",
+      "values_select"
+    ],
+    "reflectionDays": [
+      5,
+      10,
+      15,
+      20
+    ],
+    "platformExerciseDays": [
+      3,
+      8,
+      10,
+      13,
+      15,
+      18
+    ],
+    "reviewRequired": false
+  }
+}

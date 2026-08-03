@@ -5,6 +5,7 @@ import { LeadSlaBadge } from "@/components/dashboard/LeadSlaBadge";
 import { getAdminOverviewBundle } from "@/lib/dashboard/adminOverview";
 import { formatDashboardDate, leadStatusLabels, leadStatusOptions } from "@/lib/dashboard/constants";
 import { isLeadOverdue } from "@/lib/dashboard/leadSla";
+import { getUnreadAdminNotifications } from "@/lib/dashboard/queries";
 import { createMetadata } from "@/lib/seo";
 import { cmsWorkflowStatusLabels } from "@/types/cms";
 
@@ -16,7 +17,7 @@ export const metadata: Metadata = createMetadata({
 });
 
 export default async function AdminOverviewPage() {
-  const bundle = await getAdminOverviewBundle();
+  const [bundle, notifications] = await Promise.all([getAdminOverviewBundle(), getUnreadAdminNotifications(8)]);
 
   return (
     <div className="dashboard-stack">
@@ -43,6 +44,22 @@ export default async function AdminOverviewPage() {
           Internal docs
         </Link>
       </section>
+
+      {notifications.length ? (
+        <section className="dashboard-panel">
+          <div className="dashboard-panel-header">
+            <h2>Unread notifications</h2>
+          </div>
+          <ul className="need-help-wizard-points">
+            {notifications.map((item) => (
+              <li key={item.id}>
+                <strong>{item.title}</strong> — {item.body}{" "}
+                {item.href ? <Link href={item.href}>Open</Link> : null}
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
 
       <AnalyticsOverviewStrip />
 

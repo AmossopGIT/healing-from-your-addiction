@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { consultationStatusLabels, isConsultationCompleteStatus } from "@/lib/consultation/schema";
 import { formatDashboardDate } from "@/lib/dashboard/constants";
-import { getAdminClientBundle, getClientConsultation, getClientIntakeSubmission } from "@/lib/dashboard/queries";
+import { getAdminClientBundle, getClientConsultation, getClientIntakeSubmission, getClientReadinessAssessment } from "@/lib/dashboard/queries";
 import { getClientEngagementSummary } from "@/lib/portal/getClientEngagementSummary";
 import { createMetadata } from "@/lib/seo";
 
@@ -22,9 +22,10 @@ export default async function AdminClientDetailPage({ params }: PageProps) {
   if (!bundle) notFound();
 
   const { clientProfile, profile, enrollment, template } = bundle;
-  const [intakeSubmission, consultation] = await Promise.all([
+  const [intakeSubmission, consultation, readinessAssessment] = await Promise.all([
     getClientIntakeSubmission(id),
     getClientConsultation(id),
+    getClientReadinessAssessment(id),
   ]);
 
   let engagement = {
@@ -50,6 +51,9 @@ export default async function AdminClientDetailPage({ params }: PageProps) {
         <p>{clientProfile.addiction_slug ? `Focus: ${clientProfile.addiction_slug}` : "Addiction focus not set"}</p>
       </section>
       <div className="dashboard-quick-links">
+        <Link href={`/admin/clients/${id}/readiness/`} className="button button-secondary">
+          Readiness
+        </Link>
         <Link href={`/admin/clients/${id}/intake/`} className="button button-secondary">
           Intake
         </Link>
@@ -86,6 +90,21 @@ export default async function AdminClientDetailPage({ params }: PageProps) {
             <dd>{enrollment ? template?.title ?? "Assigned" : "Not enrolled"}</dd>
           </div>
           <div>
+            <dt>Readiness</dt>
+            <dd>
+              {readinessAssessment?.completed_at ? (
+                <>
+                  <span className="status-badge status-badge-intake-complete">Completed</span>{" "}
+                  {formatDashboardDate(readinessAssessment.completed_at)}
+                </>
+              ) : readinessAssessment ? (
+                <span className="status-badge status-badge-intake-in-progress">In progress</span>
+              ) : (
+                <span className="status-badge status-badge-intake-not-started">Not started</span>
+              )}
+            </dd>
+          </div>
+          <div>
             <dt>Intake</dt>
             <dd>
               {intakeSubmission?.completed_at ? (
@@ -116,6 +135,11 @@ export default async function AdminClientDetailPage({ params }: PageProps) {
             </dd>
           </div>
         </dl>
+        {readinessAssessment ? (
+          <p className="dashboard-inline-note">
+            <Link href={`/admin/clients/${id}/readiness/`}>View readiness assessment</Link>
+          </p>
+        ) : null}
         {intakeSubmission ? (
           <p className="dashboard-inline-note">
             <Link href={`/admin/clients/${id}/intake/`}>View intake responses</Link>

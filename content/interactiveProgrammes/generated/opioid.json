@@ -1,0 +1,1963 @@
+{
+  "slug": "opioid",
+  "title": "Opioid Addiction (Heroin, Morphine & Prescription Painkillers)",
+  "category": "substance",
+  "status": "ready",
+  "version": 2,
+  "sourceFile": "Opioid addiction (e.g., heroin, morphine, prescription painkillers).pdf",
+  "sourceStatus": "ocr-extracted",
+  "needsManualReview": true,
+  "description": "These daily affirmations are designed to support individuals recovering from opioid addiction.\nRecovery from opioid dependence often involves physical, emotional, and psychological healing. These\naffirmations encourage hope, resilience, self-compassion, and perseverance while reinforcing the\n\ncourage it takes to choose recovery every day. They are intended to complement professional medical\ncare, medication-assisted treatment (when prescribed), counseling, and peer support.",
+  "safety": {
+    "disclaimer": "This programme complements counselling, hypnotherapy, EFT, and trusted accountability. It is not a medical cure.",
+    "reminder": "Opioid recovery often requires medical support, including medication-assisted treatment when prescribed. Seek urgent care for overdose risk or severe withdrawal. This programme complements professional care and is not a substitute for medical detox or clinical treatment.",
+    "escalation": "Opioid withdrawal and overdose risk require medical support. Naloxone and emergency services may be life-saving. This programme is not a substitute for clinical care.",
+    "requiresMedicalSupportNotice": true
+  },
+  "weekCount": 4,
+  "dayCount": 20,
+  "modules": [
+    {
+      "id": "opioid-week-1",
+      "number": 1,
+      "title": "Acceptance & Commitment",
+      "theme": "Choosing Recovery Every Day",
+      "focus": [
+        "I accept where I am without giving up on where I am going.",
+        "Recovery begins with today's choices.",
+        "I choose hope over despair."
+      ]
+    },
+    {
+      "id": "opioid-week-2",
+      "number": 2,
+      "title": "Healing & Self-Care",
+      "theme": "Restoring Mind, Body & Spirit",
+      "focus": [
+        "My body and mind are healing every day.",
+        "I treat myself with patience, kindness, and compassion.",
+        "Iallow myself the time and support needed to recover."
+      ]
+    },
+    {
+      "id": "opioid-week-3",
+      "number": 3,
+      "title": "Strength & Resilience",
+      "theme": "Building a New Foundation",
+      "focus": [
+        "I am stronger than my cravings.",
+        "Every challenge makes me more resilient.",
+        "Healthy choices are becoming my new way of life."
+      ]
+    },
+    {
+      "id": "opioid-week-4",
+      "number": 4,
+      "title": "Freedom & Purpose",
+      "theme": "Living Beyond Addiction",
+      "focus": [
+        "Recovery is opening new possibilities for my future.",
+        "I embrace a life filled with hope, health, and purpose.",
+        "I am building a future based on freedom, integrity, and self-respect."
+      ]
+    }
+  ],
+  "activities": [
+    {
+      "id": "opioid-orientation",
+      "moduleId": "opioid-week-1",
+      "type": "orientation",
+      "title": "Begin your healing journey",
+      "dayNumber": 0,
+      "weekNumber": 1,
+      "points": 10,
+      "sortOrder": 0,
+      "prompt": "These daily affirmations are designed to support individuals recovering from opioid addiction.\nRecovery from opioid dependence often involves physical, emotional, and psychological healing. These\naffirmations encourage hope, resilience, self-compassion, and perseverance while reinforcing the\n\ncourage it takes to choose recovery every day. They are intended to complement professional medical\ncare, medication-assisted treatment (when prescribed), counseling, and peer support.",
+      "fields": [
+        {
+          "key": "intention",
+          "label": "What would a freer week look like for you?",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "opioid-week-1-focus",
+      "moduleId": "opioid-week-1",
+      "type": "weekly_focus",
+      "title": "Week 1 focus: Acceptance & Commitment",
+      "dayNumber": null,
+      "weekNumber": 1,
+      "points": 8,
+      "sortOrder": 1,
+      "prompt": "Choosing Recovery Every Day",
+      "focusItems": [
+        "I accept where I am without giving up on where I am going.",
+        "Recovery begins with today's choices.",
+        "I choose hope over despair."
+      ],
+      "fields": [
+        {
+          "key": "focus_choice",
+          "label": "Which focus statement will guide you this week?",
+          "kind": "single_choice",
+          "required": true,
+          "options": [
+            "I accept where I am without giving up on where I am going.",
+            "Recovery begins with today's choices.",
+            "I choose hope over despair."
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "support_plan",
+          "label": "One small action that will support this focus",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "opioid-day-1",
+      "moduleId": "opioid-week-1",
+      "type": "daily_affirmation",
+      "title": "Day 1 affirmation",
+      "dayNumber": 1,
+      "weekNumber": 1,
+      "points": 5,
+      "sortOrder": 2,
+      "affirmation": "Today, I choose life, healing, and recovery. Every healthy decision brings me closer to lasting\nfreedom.",
+      "fields": [
+        {
+          "key": "mood",
+          "label": "How are you feeling right now?",
+          "kind": "mood",
+          "required": true,
+          "options": [
+            "calm",
+            "steady",
+            "low",
+            "anxious",
+            "irritable"
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "urge_level",
+          "label": "Urge intensity right now (0-5)",
+          "kind": "scale",
+          "required": true,
+          "min": 0,
+          "max": 5,
+          "privateByDefault": false
+        },
+        {
+          "key": "pause_taken",
+          "label": "I took a short pause before reacting",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        },
+        {
+          "key": "practice_done",
+          "label": "I sat with today's affirmation",
+          "kind": "checkbox",
+          "required": true,
+          "privateByDefault": false
+        },
+        {
+          "key": "private_note",
+          "label": "Optional private note (only shared if you choose)",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share today's note with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "opioid-day-2",
+      "moduleId": "opioid-week-1",
+      "type": "daily_affirmation",
+      "title": "Day 2 affirmation",
+      "dayNumber": 2,
+      "weekNumber": 1,
+      "points": 5,
+      "sortOrder": 3,
+      "affirmation": "I am stronger than my addiction. My courage grows with every challeng- I overcome.",
+      "fields": [
+        {
+          "key": "mood",
+          "label": "How are you feeling right now?",
+          "kind": "mood",
+          "required": true,
+          "options": [
+            "calm",
+            "steady",
+            "low",
+            "anxious",
+            "irritable"
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "urge_level",
+          "label": "Urge intensity right now (0-5)",
+          "kind": "scale",
+          "required": true,
+          "min": 0,
+          "max": 5,
+          "privateByDefault": false
+        },
+        {
+          "key": "pause_taken",
+          "label": "I took a short pause before reacting",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        },
+        {
+          "key": "practice_done",
+          "label": "I sat with today's affirmation",
+          "kind": "checkbox",
+          "required": true,
+          "privateByDefault": false
+        },
+        {
+          "key": "private_note",
+          "label": "Optional private note (only shared if you choose)",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share today's note with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "opioid-day-3",
+      "moduleId": "opioid-week-1",
+      "type": "daily_affirmation",
+      "title": "Day 3 affirmation",
+      "dayNumber": 3,
+      "weekNumber": 1,
+      "points": 5,
+      "sortOrder": 4,
+      "affirmation": "One day, one moment, and one choice at a time, I am rebuilding my life with hope and purpose.",
+      "fields": [
+        {
+          "key": "mood",
+          "label": "How are you feeling right now?",
+          "kind": "mood",
+          "required": true,
+          "options": [
+            "calm",
+            "steady",
+            "low",
+            "anxious",
+            "irritable"
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "urge_level",
+          "label": "Urge intensity right now (0-5)",
+          "kind": "scale",
+          "required": true,
+          "min": 0,
+          "max": 5,
+          "privateByDefault": false
+        },
+        {
+          "key": "pause_taken",
+          "label": "I took a short pause before reacting",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        },
+        {
+          "key": "practice_done",
+          "label": "I sat with today's affirmation",
+          "kind": "checkbox",
+          "required": true,
+          "privateByDefault": false
+        },
+        {
+          "key": "private_note",
+          "label": "Optional private note (only shared if you choose)",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share today's note with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "opioid-day-3-trigger-map",
+      "moduleId": "opioid-week-1",
+      "type": "trigger_map",
+      "title": "Day 3 trigger map",
+      "dayNumber": 3,
+      "weekNumber": 1,
+      "points": 10,
+      "sortOrder": 5,
+      "prompt": "Map the loop gently: trigger, urge, old response, and a wiser next step.",
+      "fields": [
+        {
+          "key": "trigger",
+          "label": "What usually triggers the urge?",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        },
+        {
+          "key": "urge",
+          "label": "What does the urge feel like in your body?",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        },
+        {
+          "key": "replacement",
+          "label": "What healthier response can you try next time?",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        }
+      ],
+      "origin": "platform"
+    },
+    {
+      "id": "opioid-day-4",
+      "moduleId": "opioid-week-1",
+      "type": "daily_affirmation",
+      "title": "Day 4 affirmation",
+      "dayNumber": 4,
+      "weekNumber": 1,
+      "points": 5,
+      "sortOrder": 6,
+      "affirmation": "My past does not define me. I have the power to create a healthier future beginning today.",
+      "fields": [
+        {
+          "key": "mood",
+          "label": "How are you feeling right now?",
+          "kind": "mood",
+          "required": true,
+          "options": [
+            "calm",
+            "steady",
+            "low",
+            "anxious",
+            "irritable"
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "urge_level",
+          "label": "Urge intensity right now (0-5)",
+          "kind": "scale",
+          "required": true,
+          "min": 0,
+          "max": 5,
+          "privateByDefault": false
+        },
+        {
+          "key": "pause_taken",
+          "label": "I took a short pause before reacting",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        },
+        {
+          "key": "practice_done",
+          "label": "I sat with today's affirmation",
+          "kind": "checkbox",
+          "required": true,
+          "privateByDefault": false
+        },
+        {
+          "key": "private_note",
+          "label": "Optional private note (only shared if you choose)",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share today's note with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "opioid-day-5",
+      "moduleId": "opioid-week-1",
+      "type": "daily_affirmation",
+      "title": "Day 5 affirmation",
+      "dayNumber": 5,
+      "weekNumber": 1,
+      "points": 5,
+      "sortOrder": 7,
+      "affirmation": "I believe in my ability to heal, grow, and reclaim the life I deserve.",
+      "fields": [
+        {
+          "key": "mood",
+          "label": "How are you feeling right now?",
+          "kind": "mood",
+          "required": true,
+          "options": [
+            "calm",
+            "steady",
+            "low",
+            "anxious",
+            "irritable"
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "urge_level",
+          "label": "Urge intensity right now (0-5)",
+          "kind": "scale",
+          "required": true,
+          "min": 0,
+          "max": 5,
+          "privateByDefault": false
+        },
+        {
+          "key": "pause_taken",
+          "label": "I took a short pause before reacting",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        },
+        {
+          "key": "practice_done",
+          "label": "I sat with today's affirmation",
+          "kind": "checkbox",
+          "required": true,
+          "privateByDefault": false
+        },
+        {
+          "key": "private_note",
+          "label": "Optional private note (only shared if you choose)",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share today's note with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "opioid-day-5-reflection",
+      "moduleId": "opioid-week-1",
+      "type": "reflection",
+      "title": "Day 5 recovery reflection",
+      "dayNumber": 5,
+      "weekNumber": 1,
+      "points": 8,
+      "sortOrder": 8,
+      "prompt": "Today I chose recovery. Every healthy decision I made strengthened my body, renewed my\nmind, and reminded me that healing is possible. I release today's struggles, celebrate today's\nvictories, and welcome tomorrow with hope, courage, and determination. My journey is one of\nprogress, and every step forward matters.",
+      "fields": [
+        {
+          "key": "what_helped",
+          "label": "What helped you choose a healthier option today?",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share this reflection with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "opioid-week-2-focus",
+      "moduleId": "opioid-week-2",
+      "type": "weekly_focus",
+      "title": "Week 2 focus: Healing & Self-Care",
+      "dayNumber": null,
+      "weekNumber": 2,
+      "points": 8,
+      "sortOrder": 9,
+      "prompt": "Restoring Mind, Body & Spirit",
+      "focusItems": [
+        "My body and mind are healing every day.",
+        "I treat myself with patience, kindness, and compassion.",
+        "Iallow myself the time and support needed to recover."
+      ],
+      "fields": [
+        {
+          "key": "focus_choice",
+          "label": "Which focus statement will guide you this week?",
+          "kind": "single_choice",
+          "required": true,
+          "options": [
+            "My body and mind are healing every day.",
+            "I treat myself with patience, kindness, and compassion.",
+            "Iallow myself the time and support needed to recover."
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "support_plan",
+          "label": "One small action that will support this focus",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "opioid-day-6",
+      "moduleId": "opioid-week-2",
+      "type": "daily_affirmation",
+      "title": "Day 6 affirmation",
+      "dayNumber": 6,
+      "weekNumber": 2,
+      "points": 5,
+      "sortOrder": 10,
+      "affirmation": "My body is healing, my mind is becoming clearer, and my spirit is growing stronger every day.",
+      "fields": [
+        {
+          "key": "mood",
+          "label": "How are you feeling right now?",
+          "kind": "mood",
+          "required": true,
+          "options": [
+            "calm",
+            "steady",
+            "low",
+            "anxious",
+            "irritable"
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "urge_level",
+          "label": "Urge intensity right now (0-5)",
+          "kind": "scale",
+          "required": true,
+          "min": 0,
+          "max": 5,
+          "privateByDefault": false
+        },
+        {
+          "key": "pause_taken",
+          "label": "I took a short pause before reacting",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        },
+        {
+          "key": "practice_done",
+          "label": "I sat with today's affirmation",
+          "kind": "checkbox",
+          "required": true,
+          "privateByDefault": false
+        },
+        {
+          "key": "private_note",
+          "label": "Optional private note (only shared if you choose)",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share today's note with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "opioid-day-7",
+      "moduleId": "opioid-week-2",
+      "type": "daily_affirmation",
+      "title": "Day 7 affirmation",
+      "dayNumber": 7,
+      "weekNumber": 2,
+      "points": 5,
+      "sortOrder": 11,
+      "affirmation": "I forgive myself for past mistakes and choose compassion instead of shame.",
+      "fields": [
+        {
+          "key": "mood",
+          "label": "How are you feeling right now?",
+          "kind": "mood",
+          "required": true,
+          "options": [
+            "calm",
+            "steady",
+            "low",
+            "anxious",
+            "irritable"
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "urge_level",
+          "label": "Urge intensity right now (0-5)",
+          "kind": "scale",
+          "required": true,
+          "min": 0,
+          "max": 5,
+          "privateByDefault": false
+        },
+        {
+          "key": "pause_taken",
+          "label": "I took a short pause before reacting",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        },
+        {
+          "key": "practice_done",
+          "label": "I sat with today's affirmation",
+          "kind": "checkbox",
+          "required": true,
+          "privateByDefault": false
+        },
+        {
+          "key": "private_note",
+          "label": "Optional private note (only shared if you choose)",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share today's note with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "opioid-day-8",
+      "moduleId": "opioid-week-2",
+      "type": "daily_affirmation",
+      "title": "Day 8 affirmation",
+      "dayNumber": 8,
+      "weekNumber": 2,
+      "points": 5,
+      "sortOrder": 12,
+      "affirmation": "I deserve health, peace, love, and a future free from opioid dependence.",
+      "fields": [
+        {
+          "key": "mood",
+          "label": "How are you feeling right now?",
+          "kind": "mood",
+          "required": true,
+          "options": [
+            "calm",
+            "steady",
+            "low",
+            "anxious",
+            "irritable"
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "urge_level",
+          "label": "Urge intensity right now (0-5)",
+          "kind": "scale",
+          "required": true,
+          "min": 0,
+          "max": 5,
+          "privateByDefault": false
+        },
+        {
+          "key": "pause_taken",
+          "label": "I took a short pause before reacting",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        },
+        {
+          "key": "practice_done",
+          "label": "I sat with today's affirmation",
+          "kind": "checkbox",
+          "required": true,
+          "privateByDefault": false
+        },
+        {
+          "key": "private_note",
+          "label": "Optional private note (only shared if you choose)",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share today's note with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "opioid-day-8-trigger-map",
+      "moduleId": "opioid-week-2",
+      "type": "trigger_map",
+      "title": "Day 8 trigger map",
+      "dayNumber": 8,
+      "weekNumber": 2,
+      "points": 10,
+      "sortOrder": 13,
+      "prompt": "Map the loop gently: trigger, urge, old response, and a wiser next step.",
+      "fields": [
+        {
+          "key": "trigger",
+          "label": "What usually triggers the urge?",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        },
+        {
+          "key": "urge",
+          "label": "What does the urge feel like in your body?",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        },
+        {
+          "key": "replacement",
+          "label": "What healthier response can you try next time?",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        }
+      ],
+      "origin": "platform"
+    },
+    {
+      "id": "opioid-day-9",
+      "moduleId": "opioid-week-2",
+      "type": "daily_affirmation",
+      "title": "Day 9 affirmation",
+      "dayNumber": 9,
+      "weekNumber": 2,
+      "points": 5,
+      "sortOrder": 14,
+      "affirmation": "I can face discomfort with courage, knowing that healing is taking place within me.",
+      "fields": [
+        {
+          "key": "mood",
+          "label": "How are you feeling right now?",
+          "kind": "mood",
+          "required": true,
+          "options": [
+            "calm",
+            "steady",
+            "low",
+            "anxious",
+            "irritable"
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "urge_level",
+          "label": "Urge intensity right now (0-5)",
+          "kind": "scale",
+          "required": true,
+          "min": 0,
+          "max": 5,
+          "privateByDefault": false
+        },
+        {
+          "key": "pause_taken",
+          "label": "I took a short pause before reacting",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        },
+        {
+          "key": "practice_done",
+          "label": "I sat with today's affirmation",
+          "kind": "checkbox",
+          "required": true,
+          "privateByDefault": false
+        },
+        {
+          "key": "private_note",
+          "label": "Optional private note (only shared if you choose)",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share today's note with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "opioid-day-10",
+      "moduleId": "opioid-week-2",
+      "type": "daily_affirmation",
+      "title": "Day 10 affirmation",
+      "dayNumber": 10,
+      "weekNumber": 2,
+      "points": 5,
+      "sortOrder": 15,
+      "affirmation": "Every healthy choic- I make strengthens my recovery and restores my well-being.",
+      "fields": [
+        {
+          "key": "mood",
+          "label": "How are you feeling right now?",
+          "kind": "mood",
+          "required": true,
+          "options": [
+            "calm",
+            "steady",
+            "low",
+            "anxious",
+            "irritable"
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "urge_level",
+          "label": "Urge intensity right now (0-5)",
+          "kind": "scale",
+          "required": true,
+          "min": 0,
+          "max": 5,
+          "privateByDefault": false
+        },
+        {
+          "key": "pause_taken",
+          "label": "I took a short pause before reacting",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        },
+        {
+          "key": "practice_done",
+          "label": "I sat with today's affirmation",
+          "kind": "checkbox",
+          "required": true,
+          "privateByDefault": false
+        },
+        {
+          "key": "private_note",
+          "label": "Optional private note (only shared if you choose)",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share today's note with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "opioid-day-10-reflection",
+      "moduleId": "opioid-week-2",
+      "type": "reflection",
+      "title": "Day 10 recovery reflection",
+      "dayNumber": 10,
+      "weekNumber": 2,
+      "points": 8,
+      "sortOrder": 16,
+      "prompt": "Today I chose recovery. Every healthy decision I made strengthened my body, renewed my\nmind, and reminded me that healing is possible. I release today's struggles, celebrate today's\nvictories, and welcome tomorrow with hope, courage, and determination. My journey is one of\nprogress, and every step forward matters.",
+      "fields": [
+        {
+          "key": "what_helped",
+          "label": "What helped you choose a healthier option today?",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share this reflection with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "opioid-day-10-values",
+      "moduleId": "opioid-week-2",
+      "type": "values_select",
+      "title": "Day 10 values check",
+      "dayNumber": 10,
+      "weekNumber": 2,
+      "points": 8,
+      "sortOrder": 17,
+      "prompt": "Choose the values you want your next choices to protect.",
+      "fields": [
+        {
+          "key": "values",
+          "label": "Values that matter most right now",
+          "kind": "multi_choice",
+          "required": true,
+          "options": [
+            "Peace",
+            "Honesty",
+            "Health",
+            "Family",
+            "Self-respect",
+            "Financial stability",
+            "Presence",
+            "Purpose"
+          ],
+          "privateByDefault": false
+        }
+      ],
+      "origin": "platform"
+    },
+    {
+      "id": "opioid-week-3-focus",
+      "moduleId": "opioid-week-3",
+      "type": "weekly_focus",
+      "title": "Week 3 focus: Strength & Resilience",
+      "dayNumber": null,
+      "weekNumber": 3,
+      "points": 8,
+      "sortOrder": 18,
+      "prompt": "Building a New Foundation",
+      "focusItems": [
+        "I am stronger than my cravings.",
+        "Every challenge makes me more resilient.",
+        "Healthy choices are becoming my new way of life."
+      ],
+      "fields": [
+        {
+          "key": "focus_choice",
+          "label": "Which focus statement will guide you this week?",
+          "kind": "single_choice",
+          "required": true,
+          "options": [
+            "I am stronger than my cravings.",
+            "Every challenge makes me more resilient.",
+            "Healthy choices are becoming my new way of life."
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "support_plan",
+          "label": "One small action that will support this focus",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "opioid-day-11",
+      "moduleId": "opioid-week-3",
+      "type": "daily_affirmation",
+      "title": "Day 11 affirmation",
+      "dayNumber": 11,
+      "weekNumber": 3,
+      "points": 5,
+      "sortOrder": 19,
+      "affirmation": "Cravings are temporary, but the freedom I am creating is lasting.",
+      "fields": [
+        {
+          "key": "mood",
+          "label": "How are you feeling right now?",
+          "kind": "mood",
+          "required": true,
+          "options": [
+            "calm",
+            "steady",
+            "low",
+            "anxious",
+            "irritable"
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "urge_level",
+          "label": "Urge intensity right now (0-5)",
+          "kind": "scale",
+          "required": true,
+          "min": 0,
+          "max": 5,
+          "privateByDefault": false
+        },
+        {
+          "key": "pause_taken",
+          "label": "I took a short pause before reacting",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        },
+        {
+          "key": "practice_done",
+          "label": "I sat with today's affirmation",
+          "kind": "checkbox",
+          "required": true,
+          "privateByDefault": false
+        },
+        {
+          "key": "private_note",
+          "label": "Optional private note (only shared if you choose)",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share today's note with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "opioid-day-12",
+      "moduleId": "opioid-week-3",
+      "type": "daily_affirmation",
+      "title": "Day 12 affirmation",
+      "dayNumber": 12,
+      "weekNumber": 3,
+      "points": 5,
+      "sortOrder": 20,
+      "affirmation": "I replace harmful patterns with healthy habits that nourish my body, mind, and soul.",
+      "fields": [
+        {
+          "key": "mood",
+          "label": "How are you feeling right now?",
+          "kind": "mood",
+          "required": true,
+          "options": [
+            "calm",
+            "steady",
+            "low",
+            "anxious",
+            "irritable"
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "urge_level",
+          "label": "Urge intensity right now (0-5)",
+          "kind": "scale",
+          "required": true,
+          "min": 0,
+          "max": 5,
+          "privateByDefault": false
+        },
+        {
+          "key": "pause_taken",
+          "label": "I took a short pause before reacting",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        },
+        {
+          "key": "practice_done",
+          "label": "I sat with today's affirmation",
+          "kind": "checkbox",
+          "required": true,
+          "privateByDefault": false
+        },
+        {
+          "key": "private_note",
+          "label": "Optional private note (only shared if you choose)",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share today's note with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "opioid-day-13",
+      "moduleId": "opioid-week-3",
+      "type": "daily_affirmation",
+      "title": "Day 13 affirmation",
+      "dayNumber": 13,
+      "weekNumber": 3,
+      "points": 5,
+      "sortOrder": 21,
+      "affirmation": "Every obstacl- I overcome increases my strength, confidence, and resilience.",
+      "fields": [
+        {
+          "key": "mood",
+          "label": "How are you feeling right now?",
+          "kind": "mood",
+          "required": true,
+          "options": [
+            "calm",
+            "steady",
+            "low",
+            "anxious",
+            "irritable"
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "urge_level",
+          "label": "Urge intensity right now (0-5)",
+          "kind": "scale",
+          "required": true,
+          "min": 0,
+          "max": 5,
+          "privateByDefault": false
+        },
+        {
+          "key": "pause_taken",
+          "label": "I took a short pause before reacting",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        },
+        {
+          "key": "practice_done",
+          "label": "I sat with today's affirmation",
+          "kind": "checkbox",
+          "required": true,
+          "privateByDefault": false
+        },
+        {
+          "key": "private_note",
+          "label": "Optional private note (only shared if you choose)",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share today's note with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "opioid-day-13-trigger-map",
+      "moduleId": "opioid-week-3",
+      "type": "trigger_map",
+      "title": "Day 13 trigger map",
+      "dayNumber": 13,
+      "weekNumber": 3,
+      "points": 10,
+      "sortOrder": 22,
+      "prompt": "Map the loop gently: trigger, urge, old response, and a wiser next step.",
+      "fields": [
+        {
+          "key": "trigger",
+          "label": "What usually triggers the urge?",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        },
+        {
+          "key": "urge",
+          "label": "What does the urge feel like in your body?",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        },
+        {
+          "key": "replacement",
+          "label": "What healthier response can you try next time?",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        }
+      ],
+      "origin": "platform"
+    },
+    {
+      "id": "opioid-day-14",
+      "moduleId": "opioid-week-3",
+      "type": "daily_affirmation",
+      "title": "Day 14 affirmation",
+      "dayNumber": 14,
+      "weekNumber": 3,
+      "points": 5,
+      "sortOrder": 23,
+      "affirmation": "I trust myself to make decisions that protect my health and support my recovery.",
+      "fields": [
+        {
+          "key": "mood",
+          "label": "How are you feeling right now?",
+          "kind": "mood",
+          "required": true,
+          "options": [
+            "calm",
+            "steady",
+            "low",
+            "anxious",
+            "irritable"
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "urge_level",
+          "label": "Urge intensity right now (0-5)",
+          "kind": "scale",
+          "required": true,
+          "min": 0,
+          "max": 5,
+          "privateByDefault": false
+        },
+        {
+          "key": "pause_taken",
+          "label": "I took a short pause before reacting",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        },
+        {
+          "key": "practice_done",
+          "label": "I sat with today's affirmation",
+          "kind": "checkbox",
+          "required": true,
+          "privateByDefault": false
+        },
+        {
+          "key": "private_note",
+          "label": "Optional private note (only shared if you choose)",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share today's note with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "opioid-day-15",
+      "moduleId": "opioid-week-3",
+      "type": "daily_affirmation",
+      "title": "Day 15 affirmation",
+      "dayNumber": 15,
+      "weekNumber": 3,
+      "points": 5,
+      "sortOrder": 24,
+      "affirmation": "Each day of recovery brings greater clarity, stability, and hope for my future.",
+      "fields": [
+        {
+          "key": "mood",
+          "label": "How are you feeling right now?",
+          "kind": "mood",
+          "required": true,
+          "options": [
+            "calm",
+            "steady",
+            "low",
+            "anxious",
+            "irritable"
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "urge_level",
+          "label": "Urge intensity right now (0-5)",
+          "kind": "scale",
+          "required": true,
+          "min": 0,
+          "max": 5,
+          "privateByDefault": false
+        },
+        {
+          "key": "pause_taken",
+          "label": "I took a short pause before reacting",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        },
+        {
+          "key": "practice_done",
+          "label": "I sat with today's affirmation",
+          "kind": "checkbox",
+          "required": true,
+          "privateByDefault": false
+        },
+        {
+          "key": "private_note",
+          "label": "Optional private note (only shared if you choose)",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share today's note with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "opioid-day-15-reflection",
+      "moduleId": "opioid-week-3",
+      "type": "reflection",
+      "title": "Day 15 recovery reflection",
+      "dayNumber": 15,
+      "weekNumber": 3,
+      "points": 8,
+      "sortOrder": 25,
+      "prompt": "Today I chose recovery. Every healthy decision I made strengthened my body, renewed my\nmind, and reminded me that healing is possible. I release today's struggles, celebrate today's\nvictories, and welcome tomorrow with hope, courage, and determination. My journey is one of\nprogress, and every step forward matters.",
+      "fields": [
+        {
+          "key": "what_helped",
+          "label": "What helped you choose a healthier option today?",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share this reflection with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "opioid-day-15-values",
+      "moduleId": "opioid-week-3",
+      "type": "values_select",
+      "title": "Day 15 values check",
+      "dayNumber": 15,
+      "weekNumber": 3,
+      "points": 8,
+      "sortOrder": 26,
+      "prompt": "Choose the values you want your next choices to protect.",
+      "fields": [
+        {
+          "key": "values",
+          "label": "Values that matter most right now",
+          "kind": "multi_choice",
+          "required": true,
+          "options": [
+            "Peace",
+            "Honesty",
+            "Health",
+            "Family",
+            "Self-respect",
+            "Financial stability",
+            "Presence",
+            "Purpose"
+          ],
+          "privateByDefault": false
+        }
+      ],
+      "origin": "platform"
+    },
+    {
+      "id": "opioid-week-4-focus",
+      "moduleId": "opioid-week-4",
+      "type": "weekly_focus",
+      "title": "Week 4 focus: Freedom & Purpose",
+      "dayNumber": null,
+      "weekNumber": 4,
+      "points": 8,
+      "sortOrder": 27,
+      "prompt": "Living Beyond Addiction",
+      "focusItems": [
+        "Recovery is opening new possibilities for my future.",
+        "I embrace a life filled with hope, health, and purpose.",
+        "I am building a future based on freedom, integrity, and self-respect."
+      ],
+      "fields": [
+        {
+          "key": "focus_choice",
+          "label": "Which focus statement will guide you this week?",
+          "kind": "single_choice",
+          "required": true,
+          "options": [
+            "Recovery is opening new possibilities for my future.",
+            "I embrace a life filled with hope, health, and purpose.",
+            "I am building a future based on freedom, integrity, and self-respect."
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "support_plan",
+          "label": "One small action that will support this focus",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "opioid-day-16",
+      "moduleId": "opioid-week-4",
+      "type": "daily_affirmation",
+      "title": "Day 16 affirmation",
+      "dayNumber": 16,
+      "weekNumber": 4,
+      "points": 5,
+      "sortOrder": 28,
+      "affirmation": "I am creating a life filled with purpose, meaningful relationships, and lasting peace.",
+      "fields": [
+        {
+          "key": "mood",
+          "label": "How are you feeling right now?",
+          "kind": "mood",
+          "required": true,
+          "options": [
+            "calm",
+            "steady",
+            "low",
+            "anxious",
+            "irritable"
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "urge_level",
+          "label": "Urge intensity right now (0-5)",
+          "kind": "scale",
+          "required": true,
+          "min": 0,
+          "max": 5,
+          "privateByDefault": false
+        },
+        {
+          "key": "pause_taken",
+          "label": "I took a short pause before reacting",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        },
+        {
+          "key": "practice_done",
+          "label": "I sat with today's affirmation",
+          "kind": "checkbox",
+          "required": true,
+          "privateByDefault": false
+        },
+        {
+          "key": "private_note",
+          "label": "Optional private note (only shared if you choose)",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share today's note with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "opioid-day-17",
+      "moduleId": "opioid-week-4",
+      "type": "daily_affirmation",
+      "title": "Day 17 affirmation",
+      "dayNumber": 17,
+      "weekNumber": 4,
+      "points": 5,
+      "sortOrder": 29,
+      "affirmation": "Recovery has given me the opportunity to discover my true strength and potential.",
+      "fields": [
+        {
+          "key": "mood",
+          "label": "How are you feeling right now?",
+          "kind": "mood",
+          "required": true,
+          "options": [
+            "calm",
+            "steady",
+            "low",
+            "anxious",
+            "irritable"
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "urge_level",
+          "label": "Urge intensity right now (0-5)",
+          "kind": "scale",
+          "required": true,
+          "min": 0,
+          "max": 5,
+          "privateByDefault": false
+        },
+        {
+          "key": "pause_taken",
+          "label": "I took a short pause before reacting",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        },
+        {
+          "key": "practice_done",
+          "label": "I sat with today's affirmation",
+          "kind": "checkbox",
+          "required": true,
+          "privateByDefault": false
+        },
+        {
+          "key": "private_note",
+          "label": "Optional private note (only shared if you choose)",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share today's note with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "opioid-day-18",
+      "moduleId": "opioid-week-4",
+      "type": "daily_affirmation",
+      "title": "Day 18 affirmation",
+      "dayNumber": 18,
+      "weekNumber": 4,
+      "points": 5,
+      "sortOrder": 30,
+      "affirmation": "I celebrate every victory because every step forward is evidence of my courage.",
+      "fields": [
+        {
+          "key": "mood",
+          "label": "How are you feeling right now?",
+          "kind": "mood",
+          "required": true,
+          "options": [
+            "calm",
+            "steady",
+            "low",
+            "anxious",
+            "irritable"
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "urge_level",
+          "label": "Urge intensity right now (0-5)",
+          "kind": "scale",
+          "required": true,
+          "min": 0,
+          "max": 5,
+          "privateByDefault": false
+        },
+        {
+          "key": "pause_taken",
+          "label": "I took a short pause before reacting",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        },
+        {
+          "key": "practice_done",
+          "label": "I sat with today's affirmation",
+          "kind": "checkbox",
+          "required": true,
+          "privateByDefault": false
+        },
+        {
+          "key": "private_note",
+          "label": "Optional private note (only shared if you choose)",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share today's note with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "opioid-day-18-trigger-map",
+      "moduleId": "opioid-week-4",
+      "type": "trigger_map",
+      "title": "Day 18 trigger map",
+      "dayNumber": 18,
+      "weekNumber": 4,
+      "points": 10,
+      "sortOrder": 31,
+      "prompt": "Map the loop gently: trigger, urge, old response, and a wiser next step.",
+      "fields": [
+        {
+          "key": "trigger",
+          "label": "What usually triggers the urge?",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        },
+        {
+          "key": "urge",
+          "label": "What does the urge feel like in your body?",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        },
+        {
+          "key": "replacement",
+          "label": "What healthier response can you try next time?",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        }
+      ],
+      "origin": "platform"
+    },
+    {
+      "id": "opioid-day-19",
+      "moduleId": "opioid-week-4",
+      "type": "daily_affirmation",
+      "title": "Day 19 affirmation",
+      "dayNumber": 19,
+      "weekNumber": 4,
+      "points": 5,
+      "sortOrder": 32,
+      "affirmation": "I choose hope over fear, healing over pain, and freedom over addiction.",
+      "fields": [
+        {
+          "key": "mood",
+          "label": "How are you feeling right now?",
+          "kind": "mood",
+          "required": true,
+          "options": [
+            "calm",
+            "steady",
+            "low",
+            "anxious",
+            "irritable"
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "urge_level",
+          "label": "Urge intensity right now (0-5)",
+          "kind": "scale",
+          "required": true,
+          "min": 0,
+          "max": 5,
+          "privateByDefault": false
+        },
+        {
+          "key": "pause_taken",
+          "label": "I took a short pause before reacting",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        },
+        {
+          "key": "practice_done",
+          "label": "I sat with today's affirmation",
+          "kind": "checkbox",
+          "required": true,
+          "privateByDefault": false
+        },
+        {
+          "key": "private_note",
+          "label": "Optional private note (only shared if you choose)",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share today's note with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "opioid-day-20",
+      "moduleId": "opioid-week-4",
+      "type": "daily_affirmation",
+      "title": "Day 20 affirmation",
+      "dayNumber": 20,
+      "weekNumber": 4,
+      "points": 5,
+      "sortOrder": 33,
+      "affirmation": "Today, I honor myself by choosing life, health, courage, and lifelong recovery.",
+      "fields": [
+        {
+          "key": "mood",
+          "label": "How are you feeling right now?",
+          "kind": "mood",
+          "required": true,
+          "options": [
+            "calm",
+            "steady",
+            "low",
+            "anxious",
+            "irritable"
+          ],
+          "privateByDefault": false
+        },
+        {
+          "key": "urge_level",
+          "label": "Urge intensity right now (0-5)",
+          "kind": "scale",
+          "required": true,
+          "min": 0,
+          "max": 5,
+          "privateByDefault": false
+        },
+        {
+          "key": "pause_taken",
+          "label": "I took a short pause before reacting",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        },
+        {
+          "key": "practice_done",
+          "label": "I sat with today's affirmation",
+          "kind": "checkbox",
+          "required": true,
+          "privateByDefault": false
+        },
+        {
+          "key": "private_note",
+          "label": "Optional private note (only shared if you choose)",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share today's note with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "opioid-day-20-reflection",
+      "moduleId": "opioid-week-4",
+      "type": "reflection",
+      "title": "Day 20 recovery reflection",
+      "dayNumber": 20,
+      "weekNumber": 4,
+      "points": 8,
+      "sortOrder": 34,
+      "prompt": "Today I chose recovery. Every healthy decision I made strengthened my body, renewed my\nmind, and reminded me that healing is possible. I release today's struggles, celebrate today's\nvictories, and welcome tomorrow with hope, courage, and determination. My journey is one of\nprogress, and every step forward matters.",
+      "fields": [
+        {
+          "key": "what_helped",
+          "label": "What helped you choose a healthier option today?",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share this reflection with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    },
+    {
+      "id": "opioid-closing",
+      "moduleId": "opioid-week-4",
+      "type": "closing",
+      "title": "Closing affirmation and forward plan",
+      "dayNumber": 20,
+      "weekNumber": 4,
+      "points": 15,
+      "sortOrder": 35,
+      "affirmation": "I am not defined by opioid addiction or my past. I am defined by my courage to begin again, my\nstrength to keep moving forward, and my commitment to healing. Every day I choose recovery, I\nreclaim my health, restore my hope, and build a future filled with purpose, peace, and freedom.\nOne day, one choice, and one step at a time, I am creating a life of lasting recovery.",
+      "fields": [
+        {
+          "key": "keep_doing",
+          "label": "What will you keep practising after this journey?",
+          "kind": "textarea",
+          "required": true,
+          "privateByDefault": true
+        },
+        {
+          "key": "support_needed",
+          "label": "What support do you still want?",
+          "kind": "textarea",
+          "required": false,
+          "privateByDefault": true
+        },
+        {
+          "key": "share_with_admin",
+          "label": "Share this closing plan with Gerald",
+          "kind": "checkbox",
+          "required": false,
+          "privateByDefault": false
+        }
+      ],
+      "origin": "source"
+    }
+  ],
+  "dailyReflection": "Today I chose recovery. Every healthy decision I made strengthened my body, renewed my\nmind, and reminded me that healing is possible. I release today's struggles, celebrate today's\nvictories, and welcome tomorrow with hope, courage, and determination. My journey is one of\nprogress, and every step forward matters.",
+  "closingAffirmation": "I am not defined by opioid addiction or my past. I am defined by my courage to begin again, my\nstrength to keep moving forward, and my commitment to healing. Every day I choose recovery, I\nreclaim my health, restore my hope, and build a future filled with purpose, peace, and freedom.\nOne day, one choice, and one step at a time, I am creating a life of lasting recovery.",
+  "homeworkDefaults": [
+    {
+      "taskKey": "affirmations_daily",
+      "title": "Today's affirmation",
+      "taskType": "affirmations_daily",
+      "points": 5
+    },
+    {
+      "taskKey": "eft_daily",
+      "title": "EFT tapping",
+      "taskType": "eft_daily",
+      "points": 5
+    }
+  ],
+  "reviewStatus": "pending",
+  "sourceExcerpt": "Opioid Addiction (Heroin, Morphine & Prescription Painkillers)\nThese daily affirmations are designed to support individuals recovering from opioid addiction.\nRecovery from opioid dependence often involves physical, emotional, and psychological healing. These\naffirmations encourag",
+  "sourceChecksum": "86f4981b4a0c17cc",
+  "cadence": {
+    "activityCadence": "daily",
+    "liveSessionCount": 8,
+    "liveSessionWeekdays": [
+      "tue",
+      "fri"
+    ],
+    "liveSessionTimeSlots": [
+      "11:00",
+      "16:00"
+    ],
+    "timezone": "Africa/Johannesburg",
+    "firstSessionDurationMinutes": 90,
+    "standardSessionDurationMinutes": 45
+  },
+  "dailyCheckIn": {
+    "includeMood": true,
+    "includeUrge": true,
+    "includePause": true,
+    "includePrivateNote": true,
+    "urgeMin": 0,
+    "urgeMax": 5,
+    "highUrgeThreshold": 4
+  },
+  "structure": {
+    "slug": "opioid",
+    "expectedWeekCount": 4,
+    "expectedDayCount": 20,
+    "sourceActivityTypes": [
+      "orientation",
+      "weekly_focus",
+      "daily_affirmation",
+      "reflection",
+      "closing"
+    ],
+    "optionalPlatformActivityTypes": [
+      "trigger_map",
+      "values_select"
+    ],
+    "reflectionDays": [
+      5,
+      10,
+      15,
+      20
+    ],
+    "platformExerciseDays": [
+      3,
+      8,
+      10,
+      13,
+      15,
+      18
+    ],
+    "reviewRequired": true
+  }
+}

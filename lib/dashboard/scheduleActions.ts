@@ -4,7 +4,8 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import {
   computeFirstSessionAt,
-  generateEightSessionDates,
+  decodeSlotValue,
+  generateSessionDates,
   getMeetUrlForTimeSlot,
   PROGRAMME_TIMEZONE,
   sessionDurationMinutes,
@@ -16,6 +17,17 @@ import type { ProgrammeTimeSlot, ProgrammeWeekday } from "@/types/database";
 
 const WEEKDAYS = new Set<ProgrammeWeekday>(["tue", "fri"]);
 const SLOTS = new Set<ProgrammeTimeSlot>(["11:00", "16:00"]);
+
+/** Pickers submit a single combined radio; older forms may still post two fields. */
+function readSlotSelection(formData: FormData) {
+  const combined = String(formData.get("slot") ?? "").trim();
+  if (combined) return decodeSlotValue(combined);
+
+  const weekday = String(formData.get("weekday") ?? "") as ProgrammeWeekday;
+  const timeSlot = String(formData.get("timeSlot") ?? "") as ProgrammeTimeSlot;
+  if (!WEEKDAYS.has(weekday) || !SLOTS.has(timeSlot)) return null;
+  return { weekday, timeSlot };
+}
 
 async function requireClientEnrollment() {
   const supabase = await createClient();
@@ -41,6 +53,35 @@ async function requireClientEnrollment() {
   return { supabase, clientProfile, enrollment };
 }
 
+async function resolveLiveSessionCount(
+  supabase: Awaited<ReturnType<typeof createClient>>,
+  templateId: string,
+) {
+  const { data: template } = await supabase
+    .from("programme_templates")
+    .select("session_count, cadence_json, content_json")
+    .eq("id", templateId)
+    .maybeSingle();
+
+  const cadenceCount =
+    template?.cadence_json &&
+    typeof template.cadence_json === "object" &&
+    "liveSessionCount" in template.cadence_json &&
+    typeof (template.cadence_json as { liveSessionCount?: unknown }).liveSessionCount === "number"
+      ? Number((template.cadence_json as { liveSessionCount: number }).liveSessionCount)
+      : null;
+  const contentCount =
+    template?.content_json &&
+    typeof template.content_json === "object" &&
+    "cadence" in template.content_json &&
+    typeof (template.content_json as { cadence?: { liveSessionCount?: unknown } }).cadence?.liveSessionCount ===
+      "number"
+      ? Number((template.content_json as { cadence: { liveSessionCount: number } }).cadence.liveSessionCount)
+      : null;
+
+  return Math.max(1, cadenceCount ?? contentCount ?? template?.session_count ?? 8);
+}
+
 async function applyScheduleToProgress(
   supabase: Awaited<ReturnType<typeof createClient>>,
   enrollmentId: string,
@@ -48,9 +89,11 @@ async function applyScheduleToProgress(
   firstSessionAt: string,
   weekday: ProgrammeWeekday,
 ) {
-  const dates = generateEightSessionDates(firstSessionAt, weekday);
+  const sessionCount = await resolveLiveSessionCount(supabase, templateId);
+  const dates = generateSessionDates(firstSessionAt, weekday, sessionCount);
+  const now = Date.now();
   const [{ data: progressRows }, { data: sessions }] = await Promise.all([
-    supabase.from("session_progress").select("id, session_id").eq("enrollment_id", enrollmentId),
+    supabase.from("session_progress").select("id, session_id, status, scheduled_at").eq("enrollment_id", enrollmentId),
     supabase
       .from("programme_sessions")
       .select("id, session_number, sort_order")
@@ -64,6 +107,8 @@ async function applyScheduleToProgress(
       const session = sessionById.get(row.session_id);
       return {
         id: row.id,
+        status: row.status,
+        scheduledAt: row.scheduled_at,
         sessionNumber: session?.session_number ?? 0,
         sortOrder: session?.sort_order ?? 0,
       };
@@ -72,6 +117,9 @@ async function applyScheduleToProgress(
 
   for (let index = 0; index < ordered.length && index < dates.length; index += 1) {
     const row = ordered[index];
+    // Protect completed history and past scheduled sessions; only move eligible future sessions.
+    if (row.status === "completed") continue;
+    if (row.scheduledAt && new Date(row.scheduledAt).getTime() < now - 60 * 60 * 1000) continue;
     await supabase
       .from("session_progress")
       .update({
@@ -83,13 +131,13 @@ async function applyScheduleToProgress(
 }
 
 export async function saveEnrollmentSchedule(formData: FormData) {
-  const weekday = String(formData.get("weekday") ?? "") as ProgrammeWeekday;
-  const timeSlot = String(formData.get("timeSlot") ?? "") as ProgrammeTimeSlot;
+  const selection = readSlotSelection(formData);
 
-  if (!WEEKDAYS.has(weekday) || !SLOTS.has(timeSlot)) {
+  if (!selection) {
     redirect("/portal/programme/schedule/?error=invalid-slot");
   }
 
+  const { weekday, timeSlot } = selection;
   const { supabase, enrollment } = await requireClientEnrollment();
   const meetUrl = getMeetUrlForTimeSlot(timeSlot);
   const firstSessionAt = computeFirstSessionAt({
@@ -131,13 +179,13 @@ export async function saveEnrollmentSchedule(formData: FormData) {
 export async function adminSaveEnrollmentSchedule(formData: FormData) {
   const clientProfileId = sanitizeUuid(String(formData.get("clientProfileId") ?? ""));
   const enrollmentId = sanitizeUuid(String(formData.get("enrollmentId") ?? ""));
-  const weekday = String(formData.get("weekday") ?? "") as ProgrammeWeekday;
-  const timeSlot = String(formData.get("timeSlot") ?? "") as ProgrammeTimeSlot;
+  const selection = readSlotSelection(formData);
 
-  if (!clientProfileId || !enrollmentId || !WEEKDAYS.has(weekday) || !SLOTS.has(timeSlot)) {
+  if (!clientProfileId || !enrollmentId || !selection) {
     redirect(`/admin/clients/${clientProfileId || ""}/programme/?error=invalid-slot`);
   }
 
+  const { weekday, timeSlot } = selection;
   const supabase = await createClient();
   const {
     data: { user },

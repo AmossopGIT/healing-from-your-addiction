@@ -4,12 +4,17 @@ import { redirect } from "next/navigation";
 import { saveEnrollmentSchedule } from "@/lib/dashboard/scheduleActions";
 import { getAuthProfile } from "@/lib/supabase/auth";
 import { getClientEnrollmentBundle } from "@/lib/dashboard/queries";
-import { PROGRAMME_TIME_SLOTS, PROGRAMME_WEEKDAYS, slotLabel } from "@/lib/programme/schedule";
+import {
+  computeFirstSessionAt,
+  formatSessionDateShort,
+  generateSessionDates,
+  PROGRAMME_SLOT_OPTIONS,
+} from "@/lib/programme/schedule";
 import { createMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = createMetadata({
   title: "Choose your session time | Client Portal",
-  description: "Pick your Tuesday or Friday programme slot.",
+  description: "Pick your Tuesday or Friday live coaching slot.",
   path: "/portal/programme/schedule/",
   noIndex: true,
 });
@@ -19,7 +24,7 @@ type PageProps = {
 };
 
 const errorMessages: Record<string, string> = {
-  "invalid-slot": "Please choose one of the available session times.",
+  "invalid-slot": "Please choose one of the four session times below.",
   "save-failed": "We could not save your schedule right now. Please try again.",
 };
 
@@ -36,15 +41,37 @@ export default async function PortalProgrammeSchedulePage({ searchParams }: Page
     redirect("/portal/programme/");
   }
 
+  const liveSessionCount =
+    (bundle.template?.session_count && bundle.template.session_count > 0
+      ? bundle.template.session_count
+      : null) ??
+    (typeof bundle.template?.cadence_json === "object" &&
+    bundle.template.cadence_json &&
+    "liveSessionCount" in bundle.template.cadence_json &&
+    typeof (bundle.template.cadence_json as { liveSessionCount?: unknown }).liveSessionCount === "number"
+      ? Number((bundle.template.cadence_json as { liveSessionCount: number }).liveSessionCount)
+      : 8);
+
+  const startDate = bundle.enrollment.start_date;
+  const slotPreviews = PROGRAMME_SLOT_OPTIONS.map((option) => {
+    const firstSessionAt = computeFirstSessionAt({
+      fromDate: startDate,
+      weekday: option.weekday,
+      timeSlot: option.timeSlot,
+    });
+    const dates = generateSessionDates(firstSessionAt, option.weekday, liveSessionCount);
+    return { ...option, firstSessionAt, lastSessionAt: dates[dates.length - 1] };
+  });
+
   return (
     <div className="dashboard-stack">
       <section className="dashboard-page-header">
-        <p className="eyebrow">Programme schedule</p>
-        <h1>Choose your session time</h1>
+        <p className="eyebrow">Step 1 of 1</p>
+        <h1>Choose your live coaching time</h1>
         <p>
-          Sessions run Tuesday and Friday for four weeks (eight sessions). Choose your first session day and clock
-          time — you keep that Meet group for the whole programme. Session 1 is 90 minutes; sessions 2–8 are 45
-          minutes.
+          Daily interactive programme activities are separate from optional live coaching sessions. This form books{" "}
+          {liveSessionCount} live session{liveSessionCount === 1 ? "" : "s"} on Tuesdays and Fridays in South African
+          time. Completed or past sessions stay fixed if you reschedule later.
         </p>
       </section>
 
@@ -53,53 +80,64 @@ export default async function PortalProgrammeSchedulePage({ searchParams }: Page
       ) : null}
 
       <section className="dashboard-panel">
-        <ul className="dashboard-session-list">
-          {PROGRAMME_WEEKDAYS.flatMap((day) =>
-            PROGRAMME_TIME_SLOTS.map((slot) => (
-              <li key={`${day.value}-${slot.value}`} className="dashboard-session-item">
-                <div>
-                  <strong>{slotLabel(day.value, slot.value)}</strong>
-                  <p>Africa/Johannesburg</p>
-                </div>
-              </li>
-            )),
-          )}
-        </ul>
         <form action={saveEnrollmentSchedule} className="dashboard-form">
-          <label className="form-field">
-            <span>First session day</span>
-            <select name="weekday" required defaultValue="">
-              <option value="" disabled>
-                Select day
-              </option>
-              {PROGRAMME_WEEKDAYS.map((day) => (
-                <option key={day.value} value={day.value}>
-                  {day.label}
-                </option>
+          <fieldset className="programme-slot-fieldset">
+            <legend className="programme-slot-legend">
+              Available times
+              <span>All times are South African time</span>
+            </legend>
+
+            <div className="programme-slot-grid">
+              {slotPreviews.map((option, index) => (
+                <label key={option.value} className="programme-slot-card">
+                  <input
+                    type="radio"
+                    name="slot"
+                    value={option.value}
+                    required
+                    defaultChecked={index === 0}
+                  />
+                  <span className="programme-slot-body">
+                    <span className="programme-slot-title">{option.label}</span>
+                    <span className="programme-slot-meta">
+                      Starts {formatSessionDateShort(option.firstSessionAt)}
+                    </span>
+                    <span className="programme-slot-meta">
+                      Ends {formatSessionDateShort(option.lastSessionAt)}
+                    </span>
+                  </span>
+                </label>
               ))}
-            </select>
-          </label>
-          <label className="form-field">
-            <span>Time</span>
-            <select name="timeSlot" required defaultValue="">
-              <option value="" disabled>
-                Select time
-              </option>
-              {PROGRAMME_TIME_SLOTS.map((slot) => (
-                <option key={slot.value} value={slot.value}>
-                  {slot.label}
-                </option>
-              ))}
-            </select>
-          </label>
+            </div>
+          </fieldset>
+
+          <div className="programme-slot-explainer">
+            <h2>What to expect</h2>
+            <ul>
+              <li>
+                <strong>Session 1 is 90 minutes.</strong> It is longer so there is room to talk properly.
+              </li>
+              <li>
+                <strong>Sessions 2–8 are 45 minutes,</strong> twice a week for four weeks.
+              </li>
+              <li>
+                <strong>You meet on Google Meet.</strong> The same link works for every session.
+              </li>
+              <li>
+                <strong>You can change this later.</strong> Message Gerald and he will move your slot.
+              </li>
+            </ul>
+          </div>
+
           <button type="submit" className="button button-primary">
-            Confirm schedule
+            Confirm my sessions
           </button>
         </form>
-        <p className="dashboard-inline-note">
-          <Link href="/portal/">Back to home</Link>
-        </p>
       </section>
+
+      <p className="dashboard-inline-note">
+        <Link href="/portal/">Back to home</Link>
+      </p>
     </div>
   );
 }

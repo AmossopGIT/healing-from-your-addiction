@@ -14,6 +14,7 @@ type LoginFormProps = {
   showClientLinks?: boolean;
   notice?: string | null;
   helperText?: string | null;
+  hideAdminLink?: boolean;
 };
 
 export function LoginForm({
@@ -24,6 +25,7 @@ export function LoginForm({
   showClientLinks = false,
   notice = null,
   helperText = null,
+  hideAdminLink = false,
 }: LoginFormProps) {
   const router = useRouter();
   const configError = getSupabaseBrowserConfigError();
@@ -31,6 +33,7 @@ export function LoginForm({
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const readinessResume = redirectTo.includes("/portal/readiness/");
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -106,7 +109,7 @@ export function LoginForm({
     await supabase.auth.signOut();
     setError(
       profile?.role === "admin"
-        ? "This email is for staff admin access. Use the admin sign-in page instead."
+        ? "This email is for staff admin access. Use a client account (or the admin sign-in page for staff work)."
         : "This email is not set up for the client portal.",
     );
   }
@@ -136,12 +139,14 @@ export function LoginForm({
         {configError ? <p className="form-error">{configError}</p> : null}
         {!configError && error ? <p className="form-error">{error}</p> : null}
         <button type="submit" className="button button-primary form-submit" disabled={loading || Boolean(configError)}>
-          {loading ? "Signing in..." : "Sign in"}
+          {loading ? "Signing in..." : readinessResume ? "Sign in & see results" : "Sign in"}
         </button>
       </form>
       {showClientLinks ? (
         <p className="auth-description">
-          <Link href="/portal/sign-up/">Create an account</Link>
+          <Link href={portal === "client" && redirectTo !== "/portal/" ? `/portal/sign-up/?next=${encodeURIComponent(redirectTo)}` : "/portal/sign-up/"}>
+            Create an account
+          </Link>
           {" · "}
           <Link href="/portal/forgot-password/">Forgot your password?</Link>
         </p>
@@ -151,7 +156,7 @@ export function LoginForm({
           <Link href="/admin/forgot-password/">Forgot your password?</Link>
         </p>
       ) : null}
-      {portal === "client" ? (
+      {portal === "client" && !hideAdminLink && !readinessResume ? (
         <p className="auth-alt-link">
           <Link href="/admin/login/">Staff admin sign in</Link>
         </p>

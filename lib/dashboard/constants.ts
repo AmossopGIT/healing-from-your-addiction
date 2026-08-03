@@ -38,6 +38,7 @@ export const adminNavItems = [
 export const portalNavItems = [
   { href: "/portal/", label: "Home" },
   { href: "/portal/programme/", label: "Programme" },
+  { href: "/portal/readiness/", label: "Readiness" },
   { href: "/portal/intake/", label: "Intake" },
   { href: "/portal/consultation/", label: "Consultation" },
   { href: "/portal/messages/", label: "Messages" },

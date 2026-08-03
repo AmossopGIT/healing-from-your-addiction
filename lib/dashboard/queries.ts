@@ -1,6 +1,9 @@
 import { createClient } from "@/lib/supabase/server";
 import type {
+  ClientActivityPrivateAnswer,
+  ClientActivityProgress,
   ClientContentReceipt,
+  ClientDailyCheckIn,
   ClientDocument,
   ClientHomeworkEntry,
   ClientIntakeSubmission,
@@ -11,6 +14,8 @@ import type {
   EnrollmentSchedule,
   PortalContentKind,
   Profile,
+  ProgrammeAdminFlag,
+  ProgrammeActivityEvent,
   ProgrammeDoc,
   ProgrammeHomeworkTask,
   ProgrammeSession,
@@ -129,6 +134,8 @@ export async function getClientEnrollmentBundle(userId: string) {
       homeworkEntries: [] as ClientHomeworkEntry[],
       pointsTotal: 0,
       programmeDocs: [] as ProgrammeDoc[],
+      activityProgress: [] as ClientActivityProgress[],
+      activityEvents: [] as ProgrammeActivityEvent[],
     };
   }
 
@@ -147,6 +154,8 @@ export async function getClientEnrollmentBundle(userId: string) {
     { data: homeworkEntries },
     { data: pointsRows },
     { data: programmeDocs },
+    { data: activityProgress },
+    { data: activityEvents },
   ] = await Promise.all([
     supabase.from("session_progress").select("*").eq("enrollment_id", enrollment.id),
     supabase.from("enrollment_schedules").select("*").eq("enrollment_id", enrollment.id).maybeSingle(),
@@ -168,6 +177,13 @@ export async function getClientEnrollmentBundle(userId: string) {
           .eq("addiction_slug", template.addiction_slug)
           .order("sort_order", { ascending: true })
       : Promise.resolve({ data: [] as ProgrammeDoc[] }),
+    supabase.from("client_activity_progress").select("*").eq("enrollment_id", enrollment.id),
+    supabase
+      .from("programme_activity_events")
+      .select("*")
+      .eq("enrollment_id", enrollment.id)
+      .order("occurred_at", { ascending: false })
+      .limit(30),
   ]);
 
   const pointsTotal = (pointsRows ?? []).reduce((sum, row) => sum + (row.points ?? 0), 0);
@@ -183,29 +199,47 @@ export async function getClientEnrollmentBundle(userId: string) {
     homeworkEntries: (homeworkEntries as ClientHomeworkEntry[]) ?? [],
     pointsTotal,
     programmeDocs: (programmeDocs as ProgrammeDoc[]) ?? [],
+    activityProgress: (activityProgress as ClientActivityProgress[]) ?? [],
+    activityEvents: (activityEvents as ProgrammeActivityEvent[]) ?? [],
   };
 }
 
 export async function getAdminClientBundle(clientProfileId: string) {
   const supabase = await createClient();
+  const dataErrors: string[] = [];
 
-  const { data: clientProfile } = await supabase.from("client_profiles").select("*").eq("id", clientProfileId).single();
+  const { data: clientProfile, error: clientProfileError } = await supabase
+    .from("client_profiles")
+    .select("*")
+    .eq("id", clientProfileId)
+    .single();
+  if (clientProfileError) dataErrors.push(`Client profile: ${clientProfileError.message}`);
 
   if (!clientProfile) {
     return null;
   }
 
-  const { data: profile } = await supabase.from("profiles").select("*").eq("id", clientProfile.user_id).single();
+  const { data: profile, error: profileError } = await supabase
+    .from("profiles")
+    .select("*")
+    .eq("id", clientProfile.user_id)
+    .single();
+  if (profileError) dataErrors.push(`Profile: ${profileError.message}`);
 
-  const { data: enrollment } = await supabase
+  const { data: enrollment, error: enrollmentError } = await supabase
     .from("enrollments")
     .select("*")
     .eq("client_profile_id", clientProfileId)
     .order("created_at", { ascending: false })
     .limit(1)
     .maybeSingle();
+  if (enrollmentError) dataErrors.push(`Enrollment: ${enrollmentError.message}`);
 
-  const { data: templates } = await supabase.from("programme_templates").select("*").order("addiction_slug");
+  const { data: templates, error: templatesError } = await supabase
+    .from("programme_templates")
+    .select("*")
+    .order("addiction_slug");
+  if (templatesError) dataErrors.push(`Programme templates: ${templatesError.message}`);
 
   let template: ProgrammeTemplate | null = null;
   let sessions: ProgrammeSession[] = [];
@@ -216,10 +250,16 @@ export async function getAdminClientBundle(clientProfileId: string) {
   let pointsTotal = 0;
   let programmeDocs: ProgrammeDoc[] = [];
   let pointsLedger: ClientPointsLedgerEntry[] = [];
+  let activityProgress: ClientActivityProgress[] = [];
+  let adminFlags: ProgrammeAdminFlag[] = [];
+  let sharedPrivateAnswers: ClientActivityPrivateAnswer[] = [];
+  let dailyCheckIns: ClientDailyCheckIn[] = [];
+  let activityEvents: ProgrammeActivityEvent[] = [];
 
   if (enrollment) {
     const templateResult = await supabase.from("programme_templates").select("*").eq("id", enrollment.template_id).single();
     template = templateResult.data ?? null;
+    if (templateResult.error) dataErrors.push(`Assigned programme: ${templateResult.error.message}`);
 
     const [
       sessionsResult,
@@ -229,6 +269,11 @@ export async function getAdminClientBundle(clientProfileId: string) {
       homeworkEntriesResult,
       pointsResult,
       docsResult,
+      activityResult,
+      flagsResult,
+      privateAnswersResult,
+      checkInsResult,
+      activityEventsResult,
     ] = await Promise.all([
       supabase
         .from("programme_sessions")
@@ -259,8 +304,54 @@ export async function getAdminClientBundle(clientProfileId: string) {
             .select("*")
             .eq("addiction_slug", template.addiction_slug)
             .order("sort_order", { ascending: true })
-        : Promise.resolve({ data: [] as ProgrammeDoc[] }),
+        : Promise.resolve({ data: [] as ProgrammeDoc[], error: null }),
+      supabase
+        .from("client_activity_progress")
+        .select(
+          "id, enrollment_id, activity_id, status, responses, public_responses, shared_with_admin, points_awarded, started_at, completed_at, skipped_reason, created_at, updated_at",
+        )
+        .eq("enrollment_id", enrollment.id),
+      supabase
+        .from("programme_admin_flags")
+        .select("*")
+        .eq("enrollment_id", enrollment.id)
+        .order("created_at", { ascending: false }),
+      supabase
+        .from("client_activity_private_answers")
+        .select("*")
+        .eq("enrollment_id", enrollment.id)
+        .eq("shared_with_admin", true),
+      supabase
+        .from("client_daily_check_ins")
+        .select("*")
+        .eq("client_profile_id", clientProfileId)
+        .order("check_in_date", { ascending: false })
+        .limit(21),
+      supabase
+        .from("programme_activity_events")
+        .select("*")
+        .eq("enrollment_id", enrollment.id)
+        .order("occurred_at", { ascending: false })
+        .limit(50),
     ]);
+
+    const resultErrors = [
+      ["Sessions", sessionsResult.error],
+      ["Session progress", progressResult.error],
+      ["Schedule", scheduleResult.error],
+      ["Homework tasks", homeworkTasksResult.error],
+      ["Homework entries", homeworkEntriesResult.error],
+      ["Points", pointsResult.error],
+      ["Programme documents", docsResult.error],
+      ["Activity results", activityResult.error],
+      ["Admin flags", flagsResult.error],
+      ["Shared answers", privateAnswersResult.error],
+      ["Daily check-ins", checkInsResult.error],
+      ["Programme events", activityEventsResult.error],
+    ] as const;
+    for (const [label, resultError] of resultErrors) {
+      if (resultError) dataErrors.push(`${label}: ${resultError.message}`);
+    }
 
     sessions = sessionsResult.data ?? [];
     progress = progressResult.data ?? [];
@@ -270,6 +361,11 @@ export async function getAdminClientBundle(clientProfileId: string) {
     pointsLedger = pointsResult.data ?? [];
     pointsTotal = pointsLedger.reduce((sum, row) => sum + (row.points ?? 0), 0);
     programmeDocs = docsResult.data ?? [];
+    activityProgress = (activityResult.data as ClientActivityProgress[]) ?? [];
+    adminFlags = (flagsResult.data as ProgrammeAdminFlag[]) ?? [];
+    sharedPrivateAnswers = (privateAnswersResult.data as ClientActivityPrivateAnswer[]) ?? [];
+    dailyCheckIns = (checkInsResult.data as ClientDailyCheckIn[]) ?? [];
+    activityEvents = (activityEventsResult.data as ProgrammeActivityEvent[]) ?? [];
   }
 
   return {
@@ -286,6 +382,12 @@ export async function getAdminClientBundle(clientProfileId: string) {
     pointsTotal,
     pointsLedger,
     programmeDocs,
+    activityProgress,
+    adminFlags,
+    sharedPrivateAnswers,
+    dailyCheckIns,
+    activityEvents,
+    dataErrors,
   };
 }
 
@@ -457,6 +559,71 @@ export type ClientProfileWithProfile = ClientProfile & {
 };
 
 export type ClientIntakeSubmissionRow = ClientIntakeSubmission;
+
+export type ReadinessAssessmentRow = import("@/types/database").ReadinessAssessment;
+
+export async function getClientReadinessAssessment(clientProfileId: string) {
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from("readiness_assessments")
+    .select("*")
+    .eq("client_profile_id", clientProfileId)
+    .eq("is_current", true)
+    .maybeSingle();
+
+  if (!data) {
+    const { data: latest } = await supabase
+      .from("readiness_assessments")
+      .select("*")
+      .eq("client_profile_id", clientProfileId)
+      .order("created_at", { ascending: false })
+      .limit(1)
+      .maybeSingle();
+    if (!latest) return null;
+    return normalizeReadinessRow(latest);
+  }
+
+  return normalizeReadinessRow(data);
+}
+
+export async function getClientReadinessAssessmentHistory(clientProfileId: string) {
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from("readiness_assessments")
+    .select("*")
+    .eq("client_profile_id", clientProfileId)
+    .not("completed_at", "is", null)
+    .order("completed_at", { ascending: false });
+
+  return (data ?? []).map(normalizeReadinessRow);
+}
+
+export async function getUnreadAdminNotifications(limit = 20) {
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from("admin_notifications")
+    .select("*")
+    .is("read_at", null)
+    .order("created_at", { ascending: false })
+    .limit(limit);
+  return data ?? [];
+}
+
+function normalizeReadinessRow(data: Record<string, unknown>) {
+  return {
+    ...data,
+    responses: (data.responses ?? {}) as Record<string, unknown>,
+    commitment_score: Number(data.commitment_score),
+    self_awareness_score: Number(data.self_awareness_score),
+    emotional_capacity_score: Number(data.emotional_capacity_score),
+    readiness_product: Number(data.readiness_product),
+    readiness_index: data.readiness_index == null ? null : Number(data.readiness_index),
+    focus_areas: (data.focus_areas ?? []) as string[],
+    urgent_safety: Boolean(data.urgent_safety),
+    is_current: data.is_current !== false,
+    attempt_number: Number(data.attempt_number ?? 1),
+  } as ReadinessAssessmentRow;
+}
 
 export async function getClientIntakeSubmission(clientProfileId: string) {
   const supabase = await createClient();

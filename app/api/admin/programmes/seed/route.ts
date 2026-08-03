@@ -1,10 +1,13 @@
 import { NextResponse } from "next/server";
+import { seedInteractiveProgrammes } from "@/lib/dashboard/interactiveProgrammeSeed";
 import { seedProgrammeTemplates } from "@/lib/dashboard/programmeSeed";
 import { createClient } from "@/lib/supabase/server";
 
 export async function POST() {
   const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
   if (!user) {
     return NextResponse.json({ ok: false, error: "Unauthorized" }, { status: 401 });
   }
@@ -14,10 +17,18 @@ export async function POST() {
     return NextResponse.json({ ok: false, error: "Forbidden" }, { status: 403 });
   }
 
-  const result = await seedProgrammeTemplates();
-  if (!result.ok) {
-    return NextResponse.json({ ok: false, error: result.error }, { status: 503 });
+  const interactive = await seedInteractiveProgrammes({ publish: true });
+  if (!interactive.ok) {
+    return NextResponse.json({ ok: false, error: interactive.error }, { status: 503 });
   }
 
-  return NextResponse.json(result);
+  // Keep gambling live-session scaffolding available where case-study content exists.
+  const legacy = await seedProgrammeTemplates();
+
+  return NextResponse.json({
+    ...interactive,
+    ok: true,
+    templatesCreated: "templatesCreated" in legacy ? legacy.templatesCreated : 0,
+    sessionsCreated: "sessionsCreated" in legacy ? legacy.sessionsCreated : 0,
+  });
 }

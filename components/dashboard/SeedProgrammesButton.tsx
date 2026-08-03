@@ -15,7 +15,12 @@ export function SeedProgrammesButton() {
       if (!response.ok) {
         setMessage(data.error ?? "Seed failed");
       } else {
-        setMessage(`Created ${data.templatesCreated} templates and ${data.sessionsCreated} sessions.`);
+        setMessage(
+          `Published ${data.templatesUpserted ?? data.templatesCreated ?? 0} interactive programmes` +
+            (data.homeworkUpserted ? ` · ${data.homeworkUpserted} homework tasks` : "") +
+            (data.sessionsCreated ? ` · ${data.sessionsCreated} legacy sessions` : "") +
+            ".",
+        );
         window.location.reload();
       }
     } catch {
@@ -28,8 +33,11 @@ export function SeedProgrammesButton() {
   return (
     <section className="dashboard-panel">
       <button type="button" className="button button-secondary" onClick={handleSeed} disabled={loading}>
-        {loading ? "Seeding..." : "Seed templates from case studies"}
+        {loading ? "Publishing..." : "Publish / refresh interactive programmes"}
       </button>
+      <p className="dashboard-inline-note">
+        Loads all 23 structured journeys into programme templates with immutable content snapshots for new enrollments.
+      </p>
       {message ? <p className="dashboard-inline-note">{message}</p> : null}
     </section>
   );

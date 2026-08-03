@@ -7,6 +7,7 @@ import {
   sanitizeContactMethod,
   sanitizeOptionalPhone,
   sanitizeProgrammeSlug,
+  sanitizeRedirectPath,
 } from "@/lib/dashboard/formValidation";
 import { leadFieldMaxLengths } from "@/lib/leads/constraints";
 import { createClient } from "@/lib/supabase/server";
@@ -50,6 +51,11 @@ export async function completePortalOnboarding(formData: FormData) {
   const rawPreferredContactMethod = String(formData.get("preferredContactMethod") ?? "");
   const rawAddictionSlug = String(formData.get("addictionSlug") ?? "");
   const emergencyContact = normalizeSingleLine(String(formData.get("emergencyContact") ?? ""));
+  const redirectTo = sanitizeRedirectPath(
+    String(formData.get("redirectTo") ?? "/portal/"),
+    ["/portal/"],
+    "/portal/",
+  );
   const phone = sanitizeOptionalPhone(rawPhone);
   const preferredContactMethod = sanitizeContactMethod(rawPreferredContactMethod);
   const addictionSlug = sanitizeProgrammeSlug(rawAddictionSlug);
@@ -112,5 +118,5 @@ export async function completePortalOnboarding(formData: FormData) {
     }
   }
 
-  redirect("/portal/?onboarded=1");
+  redirect(redirectTo.includes("?") ? redirectTo : `${redirectTo}?onboarded=1`);
 }

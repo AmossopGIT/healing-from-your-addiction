@@ -29,6 +29,10 @@ export function PortalQuickActions({ nextSessionHref, nextSessionLabel, showPaus
             <span className="portal-home-action-detail">View sessions</span>
           </Link>
         )}
+        <Link href="/portal/readiness/" className="portal-home-action-chip">
+          <span className="portal-home-action-label">Readiness</span>
+          <span className="portal-home-action-detail">Healing readiness check</span>
+        </Link>
         <Link href="/portal/messages/" className="portal-home-action-chip">
           <span className="portal-home-action-label">Message Gerald</span>
           <span className="portal-home-action-detail">Secure chat</span>

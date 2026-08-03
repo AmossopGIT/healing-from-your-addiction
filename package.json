@@ -12,6 +12,7 @@
     "cms:sync-seo-keywords": "node tools/cms/sync-seo-keywords.mjs",
     "test": "vitest run",
     "test:watch": "vitest",
+    "programmes:validate": "tsx scripts/validate-interactive-programmes.mts",
     "start": "next start",
     "archive:site": "npm --prefix \"tools/site-archiver\" run start --",
     "video:render": "powershell -ExecutionPolicy Bypass -File boilerplate/lyric-video-kit/scripts/render_lyric_video_loop.ps1 -ProjectRoot .",

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { programmes } from "@/content/programmes";
+import { OnboardingNextField } from "@/components/dashboard/OnboardingNextField";
 import { contactMethods } from "@/lib/constants";
 import { dashboardFieldMaxLengths } from "@/lib/dashboard/formValidation";
 import { completePortalOnboarding } from "@/lib/dashboard/portalActions";
@@ -44,6 +45,7 @@ export default async function PortalOnboardingPage({ searchParams }: PageProps) 
         <p className="auth-description">Before you use the portal, tell us a few basics so your private profile is complete.</p>
         {error ? <p className="form-error">{onboardingErrorMessages[error] ?? "Unable to save your profile."}</p> : null}
         <form className="auth-form" action={completePortalOnboarding}>
+          <OnboardingNextField />
           <label className="form-field">
             <span>Full name</span>
             <input

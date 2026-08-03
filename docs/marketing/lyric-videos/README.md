@@ -43,6 +43,7 @@ Paid Search/PMax docs live in `docs/marketing/campaigns/search/`. This tree is o
 
 - [Cross-Addictions](./campaigns/cross-addictions/CAMPAIGN.md) — *Same Loop, New Name* (2026-05-12)
 
-## Next
+## In progress / next
 
-- [Signs of Behavioral Addictions](./campaigns/signs-of-behavioral-addictions/CAMPAIGN.md) — *The Signs of My Trigger* (WAV/video pending) · 2026-04-28
+- [Signs of Behavioral Addictions](./campaigns/signs-of-behavioral-addictions/CAMPAIGN.md) — *The Signs of My Trigger* (done) · 2026-04-28
+- [Signs of Substance Addictions](./campaigns/signs-of-substance-addictions/CAMPAIGN.md) — *What the Body Asks For* (lyrics done; Suno WAV pending) · 2026-04-26

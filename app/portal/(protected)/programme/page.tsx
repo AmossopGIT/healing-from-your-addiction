@@ -1,25 +1,37 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { formatDashboardDate } from "@/lib/dashboard/constants";
+import { NextSessionCard } from "@/components/programme/NextSessionCard";
+import { ProgrammeCalendar } from "@/components/programme/ProgrammeCalendar";
+import { ProgrammeJourneyShell } from "@/components/programme/ProgrammeJourneyShell";
+import { ProgrammeProgressTimeline } from "@/components/programme/ProgrammeProgressTimeline";
+import { getInteractiveProgramme } from "@/content/interactiveProgrammes";
+import type { InteractiveProgrammeDefinition } from "@/content/interactiveProgrammes/types";
 import { getAuthProfile } from "@/lib/supabase/auth";
 import { getClientContentReceipts, getClientEnrollmentBundle, getClientSessionReceiptMap } from "@/lib/dashboard/queries";
-import { slotLabel } from "@/lib/programme/schedule";
+import { resolveProgrammeDefinition } from "@/lib/programme/interactive/content";
+import { findNextSession, slotLabel, type ProgrammeCalendarEntry } from "@/lib/programme/schedule";
 import { createMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = createMetadata({
   title: "Programme | Client Portal",
-  description: "Your programme sessions.",
+  description: "Your programme sessions and interactive journey.",
   path: "/portal/programme/",
   noIndex: true,
 });
 
 type PageProps = {
-  searchParams: Promise<{ scheduled?: string }>;
+  searchParams: Promise<{ scheduled?: string; journeyComplete?: string; error?: string }>;
 };
 
+function asDefinition(value: unknown): InteractiveProgrammeDefinition | null {
+  if (!value || typeof value !== "object") return null;
+  if (!("slug" in value) || !("activities" in value)) return null;
+  return value as InteractiveProgrammeDefinition;
+}
+
 export default async function PortalProgrammePage({ searchParams }: PageProps) {
-  const { scheduled } = await searchParams;
+  const { scheduled, journeyComplete, error } = await searchParams;
   const profile = await getAuthProfile();
   const bundle = profile ? await getClientEnrollmentBundle(profile.id) : null;
 
@@ -27,14 +39,28 @@ export default async function PortalProgrammePage({ searchParams }: PageProps) {
     return (
       <div className="dashboard-stack">
         <section className="dashboard-page-header">
+          <p className="eyebrow">Programme</p>
           <h1>Your programme</h1>
-          <p className="dashboard-empty">Your programme has not been assigned yet.</p>
+        </section>
+        <section className="dashboard-panel">
+          <p className="dashboard-empty">
+            Your programme has not been assigned yet. Gerald sets this up after your intake and consultation forms
+            are complete.
+          </p>
+          <p className="dashboard-inline-note">
+            <Link href="/portal/messages/">Message Gerald</Link> if you are unsure what is outstanding.
+          </p>
         </section>
       </div>
     );
   }
 
-  if (!bundle.schedule) {
+  const definition =
+    resolveProgrammeDefinition("", asDefinition(bundle.enrollment.content_snapshot)) ??
+    asDefinition(bundle.template?.content_json) ??
+    (bundle.template ? getInteractiveProgramme(bundle.template.addiction_slug) : null);
+
+  if (!bundle.schedule && !definition) {
     redirect("/portal/programme/schedule/");
   }
 
@@ -49,8 +75,29 @@ export default async function PortalProgrammePage({ searchParams }: PageProps) {
   });
   const releasedDocIds = new Set(docReceipts.map((receipt) => receipt.content_id));
   const releasedDocs = bundle.programmeDocs.filter((doc) => releasedDocIds.has(doc.id));
+
+  const entries: ProgrammeCalendarEntry[] = bundle.sessions.map((session) => {
+    const progress = progressBySession.get(session.id);
+    return {
+      id: progress?.id ?? session.id,
+      sessionNumber: session.session_number,
+      weekNumber: session.week_number,
+      title: session.title,
+      scheduledAt: progress?.scheduled_at ?? null,
+      durationMinutes: progress?.duration_minutes ?? null,
+      status: progress?.status ?? "locked",
+      href: `/portal/programme/session/${session.session_number}/`,
+      recordingUrl: progress?.recording_url ?? null,
+    };
+  });
+
+  const nextSession = findNextSession(entries);
   const completedCount = bundle.progress.filter((item) => item.status === "completed").length;
-  const availableCount = bundle.progress.filter((item) => item.status !== "locked").length;
+  const totalCount = bundle.sessions.length;
+  const unreadCount = bundle.sessions.filter((session) => {
+    const receipt = sessionReceiptMap.get(session.id);
+    return receipt && !receipt.read_at;
+  }).length;
 
   return (
     <div className="dashboard-stack">
@@ -58,34 +105,78 @@ export default async function PortalProgrammePage({ searchParams }: PageProps) {
         <p className="eyebrow">Programme</p>
         <h1>{bundle.template?.title}</h1>
         <p>
-          {completedCount} of {availableCount} available sessions completed
-          {bundle.pointsTotal > 0 ? ` · ${bundle.pointsTotal} practice points` : null}
+          {definition
+            ? "Interactive 4-week healing journey with daily practice and live session support."
+            : `${completedCount} of ${totalCount} sessions completed`}
+          {bundle.schedule ? ` · your slot is ${slotLabel(bundle.schedule.weekday, bundle.schedule.time_slot)}` : ""}
+          {bundle.pointsTotal > 0 ? ` · ${bundle.pointsTotal} practice points` : ""}
         </p>
       </section>
 
       {scheduled ? (
-        <p className="dashboard-inline-note dashboard-success-note">Your session schedule has been saved.</p>
+        <p className="dashboard-inline-note dashboard-success-note">
+          Your sessions are booked. They are listed below — you can add them to your own calendar.
+        </p>
+      ) : null}
+      {journeyComplete ? (
+        <p className="dashboard-inline-note dashboard-success-note">
+          You completed the interactive journey. Keep using the daily practice and live sessions to stay steady.
+        </p>
+      ) : null}
+      {error === "locked" ? (
+        <p className="dashboard-inline-note dashboard-error-note">That activity is still locked. Continue with your next available step.</p>
       ) : null}
 
-      <section className="dashboard-panel">
-        <h2>Your slot</h2>
-        <p>
-          <strong>{slotLabel(bundle.schedule.weekday, bundle.schedule.time_slot)}</strong> ·{" "}
-          {bundle.schedule.timezone}
-        </p>
-        <p>
-          <a href={bundle.schedule.meet_url} target="_blank" rel="noreferrer" className="button button-secondary button-small">
-            Open Google Meet
-          </a>
-        </p>
-        <p className="dashboard-inline-note">
-          Need to change this? Message Gerald — he can update your slot from the admin dashboard.
-        </p>
-      </section>
+      {definition ? (
+        <>
+          <ProgrammeJourneyShell
+            definition={definition}
+            progressRows={bundle.activityProgress ?? []}
+            currentActivityId={bundle.enrollment.current_activity_id}
+            pointsTotal={bundle.pointsTotal}
+            audience="client"
+          />
+          <ProgrammeProgressTimeline events={bundle.activityEvents ?? []} audience="client" />
+        </>
+      ) : null}
+
+      {!bundle.schedule ? (
+        <section className="dashboard-panel">
+          <h2>Choose your live session slot</h2>
+          <p className="dashboard-inline-note">
+            Your interactive journey can begin now. Live coaching sessions still need a Tuesday or Friday slot.
+          </p>
+          <Link href="/portal/programme/schedule/" className="button button-primary">
+            Choose schedule
+          </Link>
+        </section>
+      ) : (
+        <>
+          <NextSessionCard
+            entry={nextSession}
+            meetUrl={bundle.schedule.meet_url}
+            calendarHref="/api/portal/programme/calendar/"
+          />
+
+          <section className="dashboard-panel">
+            <div className="dashboard-panel-header">
+              <h2>Your live session calendar</h2>
+              <a href="/api/portal/programme/calendar/" className="dashboard-panel-link" download>
+                Download all dates
+              </a>
+            </div>
+            <p className="dashboard-inline-note">
+              Live sessions sit alongside your interactive journey. Tap any unlocked session to open its material.
+            </p>
+            <ProgrammeCalendar entries={entries} nextSessionId={nextSession?.id} audience="client" />
+          </section>
+        </>
+      )}
 
       {releasedDocs.length > 0 ? (
         <section className="dashboard-panel">
-          <h2>Programme guides</h2>
+          <h2>Your programme guides</h2>
+          <p className="dashboard-inline-note">Read these online or download them as a PDF to keep.</p>
           <ul className="dashboard-session-list">
             {releasedDocs.map((doc) => (
               <li key={doc.id} className="dashboard-session-item">
@@ -94,7 +185,7 @@ export default async function PortalProgrammePage({ searchParams }: PageProps) {
                   {doc.summary ? <p>{doc.summary}</p> : null}
                 </div>
                 <Link href={`/portal/programme/docs/${doc.slug}/`} className="button button-small button-secondary">
-                  Open
+                  Read
                 </Link>
               </li>
             ))}
@@ -102,43 +193,11 @@ export default async function PortalProgrammePage({ searchParams }: PageProps) {
         </section>
       ) : null}
 
-      <section className="dashboard-panel">
-        <h2>Sessions</h2>
-        <ul className="dashboard-session-list">
-          {bundle.sessions.map((session) => {
-            const progress = progressBySession.get(session.id);
-            const receipt = sessionReceiptMap.get(session.id);
-            const status = progress?.status ?? "locked";
-            return (
-              <li key={session.id} className="dashboard-session-item">
-                <div>
-                  <strong>{session.title}</strong>
-                  <p>
-                    Week {session.week_number} · Session {session.session_number} · {status}
-                    {progress?.scheduled_at
-                      ? ` · ${formatDashboardDate(progress.scheduled_at)}`
-                      : null}
-                    {progress?.duration_minutes ? ` · ${progress.duration_minutes} min` : null}
-                  </p>
-                  {receipt?.read_at ? (
-                    <p className="dashboard-inline-note">Opened {formatDashboardDate(receipt.read_at)}</p>
-                  ) : receipt ? (
-                    <p className="dashboard-inline-note">New this month · unread</p>
-                  ) : null}
-                </div>
-                {status !== "locked" ? (
-                  <Link
-                    href={`/portal/programme/session/${session.session_number}/`}
-                    className="button button-small button-secondary"
-                  >
-                    Open
-                  </Link>
-                ) : null}
-              </li>
-            );
-          })}
-        </ul>
-      </section>
+      {unreadCount > 0 ? (
+        <p className="dashboard-inline-note">
+          You have {unreadCount} session {unreadCount === 1 ? "page" : "pages"} you have not opened yet.
+        </p>
+      ) : null}
     </div>
   );
 }

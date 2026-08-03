@@ -12,7 +12,16 @@ import {
 } from "@/lib/dashboard/formValidation";
 import { notifySecureMessageRecipients } from "@/lib/dashboard/messageNotifications";
 import { upsertClientContentReceipts } from "@/lib/dashboard/notifications";
+import { getInteractiveProgramme } from "@/content/interactiveProgrammes";
+import type { InteractiveProgrammeDefinition } from "@/content/interactiveProgrammes/types";
+import { buildInitialProgressRows } from "@/lib/programme/interactive/progress";
 import { redirect } from "next/navigation";
+
+function asDefinition(value: unknown): InteractiveProgrammeDefinition | null {
+  if (!value || typeof value !== "object") return null;
+  if (!("slug" in value) || !("activities" in value)) return null;
+  return value as InteractiveProgrammeDefinition;
+}
 
 export async function markSessionProgress(formData: FormData) {
   const redirectTo = sanitizeRedirectPath(String(formData.get("redirectTo") ?? "/portal/programme/"), ["/portal/"], "/portal/programme/");
@@ -115,6 +124,11 @@ export async function createEnrollment(formData: FormData) {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/admin/login/");
 
+  const { data: template } = await supabase.from("programme_templates").select("*").eq("id", templateId).maybeSingle();
+  const definition =
+    asDefinition(template?.content_json) ??
+    (template ? getInteractiveProgramme(template.addiction_slug) : null);
+
   const { data: enrollment, error } = await supabase.from("enrollments").insert({
     client_profile_id: clientProfileId,
     template_id: templateId,
@@ -122,9 +136,18 @@ export async function createEnrollment(formData: FormData) {
     admin_id: user?.id ?? null,
     status: "active",
     current_session_number: 1,
+    programme_version: template?.version ?? definition?.version ?? null,
+    current_activity_id: definition?.activities[0]?.id ?? null,
+    content_snapshot: definition,
+    journey_started_at: definition ? new Date().toISOString() : null,
+    last_activity_at: definition ? new Date().toISOString() : null,
   }).select("id, template_id").single();
 
   if (error || !enrollment) redirect(`/admin/clients/${clientProfileId}/programme/?error=enrollment-failed`);
+
+  if (definition) {
+    await supabase.from("client_activity_progress").insert(buildInitialProgressRows(definition, enrollment.id));
+  }
 
   const { data: sessions } = await supabase
     .from("programme_sessions")

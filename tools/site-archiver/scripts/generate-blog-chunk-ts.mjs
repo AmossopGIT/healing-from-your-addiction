@@ -117,12 +117,12 @@ const metaByChunk = {
     "core-themes-in-website-healing-from-your-addiction-using-hypnotherapy": {
       categorySlug: "hypnotherapy",
       tagSlugs: ["hypnotherapy", "healing-program", "addiction-recovery", "core-pattern"],
-      primaryKeyword: "addiction hypnotherapy core themes",
+      primaryKeyword: "hypnotherapy for addiction patterns",
       secondaryKeywords: [
         "subconscious addiction patterns",
-        "healing from your addiction themes",
-        "pattern focused hypnotherapy support",
         "addiction as learned pattern",
+        "pattern focused hypnotherapy support",
+        "craving and habit loop hypnotherapy",
       ],
       publishedAt: "2026-05-06",
     },

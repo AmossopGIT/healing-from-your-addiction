@@ -17,6 +17,21 @@ const PORTAL_PUBLIC_PATHS = new Set([
 ]);
 const PORTAL_ONBOARDING_PATH = "/portal/onboarding/";
 
+function sanitizePortalNextPath(raw: string | null) {
+  if (!raw) return null;
+  const value = raw.trim();
+  if (!value.startsWith("/") || value.startsWith("//") || !value.startsWith("/portal/")) {
+    return null;
+  }
+  if (value.length > 240) return null;
+  const pathOnly = (value.split("?")[0] ?? value).endsWith("/")
+    ? (value.split("?")[0] ?? value)
+    : `${value.split("?")[0] ?? value}/`;
+  // Never bounce clients into admin from portal auth next params.
+  if (pathOnly.startsWith("/admin/")) return null;
+  return value;
+}
+
 function createMiddlewareClient(request: NextRequest, requestHeaders: Headers) {
   let response = NextResponse.next({ request: { headers: requestHeaders } });
 
@@ -126,7 +141,14 @@ export async function middleware(request: NextRequest) {
 
     // Login, sign-up, forgot-password, check-email, set-password must always render (no role bounce).
     if (isPortalPublicAuthPath) {
+      const requestedNext = sanitizePortalNextPath(request.nextUrl.searchParams.get("next"));
+      const readinessNext = requestedNext?.includes("/portal/readiness/") ? requestedNext : null;
+
       if (role === "admin") {
+        // Keep readiness client auth usable while staff is logged in elsewhere — show the form, don't hard-bounce to admin.
+        if (readinessNext && (pathname === "/portal/login/" || pathname === "/portal/sign-up/")) {
+          return getResponse();
+        }
         return NextResponse.redirect(new URL(withBasePath("/admin/"), request.url));
       }
 
@@ -142,11 +164,17 @@ export async function middleware(request: NextRequest) {
           if (pendingPasswordSetup) {
             return NextResponse.redirect(new URL(withBasePath(PORTAL_SET_PASSWORD_PATH), request.url));
           }
+          if (readinessNext) {
+            return NextResponse.redirect(new URL(withBasePath(readinessNext), request.url));
+          }
           const target = onboardingComplete ? "/portal/" : PORTAL_ONBOARDING_PATH;
           return NextResponse.redirect(new URL(withBasePath(target), request.url));
         }
 
         if (pathname === "/portal/check-email/") {
+          if (readinessNext) {
+            return NextResponse.redirect(new URL(withBasePath(readinessNext), request.url));
+          }
           const target = onboardingComplete ? "/portal/" : PORTAL_ONBOARDING_PATH;
           return NextResponse.redirect(new URL(withBasePath(target), request.url));
         }
@@ -175,6 +203,11 @@ export async function middleware(request: NextRequest) {
       if (onboardingComplete) {
         return NextResponse.redirect(new URL(withBasePath("/portal/"), request.url));
       }
+      return getResponse();
+    }
+
+    // Allow readiness assessment save/resume before full onboarding details are complete.
+    if (!onboardingComplete && pathname.startsWith("/portal/readiness/")) {
       return getResponse();
     }
 

@@ -6,7 +6,7 @@ import type { Database } from "@/types/database";
 import { getSupabaseAnonKey, getSupabaseUrl } from "@/lib/supabase/env";
 
 export const dynamic = "force-dynamic";
-const allowedNextPaths = new Set(["/portal/", "/portal/onboarding/", "/portal/set-password/", "/admin/"]);
+const allowedNextPaths = new Set(["/portal/", "/portal/onboarding/", "/portal/set-password/", "/portal/readiness/", "/admin/"]);
 
 function redirectNoStore(url: string) {
   const response = NextResponse.redirect(url);
@@ -24,7 +24,12 @@ function resolveNextPath(rawNext: string | null, otpType: string | null) {
     return "/portal/";
   }
 
-  return allowedNextPaths.has(normalized) ? normalized : "/portal/";
+  const pathOnly = normalized.split("?")[0] ?? normalized;
+  const withSlash = pathOnly.endsWith("/") ? pathOnly : `${pathOnly}/`;
+  if (allowedNextPaths.has(withSlash) || withSlash.startsWith("/portal/readiness/")) {
+    return normalized.length <= 240 ? normalized : withSlash;
+  }
+  return "/portal/";
 }
 
 export async function GET(request: NextRequest) {

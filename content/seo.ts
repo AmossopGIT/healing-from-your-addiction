@@ -216,6 +216,25 @@ export const seoPages = {
     ogImage: defaultOgImage,
     ogImageAlt: "Confidential need help wizard for addiction pattern support enquiries",
   },
+  readinessAssessment: {
+    path: "/addiction-healing-readiness-assessment/",
+    title: "Am I Ready to Heal From My Addiction? | Free Readiness Assessment",
+    description:
+      "Take Gerald Crawford's Addiction Healing Readiness Assessment. Reflect on commitment, self-awareness and emotional capacity before beginning intensive addiction healing support.",
+    primaryKeyword: "am I ready to heal from my addiction",
+    secondaryKeywords: [
+      "addiction healing readiness assessment",
+      "addiction recovery readiness",
+      "commitment self awareness emotional capacity",
+      "addiction recovery readiness quiz South Africa",
+      "Gerald Crawford addiction assessment",
+    ],
+    searchIntent: "Assess psychological readiness for addiction healing before starting a programme.",
+    pageType: "conversion",
+    conversionGoal: "Complete the readiness assessment and create a private portal profile to save results.",
+    ogImage: "/art/watercolor/art-watercolor-process-understand.png",
+    ogImageAlt: "Minimal watercolor illustration suggesting understanding addiction patterns before healing begins",
+  },
   thankYou: {
     path: "/thank-you/",
     title: "Thank You | Healing From Your Addiction",

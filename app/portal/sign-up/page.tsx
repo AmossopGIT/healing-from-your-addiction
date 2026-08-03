@@ -9,10 +9,25 @@ export const metadata: Metadata = createMetadata({
   noIndex: true,
 });
 
-export default function PortalSignupPage() {
+type PageProps = {
+  searchParams: Promise<{ next?: string }>;
+};
+
+function sanitizeNextPath(value: string | undefined) {
+  if (!value) return "/portal/onboarding/";
+  if (!value.startsWith("/") || value.startsWith("//") || !value.startsWith("/portal/")) {
+    return "/portal/onboarding/";
+  }
+  return value.slice(0, 240);
+}
+
+export default async function PortalSignupPage({ searchParams }: PageProps) {
+  const { next } = await searchParams;
+  const nextPath = sanitizeNextPath(next);
+
   return (
     <div className="auth-page">
-      <SignupForm />
+      <SignupForm nextPath={nextPath} />
     </div>
   );
 }

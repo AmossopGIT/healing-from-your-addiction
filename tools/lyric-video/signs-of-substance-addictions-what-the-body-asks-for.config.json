@@ -1,0 +1,21 @@
+{
+  "blogSlug": "signs-of-substance-addictions",
+  "songSlug": "signs-of-substance-addictions-what-the-body-asks-for",
+  "songTitle": "What the Body Asks For",
+  "audioPath": "C:\\Users\\amoss\\Downloads\\What the Body Asks For.wav",
+  "duration": 0,
+  "bottomCrop": 8,
+  "srt": "public/videos/signs-of-substance-addictions-what-the-body-asks-for-exact-v1.srt",
+  "lyricsPath": "docs/marketing/lyric-videos/campaigns/signs-of-substance-addictions/suno-paste.txt",
+  "lyricSyncStart": 12,
+  "whisperModel": "medium",
+  "heroImage": "public/art/watercolor/art-watercolor-blog-signs-of-substance-addictions.png",
+  "loopsDir": "public/videos/loops/signs-of-substance-addictions",
+  "loops": [
+    { "file": "loop-a.mp4", "download": "" },
+    { "file": "loop-b.mp4", "download": "" },
+    { "file": "loop-c.mp4", "download": "" }
+  ],
+  "thumbSeekSeconds": 42,
+  "previewSeekSeconds": 46
+}

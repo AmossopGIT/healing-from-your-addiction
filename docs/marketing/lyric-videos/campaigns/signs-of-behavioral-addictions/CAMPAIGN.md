@@ -10,7 +10,8 @@
 | **Hero art** | `/art/watercolor/art-watercolor-blog-signs-of-behavioral-addictions.png` |
 | **Song title** | **The Signs of My Trigger** |
 | **Song slug** | `signs-of-behavioral-addictions-the-signs-of-my-trigger` |
-| **YouTube** | _TBD_ |
+| **YouTube** | https://youtu.be/HGTEOxxwjCI (`HGTEOxxwjCI`) |
+| **Blog embed** | `content/blogArchiveChunk2.ts` → `section.video.youtubeId` |
 
 ## Lyrics
 
@@ -38,7 +39,11 @@ Whisper **medium** + line align + **phrase split** (~137 short cues on the beat,
 
 1. QA portrait/horizontal on phone/desktop.
 2. Optional: fine-tune in Aegisub using `...-exact-v1-aligned.srt`, re-run phrase split + `-SkipSync`.
-3. YouTube upload → blog `youtubeId` + `social-publishing.md`.
+3. YouTube upload → fill `<video-id>` in [`social-publishing.md`](./social-publishing.md) + blog `youtubeId`.
+
+## Social
+
+See [`social-publishing.md`](./social-publishing.md).
 
 ## Publish assets (when ready)
 
@@ -54,4 +59,6 @@ Whisper **medium** + line align + **phrase split** (~137 short cues on the beat,
 - [x] Final lyrics — *The Signs of My Trigger*
 - [x] Master WAV + Whisper-synced `exact-v1.srt`
 - [x] Horizontal + portrait masters
-- [ ] YouTube + `social-publishing.md` + blog `youtubeId`
+- [x] `social-publishing.md`
+- [x] YouTube (`HGTEOxxwjCI`)
+- [x] Blog `youtubeId`
