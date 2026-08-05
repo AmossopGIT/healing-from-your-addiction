@@ -676,6 +676,7 @@ body.no-scroll {
 
 .hero-copy {
   max-width: 620px;
+  min-width: 0;
 }
 
 .hero-side {
@@ -684,6 +685,7 @@ body.no-scroll {
 
 .hero-grid-with-art {
   align-items: start;
+  width: 100%;
 }
 
 .hero-art {
@@ -698,12 +700,27 @@ body.no-scroll {
 .hero-with-art .hero-copy {
   align-self: center;
   max-width: none;
+  min-width: 0;
+  overflow-wrap: break-word;
+}
+
+.hero-with-art .hero-copy h1,
+.hero-with-art .hero-copy .lead {
+  max-width: 100%;
 }
 
 .hero-with-art .hero-side {
   align-self: start;
+  min-width: 0;
   position: sticky;
   top: calc(var(--header-height, 72px) + 1rem);
+  width: 100%;
+}
+
+.hero-with-art .hero-side .lead-form {
+  margin-left: 0;
+  max-width: 100%;
+  width: 100%;
 }
 
 .hero-side .lead-form.compact {
@@ -765,8 +782,15 @@ body.no-scroll {
 
 @media (min-width: 1041px) {
   .hero-grid.hero-grid-with-art {
-    gap: 2rem;
-    grid-template-columns: minmax(200px, 280px) minmax(0, 1fr) minmax(min(100%, 360px), 440px);
+    gap: clamp(1.25rem, 2vw, 2rem);
+    /* Keep art + copy + form inside --max without clipping the sticky form */
+    grid-template-columns: minmax(160px, 220px) minmax(0, 1fr) minmax(0, 360px);
+  }
+}
+
+@media (min-width: 1280px) {
+  .hero-grid.hero-grid-with-art {
+    grid-template-columns: minmax(180px, 240px) minmax(0, 1fr) minmax(0, 400px);
   }
 }
 
@@ -2818,6 +2842,7 @@ button.button-secondary:hover {
 
 .hero-copy {
   max-width: 620px;
+  min-width: 0;
 }
 
 .hero-side {
