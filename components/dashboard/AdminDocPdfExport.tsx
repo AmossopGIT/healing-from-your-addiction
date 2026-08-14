@@ -4,11 +4,22 @@ import { pdf } from "@react-pdf/renderer";
 import { useState } from "react";
 import { AdminDocMarkdownPdfDocument } from "@/lib/adminDocs/pdf/AdminDocMarkdownPdfDocument";
 import { AdminLoginGuidePdfDocument } from "@/lib/adminDocs/pdf/AdminLoginGuidePdfDocument";
+import { LeadOnboardingGuidePdfDocument } from "@/lib/adminDocs/pdf/LeadOnboardingGuidePdfDocument";
 import type { AdminDocPdfPayload } from "@/lib/adminDocs/pdf/types";
 
 function buildFilename(payload: AdminDocPdfPayload) {
   const datePart = new Date().toISOString().slice(0, 10);
   return `hfya-admin-doc-${payload.slug}-${datePart}.pdf`;
+}
+
+function resolvePdfDocument(payload: AdminDocPdfPayload) {
+  if (payload.kind === "admin-login-guide") {
+    return <AdminLoginGuidePdfDocument />;
+  }
+  if (payload.kind === "lead-onboarding-guide") {
+    return <LeadOnboardingGuidePdfDocument />;
+  }
+  return <AdminDocMarkdownPdfDocument payload={payload} />;
 }
 
 export function AdminDocPdfExport({ payload, disabled }: { payload: AdminDocPdfPayload; disabled?: boolean }) {
@@ -17,12 +28,7 @@ export function AdminDocPdfExport({ payload, disabled }: { payload: AdminDocPdfP
   async function handleExport() {
     setExporting(true);
     try {
-      const pdfDocument =
-        payload.kind === "admin-login-guide" ? (
-          <AdminLoginGuidePdfDocument />
-        ) : (
-          <AdminDocMarkdownPdfDocument payload={payload} />
-        );
+      const pdfDocument = resolvePdfDocument(payload);
       const blob = await pdf(pdfDocument).toBlob();
       const url = URL.createObjectURL(blob);
       const anchor = window.document.createElement("a");

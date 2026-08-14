@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { AdminLoginGuide } from "@/components/dashboard/adminDocs/AdminLoginGuide";
+import { LeadOnboardingGuide } from "@/components/dashboard/adminDocs/LeadOnboardingGuide";
 import { AdminDocPageLayout } from "@/components/dashboard/AdminDocPageLayout";
 import { getAdminDocBySlug, getAdminDocCatalog } from "@/lib/adminDocs/catalog";
 import { loadAdminDocContent } from "@/lib/adminDocs/loadDoc";
@@ -41,6 +42,9 @@ function buildPdfPayload(slug: string, meta: NonNullable<ReturnType<typeof getAd
   if (meta.customPage === "admin-login-guide") {
     return { kind: "admin-login-guide", slug };
   }
+  if (meta.customPage === "lead-onboarding-guide") {
+    return { kind: "lead-onboarding-guide", slug };
+  }
 
   return {
     kind: "markdown",
@@ -66,6 +70,19 @@ export default async function AdminDocPage({ params }: PageProps) {
         pdfPayload={buildPdfPayload(slug, meta)}
       >
         <AdminLoginGuide />
+      </AdminDocPageLayout>
+    );
+  }
+
+  if (meta.customPage === "lead-onboarding-guide") {
+    return (
+      <AdminDocPageLayout
+        title={meta.title}
+        description={meta.description}
+        category={meta.category}
+        pdfPayload={buildPdfPayload(slug, meta)}
+      >
+        <LeadOnboardingGuide />
       </AdminDocPageLayout>
     );
   }

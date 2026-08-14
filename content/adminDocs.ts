@@ -1,6 +1,6 @@
 export type AdminDocCategory = "Operations" | "Content" | "Technical" | "Marketing";
 
-export type AdminDocCustomPage = "admin-login-guide";
+export type AdminDocCustomPage = "admin-login-guide" | "lead-onboarding-guide";
 
 export type AdminDocRegistryEntry = {
   slug: string;
@@ -29,7 +29,7 @@ export const adminDocRegistry: AdminDocRegistryEntry[] = [
     description: "Where new enquiries land, what consent is captured, and the steps from lead to portal invite and intake.",
     category: "Operations",
     order: 8,
-    sourcePath: "docs/LEAD_TO_CLIENT_ONBOARDING_FLOW.md",
+    customPage: "lead-onboarding-guide",
   },
   {
     slug: "lead-triage-playbook",

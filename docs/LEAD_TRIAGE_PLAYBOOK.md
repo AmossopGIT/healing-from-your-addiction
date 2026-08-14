@@ -4,7 +4,7 @@
 
 Provide consistent, clinically safe first responses and follow-up handling for all HFYA enquiries.
 
-For the full lead → invite → portal intake walkthrough (screens, channels, consent, checklist), see `docs/LEAD_TO_CLIENT_ONBOARDING_FLOW.md` (Admin Docs → Lead to client onboarding flow).
+For the full lead → invite → portal intake walkthrough (screens, channels, consent, checklist, Download PDF), open Admin Docs → Lead to client onboarding flow (`/admin/docs/lead-to-client-onboarding-flow/`). Repo pointer: `docs/LEAD_TO_CLIENT_ONBOARDING_FLOW.md`.
 
 ## Intake signals to review first
 

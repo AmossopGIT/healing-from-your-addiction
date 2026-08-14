@@ -10,4 +10,8 @@ export type AdminDocPdfPayload =
   | {
       kind: "admin-login-guide";
       slug: string;
+    }
+  | {
+      kind: "lead-onboarding-guide";
+      slug: string;
     };
