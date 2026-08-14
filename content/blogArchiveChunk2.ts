@@ -275,7 +275,7 @@ export const blogPostsChunk2: BlogPost[] = [
     "slug": "signs-of-substance-addictions",
     "title": "Signs of Substance Addictions",
     "description":
-      "Learn the core signs of substance addiction and physical dependence—including tolerance, withdrawal, and when to seek medically appropriate help.",
+      "Learn the signs of substance addiction, physical dependence, tolerance, cravings and withdrawal, plus when medical support is needed.",
     "excerpt": "Physical dependence means your body has adapted to a substance and now needs it to function normally. When the substance is reduced or stopped, withdrawal symptoms appear.",
     "h1": "Signs of Substance Addictions",
     "primaryKeyword": "signs of substance addictions",
@@ -283,7 +283,10 @@ export const blogPostsChunk2: BlogPost[] = [
       "substance addiction withdrawal signs",
       "physical dependence symptoms",
       "alcohol and nicotine addiction signs",
-      "when to seek addiction help"
+      "when to seek addiction help",
+      "substance dependence vs addiction",
+      "alcohol withdrawal safety",
+      "benzodiazepine withdrawal warning"
     ],
     "categorySlug": "addiction-recovery",
     "tagSlugs": [
@@ -297,6 +300,7 @@ export const blogPostsChunk2: BlogPost[] = [
     "sections": [
       {
         "h2": "Overview",
+        "artId": "blog-substance-addictions-overview",
         "paragraphs": [
           "Physical dependence means your body has adapted to a substance and now needs it to function normally. When the substance is reduced or stopped, withdrawal symptoms appear.",
           "While each substance has unique effects, the core signs of dependence are similar across all of them."
@@ -306,6 +310,7 @@ export const blogPostsChunk2: BlogPost[] = [
       },
       {
         "h2": "Core Signs of Physical Dependence (All Substances)",
+        "artId": "blog-substance-addictions-dependence-signs",
         "paragraphs": [
           "Severity depends on the substance (some can be life-threatening)"
         ],
@@ -351,6 +356,7 @@ export const blogPostsChunk2: BlogPost[] = [
       },
       {
         "h2": "Alcohol addiction (Alcohol Use Disorder)",
+        "artId": "blog-substance-addictions-alcohol-withdrawal",
         "paragraphs": [
           "One of the most dangerous withdrawals"
         ],
@@ -363,6 +369,7 @@ export const blogPostsChunk2: BlogPost[] = [
       },
       {
         "h2": "Nicotine addiction",
+        "artId": "blog-substance-addictions-nicotine-craving",
         "paragraphs": [
           "Highly addictive, fast reinforcement cycle"
         ],
@@ -376,6 +383,7 @@ export const blogPostsChunk2: BlogPost[] = [
       },
       {
         "h2": "Cannabis dependence",
+        "artId": "blog-substance-addictions-cannabis-dependence",
         "paragraphs": [
           "More psychological than severe physical withdrawal"
         ],
@@ -389,6 +397,7 @@ export const blogPostsChunk2: BlogPost[] = [
       },
       {
         "h2": "Opioid addiction (e.g. Heroin, Morphine)",
+        "artId": "blog-substance-addictions-opioid-withdrawal",
         "paragraphs": [
           "Extremely uncomfortable withdrawal (rarely fatal, but severe)"
         ],
@@ -402,6 +411,7 @@ export const blogPostsChunk2: BlogPost[] = [
       },
       {
         "h2": "Stimulant addiction (e.g. Cocaine, Methamphetamine)",
+        "artId": "blog-substance-addictions-stimulant-crash",
         "paragraphs": [
           "Psychological withdrawal can be intense"
         ],
@@ -414,6 +424,7 @@ export const blogPostsChunk2: BlogPost[] = [
       },
       {
         "h2": "Prescription drug addiction",
+        "artId": "blog-substance-addictions-prescription-safety",
         "paragraphs": [
           "(e.g. Diazepam, sleeping pills)",
           "Must be tapered medically"
@@ -428,6 +439,7 @@ export const blogPostsChunk2: BlogPost[] = [
       },
       {
         "h2": "Inhalant abuse",
+        "artId": "blog-substance-addictions-inhalant-toxicity",
         "paragraphs": [
           "Less classic withdrawal—but high toxicity risk"
         ],
@@ -441,6 +453,7 @@ export const blogPostsChunk2: BlogPost[] = [
       },
       {
         "h2": "Critical safety note",
+        "artId": "blog-substance-addictions-safety-support",
         "paragraphs": [
           "Some withdrawals can be dangerous or life-threatening:",
           "These should never be stopped abruptly without medical supervision"
