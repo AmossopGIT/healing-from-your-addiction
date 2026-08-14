@@ -28,11 +28,21 @@ These assets are approved for both initial Search campaigns and can be reused fo
 
 ## Sitelinks
 
-1. **About Gerald Crawford**  
+1. **Gambling Addiction Help**  
+   `https://healingfromyouraddiction.co.za/addictions/gambling-addiction-help/`
+2. **About Gerald Crawford**  
    `https://healingfromyouraddiction.co.za/about-the-therapist/`
-2. **Addiction Programs**  
+3. **Addiction Programs**  
    `https://healingfromyouraddiction.co.za/addiction-healing-programs/`
-3. **FAQs**  
+4. **FAQs**  
    `https://healingfromyouraddiction.co.za/faqs/`
-4. **Contact Gerald**  
+5. **Contact Gerald**  
    `https://healingfromyouraddiction.co.za/contact/`
+
+## Gambling campaign final URL
+
+Both gambling Search campaigns must use:
+
+`https://healingfromyouraddiction.co.za/addictions/gambling-addiction-help/`
+
+Do not use the homepage. The legacy path `/gambling-addiction-gambling-disorder-healing-program/` redirects to the canonical programme page and should not be set as the ad final URL.

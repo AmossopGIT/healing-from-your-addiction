@@ -4,6 +4,7 @@ import Link from "next/link";
 import type { BlogSection } from "@/content/blog";
 import { blogCategories, blogCategoryBySlug, blogTagBySlug } from "@/content/blog";
 import { ContentArticleBody } from "@/components/ContentArticleBody";
+import { BlogAudioPlayer } from "@/components/BlogAudioPlayer";
 import { ArticleInlineContent } from "@/lib/cms/inlineMarkdown";
 
 type CmsBlogPreviewProps = {
@@ -79,7 +80,11 @@ export function CmsBlogPreview({
             <div className="cms-blog-preview-hero cms-blog-preview-hero-placeholder">Hero image preview</div>
           )}
 
-          <ContentArticleBody sections={previewSections} />
+          {(() => {
+            const audio = previewSections.find((section) => section.audio)?.audio;
+            return audio ? <BlogAudioPlayer title={audio.title} src={audio.src} description={audio.description} /> : null;
+          })()}
+          <ContentArticleBody sections={previewSections} showAudio={false} />
 
           {tagSlugs.length ? (
             <div className="blog-tag-list">

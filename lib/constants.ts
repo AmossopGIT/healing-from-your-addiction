@@ -8,7 +8,9 @@ export const siteConfig = {
     "Confidential hypnotherapy and EFT-based support for addiction patterns, cravings, gambling addiction, food addiction and emotional triggers in South Africa.",
   email: process.env.NEXT_PUBLIC_CONTACT_EMAIL || "start@healingfromyouraddiction.co.za",
   phone: process.env.NEXT_PUBLIC_CONTACT_PHONE || "087 379 7668",
-  whatsappNumber: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "",
+  // Keep a working production fallback so WhatsApp CTAs do not silently
+  // degrade to the contact page when the public env var is not configured.
+  whatsappNumber: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "0720390184",
   locale: "en_ZA",
 };
 
@@ -56,11 +58,12 @@ export function absoluteUrl(path = "/") {
 }
 
 export function whatsappHref(message = "Hello Gerald, I would like to make a confidential enquiry about addiction support.") {
-  if (!siteConfig.whatsappNumber) {
+  const normalized = normalizeSouthAfricanPhone(siteConfig.whatsappNumber);
+  if (!normalized) {
     return withBasePath("/contact/#enquiry");
   }
 
-  return `https://wa.me/${siteConfig.whatsappNumber}?text=${encodeURIComponent(message)}`;
+  return `https://wa.me/${normalized.replace(/^\+/, "")}?text=${encodeURIComponent(message)}`;
 }
 
 export function emailHref(subject = "Confidential addiction support enquiry") {

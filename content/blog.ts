@@ -20,6 +20,18 @@ export type BlogSectionVideo = {
   posterSrc?: string;
 };
 
+export type BlogSectionImage = {
+  src: string;
+  alt: string;
+  caption?: string;
+};
+
+export type BlogSectionAudio = {
+  title: string;
+  src: string;
+  description?: string;
+};
+
 export type BlogSection = {
   h2: string;
   paragraphs: string[];
@@ -29,6 +41,8 @@ export type BlogSection = {
   }>;
   bullets?: string[];
   video?: BlogSectionVideo;
+  image?: BlogSectionImage;
+  audio?: BlogSectionAudio;
   /** Optional inline section artwork from the watercolor gallery. */
   artId?: string;
 };

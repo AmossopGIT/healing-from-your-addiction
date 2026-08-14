@@ -6,6 +6,7 @@ Items for Gerald to complete outside the codebase. Andy handles dev/content in t
 
 - [ ] Pay R2,500 marketing budget (Wednesday) — split Google Ads + social test
 - [ ] **Admin login:** use `healingfromyouraddiction@geraldcrawford.co.za` at `/admin/login/` (see [`docs/DEPLOY_PRODUCTION.md`](DEPLOY_PRODUCTION.md) — Andy runs SQL promote script after Gerald’s auth user exists)
+- [ ] Build two gambling Search campaigns from [`docs/marketing/campaigns/search/gambling-two-campaign-launch.md`](marketing/campaigns/search/gambling-two-campaign-launch.md) (R800 month-one total)
 - [ ] Optimise Google Ads using Search Console data (gambling terms: how to quit gambling, etc.)
 - [ ] Confirm ads land on `/addictions/gambling-addiction-help/` and food landing — not homepage
 - [ ] Send pillar content outline for gambling + food blog categories

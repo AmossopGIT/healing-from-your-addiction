@@ -236,6 +236,7 @@ export function CmsBlogForm({ post, initialError = null }: CmsBlogFormProps) {
         <CmsSectionEditor
           key={sectionsResetKey}
           initialSections={editorInitialSections}
+          slug={slug}
           onSectionsChange={setSections}
           collapsible
           defaultOpen={false}

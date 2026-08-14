@@ -5,19 +5,30 @@ import { consultationStatusLabels, isConsultationCompleteStatus } from "@/lib/co
 import { formatDashboardDate } from "@/lib/dashboard/constants";
 import { getAdminClientBundle, getClientConsultation, getClientIntakeSubmission, getClientReadinessAssessment } from "@/lib/dashboard/queries";
 import { getClientEngagementSummary } from "@/lib/portal/getClientEngagementSummary";
+import { updateClientOperations } from "@/lib/dashboard/adminActions";
 import { createMetadata } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
 
-type PageProps = { params: Promise<{ id: string }> };
+type PageProps = { params: Promise<{ id: string }>; searchParams: Promise<{ error?: string; saved?: string }> };
+
+const paymentStatusLabels = {
+  awaiting_quote: "Awaiting quote",
+  invoice_sent: "Invoice sent",
+  paid: "Paid",
+  payment_plan: "Payment plan",
+  on_hold: "On hold",
+  not_applicable: "Not applicable",
+} as const;
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { id } = await params;
   return createMetadata({ title: "Client | Admin", description: "Client profile.", path: `/admin/clients/${id}/`, noIndex: true });
 }
 
-export default async function AdminClientDetailPage({ params }: PageProps) {
+export default async function AdminClientDetailPage({ params, searchParams }: PageProps) {
   const { id } = await params;
+  const { error, saved } = await searchParams;
   const bundle = await getAdminClientBundle(id);
   if (!bundle) notFound();
 
@@ -72,6 +83,8 @@ export default async function AdminClientDetailPage({ params }: PageProps) {
       </div>
       <section className="dashboard-panel">
         <h2>Details</h2>
+        {saved === "operations" ? <p className="dashboard-inline-note dashboard-success-note">Operations updated.</p> : null}
+        {error ? <p className="dashboard-inline-note dashboard-error-note">Could not save that client update.</p> : null}
         <dl className="dashboard-dl">
           <div>
             <dt>Phone</dt>
@@ -134,6 +147,20 @@ export default async function AdminClientDetailPage({ params }: PageProps) {
               )}
             </dd>
           </div>
+          <div>
+            <dt>Invitation</dt>
+            <dd>
+              {clientProfile.invitation_status === "accepted"
+                ? `Accepted${clientProfile.invitation_accepted_at ? ` · ${formatDashboardDate(clientProfile.invitation_accepted_at)}` : ""}`
+                : clientProfile.invitation_status === "expired"
+                  ? "Expired"
+                  : `Pending${clientProfile.invited_at ? ` · sent ${formatDashboardDate(clientProfile.invited_at)}` : ""}`}
+            </dd>
+          </div>
+          <div>
+            <dt>Payment</dt>
+            <dd>{paymentStatusLabels[clientProfile.payment_status] ?? "Awaiting quote"}</dd>
+          </div>
         </dl>
         {readinessAssessment ? (
           <p className="dashboard-inline-note">
@@ -153,6 +180,32 @@ export default async function AdminClientDetailPage({ params }: PageProps) {
             <Link href={`/admin/leads/${clientProfile.lead_id}/`}>View originating lead</Link>
           </p>
         ) : null}
+      </section>
+      <section className="dashboard-panel">
+        <h2>Operational checklist</h2>
+        <ul className="dashboard-checklist">
+          <li className={clientProfile.invitation_status === "accepted" ? "is-complete" : ""}>
+            Portal invitation accepted
+          </li>
+          <li className={intakeSubmission?.completed_at ? "is-complete" : ""}>Intake completed</li>
+          <li className={readinessAssessment?.completed_at ? "is-complete" : ""}>Readiness assessment completed</li>
+          <li className={enrollment ? "is-complete" : ""}>Programme assigned</li>
+          <li className={consultation && isConsultationCompleteStatus(consultation.status) ? "is-complete" : ""}>
+            Consultation completed
+          </li>
+        </ul>
+        <form action={updateClientOperations} className="dashboard-form">
+          <input type="hidden" name="clientProfileId" value={id} />
+          <label className="form-field">
+            <span>Payment status</span>
+            <select name="paymentStatus" defaultValue={clientProfile.payment_status ?? "awaiting_quote"}>
+              {Object.entries(paymentStatusLabels).map(([value, label]) => (
+                <option key={value} value={value}>{label}</option>
+              ))}
+            </select>
+          </label>
+          <button type="submit" className="button button-secondary">Save operations</button>
+        </form>
       </section>
       <section className="dashboard-panel">
         <h2>Portal engagement</h2>

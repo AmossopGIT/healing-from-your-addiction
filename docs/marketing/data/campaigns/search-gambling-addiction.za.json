@@ -1,16 +1,22 @@
 {
   "meta": {
     "id": "search-gambling-addiction-za",
-    "version": "1.0.0",
-    "status": "ready_for_build",
+    "version": "1.1.0",
+    "status": "archived",
     "owner": "Healing From Your Addiction",
     "region": "ZA",
     "channel": "search",
     "campaignSubtype": "standard",
-    "lastUpdated": "2026-05-13",
+    "lastUpdated": "2026-08-14",
+    "archivedReason": "Replaced by two-campaign R800 month-one test: search-stop-gambling-za and search-gambling-treatment-za.",
+    "replacedBy": [
+      "docs/marketing/data/campaigns/search-stop-gambling.za.json",
+      "docs/marketing/data/campaigns/search-gambling-treatment.za.json"
+    ],
     "sourceOfTruth": {
       "campaignBriefPath": "docs/marketing/campaigns/search/gambling-addiction.md",
-      "guardrailsPath": "docs/marketing/governance/messaging-guardrails.md"
+      "guardrailsPath": "docs/marketing/governance/messaging-guardrails.md",
+      "launchPlanPath": "docs/marketing/campaigns/search/gambling-two-campaign-launch.md"
     }
   },
   "campaign": {
@@ -41,7 +47,8 @@
     }
   },
   "landingPage": {
-    "url": "https://healingfromyouraddiction.co.za/gambling-addiction-gambling-disorder-healing-program/",
+    "url": "https://healingfromyouraddiction.co.za/addictions/gambling-addiction-help/",
+    "legacyRedirectUrl": "https://healingfromyouraddiction.co.za/gambling-addiction-gambling-disorder-healing-program/",
     "messageMatchSummary": "8-session support programme for gambling urges, betting habits, triggers, and relapse prevention.",
     "offerPositioning": "Hypnotherapy-led behavioural support programme.",
     "complianceNotes": [
@@ -49,204 +56,7 @@
       "Use support and behaviour-change framing."
     ]
   },
-  "adGroups": [
-    {
-      "name": "Stop Gambling Help",
-      "intent": "User is actively asking how to stop gambling.",
-      "launchPriority": "high",
-      "keywords": [
-        { "text": "how to stop gambling", "matchType": "phrase" },
-        { "text": "how do i stop gambling", "matchType": "phrase" },
-        { "text": "how to quit gambling", "matchType": "phrase" },
-        { "text": "stop gambling help", "matchType": "phrase" },
-        { "text": "help me stop gambling", "matchType": "phrase" },
-        { "text": "quit gambling", "matchType": "phrase" },
-        { "text": "stop gambling", "matchType": "phrase" },
-        { "text": "how to stop a gambling problem", "matchType": "phrase" },
-        { "text": "how to overcome gambling", "matchType": "phrase" }
-      ],
-      "ads": [
-        {
-          "format": "rsa",
-          "name": "Gambling Main Ad",
-          "isLaunchMain": true,
-          "headlines": [
-            "Stop Gambling Support",
-            "Break The Gambling Loop",
-            "Private Gambling Help",
-            "Stop Chasing Losses",
-            "8-Session Healing Program",
-            "Gambling Urge Support",
-            "Hypnotherapy Support",
-            "Regain Control Today",
-            "Problem Gambling Support",
-            "Change The Pattern",
-            "Confidential Enquiry",
-            "Healing From Your Addiction"
-          ],
-          "descriptions": [
-            "Structured support for gambling urges, triggers, habits and chasing-loss patterns.",
-            "An 8-session hypnotherapy programme focused on awareness, control and relapse prevention.",
-            "Work on the emotional and subconscious loop behind gambling behaviour with guided support.",
-            "Start with a private enquiry and take the first step toward changing the pattern."
-          ],
-          "pinning": {
-            "headline1": "Stop Gambling Support",
-            "headline2": "Break The Gambling Loop",
-            "headline3": "8-Session Healing Program"
-          }
-        }
-      ]
-    },
-    {
-      "name": "Online Gambling and Betting Help",
-      "intent": "User wants to stop online gambling or betting.",
-      "launchPriority": "medium",
-      "keywords": [
-        { "text": "how to stop gambling online", "matchType": "phrase" },
-        { "text": "how do i stop gambling online", "matchType": "phrase" },
-        { "text": "how to stop betting online", "matchType": "phrase" },
-        { "text": "stop betting online", "matchType": "phrase" },
-        { "text": "how to stop betting", "matchType": "phrase" },
-        { "text": "how to quit betting", "matchType": "phrase" },
-        { "text": "stop betting addiction", "matchType": "phrase" },
-        { "text": "how to stop sports betting", "matchType": "phrase" },
-        { "text": "online gambling addiction help", "matchType": "phrase" }
-      ],
-      "ads": [
-        {
-          "format": "rsa",
-          "name": "Online Betting Support Ad",
-          "headlines": [
-            "Stop Online Gambling",
-            "Online Gambling Support",
-            "Stop Betting Support",
-            "Break Betting Habits",
-            "Help With Betting Urges",
-            "Private Gambling Support",
-            "Support For Online Betting",
-            "Regain Control Today",
-            "Stop Chasing Losses",
-            "Gambling Urge Support",
-            "8-Session Healing Program",
-            "Hypnotherapy Support",
-            "Change The Pattern",
-            "Start With One Enquiry",
-            "Healing From Your Addiction"
-          ],
-          "descriptions": [
-            "Support for online gambling, betting urges, chasing losses and repeated betting habits.",
-            "A structured programme focused on gambling triggers, urges, awareness and self-control.",
-            "Work on the emotional loop behind betting patterns with guided hypnotherapy support.",
-            "Private support for people wanting to change gambling and betting behaviour."
-          ],
-          "pinning": {
-            "headline1": null,
-            "headline2": null,
-            "headline3": null
-          }
-        }
-      ]
-    },
-    {
-      "name": "Problem Gambling Support",
-      "intent": "User seeks help for problem or compulsive gambling patterns.",
-      "launchPriority": "medium",
-      "keywords": [
-        { "text": "problem gambling help", "matchType": "phrase" },
-        { "text": "problem gambling support", "matchType": "phrase" },
-        { "text": "gambling problem help", "matchType": "phrase" },
-        { "text": "gambling addiction help", "matchType": "phrase" },
-        { "text": "gambling disorder help", "matchType": "phrase" },
-        { "text": "gambling addiction treatment", "matchType": "phrase" },
-        { "text": "compulsive gambling treatment", "matchType": "phrase" },
-        { "text": "compulsive gambling help", "matchType": "phrase" },
-        { "text": "gamblers counselling", "matchType": "phrase" }
-      ],
-      "ads": [
-        {
-          "format": "rsa",
-          "name": "Problem Gambling Ad",
-          "headlines": [
-            "Problem Gambling Support",
-            "Gambling Addiction Help",
-            "Gambling Disorder Support",
-            "Private Addiction Support",
-            "Support For Gambling Urges",
-            "Break The Gambling Pattern",
-            "Hypnotherapy Support",
-            "8-Session Healing Program",
-            "Confidential Enquiry",
-            "Regain Control Today",
-            "Understand The Urge",
-            "Change Addictive Patterns",
-            "Support In South Africa",
-            "Start With One Enquiry",
-            "Healing From Your Addiction"
-          ],
-          "descriptions": [
-            "Private support for gambling patterns, cravings, emotional triggers and compulsive behaviour.",
-            "Learn how hypnotherapy may support awareness, urge control and healthier decisions.",
-            "A structured 8-session programme focused on control, triggers and relapse prevention.",
-            "Start with a confidential enquiry and take the first step toward support."
-          ],
-          "pinning": {
-            "headline1": null,
-            "headline2": null,
-            "headline3": null
-          }
-        }
-      ]
-    },
-    {
-      "name": "Gambling Hypnotherapy",
-      "intent": "User specifically wants hypnotherapy support for gambling patterns.",
-      "launchPriority": "medium",
-      "keywords": [
-        { "text": "hypnotherapy for gambling addiction", "matchType": "phrase" },
-        { "text": "hypnosis for gambling addiction", "matchType": "phrase" },
-        { "text": "hypnotherapy to stop gambling", "matchType": "phrase" },
-        { "text": "hypnosis to stop gambling", "matchType": "phrase" },
-        { "text": "gambling addiction hypnotherapy", "matchType": "phrase" },
-        { "text": "hypnotherapy for gambling", "matchType": "phrase" },
-        { "text": "hypnosis for gambling", "matchType": "phrase" }
-      ],
-      "ads": [
-        {
-          "format": "rsa",
-          "name": "Gambling Hypnotherapy Ad",
-          "headlines": [
-            "Gambling Hypnotherapy",
-            "Hypnotherapy For Gambling",
-            "Support For Gambling Urges",
-            "Break Gambling Patterns",
-            "Subconscious Pattern Support",
-            "Private Hypnotherapy Support",
-            "8-Session Healing Program",
-            "Change The Gambling Loop",
-            "Support For Cravings",
-            "Regain Control Today",
-            "Confidential Enquiry",
-            "Healing From Your Addiction",
-            "South African Therapist",
-            "Start With One Enquiry",
-            "Gambling Support Online"
-          ],
-          "descriptions": [
-            "Hypnotherapy support focused on gambling urges, triggers, habit loops and emotional escape.",
-            "Work with the subconscious patterns behind gambling behaviour through guided support.",
-            "Structured 8-session support for awareness, control and relapse-prevention planning.",
-            "Private enquiry available for people seeking support with gambling patterns."
-          ],
-          "pinning": {
-            "headline1": null,
-            "headline2": null,
-            "headline3": null
-          }
-        }
-      ]
-    }
-  ],
+  "adGroups": [],
   "assetsRefs": {
     "doc": "docs/marketing/assets/shared-assets.md",
     "data": "docs/marketing/data/assets/shared.json"
@@ -270,7 +80,8 @@
       "phone_click",
       "whatsapp_click"
     ],
-    "primaryConversion": "form_submit"
+    "primaryConversion": "form_submit",
+    "thankYouPath": "/thank-you/"
   },
   "results": {
     "reportingCadence": "monthly",

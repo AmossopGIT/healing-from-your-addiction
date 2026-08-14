@@ -20,6 +20,8 @@ const inviteErrorMessages: Record<string, string> = {
   "invalid-name": "Please enter a valid full name.",
   "invalid-programme": "Please choose a valid programme focus.",
   "invalid-contact-method": "Please choose a valid preferred contact method.",
+  "lead-not-found": "This lead could not be found. Return to the leads list and try again.",
+  "already-enrolled": "This lead already has a client portal profile.",
   "supabase-not-configured": "Supabase is not configured for client invitations yet.",
   "invite-failed": "The invitation could not be sent. Please try again.",
 };
@@ -39,7 +41,7 @@ export default async function InviteClientPage({ searchParams }: PageProps) {
       <section className="dashboard-page-header">
         <p className="eyebrow">Client onboarding</p>
         <h1>Invite client</h1>
-        <p>Send a secure email invitation so the client can set a password and access their portal.</p>
+        <p>Accept this qualified lead and create secure portal access. Programme assignment happens after the invitation.</p>
       </section>
       {error ? <p className="form-error">{inviteErrorMessages[error] ?? decodeURIComponent(error)}</p> : null}
       {lead ? (

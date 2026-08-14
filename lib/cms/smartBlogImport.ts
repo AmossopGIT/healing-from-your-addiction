@@ -1,4 +1,5 @@
 import { bodyTextToSections } from "@/lib/cms/bodyToSections";
+import { blogCategories, blogTags } from "@/content/blog";
 import { cmsFieldMaxLengths } from "@/lib/cms/formValidation";
 import { slugifyTitle } from "@/lib/cms/slugify";
 import { parseBlogTemplateDocument, type BlogTemplateImportData } from "@/lib/cms/templateImport";
@@ -88,6 +89,61 @@ function firstParagraphFromBody(bodyText: string): string {
   return blocks[0] ?? "";
 }
 
+function searchableText(title: string, bodyText: string): string {
+  return stripMarkdownInline(`${title} ${bodyText}`)
+    .toLowerCase()
+    .replace(/[^\p{L}\p{N}\s-]/gu, " ");
+}
+
+function inferPlainArticleSeo(title: string, bodyText: string): {
+  primaryKeyword: string;
+  secondaryKeywords: string[];
+  categorySlug: string;
+  tagSlugs: string[];
+} {
+  const text = searchableText(title, bodyText);
+  const scoredCategories = blogCategories
+    .map((category) => {
+      const terms = [category.title, category.slug.replace(/-/g, " "), category.primaryKeyword]
+        .map((term) => term.toLowerCase());
+      const score = terms.reduce((total, term) => {
+        if (text.includes(term)) return total + (term.includes(" ") ? 3 : 1);
+        return total;
+      }, 0);
+      return { category, score };
+    })
+    .sort((a, b) => b.score - a.score);
+  const bestCategory = scoredCategories[0]?.score ? scoredCategories[0].category : null;
+
+  const matchedTags = blogTags
+    .filter((tag) => text.includes(tag.label.toLowerCase()) || text.includes(tag.slug.replace(/-/g, " ")))
+    .map((tag) => tag.slug)
+    .slice(0, 4);
+  if (bestCategory && blogTags.some((tag) => tag.slug === bestCategory.slug) && !matchedTags.includes(bestCategory.slug)) {
+    matchedTags.unshift(bestCategory.slug);
+  }
+
+  return {
+    primaryKeyword: bestCategory?.primaryKeyword || title.toLowerCase(),
+    secondaryKeywords: matchedTags
+      .map((slug) => blogTags.find((tag) => tag.slug === slug)?.label.toLowerCase() ?? slug.replace(/-/g, " ")),
+    categorySlug: bestCategory?.slug ?? "",
+    tagSlugs: matchedTags,
+  };
+}
+
+function buildPlainArticleDescription(firstParagraph: string, bodyText: string): string {
+  const paragraphs = bodyText
+    .split(/\n\s*\n/)
+    .map((paragraph) => stripMarkdownInline(paragraph))
+    .filter(Boolean);
+  const combined = [firstParagraph, ...paragraphs.filter((paragraph) => paragraph !== firstParagraph)]
+    .join(" ")
+    .replace(/\s+/g, " ")
+    .trim();
+  return combined.slice(0, cmsFieldMaxLengths.description);
+}
+
 function sectionsHaveCopy(sections: ReturnType<typeof bodyTextToSections>): boolean {
   return sections.some(
     (section) =>
@@ -123,7 +179,8 @@ function parsePlainArticle(source: string): { data: BlogTemplateImportData | nul
     "";
 
   const excerpt = firstPara.slice(0, cmsFieldMaxLengths.excerpt);
-  const description = firstPara.slice(0, cmsFieldMaxLengths.description);
+  const description = buildPlainArticleDescription(firstPara, articleBody);
+  const inferredSeo = inferPlainArticleSeo(title, articleBody);
 
   const data: BlogTemplateImportData = {
     title: title.slice(0, cmsFieldMaxLengths.title),
@@ -131,10 +188,10 @@ function parsePlainArticle(source: string): { data: BlogTemplateImportData | nul
     description,
     excerpt,
     h1: title.slice(0, cmsFieldMaxLengths.h1),
-    primaryKeyword: "",
-    secondaryKeywords: [],
-    categorySlug: "",
-    tagSlugs: [],
+    primaryKeyword: inferredSeo.primaryKeyword,
+    secondaryKeywords: inferredSeo.secondaryKeywords,
+    categorySlug: inferredSeo.categorySlug,
+    tagSlugs: inferredSeo.tagSlugs,
     searchIntent: DEFAULT_SEARCH_INTENT,
     conversionGoal: DEFAULT_CONVERSION_GOAL,
     publishedAt: new Date().toISOString().slice(0, 10),

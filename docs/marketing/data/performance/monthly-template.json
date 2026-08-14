@@ -1,10 +1,10 @@
 {
   "meta": {
     "id": "monthly-performance-template",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "status": "template",
     "owner": "Healing From Your Addiction",
-    "lastUpdated": "2026-05-13"
+    "lastUpdated": "2026-08-14"
   },
   "reportingPeriod": {
     "month": "YYYY-MM",
@@ -20,12 +20,13 @@
     "cost": 0,
     "conversions": 0,
     "conversionRate": 0,
-    "cpa": 0
+    "cpa": 0,
+    "qualifiedLeads": 0
   },
   "campaignResults": [
     {
-      "campaignId": "search-gambling-addiction-za",
-      "campaignName": "HFYA | Search | Gambling Addiction | ZA",
+      "campaignId": "search-stop-gambling-za",
+      "campaignName": "HFYA | Search | Stop Gambling | ZA",
       "channel": "search",
       "status": "active",
       "metrics": {
@@ -36,7 +37,29 @@
         "cost": 0,
         "conversions": 0,
         "conversionRate": 0,
-        "cpa": 0
+        "cpa": 0,
+        "qualifiedLeads": 0
+      },
+      "adGroupBreakdown": [],
+      "topSearchTerms": [],
+      "negativeKeywordAdds": [],
+      "notes": []
+    },
+    {
+      "campaignId": "search-gambling-treatment-za",
+      "campaignName": "HFYA | Search | Gambling Treatment | ZA",
+      "channel": "search",
+      "status": "active",
+      "metrics": {
+        "impressions": 0,
+        "clicks": 0,
+        "ctr": 0,
+        "avgCpc": 0,
+        "cost": 0,
+        "conversions": 0,
+        "conversionRate": 0,
+        "cpa": 0,
+        "qualifiedLeads": 0
       },
       "adGroupBreakdown": [],
       "topSearchTerms": [],
@@ -47,7 +70,7 @@
   "changeLog": [
     {
       "date": "YYYY-MM-DD",
-      "campaignId": "search-gambling-addiction-za",
+      "campaignId": "search-stop-gambling-za",
       "changeType": "bidding|budget|keyword|negative|adcopy|asset|targeting",
       "summary": "Describe the change",
       "expectedImpact": "Describe expected result"

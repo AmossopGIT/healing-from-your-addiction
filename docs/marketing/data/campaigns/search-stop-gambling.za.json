@@ -1,0 +1,193 @@
+{
+  "meta": {
+    "id": "search-stop-gambling-za",
+    "version": "1.1.0",
+    "status": "ready_for_build",
+    "owner": "Healing From Your Addiction",
+    "region": "ZA",
+    "channel": "search",
+    "campaignSubtype": "standard",
+    "lastUpdated": "2026-08-14",
+    "changeNotes": "Tightened Ad 1 to stop-intent only; canonical final URL; stronger Description 1; deferred mixed-intent keywords.",
+    "family": "gambling-two-campaign-r800-test",
+    "sourceOfTruth": {
+      "campaignBriefPath": "docs/marketing/campaigns/search/stop-gambling.md",
+      "guardrailsPath": "docs/marketing/governance/messaging-guardrails.md",
+      "launchPlanPath": "docs/marketing/campaigns/search/gambling-two-campaign-launch.md"
+    }
+  },
+  "campaign": {
+    "name": "HFYA | Search | Stop Gambling | ZA",
+    "topic": "Stop Gambling",
+    "objective": "leads",
+    "type": "search",
+    "settings": {
+      "location": [
+        "Gauteng, South Africa",
+        "Western Cape, South Africa"
+      ],
+      "locationIncludeMode": "presence",
+      "language": [
+        "English"
+      ],
+      "network": {
+        "googleSearch": true,
+        "searchPartners": false,
+        "displayExpansion": false,
+        "aiMaxFinalUrlExpansion": false,
+        "aiMaxTextCustomization": false
+      },
+      "bidding": {
+        "strategy": "Maximize Clicks",
+        "targetCpa": null
+      },
+      "dailyBudgetZAR": {
+        "min": 13,
+        "max": 14,
+        "monthOneTotalZAR": 400
+      }
+    }
+  },
+  "landingPage": {
+    "url": "https://healingfromyouraddiction.co.za/addictions/gambling-addiction-help/",
+    "legacyRedirectUrl": "https://healingfromyouraddiction.co.za/gambling-addiction-gambling-disorder-healing-program/",
+    "messageMatchSummary": "8-session support programme for stopping gambling urges, triggers, chasing-loss patterns, and relapse prevention.",
+    "offerPositioning": "Hypnotherapy-led behavioural support programme.",
+    "complianceNotes": [
+      "Do not imply guaranteed cure or guaranteed results.",
+      "Use support and behaviour-change framing."
+    ]
+  },
+  "adGroups": [
+    {
+      "name": "Stop Gambling Help",
+      "intent": "User is actively asking how to stop gambling.",
+      "launchPriority": "high",
+      "keywords": [
+        { "text": "how to stop gambling", "matchType": "phrase" },
+        { "text": "how do i stop gambling", "matchType": "phrase" },
+        { "text": "how to quit gambling", "matchType": "phrase" },
+        { "text": "stop gambling help", "matchType": "phrase" },
+        { "text": "help me stop gambling", "matchType": "phrase" },
+        { "text": "quit gambling", "matchType": "phrase" },
+        { "text": "stop gambling", "matchType": "phrase" },
+        { "text": "how to stop a gambling problem", "matchType": "phrase" }
+      ],
+      "deferredKeywords": {
+        "onlineBetting": [
+          "how to stop gambling online",
+          "how to stop betting"
+        ],
+        "treatment": [
+          "problem gambling help",
+          "gambling addiction help",
+          "compulsive gambling help",
+          "gambling disorder help"
+        ],
+        "hypnotherapy": [
+          "hypnotherapy for gambling addiction",
+          "hypnotherapy to stop gambling"
+        ]
+      },
+      "ads": [
+        {
+          "format": "rsa",
+          "name": "Stop Gambling RSA",
+          "isLaunchMain": true,
+          "finalUrl": "https://healingfromyouraddiction.co.za/addictions/gambling-addiction-help/",
+          "headlines": [
+            "Stop Gambling Support",
+            "Break The Gambling Loop",
+            "8-Session Healing Program",
+            "Private Gambling Help",
+            "Stop Chasing Losses",
+            "Gambling Urge Support",
+            "Hypnotherapy Support",
+            "Help Me Stop Gambling",
+            "Regain Control Today",
+            "Change The Pattern",
+            "Confidential Enquiry",
+            "Healing From Your Addiction"
+          ],
+          "descriptions": [
+            "Private support to stop gambling urges, triggers, chasing losses and habit loops.",
+            "An 8-session hypnotherapy programme focused on awareness, control and relapse prevention.",
+            "Work on the emotional and subconscious loop behind gambling behaviour with guided support.",
+            "Start with a private enquiry and take the first step toward changing the pattern."
+          ],
+          "pinning": {
+            "headline1": "Stop Gambling Support",
+            "headline2": "Break The Gambling Loop",
+            "headline3": "8-Session Healing Program"
+          },
+          "removedHeadlines": [
+            "Problem Gambling Support",
+            "Support For Betting Urges",
+            "Start With One Enquiry"
+          ]
+        }
+      ]
+    }
+  ],
+  "assetsRefs": {
+    "doc": "docs/marketing/assets/shared-assets.md",
+    "data": "docs/marketing/data/assets/shared.json"
+  },
+  "negatives": {
+    "sharedListRefs": [
+      "docs/marketing/data/negatives/shared.json"
+    ],
+    "campaignSpecificRef": "docs/marketing/data/negatives/gambling.json"
+  },
+  "tracking": {
+    "utmTemplate": {
+      "source": "google",
+      "medium": "cpc",
+      "campaign": "{campaignid}",
+      "content": "{adgroupid}",
+      "term": "{keyword}"
+    },
+    "finalUrlSuffix": "utm_source=google&utm_medium=cpc&utm_campaign={campaignid}&utm_content={adgroupid}&utm_term={keyword}",
+    "conversionEvents": [
+      "form_submit",
+      "phone_click",
+      "whatsapp_click"
+    ],
+    "primaryConversion": "form_submit",
+    "thankYouPath": "/thank-you/"
+  },
+  "budgetIncreaseRules": {
+    "doNotIncreaseOnClicksAlone": true,
+    "reviewAfterDays": 30,
+    "increasePercentIfQualifiedLeads": {
+      "min": 20,
+      "max": 30
+    },
+    "holdOrReduceIfNoQualifiedLeads": true,
+    "reallocateTowardBetterQualifiedLeadRate": true
+  },
+  "results": {
+    "reportingCadence": "weekly-then-monthly",
+    "snapshots": []
+  },
+  "channelExtensions": {
+    "search": {
+      "rsaPolicy": {
+        "maxHeadlines": 15,
+        "maxDescriptions": 4
+      }
+    },
+    "pmax": {
+      "assetGroups": [],
+      "audienceSignals": [],
+      "listingGroupFilters": [],
+      "merchantCenterFeedRef": null
+    },
+    "shopping": {
+      "feedRef": null,
+      "listingGroups": [],
+      "priority": null,
+      "productFilters": []
+    }
+  }
+}

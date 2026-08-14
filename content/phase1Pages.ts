@@ -171,7 +171,7 @@ export const phase1Pages: Record<string, Phase1Page> = {
       { label: seoPages.food.title.replace(" | Healing From Your Addiction", ""), href: seoPages.food.path, artSlug: "food-binge-eating" },
       { label: seoPages.nicotine.title.replace(" | Healing From Your Addiction", ""), href: seoPages.nicotine.path, artSlug: "nicotine" },
       { label: seoPages.alcohol.title.replace(" | Healing From Your Addiction", ""), href: seoPages.alcohol.path, artSlug: "alcohol" },
-      { label: seoPages.urgeSurfing.title.replace(" | Healing From Your Addiction", ""), href: seoPages.urgeSurfing.path, linkArtId: "pattern-craving" },
+      { label: seoPages.eftTappingForCravings.title.replace(" | Healing From Your Addiction", ""), href: seoPages.eftTappingForCravings.path, linkArtId: "approach-emotional" },
     ],
     showLeadForm: true,
   },
@@ -183,8 +183,8 @@ export const phase1Pages: Record<string, Phase1Page> = {
       description:
         "EFT-informed support may help calm emotional charge around cravings, urges and old trigger states before deeper pattern work.",
       primaryCta: "Ask About EFT Support",
-      secondaryCta: "Read About Urge Surfing",
-      secondaryHref: seoPages.urgeSurfing.path,
+      secondaryCta: "Explore Addiction Support",
+      secondaryHref: seoPages.addictions.path,
     },
     artId: "approach-emotional",
     sections: [
@@ -200,36 +200,6 @@ export const phase1Pages: Record<string, Phase1Page> = {
       },
     ],
     links: [seoPages.gamblingUrges, seoPages.sugarCravingsHelp, seoPages.food, seoPages.gambling].map((page) => ({
-      label: page.title.replace(" | Healing From Your Addiction", ""),
-      href: page.path,
-    })),
-    showLeadForm: true,
-  },
-  urgeSurfing: {
-    seo: seoPages.urgeSurfing,
-    hero: {
-      eyebrow: "Cravings hub",
-      title: "Urge surfing: create a pause before acting",
-      description:
-        "Urge surfing is the practice of noticing a craving as it rises, peaks and falls instead of treating it as a command that must be obeyed.",
-      primaryCta: "Get Help With Cravings",
-      secondaryCta: "Explore Addiction Support",
-      secondaryHref: seoPages.addictions.path,
-    },
-    artId: "pattern-craving",
-    sections: [
-      {
-        title: "Cravings rise and fall",
-        body:
-          "A craving can feel urgent, but it usually changes in intensity. Learning to pause, track the trigger and ride the wave can help create space before the old behaviour happens.",
-      },
-      {
-        title: "Where support can help",
-        body:
-          "Support can help identify high-risk cues, build a repeatable pause routine and reinforce new responses across gambling, food and other addiction patterns.",
-      },
-    ],
-    links: [seoPages.gamblingUrges, seoPages.sugarCravingsHelp, seoPages.hypnotherapyForAddiction, seoPages.eftTappingForCravings].map((page) => ({
       label: page.title.replace(" | Healing From Your Addiction", ""),
       href: page.path,
     })),
@@ -304,8 +274,8 @@ export const phase1Pages: Record<string, Phase1Page> = {
       description:
         "Betting cravings can feel fast and convincing. Support focuses on noticing the urge state, calming the trigger and choosing a different response.",
       primaryCta: "Get Help With Gambling Urges",
-      secondaryCta: "Read About Urge Surfing",
-      secondaryHref: seoPages.urgeSurfing.path,
+      secondaryCta: "View Gambling Program",
+      secondaryHref: seoPages.gambling.path,
     },
     defaultConcern: "Gambling",
     artId: "pattern-craving",

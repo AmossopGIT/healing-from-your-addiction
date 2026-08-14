@@ -34,7 +34,7 @@ export function SmartBlogUpload({ onImport, hasExistingContent = false }: SmartB
     const kindLabel =
       result.kind === "template"
         ? "Detected full template — filled title, SEO, tags, and body sections."
-        : "Detected article body — filled title, excerpt, and body sections.";
+        : "Detected article body — filled title, SEO suggestions, excerpt, and body sections.";
 
     setError(null);
     setPending(null);
@@ -56,7 +56,8 @@ export function SmartBlogUpload({ onImport, hasExistingContent = false }: SmartB
         <div>
           <p className="cms-smart-upload-title">Smart Upload</p>
           <p className="cms-field-help">
-            Paste a ChatGPT / Docs article, or a labeled writer template. We detect the format and fill the form.
+            Paste a ChatGPT / Docs article, or a labeled writer template. We detect the format and fill the form, including
+            safe SEO suggestions for plain articles.
             Nothing is saved until you click Save draft.
           </p>
         </div>
@@ -119,7 +120,7 @@ export function SmartBlogUpload({ onImport, hasExistingContent = false }: SmartB
                 const kindLabel =
                   pending.kind === "template"
                     ? "Detected full template — filled title, SEO, tags, and body sections."
-                    : "Detected article body — filled title, excerpt, and body sections.";
+                    : "Detected article body — filled title, SEO suggestions, excerpt, and body sections.";
                 setError(null);
                 setStatus(`${kindLabel} Next: pick tags and hero art, then Save draft.`);
                 onImport(pending);

@@ -101,6 +101,8 @@ export async function completePortalOnboarding(formData: FormData) {
       preferred_contact_method: preferredContactMethod,
       emergency_contact: emergencyContact || null,
       onboarding_completed_at: onboardingCompletedAt,
+      invitation_status: "accepted",
+      invitation_accepted_at: onboardingCompletedAt,
     }).eq("id", clientProfile.id);
     if (clientError) {
       redirect("/portal/onboarding/?error=save-failed");
@@ -112,6 +114,8 @@ export async function completePortalOnboarding(formData: FormData) {
       preferred_contact_method: preferredContactMethod,
       emergency_contact: emergencyContact || null,
       onboarding_completed_at: onboardingCompletedAt,
+      invitation_status: "accepted",
+      invitation_accepted_at: onboardingCompletedAt,
     });
     if (clientError) {
       redirect("/portal/onboarding/?error=save-failed");

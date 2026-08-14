@@ -15,7 +15,6 @@ export type SeoPageType =
   | "addiction-hub"
   | "support"
   | "method"
-  | "cravings"
   | "trust"
   | "about"
   | "contact"
@@ -67,14 +66,16 @@ export const seoPages = {
   },
   gambling: {
     path: "/addictions/gambling-addiction-help/",
-    title: "Gambling Addiction Healing Program South Africa | Healing From Your Addiction",
+    title: "Stop Gambling Support South Africa | Gambling Addiction Help",
     description:
-      "Confidential gambling addiction support using hypnotherapy, EFT and behavioural pattern work. Get help for betting urges, chasing losses and gambling triggers.",
-    primaryKeyword: "gambling addiction help South Africa",
+      "Private stop gambling support using hypnotherapy, EFT and behavioural pattern work. Get help with betting urges, chasing losses and gambling triggers.",
+    primaryKeyword: "stop gambling support South Africa",
     secondaryKeywords: [
+      "stop gambling support",
       "stop gambling help",
       "how to stop gambling",
-      "online gambling addiction help",
+      "gambling addiction help South Africa",
+      "gambling addiction help",
       "betting addiction support",
       "chasing losses gambling help",
       "hypnotherapy for gambling addiction",
@@ -87,14 +88,16 @@ export const seoPages = {
   },
   food: {
     path: "/addictions/food-addiction-binge-eating-help/",
-    title: "Food Addiction & Binge Eating Healing Program South Africa | Healing From Your Addiction",
+    title: "Emotional Eating & Binge Eating Support South Africa",
     description:
-      "Support for food addiction, binge eating, emotional eating and cravings through hypnotherapy, EFT and subconscious pattern work.",
-    primaryKeyword: "food addiction and binge eating help South Africa",
+      "Private support for emotional eating, binge eating, stress eating and food cravings through hypnotherapy, EFT and subconscious pattern work.",
+    primaryKeyword: "emotional eating and binge eating support South Africa",
     secondaryKeywords: [
+      "emotional eating support",
+      "emotional eating help",
+      "binge eating support",
       "food addiction help",
       "binge eating help",
-      "emotional eating support",
       "how to stop emotional eating",
       "stress eating help",
       "food craving support",
@@ -497,19 +500,6 @@ export const seoPages = {
     conversionGoal: "Move readers into addiction support pages or enquiry.",
     ogImage: defaultOgImage,
     ogImageAlt: "EFT tapping support for cravings and emotional triggers",
-  },
-  urgeSurfing: {
-    path: "/cravings/urge-surfing/",
-    title: "Urge Surfing for Addiction Cravings | Pause Before Acting",
-    description:
-      "Learn the idea of urge surfing, how cravings rise and fall, and how a pause can support gambling, food and other addiction patterns.",
-    primaryKeyword: "urge surfing",
-    secondaryKeywords: ["how to control cravings", "pause before acting", "addiction cravings", "trigger craving behaviour reward loop"],
-    searchIntent: "Learn a practical craving-control concept before seeking support.",
-    pageType: "cravings",
-    conversionGoal: "Move readers into a relevant addiction or method page.",
-    ogImage: defaultOgImage,
-    ogImageAlt: "Urge surfing support with a craving wave and pause point",
   },
   faqs: {
     path: "/faqs/",

@@ -19,6 +19,11 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       {
+        source: "/cravings/urge-surfing/",
+        destination: "/eft-tapping-for-cravings/",
+        permanent: true,
+      },
+      {
         source: "/about-gerald-crawford/",
         destination: "/about-the-therapist/",
         permanent: true,

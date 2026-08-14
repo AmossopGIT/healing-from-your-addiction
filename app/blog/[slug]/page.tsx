@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ContentArticleBody } from "@/components/ContentArticleBody";
 import { BlogPostViewTracker } from "@/components/BlogPostViewTracker";
+import { BlogAudioPlayer } from "@/components/BlogAudioPlayer";
 import { PageSeoContextScript } from "@/components/PageSeoContextScript";
 import { RelatedBlogPosts } from "@/components/RelatedBlogPosts";
 import { SchemaMarkup } from "@/components/SchemaMarkup";
@@ -128,7 +129,11 @@ export default async function BlogPostPage({ params }: PageProps) {
             ) : null}
           </p>
           {art ? <WatercolorArtwork item={art} className="section-artwork blog-hero-art" priority /> : null}
-          <ContentArticleBody sections={post.sections} sourceSlug={post.slug} />
+          {(() => {
+            const audio = post.sections.find((section) => section.audio)?.audio;
+            return audio ? <BlogAudioPlayer title={audio.title} src={audio.src} description={audio.description} /> : null;
+          })()}
+          <ContentArticleBody sections={post.sections} sourceSlug={post.slug} showAudio={false} />
 
           <div className="blog-tag-list">
             {post.tagSlugs.map((tagSlug) => {

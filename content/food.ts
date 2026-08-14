@@ -4,7 +4,7 @@ import type { LandingPageContent } from "@/content/types";
 
 export const foodContent: LandingPageContent = {
   path: "/addictions/food-addiction-binge-eating-help/",
-  breadcrumbLabel: "Food Addiction and Binge Eating Healing Program",
+  breadcrumbLabel: "Emotional Eating & Binge Eating Support",
   defaultConcern: "Food / binge eating",
   heroArtId: "food-binge-eating",
   seo: {
@@ -12,10 +12,10 @@ export const foodContent: LandingPageContent = {
     description: seoPages.food.description,
   },
   hero: {
-    eyebrow: "Confidential food addiction and binge eating support",
-    title: "Food Addiction and Binge Eating Healing Program",
+    eyebrow: "Confidential emotional eating and binge eating support",
+    title: "Emotional Eating & Binge Eating Support",
     description:
-      "Support for emotional eating, sugar cravings, late-night eating and the feeling of losing control around food, using a calm pattern-focused approach.",
+      "Private support for emotional eating, binge eating, stress eating, food cravings and the feeling of losing control around food, using a calm pattern-focused approach.",
     primaryCta: "Start Your Food Recovery Enquiry",
   },
   painSection: {
@@ -32,9 +32,9 @@ export const foodContent: LandingPageContent = {
     ],
   },
   programme: {
-    title: "A structured 8-session support process over 4 weeks",
+    title: "A structured 8-session food and eating support process",
     body:
-      "The food addiction and binge eating programme is a 4-week, 8-session support process at R12,000. It is designed to support craving awareness, emotional regulation, subconscious pattern work and a healthier relationship with food. The goal is not restriction. The goal is control, balance and rebuilding a healthier relationship with food. It is not a diet plan and it does not replace specialist eating disorder or medical care.",
+      "The food and binge eating programme is a 4-week, 8-session support process at R12,000. It is designed to support emotional eating awareness, food-craving control, emotional regulation, subconscious pattern work and a healthier relationship with food. The goal is not restriction. The goal is control, balance and rebuilding a healthier relationship with food. It is not a diet plan and it does not replace specialist eating disorder or medical care.",
     points: [
       "Separate physical hunger from emotional urge",
       "Work with cravings and trigger foods",
@@ -98,8 +98,8 @@ export const foodContent: LandingPageContent = {
   },
   faqs: foodFaqs,
   finalCta: {
-    title: "Start with a confidential food addiction enquiry",
-    body: "If food, cravings or binge eating patterns feel difficult to control, you can begin with a private enquiry and choose how Gerald should respond.",
+    title: "Start with a confidential emotional eating enquiry",
+    body: "If emotional eating, food cravings or binge eating patterns feel difficult to control, you can begin with a private enquiry and choose how Gerald should respond.",
     button: "Start Your Food Recovery Enquiry",
   },
 };

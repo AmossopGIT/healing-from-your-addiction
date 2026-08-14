@@ -5,6 +5,8 @@ import { dashboardFieldMaxLengths, normalizeMultiline, normalizeSingleLine, sani
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import { logAuditEvent } from "@/lib/supabase/audit";
+import { requireAuthProfile } from "@/lib/supabase/auth";
+import type { ClientProfile } from "@/types/database";
 
 export async function updateLeadStatusForm(formData: FormData) {
   const leadId = sanitizeUuid(String(formData.get("leadId") ?? ""));
@@ -20,6 +22,13 @@ export async function updateLeadStatusForm(formData: FormData) {
   } = await supabase.auth.getUser();
   if (!user) {
     redirect("/admin/login/");
+  }
+
+  if (status === "enrolled") {
+    const { data: lead } = await supabase.from("leads").select("client_id").eq("id", leadId).maybeSingle();
+    if (!lead?.client_id) {
+      redirect(`/admin/leads/${leadId}/?error=invite-required`);
+    }
   }
 
   const { error } = await supabase.from("leads").update({ status }).eq("id", leadId);
@@ -124,4 +133,43 @@ export async function updateLeadFollowUpForm(formData: FormData) {
   });
 
   redirect(`/admin/leads/${leadId}/`);
+}
+
+const paymentStatuses = new Set([
+  "awaiting_quote",
+  "invoice_sent",
+  "paid",
+  "payment_plan",
+  "on_hold",
+  "not_applicable",
+]);
+
+export async function updateClientOperations(formData: FormData) {
+  const clientProfileId = sanitizeUuid(String(formData.get("clientProfileId") ?? ""));
+  const paymentStatus = normalizeSingleLine(String(formData.get("paymentStatus") ?? ""));
+
+  if (!clientProfileId || !paymentStatuses.has(paymentStatus)) {
+    redirect(clientProfileId ? `/admin/clients/${clientProfileId}/?error=invalid-operations` : "/admin/clients/");
+  }
+
+  const admin = await requireAuthProfile("admin");
+  const supabase = await createClient();
+  const { error } = await supabase
+    .from("client_profiles")
+    .update({ payment_status: paymentStatus as ClientProfile["payment_status"] })
+    .eq("id", clientProfileId);
+
+  if (error) {
+    redirect(`/admin/clients/${clientProfileId}/?error=operations-save-failed`);
+  }
+
+  await logAuditEvent({
+    userId: admin.id,
+    action: "client_operations_update",
+    resourceType: "client_profile",
+    resourceId: clientProfileId,
+    metadata: { paymentStatus },
+  });
+
+  redirect(`/admin/clients/${clientProfileId}/?saved=operations`);
 }

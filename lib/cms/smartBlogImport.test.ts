@@ -80,6 +80,22 @@ describe("parseSmartBlogImport", () => {
     expect(result?.data.sections.some((section) => section.h2 === "What support can look like")).toBe(true);
   });
 
+  it("suggests SEO fields for a plain article when the topic is clear", () => {
+    const { result, error } = parseSmartBlogImport(`# Signs of Behavioral Addictions
+
+    Behavioral addictions can affect routines, relationships, and wellbeing. Understanding the pattern is a useful first step.
+
+## Finding support
+
+    Confidential support for behavioral addictions can help you explore practical next steps.
+`);
+    expect(error).toBeUndefined();
+    expect(result?.data.primaryKeyword).toBe("behavioral addictions support");
+    expect(result?.data.categorySlug).toBe("behavioral-addictions");
+    expect(result?.data.tagSlugs).toContain("behavioral-addictions");
+    expect(result?.data.description.length).toBeGreaterThan(100);
+  });
+
   it("uses a plain first line as title when there is no H1", () => {
     const { result, error } = parseSmartBlogImport(`Calm Support Starts With Naming the Loop
 

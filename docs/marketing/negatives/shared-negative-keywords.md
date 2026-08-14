@@ -48,6 +48,10 @@ Apply shared negatives to all campaigns, then add campaign-specific negatives by
 - gambling app
 - betting app
 - how to win
+- software
+- clinic software
+- program software
+- recovery program software
 
 ## Food Campaign Negatives
 

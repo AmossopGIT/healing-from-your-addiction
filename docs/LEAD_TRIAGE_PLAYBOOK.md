@@ -4,6 +4,8 @@
 
 Provide consistent, clinically safe first responses and follow-up handling for all HFYA enquiries.
 
+For the full lead → invite → portal intake walkthrough (screens, channels, consent, checklist), see `docs/LEAD_TO_CLIENT_ONBOARDING_FLOW.md` (Admin Docs → Lead to client onboarding flow).
+
 ## Intake signals to review first
 
 - `triage_priority` (`routine`, `priority`, `urgent`)

@@ -4,7 +4,7 @@ import type { LandingPageContent } from "@/content/types";
 
 export const gamblingContent: LandingPageContent = {
   path: "/addictions/gambling-addiction-help/",
-  breadcrumbLabel: "Gambling Addiction Healing Program",
+  breadcrumbLabel: "Stop Gambling Support",
   defaultConcern: "Gambling",
   heroArtId: "gambling",
   seo: {
@@ -12,10 +12,10 @@ export const gamblingContent: LandingPageContent = {
     description: seoPages.gambling.description,
   },
   hero: {
-    eyebrow: "Confidential gambling addiction support in South Africa",
-    title: "Gambling Addiction Healing Program",
+    eyebrow: "Confidential stop gambling support in South Africa",
+    title: "Stop Gambling Support & Gambling Addiction Help",
     description:
-      "Support for betting urges, chasing losses, online gambling triggers, financial pressure and the emotional loop that keeps the behaviour repeating.",
+      "Private support for people asking how to stop gambling, manage betting urges, interrupt chasing losses and change the emotional loop behind repeated gambling.",
     primaryCta: "Start Your Gambling Recovery Enquiry",
   },
   painSection: {
@@ -32,9 +32,9 @@ export const gamblingContent: LandingPageContent = {
     ],
   },
   programme: {
-    title: "A structured 8-session support process over 4 weeks",
+    title: "A structured 8-session stop gambling support process",
     body:
-      "The gambling programme is a 4-week, 8-session support process at R12,000. It is designed to help you understand the urge cycle, interrupt automatic responses and build practical reinforcement between sessions. It is supportive, confidential and focused on behaviour patterns rather than judgement.",
+      "The gambling programme is a 4-week, 8-session support process at R12,000. It is designed to support people who want to stop gambling, understand the urge cycle, interrupt automatic responses and build practical reinforcement between sessions. It is supportive, confidential and focused on behaviour patterns rather than judgement.",
     points: [
       "Identify the trigger-to-bet loop",
       "Create pause before action",
@@ -92,8 +92,8 @@ export const gamblingContent: LandingPageContent = {
   },
   faqs: gamblingFaqs,
   finalCta: {
-    title: "Start with a confidential gambling addiction enquiry",
-    body: "If gambling, betting apps or chasing losses have started taking more from your life, you can begin with a private enquiry.",
+    title: "Start with a confidential stop gambling enquiry",
+    body: "If gambling, betting apps or chasing losses have started taking more from your life, you can begin with private stop gambling support and a conversation about next steps.",
     button: "Start Your Gambling Recovery Enquiry",
   },
 };

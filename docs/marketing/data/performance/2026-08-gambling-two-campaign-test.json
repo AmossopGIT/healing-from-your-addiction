@@ -1,0 +1,181 @@
+{
+  "meta": {
+    "id": "2026-08-gambling-two-campaign-test",
+    "version": "1.1.0",
+    "status": "planned",
+    "owner": "Healing From Your Addiction",
+    "lastUpdated": "2026-08-14",
+    "sourceLaunchPlan": "docs/marketing/campaigns/search/gambling-two-campaign-launch.md",
+    "changeNotes": "Ad 1 Stop Gambling RSA tightened to stop-intent keywords, canonical URL, and stronger Description 1."
+  },
+  "reportingPeriod": {
+    "month": "2026-08",
+    "label": "Gambling two-campaign R800 month-one test",
+    "startDate": "2026-08-14",
+    "endDate": "2026-09-13",
+    "currency": "ZAR",
+    "combinedBudgetCap": 800
+  },
+  "accountSummary": {
+    "currency": "ZAR",
+    "impressions": 0,
+    "clicks": 0,
+    "ctr": 0,
+    "avgCpc": 0,
+    "cost": 0,
+    "conversions": 0,
+    "conversionRate": 0,
+    "cpa": 0,
+    "qualifiedLeads": 0
+  },
+  "campaignResults": [
+    {
+      "campaignId": "search-stop-gambling-za",
+      "campaignName": "HFYA | Search | Stop Gambling | ZA",
+      "channel": "search",
+      "status": "ready_for_build",
+      "budget": {
+        "monthOneTotalZAR": 400,
+        "dailyApproxZAR": 13
+      },
+      "landingPage": "https://healingfromyouraddiction.co.za/addictions/gambling-addiction-help/",
+      "metrics": {
+        "impressions": 0,
+        "clicks": 0,
+        "ctr": 0,
+        "avgCpc": 0,
+        "cost": 0,
+        "conversions": 0,
+        "conversionRate": 0,
+        "cpa": 0,
+        "qualifiedLeads": 0
+      },
+      "adGroupBreakdown": [],
+      "topSearchTerms": [],
+      "negativeKeywordAdds": [],
+      "notes": [
+        "Launch with phrase match only.",
+        "Stop-intent keywords only in Stop Gambling Help ad group.",
+        "Final URL: /addictions/gambling-addiction-help/ (not legacy redirect URL).",
+        "Primary conversion: form_submit / thank-you."
+      ]
+    },
+    {
+      "campaignId": "search-gambling-treatment-za",
+      "campaignName": "HFYA | Search | Gambling Treatment | ZA",
+      "channel": "search",
+      "status": "ready_for_build",
+      "budget": {
+        "monthOneTotalZAR": 400,
+        "dailyApproxZAR": 13
+      },
+      "landingPage": "https://healingfromyouraddiction.co.za/addictions/gambling-addiction-help/",
+      "metrics": {
+        "impressions": 0,
+        "clicks": 0,
+        "ctr": 0,
+        "avgCpc": 0,
+        "cost": 0,
+        "conversions": 0,
+        "conversionRate": 0,
+        "cpa": 0,
+        "qualifiedLeads": 0
+      },
+      "adGroupBreakdown": [],
+      "topSearchTerms": [],
+      "negativeKeywordAdds": [],
+      "notes": [
+        "Launch with phrase match only.",
+        "Primary conversion: form_submit / thank-you."
+      ]
+    }
+  ],
+  "budgetIncreaseRules": {
+    "doNotIncreaseOnClicksAlone": true,
+    "reviewAfterDays": 30,
+    "increasePercentIfQualifiedLeads": {
+      "min": 20,
+      "max": 30
+    },
+    "holdOrReduceIfNoQualifiedLeads": true,
+    "reallocateTowardBetterQualifiedLeadRate": true
+  },
+  "trackingVerification": {
+    "landingPageCanonical": "https://healingfromyouraddiction.co.za/addictions/gambling-addiction-help/",
+    "thankYouPath": "/thank-you/",
+    "utmFinalUrlSuffix": "utm_source=google&utm_medium=cpc&utm_campaign={campaignid}&utm_content={adgroupid}&utm_term={keyword}",
+    "conversionEvents": [
+      "form_submit",
+      "phone_click",
+      "whatsapp_click"
+    ],
+    "checks": [
+      {
+        "id": "final-url",
+        "label": "Final URL opens gambling programme page",
+        "status": "documented"
+      },
+      {
+        "id": "form-thank-you",
+        "label": "Form submit reaches /thank-you/",
+        "status": "documented"
+      },
+      {
+        "id": "ads-form-conversion",
+        "label": "Google Ads primary conversion mapped to form submit / thank-you",
+        "status": "pending_account_setup"
+      },
+      {
+        "id": "phone-click",
+        "label": "Phone click conversion fires",
+        "status": "pending_account_setup"
+      },
+      {
+        "id": "whatsapp-click",
+        "label": "WhatsApp click conversion fires",
+        "status": "pending_account_setup"
+      },
+      {
+        "id": "utm-gclid",
+        "label": "UTM/GCLID captured on lead submissions",
+        "status": "documented_in_code"
+      }
+    ]
+  },
+  "changeLog": [
+    {
+      "date": "2026-08-14",
+      "campaignId": "gambling-two-campaign-r800-test",
+      "changeType": "budget",
+      "summary": "Created two-campaign R800 month-one Search test with Stop Gambling and Gambling Treatment payloads.",
+      "expectedImpact": "Independent intent measurement and controlled spend before scaling."
+    },
+    {
+      "date": "2026-08-14",
+      "campaignId": "search-stop-gambling-za",
+      "changeType": "adcopy",
+      "summary": "Improved Ad 1: stop-intent keywords only, canonical final URL, stronger Description 1, removed mismatched headlines.",
+      "expectedImpact": "Higher ad relevance and cleaner Quality Score for stop-gambling searches."
+    }
+  ],
+  "nextActions": [
+    {
+      "priority": "high",
+      "owner": "Gerald",
+      "action": "Build both Search campaigns in Google Ads from the launch guide and enable after conversion checks.",
+      "dueDate": "2026-08-18"
+    },
+    {
+      "priority": "high",
+      "owner": "Gerald",
+      "action": "Weekly search-term review; add software/casino/job junk negatives as they appear.",
+      "dueDate": "2026-08-21"
+    },
+    {
+      "priority": "medium",
+      "owner": "Gerald",
+      "action": "After 30 days, apply 20-30% increase only to campaign(s) with qualified enquiries.",
+      "dueDate": "2026-09-14"
+    }
+  ]
+}

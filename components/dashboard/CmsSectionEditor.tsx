@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import type { BlogSection } from "@/content/blog";
+import { artGallery } from "@/content/artGallery";
 import { CmsRichTextArea } from "@/components/dashboard/CmsRichTextArea";
 import { SmartBodyUpload } from "@/components/dashboard/SmartBodyUpload";
 import { cmsFieldMaxLengths } from "@/lib/cms/formValidation";
@@ -10,6 +11,7 @@ import { bodyHasReplaceableContent } from "@/lib/cms/smartBodyImport";
 type CmsSectionEditorProps = {
   initialSections: BlogSection[];
   onSectionsChange?: (sections: BlogSection[]) => void;
+  slug?: string;
   /** When true, section cards start collapsed inside a details element (used by blog form). */
   collapsible?: boolean;
   defaultOpen?: boolean;
@@ -33,14 +35,27 @@ function sectionsHaveCopy(sections: BlogSection[]): boolean {
   );
 }
 
+async function uploadSectionMedia(file: File, kind: "image" | "video" | "audio", slug: string): Promise<string> {
+  const body = new FormData();
+  body.append("file", file);
+  body.append("kind", kind);
+  body.append("slug", slug || "blog-media");
+  const response = await fetch("/api/admin/cms/upload-media/", { method: "POST", body });
+  const payload = (await response.json()) as { src?: string; error?: string };
+  if (!response.ok || !payload.src) throw new Error(payload.error ?? "Upload failed.");
+  return payload.src;
+}
+
 export function CmsSectionEditor({
   initialSections,
   onSectionsChange,
+  slug = "",
   collapsible = false,
   defaultOpen = false,
   includeFormField = true,
 }: CmsSectionEditorProps) {
   const [sections, setSections] = useState<BlogSection[]>(initialSections.length ? initialSections : [emptySection()]);
+  const [uploadingMedia, setUploadingMedia] = useState<string | null>(null);
   // Compact JSON for the hidden submit field (keeps payloads under the server limit).
   const sectionsJsonCompact = useMemo(() => JSON.stringify(sections), [sections]);
   const sectionsJsonPretty = useMemo(() => JSON.stringify(sections, null, 2), [sections]);
@@ -127,6 +142,23 @@ export function CmsSectionEditor({
               updateSection(index, { bullets: bullets.length ? bullets : undefined });
             }}
           />
+          <label className="form-field">
+            <span>Watercolor section artwork (optional)</span>
+            <select
+              value={section.artId ?? ""}
+              onChange={(event) => updateSection(index, { artId: event.target.value || undefined })}
+            >
+              <option value="">No section artwork</option>
+              {artGallery
+                .filter((item) => item.category.startsWith("blog-") || item.category === "shared")
+                .map((item) => (
+                  <option key={item.id} value={item.id}>
+                    {item.title}
+                  </option>
+                ))}
+            </select>
+            <span className="cms-field-help">Use one quiet illustration to break up a long section.</span>
+          </label>
 
           <details className="cms-section-details">
             <summary>Subheadings (H3) and video</summary>
@@ -239,6 +271,142 @@ export function CmsSectionEditor({
                   }
                   placeholder="/videos/your-video.mp4"
                 />
+              </label>
+              <label className="form-field">
+                <span>Upload video</span>
+                <input
+                  type="file"
+                  accept="video/mp4,video/webm,video/quicktime"
+                  disabled={uploadingMedia !== null}
+                  onChange={async (event) => {
+                    const file = event.target.files?.[0];
+                    event.target.value = "";
+                    if (!file) return;
+                    setUploadingMedia(`video-${index}`);
+                    try {
+                      const src = await uploadSectionMedia(file, "video", slug);
+                      updateSection(index, {
+                        video: {
+                          title: section.video?.title ?? (section.h2 || "Section video"),
+                          src,
+                          youtubeId: undefined,
+                          description: section.video?.description,
+                          posterSrc: section.video?.posterSrc,
+                        },
+                      });
+                    } catch (error) {
+                      window.alert(error instanceof Error ? error.message : "Video upload failed.");
+                    } finally {
+                      setUploadingMedia(null);
+                    }
+                  }}
+                />
+                {uploadingMedia === `video-${index}` ? <span className="cms-field-help">Uploading…</span> : null}
+              </label>
+              <label className="form-field">
+                <span>Image URL</span>
+                <input
+                  value={section.image?.src ?? ""}
+                  onChange={(event) =>
+                    updateSection(index, {
+                      image: event.target.value.trim()
+                        ? { src: event.target.value, alt: section.image?.alt ?? "", caption: section.image?.caption }
+                        : undefined,
+                    })
+                  }
+                  placeholder="/uploads/blog-media/article-image.webp"
+                />
+              </label>
+              <label className="form-field">
+                <span>Image alt text</span>
+                <input
+                  value={section.image?.alt ?? ""}
+                  onChange={(event) =>
+                    updateSection(index, {
+                      image: section.image
+                        ? { ...section.image, alt: event.target.value }
+                        : { src: "", alt: event.target.value },
+                    })
+                  }
+                />
+              </label>
+              <label className="form-field">
+                <span>Upload image</span>
+                <input
+                  type="file"
+                  accept="image/png,image/jpeg,image/webp"
+                  disabled={uploadingMedia !== null}
+                  onChange={async (event) => {
+                    const file = event.target.files?.[0];
+                    event.target.value = "";
+                    if (!file) return;
+                    setUploadingMedia(`image-${index}`);
+                    try {
+                      const src = await uploadSectionMedia(file, "image", slug);
+                      updateSection(index, {
+                        image: { src, alt: section.image?.alt ?? file.name.replace(/\.[^.]+$/, ""), caption: section.image?.caption },
+                      });
+                    } catch (error) {
+                      window.alert(error instanceof Error ? error.message : "Image upload failed.");
+                    } finally {
+                      setUploadingMedia(null);
+                    }
+                  }}
+                />
+                {uploadingMedia === `image-${index}` ? <span className="cms-field-help">Uploading…</span> : null}
+              </label>
+              <label className="form-field">
+                <span>Audio title</span>
+                <input
+                  value={section.audio?.title ?? ""}
+                  onChange={(event) =>
+                    updateSection(index, {
+                      audio: section.audio
+                        ? { ...section.audio, title: event.target.value }
+                        : { title: event.target.value, src: "" },
+                    })
+                  }
+                  placeholder="Listen to this article"
+                />
+              </label>
+              <label className="form-field">
+                <span>Audio URL</span>
+                <input
+                  value={section.audio?.src ?? ""}
+                  onChange={(event) =>
+                    updateSection(index, {
+                      audio: event.target.value.trim()
+                        ? { title: section.audio?.title || "Article audio", src: event.target.value, description: section.audio?.description }
+                        : undefined,
+                    })
+                  }
+                  placeholder="/uploads/blog-media/article-audio.mp3"
+                />
+              </label>
+              <label className="form-field">
+                <span>Upload audio</span>
+                <input
+                  type="file"
+                  accept="audio/mpeg,audio/mp4,audio/wav,audio/ogg,audio/webm"
+                  disabled={uploadingMedia !== null}
+                  onChange={async (event) => {
+                    const file = event.target.files?.[0];
+                    event.target.value = "";
+                    if (!file) return;
+                    setUploadingMedia(`audio-${index}`);
+                    try {
+                      const src = await uploadSectionMedia(file, "audio", slug);
+                      updateSection(index, {
+                        audio: { title: section.audio?.title || "Article audio", src, description: section.audio?.description },
+                      });
+                    } catch (error) {
+                      window.alert(error instanceof Error ? error.message : "Audio upload failed.");
+                    } finally {
+                      setUploadingMedia(null);
+                    }
+                  }}
+                />
+                {uploadingMedia === `audio-${index}` ? <span className="cms-field-help">Uploading…</span> : null}
               </label>
             </div>
           </details>

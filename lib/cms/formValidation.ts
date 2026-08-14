@@ -193,6 +193,26 @@ function sanitizeSection(section: BlogSection): BlogSection {
           };
         })()
       : undefined;
+  const image =
+    section.image && typeof section.image.src === "string" && section.image.src.trim()
+      ? {
+          src: normalizeSingleLine(section.image.src).slice(0, 500),
+          alt: normalizeSingleLine(section.image.alt ?? "").slice(0, cmsFieldMaxLengths.uploadAlt),
+          caption: section.image.caption
+            ? normalizeSingleLine(section.image.caption).slice(0, cmsFieldMaxLengths.sectionText)
+            : undefined,
+        }
+      : undefined;
+  const audio =
+    section.audio && typeof section.audio.src === "string" && section.audio.src.trim()
+      ? {
+          title: normalizeSingleLine(section.audio.title || "Article audio").slice(0, cmsFieldMaxLengths.sectionHeading),
+          src: normalizeSingleLine(section.audio.src).slice(0, 500),
+          description: section.audio.description
+            ? normalizeSingleLine(section.audio.description).slice(0, cmsFieldMaxLengths.sectionText)
+            : undefined,
+        }
+      : undefined;
 
   return {
     h2: normalizeSingleLine(section.h2).slice(0, cmsFieldMaxLengths.sectionHeading),
@@ -200,6 +220,8 @@ function sanitizeSection(section: BlogSection): BlogSection {
     bullets: bullets?.length ? bullets : undefined,
     h3Items: h3Items?.length ? h3Items : undefined,
     video,
+    image,
+    audio,
   };
 }
 

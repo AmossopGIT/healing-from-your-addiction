@@ -20,6 +20,22 @@ function normalizeSection(section: unknown): BlogSection | null {
     : undefined;
 
   const bullets = raw.bullets ? normalizeStringArray(raw.bullets) : undefined;
+  const image =
+    raw.image && typeof raw.image === "object" && typeof raw.image.src === "string"
+      ? {
+          src: raw.image.src,
+          alt: typeof raw.image.alt === "string" ? raw.image.alt : "",
+          caption: typeof raw.image.caption === "string" ? raw.image.caption : undefined,
+        }
+      : undefined;
+  const audio =
+    raw.audio && typeof raw.audio === "object" && typeof raw.audio.src === "string"
+      ? {
+          title: typeof raw.audio.title === "string" ? raw.audio.title : "Article audio",
+          src: raw.audio.src,
+          description: typeof raw.audio.description === "string" ? raw.audio.description : undefined,
+        }
+      : undefined;
 
   return {
     h2: typeof raw.h2 === "string" ? raw.h2 : "",
@@ -27,6 +43,8 @@ function normalizeSection(section: unknown): BlogSection | null {
     h3Items: h3Items?.length ? h3Items : undefined,
     bullets: bullets?.length ? bullets : undefined,
     video: raw.video,
+    image,
+    audio,
     artId: typeof raw.artId === "string" ? raw.artId : undefined,
   };
 }

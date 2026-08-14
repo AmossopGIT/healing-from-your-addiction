@@ -87,6 +87,10 @@ export type ClientProfile = {
   emergency_contact: string | null;
   consent_signed_at: string | null;
   onboarding_completed_at: string | null;
+  invitation_status: "pending" | "accepted" | "expired";
+  invited_at: string | null;
+  invitation_accepted_at: string | null;
+  payment_status: "awaiting_quote" | "invoice_sent" | "paid" | "payment_plan" | "on_hold" | "not_applicable";
   created_at: string;
 };
 
@@ -638,6 +642,10 @@ export type Database = {
           emergency_contact?: string | null;
           consent_signed_at?: string | null;
           onboarding_completed_at?: string | null;
+          invitation_status?: ClientProfile["invitation_status"];
+          invited_at?: string | null;
+          invitation_accepted_at?: string | null;
+          payment_status?: ClientProfile["payment_status"];
         },
         Partial<ClientProfile>
       >;

@@ -13,15 +13,16 @@ import { createMetadata } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
 
-type PageProps = { params: Promise<{ id: string }> };
+type PageProps = { params: Promise<{ id: string }>; searchParams: Promise<{ error?: string }> };
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { id } = await params;
   return createMetadata({ title: `Lead | Admin`, description: "Lead detail.", path: `/admin/leads/${id}/`, noIndex: true });
 }
 
-export default async function AdminLeadDetailPage({ params }: PageProps) {
+export default async function AdminLeadDetailPage({ params, searchParams }: PageProps) {
   const { id } = await params;
+  const { error } = await searchParams;
   const supabase = await createClient();
   const [{ data: lead }, adminProfiles] = await Promise.all([
     supabase.from("leads").select("*").eq("id", id).maybeSingle(),
@@ -248,8 +249,11 @@ export default async function AdminLeadDetailPage({ params }: PageProps) {
       </div>
       <section className="dashboard-panel">
         <h2>Update status</h2>
+        {error === "invite-required" ? (
+          <p className="form-error">Use “Accept & invite client” to enrol this lead. Status alone cannot create portal access.</p>
+        ) : null}
         <div className="dashboard-status-actions">
-          {leadStatusOptions.map((status) => (
+          {leadStatusOptions.filter((status) => status !== "enrolled" || Boolean(lead.client_id)).map((status) => (
             <form key={status} action={updateLeadStatusForm}>
               <input type="hidden" name="leadId" value={lead.id} />
               <input type="hidden" name="status" value={status} />
@@ -264,7 +268,10 @@ export default async function AdminLeadDetailPage({ params }: PageProps) {
         </div>
         {!lead.client_id ? (
           <p className="dashboard-inline-note">
-            Ready to enrol? <Link href={`/admin/clients/invite/?leadId=${lead.id}`}>Invite this client</Link>.
+            <strong>Ready to enrol?</strong>{" "}
+            <Link href={`/admin/clients/invite/?leadId=${lead.id}`} className="button button-small button-primary">
+              Accept & invite client
+            </Link>
           </p>
         ) : null}
       </section>

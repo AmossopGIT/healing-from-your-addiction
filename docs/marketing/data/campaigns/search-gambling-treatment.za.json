@@ -1,0 +1,177 @@
+{
+  "meta": {
+    "id": "search-gambling-treatment-za",
+    "version": "1.0.0",
+    "status": "ready_for_build",
+    "owner": "Healing From Your Addiction",
+    "region": "ZA",
+    "channel": "search",
+    "campaignSubtype": "standard",
+    "lastUpdated": "2026-08-14",
+    "family": "gambling-two-campaign-r800-test",
+    "sourceOfTruth": {
+      "campaignBriefPath": "docs/marketing/campaigns/search/gambling-treatment.md",
+      "guardrailsPath": "docs/marketing/governance/messaging-guardrails.md",
+      "launchPlanPath": "docs/marketing/campaigns/search/gambling-two-campaign-launch.md"
+    }
+  },
+  "campaign": {
+    "name": "HFYA | Search | Gambling Treatment | ZA",
+    "topic": "Gambling Treatment",
+    "objective": "leads",
+    "type": "search",
+    "settings": {
+      "location": [
+        "Gauteng, South Africa",
+        "Western Cape, South Africa"
+      ],
+      "locationIncludeMode": "presence",
+      "language": [
+        "English"
+      ],
+      "network": {
+        "googleSearch": true,
+        "searchPartners": false,
+        "displayExpansion": false,
+        "aiMaxFinalUrlExpansion": false,
+        "aiMaxTextCustomization": false
+      },
+      "bidding": {
+        "strategy": "Maximize Clicks",
+        "targetCpa": null
+      },
+      "dailyBudgetZAR": {
+        "min": 13,
+        "max": 14,
+        "monthOneTotalZAR": 400
+      }
+    }
+  },
+  "landingPage": {
+    "url": "https://healingfromyouraddiction.co.za/addictions/gambling-addiction-help/",
+    "legacyRedirectUrl": "https://healingfromyouraddiction.co.za/gambling-addiction-gambling-disorder-healing-program/",
+    "messageMatchSummary": "8-session support programme for problem gambling, gambling disorder support, and relapse prevention.",
+    "offerPositioning": "Hypnotherapy-led behavioural support programme.",
+    "complianceNotes": [
+      "Do not imply guaranteed cure or guaranteed results.",
+      "Use support and behaviour-change framing.",
+      "Prefer support/help language over medical certainty claims."
+    ]
+  },
+  "adGroups": [
+    {
+      "name": "Problem Gambling Support",
+      "intent": "User seeks help for problem or compulsive gambling patterns.",
+      "launchPriority": "high",
+      "keywords": [
+        { "text": "problem gambling help", "matchType": "phrase" },
+        { "text": "problem gambling support", "matchType": "phrase" },
+        { "text": "gambling problem help", "matchType": "phrase" },
+        { "text": "gambling addiction help", "matchType": "phrase" },
+        { "text": "gambling disorder help", "matchType": "phrase" },
+        { "text": "gambling addiction treatment", "matchType": "phrase" },
+        { "text": "compulsive gambling treatment", "matchType": "phrase" },
+        { "text": "compulsive gambling help", "matchType": "phrase" },
+        { "text": "gamblers counselling", "matchType": "phrase" },
+        { "text": "gambling disorder support", "matchType": "phrase" }
+      ],
+      "ads": [
+        {
+          "format": "rsa",
+          "name": "Gambling Treatment RSA",
+          "isLaunchMain": true,
+          "finalUrl": "https://healingfromyouraddiction.co.za/addictions/gambling-addiction-help/",
+          "headlines": [
+            "Problem Gambling Support",
+            "Gambling Addiction Help",
+            "Gambling Disorder Support",
+            "Private Addiction Support",
+            "Support For Gambling Urges",
+            "Break The Gambling Pattern",
+            "Hypnotherapy Support",
+            "8-Session Healing Program",
+            "Confidential Enquiry",
+            "Regain Control Today",
+            "Support In South Africa",
+            "Start With One Enquiry",
+            "Healing From Your Addiction",
+            "Change Addictive Patterns",
+            "Understand The Urge"
+          ],
+          "descriptions": [
+            "Private support for gambling patterns, cravings, emotional triggers and compulsive behaviour.",
+            "Learn how hypnotherapy may support awareness, urge control and healthier decisions.",
+            "A structured 8-session programme focused on control, triggers and relapse prevention.",
+            "Start with a confidential enquiry and take the first step toward support."
+          ],
+          "pinning": {
+            "headline1": "Problem Gambling Support",
+            "headline2": "Gambling Addiction Help",
+            "headline3": "8-Session Healing Program"
+          }
+        }
+      ]
+    }
+  ],
+  "assetsRefs": {
+    "doc": "docs/marketing/assets/shared-assets.md",
+    "data": "docs/marketing/data/assets/shared.json"
+  },
+  "negatives": {
+    "sharedListRefs": [
+      "docs/marketing/data/negatives/shared.json"
+    ],
+    "campaignSpecificRef": "docs/marketing/data/negatives/gambling.json"
+  },
+  "tracking": {
+    "utmTemplate": {
+      "source": "google",
+      "medium": "cpc",
+      "campaign": "{campaignid}",
+      "content": "{adgroupid}",
+      "term": "{keyword}"
+    },
+    "finalUrlSuffix": "utm_source=google&utm_medium=cpc&utm_campaign={campaignid}&utm_content={adgroupid}&utm_term={keyword}",
+    "conversionEvents": [
+      "form_submit",
+      "phone_click",
+      "whatsapp_click"
+    ],
+    "primaryConversion": "form_submit",
+    "thankYouPath": "/thank-you/"
+  },
+  "budgetIncreaseRules": {
+    "doNotIncreaseOnClicksAlone": true,
+    "reviewAfterDays": 30,
+    "increasePercentIfQualifiedLeads": {
+      "min": 20,
+      "max": 30
+    },
+    "holdOrReduceIfNoQualifiedLeads": true,
+    "reallocateTowardBetterQualifiedLeadRate": true
+  },
+  "results": {
+    "reportingCadence": "weekly-then-monthly",
+    "snapshots": []
+  },
+  "channelExtensions": {
+    "search": {
+      "rsaPolicy": {
+        "maxHeadlines": 15,
+        "maxDescriptions": 4
+      }
+    },
+    "pmax": {
+      "assetGroups": [],
+      "audienceSignals": [],
+      "listingGroupFilters": [],
+      "merchantCenterFeedRef": null
+    },
+    "shopping": {
+      "feedRef": null,
+      "listingGroups": [],
+      "priority": null,
+      "productFilters": []
+    }
+  }
+}

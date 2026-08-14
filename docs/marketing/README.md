@@ -22,6 +22,15 @@ This directory is the source of truth for paid media campaign planning, build de
 - `data/performance/` - Reporting templates and monthly outputs.
 - `templates/` - Reusable JSON templates for new campaigns.
 
+## Active gambling Search launch (Aug 2026)
+
+Two-campaign R800 month-one test:
+
+- Launch guide: [`campaigns/search/gambling-two-campaign-launch.md`](campaigns/search/gambling-two-campaign-launch.md)
+- Stop Gambling: [`campaigns/search/stop-gambling.md`](campaigns/search/stop-gambling.md) + [`data/campaigns/search-stop-gambling.za.json`](data/campaigns/search-stop-gambling.za.json)
+- Gambling Treatment: [`campaigns/search/gambling-treatment.md`](campaigns/search/gambling-treatment.md) + [`data/campaigns/search-gambling-treatment.za.json`](data/campaigns/search-gambling-treatment.za.json)
+- Canonical landing page: `https://healingfromyouraddiction.co.za/addictions/gambling-addiction-help/`
+
 ## Operating Principle
 
 Use both formats together:

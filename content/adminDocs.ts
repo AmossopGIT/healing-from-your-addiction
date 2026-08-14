@@ -24,6 +24,14 @@ export const adminDocRegistry: AdminDocRegistryEntry[] = [
     customPage: "admin-login-guide",
   },
   {
+    slug: "lead-to-client-onboarding-flow",
+    title: "Lead to client onboarding flow",
+    description: "Where new enquiries land, what consent is captured, and the steps from lead to portal invite and intake.",
+    category: "Operations",
+    order: 8,
+    sourcePath: "docs/LEAD_TO_CLIENT_ONBOARDING_FLOW.md",
+  },
+  {
     slug: "lead-triage-playbook",
     title: "Lead triage playbook",
     description: "First-response targets, status workflow, and safety language for enquiries.",

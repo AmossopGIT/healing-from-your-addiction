@@ -16,7 +16,9 @@ Staff action: **Fill form from paste**. If the form already has content, confirm
 | Detected as | Fills |
 |-------------|--------|
 | Template | Title, slug, excerpt, meta, keywords, category, tags, body sections |
-| Article body | Title, slug, H1, excerpt, meta description (from first paragraph), body sections — staff pick category/tags |
+| Article body | Title, slug, H1, excerpt, meta description, inferred primary keyword, matching category/tags, search intent, conversion goal, body sections |
+
+Plain articles use the title and body to make conservative SEO suggestions. Review the suggested keyword, category, and tags before saving; unmatched categories and tags are left blank rather than guessed.
 
 Parser: `lib/cms/smartBlogImport.ts` (+ `lib/cms/templateImport.ts` for labeled templates)  
 UI: `components/dashboard/SmartBlogUpload.tsx`

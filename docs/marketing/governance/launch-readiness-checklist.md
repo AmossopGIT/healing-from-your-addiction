@@ -29,6 +29,7 @@ Use this checklist before any campaign goes live.
 ## 4) Tracking And Measurement
 
 - [ ] UTM template applied.
+- [ ] Final URL points to the topic landing page (gambling: `/addictions/gambling-addiction-help/`).
 - [ ] Conversion events configured: form submit, phone click, WhatsApp click.
 - [ ] Primary conversion goal selected.
 - [ ] Thank-you/lead confirmation flow tested.
@@ -39,6 +40,7 @@ Use this checklist before any campaign goes live.
 - [ ] Campaign JSON payload updated.
 - [ ] Shared assets/negatives references are correct.
 - [ ] Monthly performance file template prepared for reporting period.
+- [ ] For the gambling R800 test: use [`gambling-two-campaign-launch.md`](../campaigns/search/gambling-two-campaign-launch.md) and [`2026-08-gambling-two-campaign-test.json`](../data/performance/2026-08-gambling-two-campaign-test.json).
 
 ## 6) Approval
 

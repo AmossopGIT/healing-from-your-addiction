@@ -13,7 +13,7 @@ import { logAuditEvent } from "@/lib/supabase/audit";
 import { createServiceClient } from "@/lib/supabase/service";
 import { isSupabaseServiceConfigured } from "@/lib/supabase/env";
 import { buildAuthEmailRedirect } from "@/lib/supabase/redirectUrl";
-import { createClient } from "@/lib/supabase/server";
+import { requireAuthProfile } from "@/lib/supabase/auth";
 
 export async function inviteClient(formData: FormData) {
   const leadId = sanitizeUuid(String(formData.get("leadId") ?? ""));
@@ -35,10 +35,19 @@ export async function inviteClient(formData: FormData) {
   }
   if (!isSupabaseServiceConfigured()) redirect("/admin/clients/invite/?error=supabase-not-configured");
 
-  const supabase = await createClient();
-  const { data: { user: adminUser } } = await supabase.auth.getUser();
-  if (!adminUser) redirect("/admin/login/");
+  const adminUser = await requireAuthProfile("admin");
   const service = createServiceClient();
+
+  if (leadId) {
+    const { data: lead, error: leadError } = await service
+      .from("leads")
+      .select("id, client_id")
+      .eq("id", leadId)
+      .maybeSingle();
+
+    if (leadError || !lead) redirect("/admin/clients/invite/?error=lead-not-found");
+    if (lead.client_id) redirect("/admin/clients/invite/?error=already-enrolled");
+  }
 
   const { data: inviteData, error: inviteError } = await service.auth.admin.inviteUserByEmail(email, {
     redirectTo: buildAuthEmailRedirect("/portal/set-password/"),
@@ -56,18 +65,33 @@ export async function inviteClient(formData: FormData) {
       lead_id: leadId || null,
       addiction_slug: addictionSlug || null,
       preferred_contact_method: preferredContactMethod || null,
+      invitation_status: "pending",
+      invited_at: new Date().toISOString(),
     })
     .select("id")
     .single();
 
-  if (profileError) redirect(`/admin/clients/invite/?error=${encodeURIComponent(profileError.message)}`);
+  if (profileError) {
+    await service.auth.admin.deleteUser(inviteData.user.id);
+    redirect(`/admin/clients/invite/?error=${encodeURIComponent(profileError.message)}`);
+  }
 
   if (leadId) {
-    await service.from("leads").update({ status: "enrolled", client_id: inviteData.user.id }).eq("id", leadId);
+    const { error: leadUpdateError } = await service
+      .from("leads")
+      .update({ status: "enrolled", client_id: inviteData.user.id })
+      .eq("id", leadId)
+      .is("client_id", null);
+
+    if (leadUpdateError) {
+      await service.from("client_profiles").delete().eq("id", clientProfile.id);
+      await service.auth.admin.deleteUser(inviteData.user.id);
+      redirect(`/admin/clients/invite/?error=${encodeURIComponent(leadUpdateError.message)}`);
+    }
   }
 
   await logAuditEvent({
-    userId: adminUser?.id,
+    userId: adminUser.id,
     action: "client_invite",
     resourceType: "client_profile",
     resourceId: clientProfile!.id,

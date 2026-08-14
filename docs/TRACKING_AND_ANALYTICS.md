@@ -40,6 +40,24 @@ Stored fields include SEO context (`page_type`, `primary_keyword`, `conversion_g
 
 Form submission redirects to `/thank-you/`. Use that page as the primary Google Ads conversion destination.
 
+## Google Ads gambling two-campaign tracking
+
+For the R800 month-one pair (`HFYA | Search | Stop Gambling | ZA` and `HFYA | Search | Gambling Treatment | ZA`):
+
+- **Final URL:** `https://healingfromyouraddiction.co.za/addictions/gambling-addiction-help/`
+- **Final URL suffix:** `utm_source=google&utm_medium=cpc&utm_campaign={campaignid}&utm_content={adgroupid}&utm_term={keyword}`
+- **Primary conversion:** form submit / thank-you view
+- **Secondary conversions:** `phone_click`, `whatsapp_click`
+- **Lead attribution:** UTM fields and `gclid` are captured on enquiry submissions and stored with the lead
+- **Launch checklist:** [`docs/marketing/campaigns/search/gambling-two-campaign-launch.md`](marketing/campaigns/search/gambling-two-campaign-launch.md)
+
+Site-side event names used by first-party analytics and GTM/dataLayer:
+
+- `lead_form_submit`
+- `thank_you_view`
+- `phone_click`
+- `whatsapp_click`
+
 ## dataLayer events
 
 GTM/dataLayer pushes only fire after analytics consent. First-party collection always records allowed events regardless of consent.

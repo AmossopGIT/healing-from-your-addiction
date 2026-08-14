@@ -11,7 +11,6 @@
 - `/programs/4-week-addiction-healing-program/` - 4-week programme detail
 - `/hypnotherapy-for-addiction/` - Treatment method authority page
 - `/eft-tapping-for-cravings/` - EFT/cravings method page
-- `/cravings/urge-surfing/` - Craving support page
 - `/faqs/` - FAQ hub
 - `/contact/` - Contact and enquiry
 - `/thank-you/` - Form conversion destination
