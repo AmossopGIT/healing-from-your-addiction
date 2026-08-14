@@ -20,38 +20,43 @@ export function LeadsListScreenPreview() {
           <section className="dashboard-page-header">
             <p className="eyebrow">Leads</p>
             <h2>Enquiries</h2>
-            <p>All confidential enquiries submitted from the public site.</p>
+            <p>Start with Overdue. Assign yourself, set follow-up, then invite from the lead.</p>
           </section>
           <div className="admin-doc-filter-row">
-            <span className="admin-doc-filter-chip admin-doc-filter-active">All</span>
-            <span className="admin-doc-filter-chip">Overdue</span>
+            <span className="admin-doc-filter-chip">All</span>
+            <span className="admin-doc-filter-chip admin-doc-filter-active">Overdue</span>
             <span className="admin-doc-filter-chip">New</span>
-            <span className="admin-doc-filter-chip">Triage review</span>
           </div>
           <table className="admin-doc-leads-table">
             <thead>
               <tr>
                 <th>Name</th>
-                <th>Concern</th>
                 <th>Triage</th>
                 <th>Status</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
               <tr>
                 <td>Alex M.</td>
-                <td>Gambling</td>
-                <td>priority / priority</td>
+                <td>Priority</td>
                 <td>
                   <span className="status-badge status-badge-new">New</span>
+                </td>
+                <td>
+                  <span className="button button-small button-secondary">Open</span>{" "}
+                  <span className="button button-small button-primary">Invite</span>
                 </td>
               </tr>
               <tr>
                 <td>Sam R.</td>
-                <td>Food / binge eating</td>
-                <td>routine / standard</td>
+                <td>Routine</td>
                 <td>
                   <span className="status-badge status-badge-outreach_started">Outreach started</span>
+                </td>
+                <td>
+                  <span className="button button-small button-secondary">Open</span>{" "}
+                  <span className="button button-small button-secondary">Assign to me</span>
                 </td>
               </tr>
             </tbody>

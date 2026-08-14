@@ -4,6 +4,7 @@ import { AnalyticsOverviewStrip } from "@/components/dashboard/AnalyticsOverview
 import { LeadSlaBadge } from "@/components/dashboard/LeadSlaBadge";
 import { getAdminOverviewBundle } from "@/lib/dashboard/adminOverview";
 import { formatDashboardDate, leadStatusLabels, leadStatusOptions } from "@/lib/dashboard/constants";
+import { canInviteLead, formatLeadTriageLabel } from "@/lib/dashboard/leadNextStep";
 import { isLeadOverdue } from "@/lib/dashboard/leadSla";
 import { getUnreadAdminNotifications } from "@/lib/dashboard/queries";
 import { createMetadata } from "@/lib/seo";
@@ -25,13 +26,18 @@ export default async function AdminOverviewPage() {
         <p className="eyebrow">Overview</p>
         <h1>Welcome back</h1>
         <p>Review new enquiries, follow up with leads, and manage enrolled clients.</p>
+        <p className="dashboard-inline-note">
+          Daily start: open <strong>Overdue</strong>, Assign to me, set a follow-up due date, send a first response, then
+          invite from the lead.{" "}
+          <Link href="/admin/docs/lead-to-client-onboarding-flow/">Onboarding guide</Link>
+        </p>
       </section>
 
       <section className="dashboard-quick-actions">
         <Link className="button button-secondary" href="/admin/leads/">
           All leads
         </Link>
-        <Link className="button button-secondary" href="/admin/leads/?overdue=1">
+        <Link className="button button-primary" href="/admin/leads/?overdue=1">
           Overdue leads
         </Link>
         <Link className="button button-secondary" href="/admin/clients/invite/">
@@ -42,6 +48,9 @@ export default async function AdminOverviewPage() {
         </Link>
         <Link className="button button-secondary" href="/admin/docs/">
           Internal docs
+        </Link>
+        <Link className="button button-secondary" href="/admin/docs/lead-to-client-onboarding-flow/">
+          Onboarding guide
         </Link>
       </section>
 
@@ -64,26 +73,36 @@ export default async function AdminOverviewPage() {
       <AnalyticsOverviewStrip />
 
       <section className="dashboard-stat-grid dashboard-stat-grid-4">
-        <article className="dashboard-stat-card">
-          <p className="dashboard-stat-label">New leads</p>
-          <p className="dashboard-stat-value">{bundle.counts.newLeads}</p>
-        </article>
-        <article className="dashboard-stat-card dashboard-stat-card-alert">
-          <p className="dashboard-stat-label">Overdue / action required</p>
-          <p className="dashboard-stat-value">{bundle.counts.overdueLeads}</p>
-        </article>
-        <article className="dashboard-stat-card">
-          <p className="dashboard-stat-label">Awaiting first response</p>
-          <p className="dashboard-stat-value">{bundle.counts.awaitingFirstResponse}</p>
-        </article>
-        <article className="dashboard-stat-card">
-          <p className="dashboard-stat-label">Enrolled clients</p>
-          <p className="dashboard-stat-value">{bundle.counts.enrolledClients}</p>
-        </article>
-        <article className="dashboard-stat-card">
-          <p className="dashboard-stat-label">Pending intakes</p>
-          <p className="dashboard-stat-value">{bundle.counts.pendingIntakes}</p>
-        </article>
+        <Link href="/admin/leads/?status=new" className="dashboard-stat-card-link">
+          <article className="dashboard-stat-card">
+            <p className="dashboard-stat-label">New leads</p>
+            <p className="dashboard-stat-value">{bundle.counts.newLeads}</p>
+          </article>
+        </Link>
+        <Link href="/admin/leads/?overdue=1" className="dashboard-stat-card-link">
+          <article className="dashboard-stat-card dashboard-stat-card-alert">
+            <p className="dashboard-stat-label">Overdue / action required</p>
+            <p className="dashboard-stat-value">{bundle.counts.overdueLeads}</p>
+          </article>
+        </Link>
+        <Link href="/admin/leads/?overdue=1" className="dashboard-stat-card-link">
+          <article className="dashboard-stat-card">
+            <p className="dashboard-stat-label">Awaiting first response</p>
+            <p className="dashboard-stat-value">{bundle.counts.awaitingFirstResponse}</p>
+          </article>
+        </Link>
+        <Link href="/admin/clients/" className="dashboard-stat-card-link">
+          <article className="dashboard-stat-card">
+            <p className="dashboard-stat-label">Enrolled clients</p>
+            <p className="dashboard-stat-value">{bundle.counts.enrolledClients}</p>
+          </article>
+        </Link>
+        <Link href="/admin/clients/" className="dashboard-stat-card-link">
+          <article className="dashboard-stat-card">
+            <p className="dashboard-stat-label">Pending intakes</p>
+            <p className="dashboard-stat-value">{bundle.counts.pendingIntakes}</p>
+          </article>
+        </Link>
       </section>
 
       <section className="dashboard-panel">
@@ -102,6 +121,7 @@ export default async function AdminOverviewPage() {
                   <th>Triage</th>
                   <th>SLA</th>
                   <th>Follow-up due</th>
+                  <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -110,13 +130,26 @@ export default async function AdminOverviewPage() {
                     <td>
                       <Link href={`/admin/leads/${lead.id}/`}>{lead.full_name}</Link>
                     </td>
-                    <td>
-                      {lead.triage_priority ?? "routine"} / {lead.risk_flag ?? "standard"}
-                    </td>
+                    <td>{formatLeadTriageLabel(lead)}</td>
                     <td>
                       <LeadSlaBadge lead={lead} />
                     </td>
                     <td>{lead.follow_up_due_at ? formatDashboardDate(lead.follow_up_due_at) : "—"}</td>
+                    <td>
+                      <div className="dashboard-lead-actions">
+                        <Link href={`/admin/leads/${lead.id}/`} className="button button-small button-secondary">
+                          Open
+                        </Link>
+                        {canInviteLead(lead) ? (
+                          <Link
+                            href={`/admin/clients/invite/?leadId=${lead.id}`}
+                            className="button button-small button-primary"
+                          >
+                            Invite
+                          </Link>
+                        ) : null}
+                      </div>
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -201,6 +234,7 @@ export default async function AdminOverviewPage() {
                   <th>Status</th>
                   <th>SLA</th>
                   <th>Received</th>
+                  <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -217,6 +251,21 @@ export default async function AdminOverviewPage() {
                       <LeadSlaBadge lead={lead} />
                     </td>
                     <td>{formatDashboardDate(lead.created_at)}</td>
+                    <td>
+                      <div className="dashboard-lead-actions">
+                        <Link href={`/admin/leads/${lead.id}/`} className="button button-small button-secondary">
+                          Open
+                        </Link>
+                        {canInviteLead(lead) ? (
+                          <Link
+                            href={`/admin/clients/invite/?leadId=${lead.id}`}
+                            className="button button-small button-primary"
+                          >
+                            Invite
+                          </Link>
+                        ) : null}
+                      </div>
+                    </td>
                   </tr>
                 ))}
               </tbody>

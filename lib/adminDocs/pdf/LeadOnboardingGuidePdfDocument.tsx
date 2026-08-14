@@ -19,9 +19,9 @@ function LeadsListPdfPreview() {
             <Text style={styles.screenEyebrow}>Leads</Text>
             <Text style={styles.screenHeading}>Enquiries</Text>
             <Text style={styles.screenMuted}>All | Overdue | New | Triage review</Text>
-            <Text style={{ fontSize: 7, fontWeight: 700, marginBottom: 3 }}>Name · Concern · Triage · Status</Text>
-            <Text style={{ fontSize: 7, marginBottom: 2 }}>Alex M. · Gambling · priority · New</Text>
-            <Text style={{ fontSize: 7 }}>Sam R. · Food · routine · Outreach started</Text>
+            <Text style={{ fontSize: 7, fontWeight: 700, marginBottom: 3 }}>Name · Triage · Status · Actions</Text>
+            <Text style={{ fontSize: 7, marginBottom: 2 }}>Alex M. · Priority · New · Open | Invite</Text>
+            <Text style={{ fontSize: 7 }}>Sam R. · Routine · Outreach · Open | Assign to me</Text>
           </View>
         </View>
       </View>
@@ -42,6 +42,7 @@ function LeadDetailPdfPreview() {
           <Text style={styles.fieldLabel}>Follow-up consent</Text>
           <Text style={styles.fieldBox}>WhatsApp: Yes · Email: Yes · Phone: No</Text>
           <Text style={styles.primaryButton}>Accept & invite client</Text>
+          <Text style={{ ...styles.screenMuted, marginTop: 6 }}>Assign to me · Do this next: invite to portal</Text>
         </View>
       </View>
     </View>

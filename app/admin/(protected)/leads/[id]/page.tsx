@@ -2,13 +2,21 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { LeadSlaBadge } from "@/components/dashboard/LeadSlaBadge";
-import { addLeadNote, updateLeadFollowUpForm, updateLeadStatusForm } from "@/lib/dashboard/adminActions";
+import { addLeadNote, updateLeadFollowUpForm, updateLeadQuickActionForm, updateLeadStatusForm } from "@/lib/dashboard/adminActions";
 import { fetchAdminProfiles } from "@/lib/dashboard/adminOverview";
 import { formatDashboardDate, leadStatusLabels, leadStatusOptions } from "@/lib/dashboard/constants";
 import { dashboardFieldMaxLengths } from "@/lib/dashboard/formValidation";
+import {
+  canInviteLead,
+  formatLeadTriageLabel,
+  getLeadNextStepCopy,
+  getRecommendedNextStatus,
+  leadStatusWorkflowLine,
+} from "@/lib/dashboard/leadNextStep";
 import { formatDatetimeLocalValue } from "@/lib/dashboard/leadSla";
 import { firstResponseTemplates, resolveFirstResponseTemplate } from "@/lib/leads/firstResponseTemplates";
 import { createClient } from "@/lib/supabase/server";
+import { getAuthProfile } from "@/lib/supabase/auth";
 import { createMetadata } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
@@ -24,14 +32,15 @@ export default async function AdminLeadDetailPage({ params, searchParams }: Page
   const { id } = await params;
   const { error } = await searchParams;
   const supabase = await createClient();
-  const [{ data: lead }, adminProfiles] = await Promise.all([
+  const [{ data: lead }, adminProfiles, profile] = await Promise.all([
     supabase.from("leads").select("*").eq("id", id).maybeSingle(),
     fetchAdminProfiles(),
+    getAuthProfile(),
   ]);
   if (!lead) notFound();
 
   const assignedAdmin = lead.assigned_admin_id
-    ? adminProfiles.find((profile) => profile.id === lead.assigned_admin_id)
+    ? adminProfiles.find((adminProfile) => adminProfile.id === lead.assigned_admin_id)
     : null;
 
   const { data: notesRaw } = await supabase
@@ -55,6 +64,9 @@ export default async function AdminLeadDetailPage({ params, searchParams }: Page
     lead.first_response_template_id && templateIds.has(lead.first_response_template_id)
       ? lead.first_response_template_id
       : "";
+  const recommendedStatus = getRecommendedNextStatus(lead.status);
+  const nextStepCopy = getLeadNextStepCopy(lead.status);
+  const detailRedirect = `/admin/leads/${lead.id}/`;
 
   return (
     <div className="dashboard-stack">
@@ -64,7 +76,11 @@ export default async function AdminLeadDetailPage({ params, searchParams }: Page
         <p>
           Received {formatDashboardDate(lead.created_at)} ·{" "}
           <span className={`status-badge status-badge-${lead.status}`}>{leadStatusLabels[lead.status]}</span> ·{" "}
-          <LeadSlaBadge lead={lead} />
+          <LeadSlaBadge lead={lead} /> · {formatLeadTriageLabel(lead)}
+        </p>
+        <p className="dashboard-inline-note">
+          Next: {nextStepCopy}{" "}
+          <Link href="/admin/docs/lead-to-client-onboarding-flow/">Onboarding guide</Link>
         </p>
       </section>
       <div className="dashboard-two-col">
@@ -106,7 +122,7 @@ export default async function AdminLeadDetailPage({ params, searchParams }: Page
           <dl className="dashboard-dl">
             <div>
               <dt>Triage priority</dt>
-              <dd>{lead.triage_priority ?? "routine"}</dd>
+              <dd>{formatLeadTriageLabel(lead)}</dd>
             </div>
             <div>
               <dt>Risk flag</dt>
@@ -175,6 +191,16 @@ export default async function AdminLeadDetailPage({ params, searchParams }: Page
               <dt>Assigned admin</dt>
               <dd>{assignedAdmin?.full_name ?? (lead.assigned_admin_id ? "Admin" : "Unassigned")}</dd>
             </div>
+            {!lead.assigned_admin_id && profile?.id ? (
+              <form action={updateLeadQuickActionForm} className="dashboard-note-form">
+                <input type="hidden" name="leadId" value={lead.id} />
+                <input type="hidden" name="redirectTo" value={detailRedirect} />
+                <input type="hidden" name="assignToMe" value="1" />
+                <button type="submit" className="button button-secondary">
+                  Assign to me
+                </button>
+              </form>
+            ) : null}
             <div>
               <dt>Follow-up due</dt>
               <dd>{lead.follow_up_due_at ? formatDashboardDate(lead.follow_up_due_at) : "Not set"}</dd>
@@ -249,6 +275,17 @@ export default async function AdminLeadDetailPage({ params, searchParams }: Page
       </div>
       <section className="dashboard-panel">
         <h2>Update status</h2>
+        <p className="dashboard-inline-note dashboard-status-next">{leadStatusWorkflowLine}</p>
+        <p className="dashboard-inline-note">
+          <strong>Do this next:</strong> {nextStepCopy}
+          {recommendedStatus ? (
+            <>
+              {" "}
+              Recommended status: <strong>{leadStatusLabels[recommendedStatus]}</strong>
+              {recommendedStatus === "enrolled" && !lead.client_id ? " (via Accept & invite below)" : null}.
+            </>
+          ) : null}
+        </p>
         {error === "invite-required" ? (
           <p className="form-error">Use “Accept & invite client” to enrol this lead. Status alone cannot create portal access.</p>
         ) : null}
@@ -259,18 +296,30 @@ export default async function AdminLeadDetailPage({ params, searchParams }: Page
               <input type="hidden" name="status" value={status} />
               <button
                 type="submit"
-                className={`button button-small ${lead.status === status ? "button-primary" : "button-secondary"}`}
+                className={`button button-small ${
+                  lead.status === status
+                    ? "button-primary"
+                    : recommendedStatus === status
+                      ? "button-secondary dashboard-status-recommended"
+                      : "button-secondary"
+                }`}
               >
                 {leadStatusLabels[status]}
               </button>
             </form>
           ))}
         </div>
-        {!lead.client_id ? (
+        {canInviteLead(lead) ? (
           <p className="dashboard-inline-note">
-            <strong>Ready to enrol?</strong>{" "}
-            <Link href={`/admin/clients/invite/?leadId=${lead.id}`} className="button button-small button-primary">
+            <Link href={`/admin/clients/invite/?leadId=${lead.id}`} className="button button-primary">
               Accept & invite client
+            </Link>
+          </p>
+        ) : lead.client_id ? (
+          <p className="dashboard-inline-note">
+            Already enrolled.{" "}
+            <Link href={`/admin/clients/`} className="button button-small button-secondary">
+              Browse clients
             </Link>
           </p>
         ) : null}
@@ -300,7 +349,9 @@ export default async function AdminLeadDetailPage({ params, searchParams }: Page
             ))}
           </ul>
         ) : (
-          <p className="dashboard-empty">No notes yet.</p>
+          <p className="dashboard-empty">
+            No notes yet. After each call or WhatsApp, save one sentence so follow-up is not only in your inbox.
+          </p>
         )}
       </section>
     </div>

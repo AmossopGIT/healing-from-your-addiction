@@ -1,10 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { LeadSlaBadge } from "@/components/dashboard/LeadSlaBadge";
+import { updateLeadQuickActionForm } from "@/lib/dashboard/adminActions";
 import { formatDashboardDate, leadStatusLabels } from "@/lib/dashboard/constants";
 import { fetchLeadsList } from "@/lib/dashboard/leadsQueries";
-import { isLeadOverdue } from "@/lib/dashboard/leadSla";
+import { canInviteLead, formatLeadTriageLabel, getLeadNextStepCopy } from "@/lib/dashboard/leadNextStep";
+import { formatDatetimeLocalValue, isLeadOverdue } from "@/lib/dashboard/leadSla";
 import { createMetadata } from "@/lib/seo";
+import { getAuthProfile } from "@/lib/supabase/auth";
 
 export const metadata: Metadata = createMetadata({
   title: "Leads | Admin | Healing From Your Addiction",
@@ -26,8 +29,12 @@ function buildLeadsHref(params: { status?: string; q?: string; overdue?: string 
 
 export default async function AdminLeadsPage({ searchParams }: PageProps) {
   const filters = await searchParams;
-  const { leads, adminNameById, totalCount } = await fetchLeadsList(filters);
+  const [{ leads, adminNameById, totalCount }, profile] = await Promise.all([
+    fetchLeadsList(filters),
+    getAuthProfile(),
+  ]);
   const hasFilters = Boolean(filters.status || filters.q || filters.overdue === "1");
+  const listRedirect = buildLeadsHref(filters);
 
   return (
     <div className="dashboard-stack">
@@ -37,6 +44,11 @@ export default async function AdminLeadsPage({ searchParams }: PageProps) {
         <p>
           All confidential enquiries submitted from the public site.
           {hasFilters ? ` Showing ${totalCount} result${totalCount === 1 ? "" : "s"}.` : null}
+        </p>
+        <p className="dashboard-inline-note">
+          Start with <strong>Overdue</strong>. Assign yourself, set a follow-up due date, send a first response, then invite
+          from the lead — not from a blank Invite form.{" "}
+          <Link href="/admin/docs/lead-to-client-onboarding-flow/">Onboarding guide</Link>
         </p>
       </section>
 
@@ -92,6 +104,7 @@ export default async function AdminLeadsPage({ searchParams }: PageProps) {
                   <th>Status</th>
                   <th>Follow-up due</th>
                   <th>Received</th>
+                  <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -99,11 +112,10 @@ export default async function AdminLeadsPage({ searchParams }: PageProps) {
                   <tr key={lead.id} className={isLeadOverdue(lead) ? "dashboard-table-row-overdue" : undefined}>
                     <td>
                       <Link href={`/admin/leads/${lead.id}/`}>{lead.full_name}</Link>
+                      <p className="dashboard-table-hint">{getLeadNextStepCopy(lead.status)}</p>
                     </td>
                     <td>{lead.addiction_concern}</td>
-                    <td>
-                      {lead.triage_priority ?? "routine"} / {lead.risk_flag ?? "standard"}
-                    </td>
+                    <td>{formatLeadTriageLabel(lead)}</td>
                     <td>
                       {lead.assigned_admin_id ? (adminNameById.get(lead.assigned_admin_id) ?? "Admin") : "—"}
                     </td>
@@ -115,6 +127,47 @@ export default async function AdminLeadsPage({ searchParams }: PageProps) {
                     </td>
                     <td>{lead.follow_up_due_at ? formatDashboardDate(lead.follow_up_due_at) : "—"}</td>
                     <td>{formatDashboardDate(lead.created_at)}</td>
+                    <td>
+                      <div className="dashboard-lead-actions">
+                        <Link href={`/admin/leads/${lead.id}/`} className="button button-small button-secondary">
+                          Open
+                        </Link>
+                        {canInviteLead(lead) ? (
+                          <Link
+                            href={`/admin/clients/invite/?leadId=${lead.id}`}
+                            className="button button-small button-primary"
+                          >
+                            Invite
+                          </Link>
+                        ) : null}
+                        {!lead.assigned_admin_id && profile?.id ? (
+                          <form action={updateLeadQuickActionForm}>
+                            <input type="hidden" name="leadId" value={lead.id} />
+                            <input type="hidden" name="redirectTo" value={listRedirect} />
+                            <input type="hidden" name="assignToMe" value="1" />
+                            <button type="submit" className="button button-small button-secondary">
+                              Assign to me
+                            </button>
+                          </form>
+                        ) : null}
+                        <form action={updateLeadQuickActionForm} className="dashboard-lead-follow-up-form">
+                          <input type="hidden" name="leadId" value={lead.id} />
+                          <input type="hidden" name="redirectTo" value={listRedirect} />
+                          <label className="visually-hidden" htmlFor={`follow-up-${lead.id}`}>
+                            Follow-up due
+                          </label>
+                          <input
+                            id={`follow-up-${lead.id}`}
+                            type="datetime-local"
+                            name="followUpDueAt"
+                            defaultValue={formatDatetimeLocalValue(lead.follow_up_due_at)}
+                          />
+                          <button type="submit" className="button button-small button-secondary">
+                            Save
+                          </button>
+                        </form>
+                      </div>
+                    </td>
                   </tr>
                 ))}
               </tbody>

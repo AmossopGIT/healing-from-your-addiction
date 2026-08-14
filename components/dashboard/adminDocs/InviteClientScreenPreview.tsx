@@ -15,8 +15,14 @@ export function InviteClientScreenPreview() {
           <section className="dashboard-page-header">
             <p className="eyebrow">Client onboarding</p>
             <h2>Invite client</h2>
-            <p>Accept this qualified lead and create secure portal access.</p>
+            <p>Filled from a lead — name and email already set. Blank form = no lead selected.</p>
           </section>
+          <div className="admin-doc-preview-panel" style={{ marginBottom: "0.65rem" }}>
+            <p className="admin-doc-preview-panel-title">Lead handoff summary</p>
+            <p style={{ margin: 0, fontSize: "0.72rem", color: "var(--muted)" }}>
+              Concern: Gambling · Urgency: medium · Callback: evening
+            </p>
+          </div>
           <div className="admin-doc-invite-form-preview">
             <div className="admin-doc-invite-field">
               <span className="admin-doc-invite-label">Full name</span>
@@ -28,11 +34,7 @@ export function InviteClientScreenPreview() {
             </div>
             <div className="admin-doc-invite-field">
               <span className="admin-doc-invite-label">Addiction focus</span>
-              <span className="admin-doc-invite-box">Gambling addiction support</span>
-            </div>
-            <div className="admin-doc-invite-field">
-              <span className="admin-doc-invite-label">Preferred contact method</span>
-              <span className="admin-doc-invite-box">WhatsApp</span>
+              <span className="admin-doc-invite-box">Gambling Addiction</span>
             </div>
             <span className="button button-primary">Send invitation</span>
           </div>

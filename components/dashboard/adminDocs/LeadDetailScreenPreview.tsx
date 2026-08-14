@@ -16,7 +16,10 @@ export function LeadDetailScreenPreview() {
             <p className="eyebrow">Lead detail</p>
             <h2>Alex M.</h2>
             <p>
-              Received recently · <span className="status-badge status-badge-new">New</span>
+              <span className="status-badge status-badge-qualified">Qualified</span> · Priority
+            </p>
+            <p className="dashboard-inline-note">
+              Next: Use Accept &amp; invite client — status alone cannot create portal access.
             </p>
           </section>
           <div className="admin-doc-detail-grid">
@@ -28,32 +31,24 @@ export function LeadDetailScreenPreview() {
                   <dd>alex@example.com</dd>
                 </div>
                 <div>
-                  <dt>Phone</dt>
-                  <dd>072 000 0000</dd>
-                </div>
-                <div>
                   <dt>Preferred contact</dt>
                   <dd>WhatsApp</dd>
                 </div>
               </dl>
             </div>
             <div className="admin-doc-preview-panel">
-              <p className="admin-doc-preview-panel-title">Triage summary</p>
+              <p className="admin-doc-preview-panel-title">Follow-up consent</p>
               <dl className="admin-doc-dl-preview">
                 <div>
-                  <dt>Triage priority</dt>
-                  <dd>priority</dd>
-                </div>
-                <div>
-                  <dt>Follow-up consent</dt>
+                  <dt>Channels</dt>
                   <dd>WhatsApp: Yes · Email: Yes · Phone: No</dd>
                 </div>
               </dl>
             </div>
           </div>
           <div className="admin-doc-preview-cta-row">
-            <span className="button button-small button-primary">Accept &amp; invite client</span>
-            <span className="button button-small button-secondary">Outreach started</span>
+            <span className="button button-primary">Accept &amp; invite client</span>
+            <span className="button button-small button-secondary">Assign to me</span>
           </div>
         </div>
       </div>

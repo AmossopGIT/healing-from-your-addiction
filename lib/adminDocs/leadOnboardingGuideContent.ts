@@ -21,6 +21,11 @@ export const leadOnboardingGuideContent = {
   portalIntakeUrl: `${siteRoot}/portal/intake/`,
   facts: [
     {
+      label: "Daily start — Overview",
+      value:
+        "Open Admin Overview, then Overdue. Assign to me so Assigned is not left as —, set a follow-up due date, and respond before inviting.",
+    },
+    {
       label: "Consent on the system today",
       value:
         "Website form captures follow-up channel consent (WhatsApp / Email / Phone) plus a non-emergency acknowledgement. Those values show on the lead detail page.",
@@ -31,37 +36,32 @@ export const leadOnboardingGuideContent = {
         "A separate therapy or programme consent PDF is not generated or emailed by the backend when a lead arrives.",
     },
     {
-      label: "Stage A — Lead",
+      label: "Stage A → Stage B",
       value:
-        "Person appears under Admin → Leads. You triage, respond, and track status. No portal account yet.",
-    },
-    {
-      label: "Stage B — Client",
-      value:
-        "Use Accept & invite client. The platform emails a secure invite, creates the client profile, and unlocks portal intake after focus is assigned.",
+        "Leads stay on Admin → Leads until you use Accept & invite client (or Invite on the list). That creates portal access and can unlock intake when focus is set.",
     },
   ],
   steps: [
     {
       id: "leads-list",
       title: "Open the Leads list",
-      body: "New website enquiries land at Admin → Leads. Check Overdue first, then every New lead the same day when possible. Click the person name to open their detail.",
-      callout: "Do not leave form leads only in email — work them from the Leads screen so SLA and notes stay with the record.",
-      screenCaption: "Leads / Enquiries at /admin/leads/ — filters, triage, SLA, and status.",
+      body: "New website enquiries land at Admin → Leads. Check Overdue first. Each row has Open, Invite (when not enrolled), Assign to me, and a Follow-up due Save that stays on the list. Triage shows a readable label such as Priority — not priority / priority.",
+      callout: "Do not leave form leads only in email — work them from the Leads screen so SLA, assignment, and notes stay with the record.",
+      screenCaption: "Leads list with Open, Invite, Assign to me, and follow-up Save on each row.",
     },
     {
       id: "lead-detail",
       title: "Review consent, triage, and respond",
-      body: "On lead detail, read triage and safety signals first. Confirm follow-up consent before messaging. Use the recommended first-response template, contact them in the allowed channel, save follow-up fields, and add an internal note.",
-      callout: "Status alone cannot enrol them. When they agree to continue, use Accept & invite client.",
-      screenCaption: "Lead detail shows contact, follow-up consent, triage, templates, and the invite CTA.",
+      body: "On lead detail, read triage and safety signals first. Confirm follow-up consent before messaging. Status pills show the workflow; Enrolled is only via Accept & invite client. After every call or WhatsApp, save an internal note.",
+      callout: "Status alone cannot enrol them. Use the large Accept & invite client button when they agree to continue.",
+      screenCaption: "Lead detail with next-step coaching and a prominent Accept & invite client button.",
     },
     {
       id: "invite",
       title: "Accept and invite the client",
-      body: "Confirm name, email, addiction focus, and preferred contact. Send invitation. The system emails a password setup link, creates the client profile, links the lead, and sets status to Enrolled.",
+      body: "Prefer Invite from a lead so name, email, and handoff are filled. Confirm addiction focus (unlocks portal intake) and preferred contact, then Send invitation. Opening Invite client from the sidebar with a blank form is only for phone/email enquiries with no lead row.",
       callout: "Invite the same day you agree they are ready — do not wait for a separate forms pack unless you still need offline paperwork.",
-      screenCaption: "Invite client form at /admin/clients/invite/ — often opened with ?leadId=…",
+      screenCaption: "Invite form filled from a lead (?leadId=…). Blank sidebar invite means no lead was selected.",
     },
     {
       id: "intake",
@@ -78,10 +78,10 @@ export const leadOnboardingGuideContent = {
       summary:
         "System saves the lead, emails the practice inbox, and shows them as New on /admin/leads/ with consent and triage already captured.",
       steps: [
-        "Open the new lead and set Triage review while you read",
-        "Confirm follow-up consent and preferred contact",
+        "Open Overdue or the new lead — use Assign to me and set follow-up due on the list if helpful",
+        "Confirm follow-up consent and preferred contact on lead detail",
         "Send first response in the allowed channel",
-        "Set Outreach started + follow-up due, then continue to Qualified → invite",
+        "Set Outreach started, then continue to Qualified → Invite from the lead (not a blank sidebar form)",
       ],
     },
     {
@@ -92,7 +92,7 @@ export const leadOnboardingGuideContent = {
       steps: [
         "Ask preferred contact and permission for WhatsApp if needed",
         "Capture name, email, phone, concern, urgency, and callback window",
-        "Invite via /admin/clients/invite/ when they agree to continue",
+        "Use the blank Invite client form only when there is no lead row",
         "Note in handoff that origin was email",
       ],
     },
@@ -104,7 +104,7 @@ export const leadOnboardingGuideContent = {
         "If severe withdrawal or immediate risk → GP / emergency care first",
         "Move to WhatsApp only with clear permission",
         "Capture notes the same day in admin",
-        "Invite when qualified",
+        "Invite when qualified — from a lead if one exists",
       ],
     },
     {
@@ -113,21 +113,22 @@ export const leadOnboardingGuideContent = {
       summary: "Confirm WhatsApp follow-up consent. Keep first messages short and non-judgmental with no cure promises.",
       steps: [
         "Confirm they consented to WhatsApp",
-        "Mirror decisions back into the lead record (status, due date, notes)",
-        "Invite from admin so portal access is tracked",
+        "Mirror decisions back into the lead record (status, due date, notes, assignment)",
+        "Invite from the lead so portal access is tracked",
       ],
     },
   ],
   checklist: [
-    "Found the person on /admin/leads/ (or created invite path if email/phone only)",
-    "Reviewed triage priority, risk, withdrawal, medical support",
+    "Started from Overview Overdue or /admin/leads/?overdue=1",
+    "Found the person on /admin/leads/ (blank Invite only if email/phone with no lead)",
+    "Used Assign to me when Assigned was —",
+    "Set follow-up due (list Save or lead detail) so they do not go cold",
+    "Reviewed triage, risk, withdrawal, medical support",
     "Confirmed follow-up consent / asked permission if no form",
     "Sent first response in allowed channel",
-    "Marked first response sent + set follow-up due",
-    "Updated status (Triage review → Outreach started → …)",
-    "Added internal note",
-    "Agreed next step with the person",
-    "When ready: Accept & invite client with correct email and addiction focus",
+    "Marked first response sent + updated status",
+    "Added internal note after the conversation",
+    "When ready: Invite from the lead (Accept & invite) with correct email and addiction focus",
     "Confirmed they received invite / can set password",
     "After focus assigned: remind them to complete /portal/intake/",
     "Review intake under Admin → Clients → Intake before the intake conversation",
@@ -138,6 +139,10 @@ export const leadOnboardingGuideContent = {
     "Routine: within 24 hours",
   ],
   faqs: [
+    {
+      issue: "I opened Invite client and the form is empty — what do I do?",
+      fix: "That means no lead was selected. For website form leads, go to Leads → Open or Invite on the row so name and email fill in. Use the blank form only for phone/email enquiries with no lead row.",
+    },
     {
       issue: "Where is the consent form?",
       fix: "On the website enquiry form: follow-up channel consent + non-emergency acknowledgement. Those values show on lead detail. A separate therapy consent PDF is not emailed by the backend yet.",
@@ -152,7 +157,7 @@ export const leadOnboardingGuideContent = {
     },
     {
       issue: "Can I mark a lead Enrolled without inviting?",
-      fix: "No. Use Accept & invite client. Status alone cannot create portal access.",
+      fix: "No. Use Accept & invite client (or Invite on the list). Status alone cannot create portal access.",
     },
     {
       issue: "What if Lynn already collected lots of information?",
@@ -166,6 +171,8 @@ export const leadOnboardingGuideContent = {
     "Respect autonomy and the channels they consented to",
   ],
   quickRoutes: [
+    { label: "Overview", path: "/admin/" },
+    { label: "Overdue leads", path: "/admin/leads/?overdue=1" },
     { label: "Leads list", path: "/admin/leads/" },
     { label: "Invite client", path: "/admin/clients/invite/" },
     { label: "Portal intake", path: "/portal/intake/" },

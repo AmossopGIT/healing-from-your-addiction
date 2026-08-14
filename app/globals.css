@@ -5161,6 +5161,62 @@ main,
   gap: 0.5rem;
 }
 
+.dashboard-lead-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem;
+  min-width: 12rem;
+}
+
+.dashboard-lead-follow-up-form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.dashboard-lead-follow-up-form input[type="datetime-local"] {
+  max-width: 11rem;
+  font-size: 0.75rem;
+  padding: 0.3rem 0.4rem;
+}
+
+.dashboard-table-hint {
+  margin: 0.25rem 0 0;
+  font-size: 0.75rem;
+  color: var(--muted);
+  line-height: 1.35;
+  max-width: 16rem;
+}
+
+.dashboard-status-next {
+  margin: 0 0 0.75rem;
+}
+
+.dashboard-status-recommended {
+  box-shadow: 0 0 0 2px var(--teal-soft);
+}
+
+.form-hint {
+  display: block;
+  margin-top: 0.35rem;
+  font-size: 0.85rem;
+  color: var(--muted);
+  line-height: 1.4;
+}
+
+.dashboard-stat-card-link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
+.dashboard-stat-card-link:hover .dashboard-stat-card,
+.dashboard-stat-card-link:focus-visible .dashboard-stat-card {
+  border-color: var(--teal-soft);
+}
+
 .dashboard-note-form,
 .dashboard-form {
   display: grid;

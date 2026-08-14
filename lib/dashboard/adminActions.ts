@@ -1,7 +1,7 @@
 "use server";
 
 import { parseDatetimeLocalInput } from "@/lib/dashboard/leadSla";
-import { dashboardFieldMaxLengths, normalizeMultiline, normalizeSingleLine, sanitizeLeadStatus, sanitizeUuid } from "@/lib/dashboard/formValidation";
+import { dashboardFieldMaxLengths, normalizeMultiline, normalizeSingleLine, sanitizeLeadStatus, sanitizeRedirectPath, sanitizeUuid } from "@/lib/dashboard/formValidation";
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import { logAuditEvent } from "@/lib/supabase/audit";
@@ -88,6 +88,10 @@ function sanitizeOptionalUuid(value: string | null | undefined) {
   return sanitizeUuid(normalized) || null;
 }
 
+function resolveLeadRedirect(formData: FormData, leadId: string) {
+  return sanitizeRedirectPath(String(formData.get("redirectTo") ?? ""), ["/admin/leads"], `/admin/leads/${leadId}/`);
+}
+
 export async function updateLeadFollowUpForm(formData: FormData) {
   const leadId = sanitizeUuid(String(formData.get("leadId") ?? ""));
   if (!leadId) {
@@ -99,6 +103,7 @@ export async function updateLeadFollowUpForm(formData: FormData) {
   const firstResponseSentAt = parseDatetimeLocalInput(String(formData.get("firstResponseSentAt") ?? ""));
   const assignedAdminNotes = normalizeMultiline(String(formData.get("assignedAdminNotes") ?? "")).slice(0, 1000) || null;
   const assignedAdminId = sanitizeOptionalUuid(String(formData.get("assignedAdminId") ?? ""));
+  const redirectTo = resolveLeadRedirect(formData, leadId);
 
   const supabase = await createClient();
   const {
@@ -132,7 +137,61 @@ export async function updateLeadFollowUpForm(formData: FormData) {
     metadata: { firstResponseTemplateId, followUpDueAt, firstResponseSentAt, assignedAdminId },
   });
 
-  redirect(`/admin/leads/${leadId}/`);
+  redirect(redirectTo);
+}
+
+/** Partial updates from the leads list or Assign to me — does not wipe other follow-up fields. */
+export async function updateLeadQuickActionForm(formData: FormData) {
+  const leadId = sanitizeUuid(String(formData.get("leadId") ?? ""));
+  if (!leadId) {
+    redirect("/admin/leads/");
+  }
+
+  const redirectTo = resolveLeadRedirect(formData, leadId);
+  const assignToMe = String(formData.get("assignToMe") ?? "") === "1";
+  const hasFollowUpDue = formData.has("followUpDueAt");
+  const followUpDueAt = hasFollowUpDue ? parseDatetimeLocalInput(String(formData.get("followUpDueAt") ?? "")) : undefined;
+
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    redirect("/admin/login/");
+  }
+
+  const updates: {
+    assigned_admin_id?: string;
+    follow_up_due_at?: string | null;
+  } = {};
+
+  if (assignToMe) {
+    updates.assigned_admin_id = user.id;
+  }
+  if (hasFollowUpDue) {
+    updates.follow_up_due_at = followUpDueAt ?? null;
+  }
+
+  if (!Object.keys(updates).length) {
+    redirect(redirectTo);
+  }
+
+  const { error } = await supabase.from("leads").update(updates).eq("id", leadId);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  await logAuditEvent({
+    userId: user.id,
+    action: "lead_quick_action",
+    resourceType: "lead",
+    resourceId: leadId,
+    metadata: updates,
+  });
+
+  redirect(redirectTo);
 }
 
 const paymentStatuses = new Set([
