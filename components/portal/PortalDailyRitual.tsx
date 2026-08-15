@@ -1,6 +1,4 @@
-import Link from "next/link";
 import type { DailyAffirmation } from "@/lib/portal/dailyAffirmation";
-import type { PortalNextStep } from "@/lib/portal/nextStep";
 import type { ClientDailyCheckIn, ClientHomeworkEntry, HomeworkTone, ProgrammeHomeworkTask } from "@/types/database";
 import { PortalCheckInForm } from "@/components/portal/PortalCheckInForm";
 import { toggleHomeworkTask } from "@/lib/dashboard/homeworkActions";
@@ -10,7 +8,6 @@ type PortalDailyRitualProps = {
   dailyAffirmation: DailyAffirmation | null;
   affirmationNote: string | null;
   todayCheckIn: ClientDailyCheckIn | null;
-  nextStep: PortalNextStep;
   showCheckIn: boolean;
   homeworkTasks?: ProgrammeHomeworkTask[];
   todayHomeworkEntries?: ClientHomeworkEntry[];
@@ -22,7 +19,6 @@ export function PortalDailyRitual({
   dailyAffirmation,
   affirmationNote,
   todayCheckIn,
-  nextStep,
   showCheckIn,
   homeworkTasks = [],
   todayHomeworkEntries = [],
@@ -92,16 +88,7 @@ export function PortalDailyRitual({
               })}
             </ul>
           </article>
-        ) : (
-          <article className="portal-home-ritual-card">
-            <p className="eyebrow">Micro-action</p>
-            <h3>One small step</h3>
-            <p>{nextStep.description}</p>
-            <Link href={nextStep.href} className="button button-secondary button-small">
-              {nextStep.buttonLabel}
-            </Link>
-          </article>
-        )}
+        ) : null}
       </div>
     </section>
   );

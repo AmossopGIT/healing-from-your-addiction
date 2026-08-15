@@ -9,6 +9,7 @@ import type { InteractiveProgrammeDefinition } from "@/content/interactiveProgra
 import { createEnrollment, unlockSessionProgress } from "@/lib/dashboard/programmeActions";
 import {
   adminAddProgrammeFlag,
+  adminResolveProgrammeFlag,
   adminSkipActivity,
   adminUnlockActivity,
   assignInteractiveProgramme,
@@ -21,7 +22,12 @@ import {
   getClientContentReceipts,
   getClientIntakeSubmission,
 } from "@/lib/dashboard/queries";
-import { buildThisWeekModel, buildWeek1LaunchChecklist, nextStepFromThisWeek } from "@/lib/portal/courseLoop";
+import {
+  buildThisWeekModel,
+  buildWeek1LaunchChecklist,
+  nextStepFromThisWeek,
+  summarizeWeek1Launch,
+} from "@/lib/portal/courseLoop";
 import { resolveProgrammeDefinition, findActivity } from "@/lib/programme/interactive/content";
 import { mergeAdminVisibleResponses, summarizeJourney } from "@/lib/programme/interactive/progress";
 import {
@@ -39,6 +45,20 @@ import { sanitizeUuid } from "@/lib/dashboard/formValidation";
 
 export const dynamic = "force-dynamic";
 
+const programmeErrorMessages: Record<string, string> = {
+  "template-missing": "That programme template could not be found.",
+  "content-missing": "Interactive programme content is missing for that template.",
+  "enrollment-failed": "Could not create the programme enrollment.",
+  "progress-failed": "Enrollment was created but activity progress rows failed.",
+  "unlock-failed": "Could not unlock that activity. Check it still belongs to this client.",
+  "skip-failed": "Could not skip that activity. A skip reason is required.",
+  "flag-failed": "Could not add that flag.",
+  "flag-missing": "That flag was not found for this client.",
+  "flag-resolve-failed": "Could not resolve that flag.",
+  "slot-full": "That live session slot is already full.",
+  "recording-failed": "Could not save the recording link.",
+  "doc-failed": "Could not release that programme guide.",
+};
 type PageProps = {
   params: Promise<{ id: string }>;
   searchParams: Promise<{
@@ -50,6 +70,7 @@ type PageProps = {
     unlocked?: string;
     skipped?: string;
     flagged?: string;
+    flagResolved?: string;
     enrollmentId?: string;
   }>;
 };
@@ -90,7 +111,7 @@ function dayInitial(dayKey: string) {
 
 export default async function AdminClientProgrammePage({ params, searchParams }: PageProps) {
   const { id } = await params;
-  const { scheduled, recordingSaved, docReleased, error, assigned, unlocked, skipped, flagged, enrollmentId } =
+  const { scheduled, recordingSaved, docReleased, error, assigned, unlocked, skipped, flagged, flagResolved, enrollmentId } =
     await searchParams;
   const bundle = await getAdminClientBundle(id, sanitizeUuid(enrollmentId ?? ""));
   if (!bundle) notFound();
@@ -183,6 +204,10 @@ export default async function AdminClientProgrammePage({ params, searchParams }:
     hasProgrammeDocs: programmeDocs.length > 0,
     clientNextStep,
   });
+  const week1Summary = summarizeWeek1Launch(week1Checklist);
+  const openFlags = (adminFlags ?? []).filter((flag) => !flag.resolved_at);
+  const urgentFlags = openFlags.filter((flag) => flag.severity === "urgent" || flag.flag_type === "safety");
+  const highUrgeCheckIns = dailyCheckIns.filter((checkIn) => checkIn.craving_level >= 4);
 
   const days = recentDayKeys();
   const entriesByTaskDate = new Map(homeworkEntries.map((entry) => [`${entry.task_id}:${entry.entry_date}`, entry]));
@@ -230,11 +255,22 @@ export default async function AdminClientProgrammePage({ params, searchParams }:
         </p>
       </section>
 
-      <section className="dashboard-panel">
+      <section className="dashboard-panel" id="week1-checklist">
         <h2>Week 1 launch checklist</h2>
         <p className="dashboard-inline-note">
           After invite and intake/consultation, use this list to start the course loop the client sees as “This week”.
+          {week1Summary.completeCount}/{week1Summary.totalCount} complete.
         </p>
+        <nav className="admin-programme-toc" aria-label="Programme sections">
+          <a href="#week1-checklist">Week 1</a>
+          <a href="#assign">Assign</a>
+          <a href="#journey">Journey</a>
+          <a href="#mood-urge-pulse">Mood & urge</a>
+          <a href="#flags">Flags</a>
+          <a href="#schedule">Schedule</a>
+          <a href="#docs">Guides</a>
+          <a href="#sessions">Sessions</a>
+        </nav>
         <ul className="admin-week1-checklist">
           {week1Checklist.map((item) => (
             <li key={item.id} className={item.done ? "is-complete" : ""}>
@@ -242,7 +278,15 @@ export default async function AdminClientProgrammePage({ params, searchParams }:
                 <strong>{item.label}</strong>
                 <p>{item.detail}</p>
               </div>
-              <span className="portal-pre-course-status">{item.done ? "Done" : "Open"}</span>
+              {item.done ? (
+                <span className="portal-pre-course-status">Done</span>
+              ) : item.href ? (
+                <Link href={item.href} className="button button-small button-secondary">
+                  Open
+                </Link>
+              ) : (
+                <span className="portal-pre-course-status">Open</span>
+              )}
             </li>
           ))}
         </ul>
@@ -256,6 +300,22 @@ export default async function AdminClientProgrammePage({ params, searchParams }:
             </p>
           </div>
         ) : null}
+        {urgentFlags.length || highUrgeCheckIns.length ? (
+          <div className="admin-safety-alert" role="status">
+            <strong>Needs attention</strong>
+            <p>
+              {urgentFlags.length
+                ? `${urgentFlags.length} open urgent/safety flag${urgentFlags.length === 1 ? "" : "s"}.`
+                : null}{" "}
+              {highUrgeCheckIns.length
+                ? `${highUrgeCheckIns.length} recent high-urge check-in${highUrgeCheckIns.length === 1 ? "" : "s"} (craving 4+).`
+                : null}
+            </p>
+            <Link href="#flags" className="button button-small button-secondary">
+              Review flags
+            </Link>
+          </div>
+        ) : null}
       </section>
 
       {scheduled ? <p className="dashboard-inline-note dashboard-success-note">Schedule updated.</p> : null}
@@ -267,8 +327,11 @@ export default async function AdminClientProgrammePage({ params, searchParams }:
       {unlocked ? <p className="dashboard-inline-note dashboard-success-note">Activity unlocked.</p> : null}
       {skipped ? <p className="dashboard-inline-note dashboard-success-note">Activity skipped.</p> : null}
       {flagged ? <p className="dashboard-inline-note dashboard-success-note">Flag added.</p> : null}
+      {flagResolved ? <p className="dashboard-inline-note dashboard-success-note">Flag resolved.</p> : null}
       {error ? (
-        <p className="dashboard-inline-note dashboard-error-note">Could not save that change. Please try again.</p>
+        <p className="dashboard-inline-note dashboard-error-note">
+          {programmeErrorMessages[error] ?? "Could not save that change. Please try again."}
+        </p>
       ) : null}
       {dataErrors.length ? (
         <section className="dashboard-panel dashboard-data-warning" role="alert">
@@ -318,7 +381,7 @@ export default async function AdminClientProgrammePage({ params, searchParams }:
       ) : null}
 
       {!enrollment ? (
-        <section className="dashboard-panel">
+        <section className="dashboard-panel" id="assign">
           <h2>Assign a programme</h2>
           <p className="dashboard-inline-note">
             Prefer the interactive assign action. It stores an immutable content snapshot, unlocks the first journey
@@ -416,6 +479,7 @@ export default async function AdminClientProgrammePage({ params, searchParams }:
 
           {definition ? (
             <>
+              <div id="journey">
               <section className="dashboard-panel programme-admin-guide">
                 <div className="dashboard-panel-header">
                   <div>
@@ -477,12 +541,14 @@ export default async function AdminClientProgrammePage({ params, searchParams }:
                 audience="admin"
                 clientProfileId={id}
               />
-              <ProgrammeProgressTimeline events={activityEvents ?? []} audience="admin" />
+              <ProgrammeProgressTimeline events={activityEvents ?? []} audience="admin" definition={definition} />
+              </div>
 
               <section className="dashboard-panel" id="mood-urge-pulse">
                 <h2>Mood & urge pulse</h2>
                 <p className="dashboard-inline-note">
                   Canonical daily check-ins from the portal and programme daily activities. Private notes stay hidden unless shared.
+                  High-urge rows (craving 4+) are highlighted.
                 </p>
                 {(dailyCheckIns ?? []).length ? (
                   <div className="dashboard-table-wrap">
@@ -498,10 +564,16 @@ export default async function AdminClientProgrammePage({ params, searchParams }:
                       </thead>
                       <tbody>
                         {(dailyCheckIns ?? []).map((checkIn) => (
-                          <tr key={checkIn.id}>
+                          <tr
+                            key={checkIn.id}
+                            className={checkIn.craving_level >= 4 ? "admin-high-urge-row" : undefined}
+                          >
                             <td>{checkIn.check_in_date}</td>
                             <td>{checkIn.mood}</td>
-                            <td>{checkIn.craving_level}</td>
+                            <td>
+                              {checkIn.craving_level}
+                              {checkIn.craving_level >= 4 ? " · high" : ""}
+                            </td>
                             <td>{checkIn.pause_taken ? "Yes" : "No"}</td>
                             <td>{checkIn.note ?? "—"}</td>
                           </tr>
@@ -587,18 +659,36 @@ export default async function AdminClientProgrammePage({ params, searchParams }:
                 </ul>
               </section>
 
-              <section className="dashboard-panel">
+              <section className="dashboard-panel" id="flags">
                 <h2>Admin flags</h2>
                 {(adminFlags ?? []).length ? (
                   <ul className="dashboard-session-list">
                     {(adminFlags ?? []).map((flag) => (
-                      <li key={flag.id} className="dashboard-session-item">
+                      <li
+                        key={flag.id}
+                        className={`dashboard-session-item${flag.resolved_at ? "" : flag.severity === "urgent" || flag.flag_type === "safety" ? " admin-flag-urgent" : ""}`}
+                      >
                         <div>
                           <strong>
                             {flag.flag_type} · {flag.severity}
+                            {flag.resolved_at ? " · resolved" : " · open"}
                           </strong>
                           <p>{flag.note}</p>
+                          {flag.resolved_at ? (
+                            <p className="dashboard-inline-note">Resolved {flag.resolved_at.slice(0, 10)}</p>
+                          ) : null}
                         </div>
+                        {!flag.resolved_at ? (
+                          <form action={adminResolveProgrammeFlag}>
+                            <input type="hidden" name="clientProfileId" value={id} />
+                            <input type="hidden" name="flagId" value={flag.id} />
+                            <button type="submit" className="button button-small button-secondary">
+                              Resolve
+                            </button>
+                          </form>
+                        ) : (
+                          <span className="programme-status programme-status-completed">Resolved</span>
+                        )}
                       </li>
                     ))}
                   </ul>
@@ -637,7 +727,7 @@ export default async function AdminClientProgrammePage({ params, searchParams }:
             </>
           ) : null}
 
-          <section className="dashboard-panel">
+          <section className="dashboard-panel" id="schedule">
             <div className="dashboard-panel-header">
               <h2>Schedule</h2>
               {schedule ? (
@@ -755,7 +845,7 @@ export default async function AdminClientProgrammePage({ params, searchParams }:
           </section>
 
           {programmeDocs.length > 0 ? (
-            <section className="dashboard-panel">
+            <section className="dashboard-panel" id="docs">
               <h2>Programme guides</h2>
               <p className="dashboard-inline-note">
                 Released guides appear in the client&apos;s portal immediately and can be downloaded as PDFs.
@@ -789,7 +879,7 @@ export default async function AdminClientProgrammePage({ params, searchParams }:
             </section>
           ) : null}
 
-          <section className="dashboard-panel">
+          <section className="dashboard-panel" id="sessions">
             <h2>Sessions and recordings</h2>
             <p className="dashboard-inline-note">
               Unlock a session to make it visible to the client. Paste a Drive link after each live session so the

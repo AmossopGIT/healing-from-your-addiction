@@ -6382,6 +6382,27 @@ main,
   margin-bottom: 0.35rem;
 }
 
+.portal-this-week-layout {
+  display: grid;
+  gap: 1rem;
+  align-items: center;
+}
+
+@media (min-width: 720px) {
+  .portal-this-week-layout {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+}
+
+.portal-this-week-art {
+  max-width: 140px;
+  justify-self: end;
+}
+
+.portal-this-week-hero h2 {
+  margin: 0.25rem 0 0.5rem;
+}
+
 .portal-this-week-badge {
   margin: 0;
   padding: 0.2rem 0.55rem;
@@ -6394,6 +6415,48 @@ main,
 
 .portal-this-week h2 {
   margin-top: 0;
+}
+
+.portal-week-map-list {
+  list-style: none;
+  margin: 0.85rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.portal-week-map-list li {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.85rem 1rem;
+  border: 1px solid #e2eeea;
+  border-radius: 12px;
+  background: #fffdfa;
+}
+
+.portal-week-map-list li.is-done {
+  background: #e2eeea;
+  border-color: #c5d9d3;
+}
+
+.portal-week-map-list li.is-current {
+  border-color: #0f5b52;
+  box-shadow: inset 0 0 0 1px #0f5b52;
+}
+
+.portal-week-map-list li p {
+  margin: 0.25rem 0 0;
+  color: #5c5346;
+  font-size: 0.92rem;
+}
+
+.portal-week-map-status {
+  flex-shrink: 0;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #0a3f39;
 }
 
 .portal-this-week-meta {
@@ -6507,6 +6570,50 @@ main,
 
 .admin-client-next-step p {
   margin: 0.25rem 0 0;
+}
+
+.admin-programme-toc {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 0.85rem;
+  margin: 0.75rem 0 1rem;
+  padding: 0.65rem 0.75rem;
+  border-radius: 10px;
+  background: #e2eeea;
+}
+
+.admin-programme-toc a {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #0a3f39;
+  text-decoration: none;
+}
+
+.admin-programme-toc a:hover {
+  text-decoration: underline;
+}
+
+.admin-safety-alert {
+  margin-top: 0.85rem;
+  padding: 0.85rem 1rem;
+  border-radius: 10px;
+  background: #f8e8e4;
+  border: 1px solid #e2b8ae;
+}
+
+.admin-safety-alert p {
+  margin: 0.35rem 0 0.65rem;
+}
+
+.admin-high-urge-row {
+  background: #f8e8e4;
+}
+
+.admin-flag-urgent {
+  border: 1px solid #e2b8ae;
+  border-radius: 10px;
+  padding: 0.5rem;
+  background: #fff8f6;
 }
 
 .portal-home-hero-art,

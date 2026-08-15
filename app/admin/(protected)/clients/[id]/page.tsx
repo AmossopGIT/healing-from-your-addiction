@@ -3,8 +3,15 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { consultationStatusLabels, isConsultationCompleteStatus } from "@/lib/consultation/schema";
 import { formatDashboardDate } from "@/lib/dashboard/constants";
-import { getAdminClientBundle, getClientConsultation, getClientIntakeSubmission, getClientReadinessAssessment } from "@/lib/dashboard/queries";
+import {
+  getAdminClientBundle,
+  getClientConsultation,
+  getClientContentReceipts,
+  getClientIntakeSubmission,
+  getClientReadinessAssessment,
+} from "@/lib/dashboard/queries";
 import { getClientEngagementSummary } from "@/lib/portal/getClientEngagementSummary";
+import { buildWeek1LaunchChecklist, summarizeWeek1Launch } from "@/lib/portal/courseLoop";
 import { updateClientOperations } from "@/lib/dashboard/adminActions";
 import { createMetadata } from "@/lib/seo";
 
@@ -32,12 +39,35 @@ export default async function AdminClientDetailPage({ params, searchParams }: Pa
   const bundle = await getAdminClientBundle(id);
   if (!bundle) notFound();
 
-  const { clientProfile, profile, enrollment, template } = bundle;
-  const [intakeSubmission, consultation, readinessAssessment] = await Promise.all([
+  const { clientProfile, profile, enrollment, template, sessions, progress, schedule, programmeDocs, adminFlags } = bundle;
+  const [intakeSubmission, consultation, readinessAssessment, sessionReceipts, docReceipts] = await Promise.all([
     getClientIntakeSubmission(id),
     getClientConsultation(id),
     getClientReadinessAssessment(id),
+    sessions.length
+      ? getClientContentReceipts(id, { contentKind: "session", contentIds: sessions.map((session) => session.id) })
+      : Promise.resolve([]),
+    programmeDocs.length
+      ? getClientContentReceipts(id, { contentKind: "programme_doc", contentIds: programmeDocs.map((doc) => doc.id) })
+      : Promise.resolve([]),
   ]);
+
+  const week1Checklist = buildWeek1LaunchChecklist({
+    clientProfileId: id,
+    addictionSlug: clientProfile.addiction_slug,
+    hasEnrollment: Boolean(enrollment),
+    sessionsAvailableCount: progress.filter(
+      (item) => item.status === "available" || item.status === "in_progress" || item.status === "completed",
+    ).length,
+    sessionReceiptCount: sessionReceipts.length,
+    hasSchedule: Boolean(schedule),
+    releasedDocCount: docReceipts.length,
+    hasProgrammeDocs: programmeDocs.length > 0,
+    clientNextStep: null,
+  });
+  const week1Summary = summarizeWeek1Launch(week1Checklist);
+  const openFlags = (adminFlags ?? []).filter((flag) => !flag.resolved_at);
+  const urgentOpenFlags = openFlags.filter((flag) => flag.severity === "urgent" || flag.flag_type === "safety");
 
   let engagement = {
     engagementStreak: 0,
@@ -199,14 +229,57 @@ export default async function AdminClientDetailPage({ params, searchParams }: Pa
             {!enrollment ? (
               <>
                 {" · "}
-                <Link href={`/admin/clients/${id}/programme/`}>Assign now</Link>
+                <Link href={`/admin/clients/${id}/programme/#assign`}>Assign now</Link>
               </>
             ) : null}
           </li>
           <li className={consultation && isConsultationCompleteStatus(consultation.status) ? "is-complete" : ""}>
             Consultation completed
           </li>
+          <li className={week1Summary.receiptsReady ? "is-complete" : ""}>
+            Sessions 1–2 receipts
+            {!week1Summary.receiptsReady ? (
+              <>
+                {" · "}
+                <Link href={`/admin/clients/${id}/programme/#sessions`}>Open</Link>
+              </>
+            ) : null}
+          </li>
+          <li className={week1Summary.guideReady ? "is-complete" : ""}>
+            Week 1 guide
+            {!week1Summary.guideReady ? (
+              <>
+                {" · "}
+                <Link href={`/admin/clients/${id}/programme/#docs`}>Release</Link>
+              </>
+            ) : null}
+          </li>
+          <li className={week1Summary.scheduleReady ? "is-complete" : ""}>
+            Live session slot
+            {!week1Summary.scheduleReady ? (
+              <>
+                {" · "}
+                <Link href={`/admin/clients/${id}/programme/#schedule`}>Confirm</Link>
+              </>
+            ) : null}
+          </li>
         </ul>
+        <p className="dashboard-inline-note">
+          Week 1 launch: {week1Summary.completeCount}/{week1Summary.totalCount} ·{" "}
+          <Link href={week1Summary.nextActionHref}>{week1Summary.nextActionLabel}</Link>
+          {template?.title ? ` · ${template.title}` : null}
+        </p>
+        {urgentOpenFlags.length ? (
+          <p className="dashboard-inline-note dashboard-error-note">
+            {urgentOpenFlags.length} open urgent/safety flag{urgentOpenFlags.length === 1 ? "" : "s"} ·{" "}
+            <Link href={`/admin/clients/${id}/programme/#flags`}>Review flags</Link>
+          </p>
+        ) : openFlags.length ? (
+          <p className="dashboard-inline-note">
+            {openFlags.length} open flag{openFlags.length === 1 ? "" : "s"} ·{" "}
+            <Link href={`/admin/clients/${id}/programme/#flags`}>Review</Link>
+          </p>
+        ) : null}
         {!enrollment ? (
           <p className="dashboard-inline-note">
             Invite does not start the course. After intake and consultation, open{" "}

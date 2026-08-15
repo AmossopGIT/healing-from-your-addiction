@@ -596,6 +596,47 @@ export async function adminAddProgrammeFlag(formData: FormData) {
   redirect(`${redirectTo}?flagged=1`);
 }
 
+export async function adminResolveProgrammeFlag(formData: FormData) {
+  const { supabase, user } = await requireAdmin();
+  const clientProfileId = sanitizeUuid(String(formData.get("clientProfileId") ?? ""));
+  const flagId = sanitizeUuid(String(formData.get("flagId") ?? ""));
+  const redirectTo = clientProfileId ? `/admin/clients/${clientProfileId}/programme/#flags` : "/admin/clients/";
+  if (!clientProfileId || !flagId) redirect(`${redirectTo}?error=flag-missing`);
+
+  const { data: flag } = await supabase
+    .from("programme_admin_flags")
+    .select("id, enrollment_id, client_profile_id, resolved_at")
+    .eq("id", flagId)
+    .eq("client_profile_id", clientProfileId)
+    .maybeSingle();
+
+  if (!flag) redirect(`${redirectTo}?error=flag-missing`);
+  if (flag.resolved_at) redirect(`${redirectTo}?flagResolved=1`);
+
+  const resolvedAt = new Date().toISOString();
+  const { error } = await supabase
+    .from("programme_admin_flags")
+    .update({ resolved_at: resolvedAt })
+    .eq("id", flagId)
+    .eq("client_profile_id", clientProfileId);
+
+  if (error) redirect(`${redirectTo}?error=flag-resolve-failed`);
+
+  await recordProgrammeEvent({
+    supabase,
+    enrollmentId: flag.enrollment_id,
+    clientProfileId,
+    eventType: "paused",
+    actorRole: "admin",
+    actorId: user.id,
+    idempotencyKey: `${flag.enrollment_id}:flag_resolved:${flagId}`,
+    metadata: { flag_id: flagId, resolved_at: resolvedAt, kind: "flag_resolved" },
+  });
+
+  revalidatePath(redirectTo);
+  redirect(`${redirectTo}?flagResolved=1`);
+}
+
 export async function saveProgrammeDraft(formData: FormData) {
   const { supabase, user } = await requireAdmin();
   const slug = String(formData.get("slug") ?? "").trim();

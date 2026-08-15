@@ -119,11 +119,11 @@ export function resolvePortalHomeSections(stage: PortalHomeStage): PortalHomeSec
     case "onboarding":
       return ["hero", "next_step", "pre_course", "daily_ritual", "gentle_reminder"];
     case "pre_intake":
-      return ["hero", "next_step", "pre_course", "this_week", "daily_ritual", "progress", "quick_actions", "activity_feed", "gentle_reminder"];
+      return ["hero", "this_week", "pre_course", "daily_ritual", "activity_feed", "gentle_reminder"];
     case "pre_programme":
-      return ["hero", "next_step", "pre_course", "this_week", "daily_ritual", "progress", "quick_actions", "weekly_pulse", "activity_feed", "gentle_reminder"];
+      return ["hero", "this_week", "pre_course", "daily_ritual", "weekly_pulse", "activity_feed", "gentle_reminder"];
     case "active_programme":
-      return ["hero", "next_step", "this_week", "quick_actions", "daily_ritual", "progress", "weekly_pulse", "activity_feed", "gentle_reminder"];
+      return ["hero", "this_week", "quick_actions", "daily_ritual", "progress", "weekly_pulse", "activity_feed", "gentle_reminder"];
     case "maintenance":
       return ["hero", "this_week", "daily_ritual", "progress", "weekly_pulse", "activity_feed", "gentle_reminder"];
   }

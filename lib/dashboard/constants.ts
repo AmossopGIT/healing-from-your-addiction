@@ -45,3 +45,34 @@ export const portalNavItems = [
   { href: "/portal/resources/", label: "Resources" },
   { href: "/portal/account/", label: "Account" },
 ];
+
+export type PortalNavStage =
+  | "onboarding"
+  | "pre_intake"
+  | "pre_programme"
+  | "active_programme"
+  | "maintenance";
+
+/** Full sidebar destinations stay available; mobile shrinks once the course is active. */
+export function resolvePortalMobileNavItems(stage: PortalNavStage) {
+  if (stage === "active_programme" || stage === "maintenance") {
+    return [
+      { href: "/portal/", label: "Home" },
+      { href: "/portal/programme/", label: "Programme" },
+      { href: "/portal/messages/", label: "Messages" },
+      { href: "/portal/account/", label: "More" },
+    ];
+  }
+
+  if (stage === "pre_intake" || stage === "pre_programme" || stage === "onboarding") {
+    return [
+      { href: "/portal/", label: "Home" },
+      { href: "/portal/intake/", label: "Intake" },
+      { href: "/portal/consultation/", label: "Consultation" },
+      { href: "/portal/messages/", label: "Messages" },
+      { href: "/portal/account/", label: "More" },
+    ];
+  }
+
+  return portalNavItems;
+}

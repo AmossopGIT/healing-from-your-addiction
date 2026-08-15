@@ -1,8 +1,11 @@
+import type { InteractiveProgrammeDefinition } from "@/content/interactiveProgrammes/types";
 import type { ProgrammeActivityEvent } from "@/types/database";
+import { findActivity, activityLabel } from "@/lib/programme/interactive/content";
 
 type ProgrammeProgressTimelineProps = {
   events: ProgrammeActivityEvent[];
   audience: "client" | "admin";
+  definition?: InteractiveProgrammeDefinition | null;
 };
 
 const eventLabels: Record<ProgrammeActivityEvent["event_type"], string> = {
@@ -19,7 +22,11 @@ const eventLabels: Record<ProgrammeActivityEvent["event_type"], string> = {
   programme_completed: "Programme completed",
 };
 
-export function ProgrammeProgressTimeline({ events, audience }: ProgrammeProgressTimelineProps) {
+export function ProgrammeProgressTimeline({
+  events,
+  audience,
+  definition = null,
+}: ProgrammeProgressTimelineProps) {
   const visibleEvents = events.filter((event) => event.event_type !== "viewed").slice(0, 12);
 
   return (
@@ -35,22 +42,32 @@ export function ProgrammeProgressTimeline({ events, audience }: ProgrammeProgres
       </div>
       {visibleEvents.length ? (
         <ol className="programme-progress-timeline-list">
-          {visibleEvents.map((event) => (
-            <li key={event.id} className="programme-progress-timeline-item">
-              <span className={`programme-progress-dot is-${event.event_type}`} aria-hidden="true" />
-              <div>
-                <strong>{eventLabels[event.event_type]}</strong>
-                {event.activity_id ? <span className="dashboard-inline-note"> · {event.activity_id}</span> : null}
-                <p className="dashboard-inline-note">
-                  {new Intl.DateTimeFormat("en-ZA", {
-                    dateStyle: "medium",
-                    timeStyle: "short",
-                    timeZone: "Africa/Johannesburg",
-                  }).format(new Date(event.occurred_at))}
-                </p>
-              </div>
-            </li>
-          ))}
+          {visibleEvents.map((event) => {
+            const activity =
+              event.activity_id && definition ? findActivity(definition, event.activity_id) : null;
+            const activityTitle = activity
+              ? activityLabel(activity)
+              : audience === "admin"
+                ? event.activity_id
+                : null;
+
+            return (
+              <li key={event.id} className="programme-progress-timeline-item">
+                <span className={`programme-progress-dot is-${event.event_type}`} aria-hidden="true" />
+                <div>
+                  <strong>{eventLabels[event.event_type]}</strong>
+                  {activityTitle ? <span className="dashboard-inline-note"> · {activityTitle}</span> : null}
+                  <p className="dashboard-inline-note">
+                    {new Intl.DateTimeFormat("en-ZA", {
+                      dateStyle: "medium",
+                      timeStyle: "short",
+                      timeZone: "Africa/Johannesburg",
+                    }).format(new Date(event.occurred_at))}
+                  </p>
+                </div>
+              </li>
+            );
+          })}
         </ol>
       ) : (
         <p className="dashboard-empty">

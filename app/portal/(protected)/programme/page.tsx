@@ -3,6 +3,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { PortalPreCourseChecklist } from "@/components/portal/PortalPreCourseChecklist";
 import { PortalThisWeekCard } from "@/components/portal/PortalThisWeekCard";
+import { PortalWeekMap } from "@/components/portal/PortalWeekMap";
 import { NextSessionCard } from "@/components/programme/NextSessionCard";
 import { ProgrammeCalendar } from "@/components/programme/ProgrammeCalendar";
 import { ProgrammeJourneyShell } from "@/components/programme/ProgrammeJourneyShell";
@@ -17,7 +18,7 @@ import {
   getClientIntakeSubmission,
   getClientSessionReceiptMap,
 } from "@/lib/dashboard/queries";
-import { buildPreCourseChecklist, buildThisWeekModel } from "@/lib/portal/courseLoop";
+import { buildPreCourseChecklist, buildThisWeekModel, buildWeekMapItems } from "@/lib/portal/courseLoop";
 import { resolveProgrammeDefinition, findActivity } from "@/lib/programme/interactive/content";
 import { findNextSession, slotLabel, type ProgrammeCalendarEntry } from "@/lib/programme/schedule";
 import { createMetadata } from "@/lib/seo";
@@ -192,6 +193,7 @@ export default async function PortalProgrammePage({ searchParams }: PageProps) {
       </section>
 
       {thisWeek ? <PortalThisWeekCard thisWeek={thisWeek} /> : null}
+      {thisWeek ? <PortalWeekMap weekNumber={thisWeek.weekNumber} items={buildWeekMapItems(thisWeek)} /> : null}
 
       {bundle.enrollmentHistory.length > 1 ? (
         <section className="dashboard-panel">
@@ -239,7 +241,11 @@ export default async function PortalProgrammePage({ searchParams }: PageProps) {
             pointsTotal={bundle.pointsTotal}
             audience="client"
           />
-          <ProgrammeProgressTimeline events={bundle.activityEvents ?? []} audience="client" />
+          <ProgrammeProgressTimeline
+            events={bundle.activityEvents ?? []}
+            audience="client"
+            definition={definition}
+          />
         </>
       ) : null}
 

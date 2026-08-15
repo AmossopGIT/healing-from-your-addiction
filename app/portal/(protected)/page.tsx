@@ -81,8 +81,11 @@ export default async function PortalHomePage({ searchParams }: PageProps) {
       ) : null}
 
       {bundle.sections.includes("hero") ? <PortalHomeHero hero={bundle.hero} /> : null}
-      {showNextStep && bundle.sections.includes("next_step") ? <PortalNextStepCard nextStep={bundle.nextStep} /> : null}
-      {bundle.sections.includes("this_week") && bundle.thisWeek ? <PortalThisWeekCard thisWeek={bundle.thisWeek} /> : null}
+      {bundle.sections.includes("this_week") && bundle.thisWeek ? (
+        <PortalThisWeekCard thisWeek={bundle.thisWeek} />
+      ) : showNextStep && bundle.sections.includes("next_step") ? (
+        <PortalNextStepCard nextStep={bundle.nextStep} />
+      ) : null}
       {bundle.sections.includes("pre_course") && bundle.preCourseChecklist.length > 0 ? (
         <PortalPreCourseChecklist items={bundle.preCourseChecklist} />
       ) : null}
@@ -90,6 +93,9 @@ export default async function PortalHomePage({ searchParams }: PageProps) {
         <PortalQuickActions
           nextSessionHref={bundle.nextSessionHref}
           nextSessionLabel={bundle.nextSessionLabel}
+          journeyHref={bundle.thisWeek?.journeyHref ?? null}
+          journeyLabel={bundle.thisWeek?.journeyTitle ?? null}
+          focusKind={bundle.thisWeek?.focusKind ?? null}
         />
       ) : null}
       {bundle.sections.includes("daily_ritual") ? (
@@ -97,7 +103,6 @@ export default async function PortalHomePage({ searchParams }: PageProps) {
           dailyAffirmation={bundle.dailyAffirmation}
           affirmationNote={bundle.affirmationNote}
           todayCheckIn={bundle.todayCheckIn}
-          nextStep={bundle.nextStep}
           showCheckIn={showCheckIn}
           homeworkTasks={bundle.homeworkTasks}
           todayHomeworkEntries={bundle.todayHomeworkEntries}

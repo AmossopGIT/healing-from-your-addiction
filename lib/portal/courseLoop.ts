@@ -373,7 +373,7 @@ export function buildWeek1LaunchChecklist(input: {
         : input.addictionSlug
           ? `Prefer the ${input.addictionSlug} template that matches this client’s focus.`
           : "Choose the interactive template that matches this client’s focus.",
-      href: programmeHref,
+      href: `${programmeHref}#assign`,
     },
     {
       id: "receipts",
@@ -383,7 +383,7 @@ export function buildWeek1LaunchChecklist(input: {
         input.sessionReceiptCount >= 1
           ? "Client can see a new-session next step."
           : "Unlock/release sessions so the portal next-step can fire (interactive assign should create receipts).",
-      href: programmeHref,
+      href: `${programmeHref}#sessions`,
     },
     {
       id: "docs",
@@ -394,7 +394,7 @@ export function buildWeek1LaunchChecklist(input: {
           ? "At least one programme guide is released."
           : "Release the matching week guide so the client’s week is not empty."
         : "Non-gambling guides are not in the pack yet — journey + sessions still run.",
-      href: programmeHref,
+      href: `${programmeHref}#docs`,
     },
     {
       id: "schedule",
@@ -403,9 +403,114 @@ export function buildWeek1LaunchChecklist(input: {
       detail: input.hasSchedule
         ? "Schedule is set."
         : "Client can pick a slot, or you can set Tuesday/Friday 11:00 or 16:00 for them.",
-      href: programmeHref,
+      href: `${programmeHref}#schedule`,
     },
   ];
+}
+
+export type Week1LaunchSummary = {
+  assigned: boolean;
+  receiptsReady: boolean;
+  guideReady: boolean;
+  scheduleReady: boolean;
+  completeCount: number;
+  totalCount: number;
+  nextActionLabel: string;
+  nextActionHref: string;
+};
+
+export function summarizeWeek1Launch(items: Week1LaunchChecklistItem[]): Week1LaunchSummary {
+  const byId = new Map(items.map((item) => [item.id, item]));
+  const open = items.find((item) => !item.done);
+  return {
+    assigned: Boolean(byId.get("assign")?.done),
+    receiptsReady: Boolean(byId.get("receipts")?.done),
+    guideReady: Boolean(byId.get("docs")?.done),
+    scheduleReady: Boolean(byId.get("schedule")?.done),
+    completeCount: items.filter((item) => item.done).length,
+    totalCount: items.length,
+    nextActionLabel: open?.label ?? "Week 1 launch complete",
+    nextActionHref: open?.href ?? items[0]?.href ?? "/admin/clients/",
+  };
+}
+
+export type WeekMapItem = {
+  id: string;
+  kind: "journey" | "live_session" | "schedule" | "check_in" | "practice";
+  title: string;
+  detail: string;
+  href: string | null;
+  status: "current" | "open" | "done" | "locked";
+  statusLabel: string;
+};
+
+export function buildWeekMapItems(thisWeek: ThisWeekModel): WeekMapItem[] {
+  const items: WeekMapItem[] = [];
+
+  if (thisWeek.journeyTitle) {
+    const isCurrent = thisWeek.focusKind === "journey";
+    items.push({
+      id: "journey",
+      kind: "journey",
+      title: thisWeek.journeyTitle,
+      detail: "Interactive journey step for this week",
+      href: thisWeek.journeyHref,
+      status: isCurrent ? "current" : "open",
+      statusLabel: isCurrent ? "Continue" : "Open",
+    });
+  }
+
+  if (thisWeek.focusKind === "schedule" || (!thisWeek.sessionTitle && thisWeek.focusKind !== "waiting")) {
+    if (thisWeek.focusKind === "schedule") {
+      items.push({
+        id: "schedule",
+        kind: "schedule",
+        title: "Choose your live session slot",
+        detail: "Tuesday or Friday · 11:00 or 16:00",
+        href: "/portal/programme/schedule/",
+        status: "current",
+        statusLabel: "Choose",
+      });
+    }
+  }
+
+  if (thisWeek.sessionTitle) {
+    const isCurrent = thisWeek.focusKind === "live_session";
+    items.push({
+      id: "live_session",
+      kind: "live_session",
+      title: thisWeek.sessionTitle,
+      detail: thisWeek.sessionLockedReason ?? "Live coaching session for this week",
+      href: thisWeek.sessionHref,
+      status: thisWeek.sessionHref ? (isCurrent ? "current" : "open") : "locked",
+      statusLabel: thisWeek.sessionHref ? (isCurrent ? "Open" : "Ready") : "Locked",
+    });
+  }
+
+  items.push({
+    id: "check_in",
+    kind: "check_in",
+    title: "Daily check-in",
+    detail: thisWeek.checkInDone ? "Logged today" : "A short mood and urge pause",
+    href: "/portal/#daily-check-in",
+    status: thisWeek.checkInDone ? "done" : thisWeek.focusKind === "practice" ? "current" : "open",
+    statusLabel: thisWeek.checkInDone ? "Done" : "Open",
+  });
+
+  if (thisWeek.practiceTotalCount > 0) {
+    const practiceDone = thisWeek.practiceDoneCount >= thisWeek.practiceTotalCount;
+    items.push({
+      id: "practice",
+      kind: "practice",
+      title: "Daily practice ticks",
+      detail: `${thisWeek.practiceDoneCount}/${thisWeek.practiceTotalCount} complete today`,
+      href: "/portal/#daily-check-in",
+      status: practiceDone ? "done" : thisWeek.focusKind === "practice" ? "current" : "open",
+      statusLabel: practiceDone ? "Done" : "Open",
+    });
+  }
+
+  return items;
 }
 
 export function nextStepFromThisWeek(thisWeek: ThisWeekModel): PortalNextStep {

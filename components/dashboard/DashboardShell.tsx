@@ -13,6 +13,8 @@ type DashboardShellProps = {
   title: string;
   subtitle: string;
   navItems: DashboardNavItem[];
+  /** Optional shorter nav for sticky mobile bar. Defaults to navItems. */
+  mobileNavItems?: DashboardNavItem[];
   children: ReactNode;
   variant: "admin" | "portal";
   currentProfile?: AuthProfile | null;
@@ -28,10 +30,20 @@ function SignOutButton() {
   );
 }
 
-export async function DashboardShell({ title, subtitle, navItems, children, variant, currentProfile = null }: DashboardShellProps) {
-  const notificationSummary = variant === "portal" && currentProfile?.id
-    ? await getPortalNotificationSummary(currentProfile.id)
-    : null;
+export async function DashboardShell({
+  title,
+  subtitle,
+  navItems,
+  mobileNavItems,
+  children,
+  variant,
+  currentProfile = null,
+}: DashboardShellProps) {
+  const notificationSummary =
+    variant === "portal" && currentProfile?.id
+      ? await getPortalNotificationSummary(currentProfile.id)
+      : null;
+  const mobileItems = mobileNavItems ?? navItems;
 
   return (
     <div className={`dashboard-shell dashboard-shell-${variant}`}>
@@ -63,7 +75,7 @@ export async function DashboardShell({ title, subtitle, navItems, children, vari
         </header>
         <div id="main-content" className="dashboard-content">{children}</div>
         <DashboardNav
-          navItems={navItems}
+          navItems={mobileItems}
           ariaLabel={`${title} quick navigation`}
           className="dashboard-mobile-nav"
           linkClassName="dashboard-mobile-nav-link"

@@ -23,8 +23,54 @@ export default async function AdminClientsPage() {
     getClientConsultations(),
   ]);
 
+  const clientIds = (clients ?? []).map((client) => client.id);
+  const [{ data: enrollments }, { data: openFlags }] = await Promise.all([
+    clientIds.length
+      ? supabase
+          .from("enrollments")
+          .select("id, client_profile_id, status, created_at")
+          .in("client_profile_id", clientIds)
+          .order("created_at", { ascending: false })
+      : Promise.resolve({ data: [] as { id: string; client_profile_id: string; status: string; created_at: string }[] }),
+    clientIds.length
+      ? supabase
+          .from("programme_admin_flags")
+          .select("id, client_profile_id, severity, flag_type, resolved_at")
+          .in("client_profile_id", clientIds)
+          .is("resolved_at", null)
+      : Promise.resolve({
+          data: [] as {
+            id: string;
+            client_profile_id: string;
+            severity: string;
+            flag_type: string;
+            resolved_at: string | null;
+          }[],
+        }),
+  ]);
+
+  const enrollmentIds = [...new Set((enrollments ?? []).map((row) => row.id))];
+  const { data: schedules } = enrollmentIds.length
+    ? await supabase.from("enrollment_schedules").select("enrollment_id").in("enrollment_id", enrollmentIds)
+    : { data: [] as { enrollment_id: string }[] };
+
   const intakeByClientId = new Map(intakeSubmissions.map((submission) => [submission.client_profile_id, submission]));
   const consultationByClientId = new Map(consultations.map((item) => [item.client_profile_id, item]));
+  const enrollmentByClientId = new Map<string, { id: string; status: string }>();
+  for (const row of enrollments ?? []) {
+    if (!enrollmentByClientId.has(row.client_profile_id)) {
+      enrollmentByClientId.set(row.client_profile_id, { id: row.id, status: row.status });
+    }
+  }
+  const scheduleByEnrollmentId = new Set((schedules ?? []).map((row) => row.enrollment_id));
+  const openFlagCountByClient = new Map<string, number>();
+  const urgentFlagByClient = new Set<string>();
+  for (const flag of openFlags ?? []) {
+    openFlagCountByClient.set(flag.client_profile_id, (openFlagCountByClient.get(flag.client_profile_id) ?? 0) + 1);
+    if (flag.severity === "urgent" || flag.flag_type === "safety") {
+      urgentFlagByClient.add(flag.client_profile_id);
+    }
+  }
 
   const userIds = [...new Set((clients ?? []).map((client) => client.user_id))];
   const { data: profiles } = userIds.length
@@ -53,6 +99,8 @@ export default async function AdminClientsPage() {
                   <th>Addiction</th>
                   <th>Intake</th>
                   <th>Consultation</th>
+                  <th>Week 1</th>
+                  <th>Flags</th>
                   <th>Contact</th>
                   <th>Enrolled</th>
                 </tr>
@@ -62,6 +110,21 @@ export default async function AdminClientsPage() {
                   const profile = profileMap.get(client.user_id);
                   const intake = intakeByClientId.get(client.id);
                   const consultation = consultationByClientId.get(client.id);
+                  const enrollment = enrollmentByClientId.get(client.id);
+                  const hasSchedule = enrollment ? scheduleByEnrollmentId.has(enrollment.id) : false;
+                  const openFlagCount = openFlagCountByClient.get(client.id) ?? 0;
+                  const hasUrgent = urgentFlagByClient.has(client.id);
+
+                  let week1Label = "Not assigned";
+                  let week1Class = "status-badge status-badge-intake-not-started";
+                  if (enrollment && hasSchedule) {
+                    week1Label = "Slot set";
+                    week1Class = "status-badge status-badge-intake-complete";
+                  } else if (enrollment) {
+                    week1Label = "Needs slot";
+                    week1Class = "status-badge status-badge-intake-in-progress";
+                  }
+
                   return (
                     <tr key={client.id}>
                       <td>
@@ -97,6 +160,23 @@ export default async function AdminClientsPage() {
                           >
                             Not sent
                           </Link>
+                        )}
+                      </td>
+                      <td>
+                        <Link href={`/admin/clients/${client.id}/programme/`} className={week1Class}>
+                          {week1Label}
+                        </Link>
+                      </td>
+                      <td>
+                        {openFlagCount ? (
+                          <Link
+                            href={`/admin/clients/${client.id}/programme/#flags`}
+                            className={`status-badge${hasUrgent ? " status-badge-consultation-not_sent" : " status-badge-intake-in-progress"}`}
+                          >
+                            {hasUrgent ? "Urgent" : `${openFlagCount} open`}
+                          </Link>
+                        ) : (
+                          <span className="dashboard-inline-note">—</span>
                         )}
                       </td>
                       <td>{profile?.phone ?? client.preferred_contact_method ?? "—"}</td>
