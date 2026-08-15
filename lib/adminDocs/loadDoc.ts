@@ -12,11 +12,16 @@ export type AdminDocContent = {
   body: string;
 };
 
+function resolveProjectPath(...segments: string[]) {
+  // Keep NFT/Turbopack from treating process.cwd() as a full-project include.
+  return path.join(/* turbopackIgnore: true */ process.cwd(), ...segments);
+}
+
 export function loadAdminDocContent(slug: string): AdminDocContent | null {
   const meta = getAdminDocBySlug(slug);
   if (!meta?.sourcePath) return null;
 
-  const absolutePath = path.join(process.cwd(), meta.sourcePath);
+  const absolutePath = resolveProjectPath(meta.sourcePath);
   if (!fs.existsSync(absolutePath)) return null;
 
   const raw = fs.readFileSync(absolutePath, "utf8");

@@ -18,7 +18,12 @@ export type AdminDocMeta = {
   customPage?: AdminDocCustomPage;
 };
 
-const ADMIN_DOCS_DIR = path.join(process.cwd(), "content/admin-docs");
+function resolveProjectPath(...segments: string[]) {
+  // Keep NFT/Turbopack from treating process.cwd() as a full-project include.
+  return path.join(/* turbopackIgnore: true */ process.cwd(), ...segments);
+}
+
+const ADMIN_DOCS_DIR = resolveProjectPath("content", "admin-docs");
 const VALID_CATEGORIES = new Set<AdminDocCategory>(["Operations", "Content", "Technical", "Marketing"]);
 
 function normalizeCategory(value: string | undefined, fallback: AdminDocCategory): AdminDocCategory {
@@ -40,7 +45,7 @@ function discoverLocalDocs(): AdminDocMeta[] {
     .filter((filename) => filename.endsWith(".md"))
     .map((filename) => {
       const sourcePath = path.join("content/admin-docs", filename).replace(/\\/g, "/");
-      const absolutePath = path.join(process.cwd(), sourcePath);
+      const absolutePath = resolveProjectPath(sourcePath);
       const raw = fs.readFileSync(absolutePath, "utf8");
       const { frontmatter, body } = splitFrontmatter(raw);
       const slug = slugFromFilename(filename);
