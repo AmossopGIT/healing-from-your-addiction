@@ -15,6 +15,7 @@ Use that page for Gerald’s day-to-day walkthrough of:
 Related:
 
 - Lead triage SLA and safety language: [`docs/LEAD_TRIAGE_PLAYBOOK.md`](LEAD_TRIAGE_PLAYBOOK.md) (also Admin Docs → Lead triage playbook)
+- After invite / Week 1 course start: [`docs/AFTER_INVITE_START_THE_COURSE.md`](AFTER_INVITE_START_THE_COURSE.md) (also Admin Docs → After invite: start the course)
 - Admin login guide: Admin Docs → How to log in as admin
 
 Source of truth for the guide UI and PDF copy: `lib/adminDocs/leadOnboardingGuideContent.ts`

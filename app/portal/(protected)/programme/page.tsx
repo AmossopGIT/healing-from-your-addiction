@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { PortalPreCourseChecklist } from "@/components/portal/PortalPreCourseChecklist";
+import { PortalThisWeekCard } from "@/components/portal/PortalThisWeekCard";
 import { NextSessionCard } from "@/components/programme/NextSessionCard";
 import { ProgrammeCalendar } from "@/components/programme/ProgrammeCalendar";
 import { ProgrammeJourneyShell } from "@/components/programme/ProgrammeJourneyShell";
@@ -8,10 +10,23 @@ import { ProgrammeProgressTimeline } from "@/components/programme/ProgrammeProgr
 import { getInteractiveProgramme } from "@/content/interactiveProgrammes";
 import type { InteractiveProgrammeDefinition } from "@/content/interactiveProgrammes/types";
 import { getAuthProfile } from "@/lib/supabase/auth";
-import { getClientContentReceipts, getClientEnrollmentBundle, getClientSessionReceiptMap } from "@/lib/dashboard/queries";
-import { resolveProgrammeDefinition } from "@/lib/programme/interactive/content";
+import {
+  getClientConsultation,
+  getClientContentReceipts,
+  getClientEnrollmentBundle,
+  getClientIntakeSubmission,
+  getClientSessionReceiptMap,
+} from "@/lib/dashboard/queries";
+import { buildPreCourseChecklist, buildThisWeekModel } from "@/lib/portal/courseLoop";
+import { resolveProgrammeDefinition, findActivity } from "@/lib/programme/interactive/content";
 import { findNextSession, slotLabel, type ProgrammeCalendarEntry } from "@/lib/programme/schedule";
 import { createMetadata } from "@/lib/seo";
+import { createClient } from "@/lib/supabase/server";
+import type { ClientDailyCheckIn } from "@/types/database";
+
+function todayIsoDate() {
+  return new Date().toISOString().slice(0, 10);
+}
 
 export const metadata: Metadata = createMetadata({
   title: "Programme | Client Portal",
@@ -36,17 +51,53 @@ export default async function PortalProgrammePage({ searchParams }: PageProps) {
   const bundle = profile ? await getClientEnrollmentBundle(profile.id) : null;
 
   if (!bundle?.enrollment) {
+    if (!bundle?.clientProfile) {
+      return (
+        <div className="dashboard-stack">
+          <p className="dashboard-empty">Your portal is loading. If this persists, sign in again.</p>
+        </div>
+      );
+    }
+
+    const [intakeSubmission, consultation] = await Promise.all([
+      getClientIntakeSubmission(bundle.clientProfile.id),
+      getClientConsultation(bundle.clientProfile.id),
+    ]);
+    const preCourseChecklist = buildPreCourseChecklist({
+      clientProfile: bundle.clientProfile,
+      intakeSubmission,
+      consultation,
+      hasEnrollment: false,
+    });
+    const thisWeek = buildThisWeekModel({
+      clientProfile: bundle.clientProfile,
+      intakeSubmission,
+      consultation,
+      enrollment: null,
+      sessions: [],
+      progressBySessionId: new Map(),
+      activityProgress: [],
+      currentActivityId: null,
+      currentActivityTitle: null,
+      todayCheckIn: null,
+      homeworkTasks: [],
+      todayHomeworkEntries: [],
+      hasSchedule: false,
+    });
+
     return (
       <div className="dashboard-stack">
         <section className="dashboard-page-header">
           <p className="eyebrow">Programme</p>
           <h1>Your programme</h1>
-        </section>
-        <section className="dashboard-panel">
-          <p className="dashboard-empty">
-            Your programme has not been assigned yet. Gerald sets this up after your intake and consultation forms
-            are complete.
+          <p>
+            Finish the pre-course steps below. Gerald assigns your interactive journey once intake and consultation are
+            ready.
           </p>
+        </section>
+        {thisWeek ? <PortalThisWeekCard thisWeek={thisWeek} /> : null}
+        <PortalPreCourseChecklist items={preCourseChecklist} />
+        <section className="dashboard-panel">
           <p className="dashboard-inline-note">
             <Link href="/portal/messages/">Message Gerald</Link> if you are unsure what is outstanding.
           </p>
@@ -99,6 +150,33 @@ export default async function PortalProgrammePage({ searchParams }: PageProps) {
     return receipt && !receipt.read_at;
   }).length;
 
+  const currentActivityId = bundle.enrollment.current_activity_id ?? null;
+  const currentActivity = currentActivityId && definition ? findActivity(definition, currentActivityId) : null;
+  const supabase = await createClient();
+  const today = todayIsoDate();
+  const { data: todayCheckInRow } = await supabase
+    .from("client_daily_check_ins")
+    .select("*")
+    .eq("client_profile_id", bundle.clientProfile.id)
+    .eq("check_in_date", today)
+    .maybeSingle();
+  const todayHomeworkEntries = bundle.homeworkEntries.filter((entry) => entry.entry_date === today);
+  const thisWeek = buildThisWeekModel({
+    clientProfile: bundle.clientProfile,
+    intakeSubmission: null,
+    consultation: null,
+    enrollment: bundle.enrollment,
+    sessions: bundle.sessions,
+    progressBySessionId: progressBySession,
+    activityProgress: bundle.activityProgress,
+    currentActivityId,
+    currentActivityTitle: currentActivity?.title ?? null,
+    todayCheckIn: (todayCheckInRow as ClientDailyCheckIn | null) ?? null,
+    homeworkTasks: bundle.homeworkTasks,
+    todayHomeworkEntries,
+    hasSchedule: Boolean(bundle.schedule),
+  });
+
   return (
     <div className="dashboard-stack">
       <section className="dashboard-page-header">
@@ -112,6 +190,8 @@ export default async function PortalProgrammePage({ searchParams }: PageProps) {
           {bundle.pointsTotal > 0 ? ` · ${bundle.pointsTotal} practice points` : ""}
         </p>
       </section>
+
+      {thisWeek ? <PortalThisWeekCard thisWeek={thisWeek} /> : null}
 
       {bundle.enrollmentHistory.length > 1 ? (
         <section className="dashboard-panel">

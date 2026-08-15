@@ -74,6 +74,11 @@ export default async function AdminClientDetailPage({ params, searchParams }: Pa
         <Link href={`/admin/clients/${id}/programme/`} className="button button-secondary">
           Programme
         </Link>
+        {!enrollment ? (
+          <Link href={`/admin/clients/${id}/programme/`} className="button button-primary">
+            Assign programme
+          </Link>
+        ) : null}
         <Link href={`/admin/clients/${id}/messages/`} className="button button-secondary">
           Messages
         </Link>
@@ -189,11 +194,25 @@ export default async function AdminClientDetailPage({ params, searchParams }: Pa
           </li>
           <li className={intakeSubmission?.completed_at ? "is-complete" : ""}>Intake completed</li>
           <li className={readinessAssessment?.completed_at ? "is-complete" : ""}>Readiness assessment completed</li>
-          <li className={enrollment ? "is-complete" : ""}>Programme assigned</li>
+          <li className={enrollment ? "is-complete" : ""}>
+            Programme assigned
+            {!enrollment ? (
+              <>
+                {" · "}
+                <Link href={`/admin/clients/${id}/programme/`}>Assign now</Link>
+              </>
+            ) : null}
+          </li>
           <li className={consultation && isConsultationCompleteStatus(consultation.status) ? "is-complete" : ""}>
             Consultation completed
           </li>
         </ul>
+        {!enrollment ? (
+          <p className="dashboard-inline-note">
+            Invite does not start the course. After intake and consultation, open{" "}
+            <Link href={`/admin/clients/${id}/programme/`}>Programme</Link> and run the Week 1 launch checklist.
+          </p>
+        ) : null}
         <form action={updateClientOperations} className="dashboard-form">
           <input type="hidden" name="clientProfileId" value={id} />
           <label className="form-field">

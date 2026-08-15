@@ -15,8 +15,14 @@ import {
 } from "@/lib/dashboard/interactiveProgrammeActions";
 import { adminSaveEnrollmentSchedule, adminSaveSessionRecording } from "@/lib/dashboard/scheduleActions";
 import { releaseProgrammeDoc } from "@/lib/dashboard/homeworkActions";
-import { getAdminClientBundle, getClientContentReceipts } from "@/lib/dashboard/queries";
-import { resolveProgrammeDefinition } from "@/lib/programme/interactive/content";
+import {
+  getAdminClientBundle,
+  getClientConsultation,
+  getClientContentReceipts,
+  getClientIntakeSubmission,
+} from "@/lib/dashboard/queries";
+import { buildThisWeekModel, buildWeek1LaunchChecklist, nextStepFromThisWeek } from "@/lib/portal/courseLoop";
+import { resolveProgrammeDefinition, findActivity } from "@/lib/programme/interactive/content";
 import { mergeAdminVisibleResponses, summarizeJourney } from "@/lib/programme/interactive/progress";
 import {
   encodeSlotValue,
@@ -91,6 +97,7 @@ export default async function AdminClientProgrammePage({ params, searchParams }:
 
   const {
     profile,
+    clientProfile,
     enrollment,
     template,
     templates,
@@ -125,6 +132,57 @@ export default async function AdminClientProgrammePage({ params, searchParams }:
       })
     : [];
   const releasedDocIds = new Set(docReceipts.map((receipt) => receipt.content_id));
+
+  const sessionReceipts = sessions.length
+    ? await getClientContentReceipts(id, {
+        contentKind: "session",
+        contentIds: sessions.map((session) => session.id),
+      })
+    : [];
+  const sessionsAvailableCount = progress.filter((item) => item.status === "available" || item.status === "in_progress" || item.status === "completed").length;
+  const [intakeSubmission, consultation] = await Promise.all([
+    getClientIntakeSubmission(id),
+    getClientConsultation(id),
+  ]);
+
+  const currentActivityId = enrollment?.current_activity_id ?? null;
+  const currentActivity =
+    currentActivityId && definition ? findActivity(definition, currentActivityId) : null;
+  const today = new Date().toISOString().slice(0, 10);
+  const todayCheckIn = dailyCheckIns.find((checkIn) => checkIn.check_in_date === today) ?? null;
+  const todayHomeworkEntries = homeworkEntries.filter((entry) => entry.entry_date === today);
+  const thisWeek = buildThisWeekModel({
+    clientProfile,
+    intakeSubmission,
+    consultation,
+    enrollment,
+    sessions,
+    progressBySessionId: progressBySession,
+    activityProgress: activityProgress ?? [],
+    currentActivityId,
+    currentActivityTitle: currentActivity?.title ?? null,
+    todayCheckIn,
+    homeworkTasks,
+    todayHomeworkEntries,
+    hasSchedule: Boolean(schedule),
+  });
+  const clientNextStep = thisWeek ? nextStepFromThisWeek(thisWeek) : null;
+  const preferredTemplate =
+    templates.find((item) => item.addiction_slug === clientProfile.addiction_slug && item.status === "published") ??
+    templates.find((item) => item.addiction_slug === clientProfile.addiction_slug) ??
+    null;
+  const week1Checklist = buildWeek1LaunchChecklist({
+    clientProfileId: id,
+    addictionSlug: clientProfile.addiction_slug,
+    hasEnrollment: Boolean(enrollment),
+    preferredTemplateId: preferredTemplate?.id ?? null,
+    sessionsAvailableCount,
+    sessionReceiptCount: sessionReceipts.length,
+    hasSchedule: Boolean(schedule),
+    releasedDocCount: releasedDocIds.size,
+    hasProgrammeDocs: programmeDocs.length > 0,
+    clientNextStep,
+  });
 
   const days = recentDayKeys();
   const entriesByTaskDate = new Map(homeworkEntries.map((entry) => [`${entry.task_id}:${entry.entry_date}`, entry]));
@@ -167,7 +225,37 @@ export default async function AdminClientProgrammePage({ params, searchParams }:
         <p>
           {template?.title ?? "No programme assigned yet"} ·{" "}
           <Link href={`/admin/clients/${id}/`}>Back to client</Link>
+          {" · "}
+          <Link href="/admin/docs/after-invite-start-the-course/">Week 1 ops guide</Link>
         </p>
+      </section>
+
+      <section className="dashboard-panel">
+        <h2>Week 1 launch checklist</h2>
+        <p className="dashboard-inline-note">
+          After invite and intake/consultation, use this list to start the course loop the client sees as “This week”.
+        </p>
+        <ul className="admin-week1-checklist">
+          {week1Checklist.map((item) => (
+            <li key={item.id} className={item.done ? "is-complete" : ""}>
+              <div>
+                <strong>{item.label}</strong>
+                <p>{item.detail}</p>
+              </div>
+              <span className="portal-pre-course-status">{item.done ? "Done" : "Open"}</span>
+            </li>
+          ))}
+        </ul>
+        {clientNextStep ? (
+          <div className="admin-client-next-step">
+            <p className="eyebrow">What the client sees next</p>
+            <strong>{clientNextStep.title}</strong>
+            <p>{clientNextStep.description}</p>
+            <p className="dashboard-inline-note">
+              CTA: {clientNextStep.buttonLabel} → {clientNextStep.href}
+            </p>
+          </div>
+        ) : null}
       </section>
 
       {scheduled ? <p className="dashboard-inline-note dashboard-success-note">Schedule updated.</p> : null}
@@ -234,32 +322,45 @@ export default async function AdminClientProgrammePage({ params, searchParams }:
           <h2>Assign a programme</h2>
           <p className="dashboard-inline-note">
             Prefer the interactive assign action. It stores an immutable content snapshot, unlocks the first journey
-            activities, and still scaffolds live sessions when available.
+            activities, scaffolds live sessions 1–2, and creates client session receipts so their next-step can fire.
           </p>
           <form action={assignInteractiveProgramme} className="dashboard-form">
             <input type="hidden" name="clientProfileId" value={id} />
             <label className="form-field">
               <span>Interactive programme template</span>
-              <select name="templateId" required>
+              <select name="templateId" required defaultValue={preferredTemplate?.id ?? ""}>
                 <option value="">Select template</option>
                 {templates.map((item) => (
                   <option key={item.id} value={item.id}>
                     {item.title} ({item.addiction_slug}) · {item.status ?? "legacy"}
+                    {preferredTemplate?.id === item.id ? " · matches client focus" : ""}
                   </option>
                 ))}
               </select>
             </label>
+            {clientProfile.addiction_slug ? (
+              <p className="form-hint">
+                Preselected from client focus: {clientProfile.addiction_slug}. Change only if you intentionally assign a
+                different pack.
+              </p>
+            ) : (
+              <p className="form-hint">Client focus is not set — choose the matching interactive template carefully.</p>
+            )}
             <button type="submit" className="button button-primary">
               Assign interactive programme
             </button>
           </form>
           <details className="admin-programme-details">
-            <summary>Legacy assign (sessions only)</summary>
+            <summary>Advanced: legacy assign (sessions only — different client effects)</summary>
+            <p className="form-hint">
+              Legacy assign creates session receipts and can set a start date, but it is not the primary Week 1 path.
+              Prefer interactive assign above unless you are repairing an older enrollment.
+            </p>
             <form action={createEnrollment} className="dashboard-form">
               <input type="hidden" name="clientProfileId" value={id} />
               <label className="form-field">
                 <span>Programme template</span>
-                <select name="templateId" required>
+                <select name="templateId" required defaultValue={preferredTemplate?.id ?? ""}>
                   <option value="">Select template</option>
                   {templates.map((item) => (
                     <option key={item.id} value={item.id}>

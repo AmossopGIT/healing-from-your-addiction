@@ -3,6 +3,8 @@ import type { DailyAffirmation } from "@/lib/portal/dailyAffirmation";
 import type { PortalMilestone } from "@/lib/portal/milestones";
 import type { PortalActivityItem } from "@/lib/portal/activityFeed";
 import type { PortalNotificationSummary } from "@/lib/dashboard/queries";
+import type { PreCourseChecklistItem, ThisWeekModel } from "@/lib/portal/courseLoop";
+import { resolveCourseAwareStage } from "@/lib/portal/courseLoop";
 import type {
   ClientDailyCheckIn,
   ClientHomeworkEntry,
@@ -39,6 +41,8 @@ export type PortalHomeHeroModel = {
 export type PortalHomeSectionId =
   | "hero"
   | "next_step"
+  | "this_week"
+  | "pre_course"
   | "quick_actions"
   | "daily_ritual"
   | "progress"
@@ -53,6 +57,8 @@ export type PortalHomeBundle = {
   sections: PortalHomeSectionId[];
   hero: PortalHomeHeroModel;
   nextStep: PortalNextStep;
+  thisWeek: ThisWeekModel | null;
+  preCourseChecklist: PreCourseChecklistItem[];
   notifications: PortalNotificationSummary | null;
   enrollment: Enrollment | null;
   template: ProgrammeTemplate | null;
@@ -96,26 +102,30 @@ export function resolvePortalHomeStage(input: {
   clientProfile: ClientProfile | null;
   intakeCompleted: boolean;
   enrollment: Enrollment | null;
+  sessions?: ProgrammeSession[];
+  progressBySessionId?: Map<string, SessionProgress>;
 }): PortalHomeStage {
-  if (!input.clientProfile?.onboarding_completed_at) return "onboarding";
-  if (!input.intakeCompleted) return "pre_intake";
-  if (!input.enrollment) return "pre_programme";
-  if (input.enrollment.status === "completed") return "maintenance";
-  return "active_programme";
+  return resolveCourseAwareStage({
+    clientProfile: input.clientProfile,
+    intakeCompleted: input.intakeCompleted,
+    enrollment: input.enrollment,
+    sessions: input.sessions ?? [],
+    progressBySessionId: input.progressBySessionId ?? new Map(),
+  });
 }
 
 export function resolvePortalHomeSections(stage: PortalHomeStage): PortalHomeSectionId[] {
   switch (stage) {
     case "onboarding":
-      return ["hero", "next_step", "daily_ritual", "gentle_reminder"];
+      return ["hero", "next_step", "pre_course", "daily_ritual", "gentle_reminder"];
     case "pre_intake":
-      return ["hero", "next_step", "daily_ritual", "progress", "quick_actions", "activity_feed", "gentle_reminder"];
+      return ["hero", "next_step", "pre_course", "this_week", "daily_ritual", "progress", "quick_actions", "activity_feed", "gentle_reminder"];
     case "pre_programme":
-      return ["hero", "next_step", "daily_ritual", "progress", "quick_actions", "weekly_pulse", "activity_feed", "gentle_reminder"];
+      return ["hero", "next_step", "pre_course", "this_week", "daily_ritual", "progress", "quick_actions", "weekly_pulse", "activity_feed", "gentle_reminder"];
     case "active_programme":
-      return ["hero", "next_step", "quick_actions", "daily_ritual", "progress", "weekly_pulse", "activity_feed", "gentle_reminder"];
+      return ["hero", "next_step", "this_week", "quick_actions", "daily_ritual", "progress", "weekly_pulse", "activity_feed", "gentle_reminder"];
     case "maintenance":
-      return ["hero", "daily_ritual", "progress", "weekly_pulse", "activity_feed", "gentle_reminder"];
+      return ["hero", "this_week", "daily_ritual", "progress", "weekly_pulse", "activity_feed", "gentle_reminder"];
   }
 }
 

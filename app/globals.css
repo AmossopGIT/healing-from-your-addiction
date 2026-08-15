@@ -6374,6 +6374,141 @@ main,
   color: var(--teal-dark);
 }
 
+.portal-this-week-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.35rem;
+}
+
+.portal-this-week-badge {
+  margin: 0;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  background: #e2eeea;
+  color: #0a3f39;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.portal-this-week h2 {
+  margin-top: 0;
+}
+
+.portal-this-week-meta {
+  list-style: none;
+  margin: 0.85rem 0 1rem;
+  padding: 0;
+  display: grid;
+  gap: 0.45rem;
+}
+
+.portal-this-week-meta li {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.75rem;
+  align-items: baseline;
+}
+
+.portal-this-week-meta-label {
+  min-width: 5.5rem;
+  color: #0a3f39;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.portal-this-week-locked {
+  color: #5c5346;
+  font-size: 0.92rem;
+}
+
+.portal-pre-course-count {
+  margin: 0.35rem 0 0.85rem;
+  font-weight: 600;
+  color: #0a3f39;
+}
+
+.portal-pre-course-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.portal-pre-course-list li {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.85rem 1rem;
+  border: 1px solid #e2eeea;
+  border-radius: 12px;
+  background: #fffdfa;
+}
+
+.portal-pre-course-list li.is-complete {
+  background: #e2eeea;
+  border-color: #c5d9d3;
+}
+
+.portal-pre-course-list li p {
+  margin: 0.25rem 0 0;
+  color: #5c5346;
+  font-size: 0.92rem;
+}
+
+.portal-pre-course-status {
+  flex-shrink: 0;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #0a3f39;
+}
+
+.admin-week1-checklist {
+  display: grid;
+  gap: 0.75rem;
+  margin: 0.75rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.admin-week1-checklist li {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.75rem 0.9rem;
+  border: 1px solid #e2eeea;
+  border-radius: 10px;
+  background: #fffdfa;
+}
+
+.admin-week1-checklist li.is-complete {
+  background: #e2eeea;
+}
+
+.admin-week1-checklist li p {
+  margin: 0.2rem 0 0;
+  color: #5c5346;
+  font-size: 0.9rem;
+}
+
+.admin-client-next-step {
+  margin-top: 0.75rem;
+  padding: 0.85rem 1rem;
+  border-radius: 10px;
+  background: #f1e4cb;
+  border: 1px solid #e2d2a8;
+}
+
+.admin-client-next-step p {
+  margin: 0.25rem 0 0;
+}
+
 .portal-home-hero-art,
 .portal-home-next-step-art {
   max-width: 160px;

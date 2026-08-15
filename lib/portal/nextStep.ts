@@ -22,6 +22,9 @@ type NextStepInput = {
   checkInDoneToday: boolean;
   hasEnrollment: boolean;
   needsSchedule?: boolean;
+  currentActivityId?: string | null;
+  currentActivityTitle?: string | null;
+  activityInProgress?: boolean;
 };
 
 export function resolvePortalNextStep(input: NextStepInput): PortalNextStep {
@@ -77,7 +80,7 @@ export function resolvePortalNextStep(input: NextStepInput): PortalNextStep {
     };
   }
 
-  if (input.hasEnrollment && input.needsSchedule) {
+  if (input.hasEnrollment && input.needsSchedule && !input.currentActivityId) {
     return {
       title: "Choose your session time",
       description: "Pick Tuesday or Friday at 11:00 or 16:00 so your eight sessions can be dated.",
@@ -85,6 +88,17 @@ export function resolvePortalNextStep(input: NextStepInput): PortalNextStep {
       buttonLabel: "Choose schedule",
       artId: "process-support",
       priority: 4.5,
+    };
+  }
+
+  if (input.hasEnrollment && input.currentActivityId && input.currentActivityTitle && input.activityInProgress !== false) {
+    return {
+      title: "Continue your journey",
+      description: `${input.currentActivityTitle} is ready in your programme.`,
+      href: `/portal/programme/journey/${input.currentActivityId}/`,
+      buttonLabel: "Open activity",
+      artId: "process-integration",
+      priority: 4.7,
     };
   }
 
@@ -101,6 +115,17 @@ export function resolvePortalNextStep(input: NextStepInput): PortalNextStep {
       buttonLabel: "Continue session",
       artId: "process-integration",
       priority: 5,
+    };
+  }
+
+  if (input.hasEnrollment && input.needsSchedule) {
+    return {
+      title: "Choose your session time",
+      description: "Pick Tuesday or Friday at 11:00 or 16:00 so your eight sessions can be dated.",
+      href: "/portal/programme/schedule/",
+      buttonLabel: "Choose schedule",
+      artId: "process-support",
+      priority: 5.5,
     };
   }
 

@@ -57,7 +57,8 @@ export function LeadOnboardingGuide() {
         <div className="admin-doc-callout">
           <strong>Related:</strong>{" "}
           <Link href="/admin/docs/lead-triage-playbook/">Lead triage playbook</Link> for SLA targets and safety
-          language · <Link href="/admin/docs/how-to-login-as-admin/">How to log in as admin</Link>
+          language · <Link href="/admin/docs/how-to-login-as-admin/">How to log in as admin</Link> ·{" "}
+          <Link href="/admin/docs/after-invite-start-the-course/">After invite: start the course</Link>
         </div>
       </section>
 

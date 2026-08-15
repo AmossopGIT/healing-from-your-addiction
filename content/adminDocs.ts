@@ -1,6 +1,6 @@
 export type AdminDocCategory = "Operations" | "Content" | "Technical" | "Marketing";
 
-export type AdminDocCustomPage = "admin-login-guide" | "lead-onboarding-guide";
+export type AdminDocCustomPage = "admin-login-guide" | "lead-onboarding-guide" | "programme-start-guide";
 
 export type AdminDocRegistryEntry = {
   slug: string;
@@ -30,6 +30,15 @@ export const adminDocRegistry: AdminDocRegistryEntry[] = [
     category: "Operations",
     order: 8,
     customPage: "lead-onboarding-guide",
+  },
+  {
+    slug: "after-invite-start-the-course",
+    title: "After invite: start the course",
+    description:
+      "Week 1 launch steps after a client is invited — assign the interactive programme, release receipts and guides, and confirm the live slot.",
+    category: "Operations",
+    order: 9,
+    customPage: "programme-start-guide",
   },
   {
     slug: "lead-triage-playbook",

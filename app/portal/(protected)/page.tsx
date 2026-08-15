@@ -5,8 +5,10 @@ import { PortalDailyRitual } from "@/components/portal/PortalDailyRitual";
 import { PortalGentleReminderPrompt } from "@/components/portal/PortalGentleReminderPrompt";
 import { PortalHomeHero } from "@/components/portal/PortalHomeHero";
 import { PortalNextStepCard } from "@/components/portal/PortalNextStepCard";
+import { PortalPreCourseChecklist } from "@/components/portal/PortalPreCourseChecklist";
 import { PortalProgressPanel } from "@/components/portal/PortalProgressPanel";
 import { PortalQuickActions } from "@/components/portal/PortalQuickActions";
+import { PortalThisWeekCard } from "@/components/portal/PortalThisWeekCard";
 import { PortalWeeklyPulse } from "@/components/portal/PortalWeeklyPulse";
 import { standardDisclaimer } from "@/lib/constants";
 import { getPortalHomeBundle } from "@/lib/dashboard/queries";
@@ -80,6 +82,10 @@ export default async function PortalHomePage({ searchParams }: PageProps) {
 
       {bundle.sections.includes("hero") ? <PortalHomeHero hero={bundle.hero} /> : null}
       {showNextStep && bundle.sections.includes("next_step") ? <PortalNextStepCard nextStep={bundle.nextStep} /> : null}
+      {bundle.sections.includes("this_week") && bundle.thisWeek ? <PortalThisWeekCard thisWeek={bundle.thisWeek} /> : null}
+      {bundle.sections.includes("pre_course") && bundle.preCourseChecklist.length > 0 ? (
+        <PortalPreCourseChecklist items={bundle.preCourseChecklist} />
+      ) : null}
       {showQuickActions && bundle.sections.includes("quick_actions") ? (
         <PortalQuickActions
           nextSessionHref={bundle.nextSessionHref}

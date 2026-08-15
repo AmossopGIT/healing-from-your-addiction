@@ -20,8 +20,18 @@ import {
 } from "@/lib/portal/homeState";
 import { buildPortalMilestones } from "@/lib/portal/milestones";
 import { resolvePortalNextStep } from "@/lib/portal/nextStep";
+import { buildPreCourseChecklist, buildThisWeekModel } from "@/lib/portal/courseLoop";
+import { resolveProgrammeDefinition, findActivity } from "@/lib/programme/interactive/content";
+import { getInteractiveProgramme } from "@/content/interactiveProgrammes";
+import type { InteractiveProgrammeDefinition } from "@/content/interactiveProgrammes/types";
 import { homeworkToneForProgrammeWeek } from "@/lib/programme/homework";
 import type { ClientDailyCheckIn, ClientHomeworkEntry, ClientRecoveryGoal } from "@/types/database";
+
+function asDefinition(value: unknown): InteractiveProgrammeDefinition | null {
+  if (!value || typeof value !== "object") return null;
+  if (!("slug" in value) || !("activities" in value)) return null;
+  return value as InteractiveProgrammeDefinition;
+}
 
 function todayIsoDate() {
   return new Date().toISOString().slice(0, 10);
@@ -97,7 +107,25 @@ export async function getPortalHomeBundle(userId: string): Promise<PortalHomeBun
     clientProfile,
     intakeCompleted,
     enrollment: enrollmentBundle?.enrollment ?? null,
+    sessions,
+    progressBySessionId,
   });
+
+  const definition =
+    resolveProgrammeDefinition("", asDefinition(enrollmentBundle?.enrollment?.content_snapshot)) ??
+    asDefinition(enrollmentBundle?.template?.content_json) ??
+    (enrollmentBundle?.template ? getInteractiveProgramme(enrollmentBundle.template.addiction_slug) : null);
+
+  const currentActivityId = enrollmentBundle?.enrollment?.current_activity_id ?? null;
+  const currentActivity = currentActivityId && definition ? findActivity(definition, currentActivityId) : null;
+  const currentActivityTitle = currentActivity?.title ?? null;
+  const activityProgress = enrollmentBundle?.activityProgress ?? [];
+  const currentActivityRow = currentActivityId
+    ? activityProgress.find((row) => row.activity_id === currentActivityId)
+    : null;
+  const activityInProgress = Boolean(
+    currentActivityId && currentActivityRow && currentActivityRow.status !== "completed" && currentActivityRow.status !== "skipped",
+  );
 
   const completedSessionCount = progress.filter((item) => item.status === "completed").length;
   const availableSessionCount = progress.filter((item) => item.status !== "locked").length;
@@ -150,6 +178,9 @@ export async function getPortalHomeBundle(userId: string): Promise<PortalHomeBun
     checkInDoneToday: Boolean(todayCheckIn),
     hasEnrollment: Boolean(enrollmentBundle?.enrollment),
     needsSchedule: Boolean(enrollmentBundle?.enrollment && !enrollmentBundle.schedule),
+    currentActivityId,
+    currentActivityTitle,
+    activityInProgress,
   });
 
   if (stage === "onboarding") {
@@ -259,6 +290,29 @@ export async function getPortalHomeBundle(userId: string): Promise<PortalHomeBun
   const pointsTotal = enrollmentBundle?.pointsTotal ?? 0;
   const homeworkTone = homeworkToneForProgrammeWeek(currentWeekNumber);
 
+  const thisWeek = buildThisWeekModel({
+    clientProfile,
+    intakeSubmission,
+    consultation,
+    enrollment: enrollmentBundle?.enrollment ?? null,
+    sessions,
+    progressBySessionId,
+    activityProgress,
+    currentActivityId,
+    currentActivityTitle,
+    todayCheckIn,
+    homeworkTasks,
+    todayHomeworkEntries,
+    hasSchedule: Boolean(enrollmentBundle?.schedule),
+  });
+
+  const preCourseChecklist = buildPreCourseChecklist({
+    clientProfile,
+    intakeSubmission,
+    consultation,
+    hasEnrollment: Boolean(enrollmentBundle?.enrollment),
+  });
+
   return {
     profile,
     clientProfile,
@@ -266,6 +320,8 @@ export async function getPortalHomeBundle(userId: string): Promise<PortalHomeBun
     sections: resolvePortalHomeSections(stage),
     hero,
     nextStep,
+    thisWeek,
+    preCourseChecklist,
     notifications,
     enrollment: enrollmentBundle?.enrollment ?? null,
     template: enrollmentBundle?.template ?? null,
@@ -290,12 +346,14 @@ export async function getPortalHomeBundle(userId: string): Promise<PortalHomeBun
     nextSessionHref: enrollmentBundle?.schedule
       ? nextAvailableSession
         ? `/portal/programme/session/${nextAvailableSession.session_number}/`
-        : null
+        : currentActivityId
+          ? `/portal/programme/journey/${currentActivityId}/`
+          : null
       : enrollmentBundle?.enrollment
         ? "/portal/programme/schedule/"
         : null,
     nextSessionLabel: enrollmentBundle?.schedule
-      ? nextAvailableSession?.title ?? null
+      ? nextAvailableSession?.title ?? currentActivityTitle ?? null
       : enrollmentBundle?.enrollment
         ? "Choose your session time"
         : null,

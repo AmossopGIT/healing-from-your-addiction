@@ -20,6 +20,7 @@ import {
   validateActivityResponses,
 } from "@/lib/programme/interactive/progress";
 import { recordProgrammeEvent } from "@/lib/programme/interactive/events";
+import { upsertClientContentReceipts } from "@/lib/dashboard/notifications";
 import { createClient } from "@/lib/supabase/server";
 import type { CheckInMood, ProgrammeReviewStatus } from "@/types/database";
 
@@ -112,14 +113,25 @@ export async function assignInteractiveProgramme(formData: FormData) {
     .order("sort_order", { ascending: true });
 
   if (sessions?.length) {
+    const releasedAt = new Date().toISOString();
     await supabase.from("session_progress").insert(
       sessions.map((session, index) => ({
         enrollment_id: enrollment.id,
         session_id: session.id,
         status: index < 2 ? ("available" as const) : ("locked" as const),
-        unlocked_at: index < 2 ? new Date().toISOString() : null,
+        unlocked_at: index < 2 ? releasedAt : null,
       })),
     );
+
+    const initiallyAvailableReceipts = sessions
+      .filter((_, index) => index < 2)
+      .map((session) => ({
+        clientProfileId,
+        contentKind: "session" as const,
+        contentId: session.id,
+        releasedAt,
+      }));
+    await upsertClientContentReceipts(initiallyAvailableReceipts);
   }
 
   revalidatePath(redirectTo);
@@ -349,7 +361,18 @@ export async function saveActivityProgress(formData: FormData) {
       });
     } else {
       journeyCompletedAt = now;
-      await supabase.from("enrollments").update({ status: "completed", journey_completed_at: now }).eq("id", enrollmentId);
+      const { data: sessionProgressRows } = await supabase
+        .from("session_progress")
+        .select("status")
+        .eq("enrollment_id", enrollmentId);
+      const incompleteLive = (sessionProgressRows ?? []).some((row) => row.status !== "completed");
+      await supabase
+        .from("enrollments")
+        .update({
+          journey_completed_at: now,
+          ...(incompleteLive ? {} : { status: "completed" }),
+        })
+        .eq("id", enrollmentId);
       await recordProgrammeEvent({
         supabase,
         enrollmentId,
@@ -490,7 +513,7 @@ export async function adminSkipActivity(formData: FormData) {
 
   const { data: enrollment } = await supabase
     .from("enrollments")
-    .select("programme_version, content_snapshot")
+    .select("id, programme_version, content_snapshot, current_activity_id")
     .eq("id", progress.enrollment_id)
     .maybeSingle();
   const definition = asDefinition(enrollment?.content_snapshot);
@@ -507,6 +530,40 @@ export async function adminSkipActivity(formData: FormData) {
     idempotencyKey: `${progress.enrollment_id}:${progress.activity_id}:admin_skipped:${Date.now()}`,
     metadata: { has_reason: Boolean(reason) },
   });
+
+  if (definition && enrollment) {
+    const ordered = getOrderedActivities(definition);
+    const currentIndex = ordered.findIndex((item) => item.id === progress.activity_id);
+    const next = ordered[currentIndex + 1] ?? null;
+    if (next) {
+      await supabase
+        .from("client_activity_progress")
+        .update({ status: "available" })
+        .eq("enrollment_id", progress.enrollment_id)
+        .eq("activity_id", next.id)
+        .eq("status", "locked");
+      await supabase
+        .from("enrollments")
+        .update({
+          current_activity_id: next.id,
+          last_activity_at: new Date().toISOString(),
+        })
+        .eq("id", progress.enrollment_id);
+      await recordProgrammeEvent({
+        supabase,
+        enrollmentId: progress.enrollment_id,
+        clientProfileId,
+        programmeSlug: definition.slug,
+        programmeVersion: enrollment.programme_version ?? definition.version,
+        moduleId: next.moduleId,
+        activityId: next.id,
+        eventType: "unlocked",
+        actorRole: "admin",
+        actorId: user.id,
+        idempotencyKey: `${progress.enrollment_id}:${next.id}:admin_skip_unlocked`,
+      });
+    }
+  }
 
   revalidatePath(redirectTo);
   redirect(`${redirectTo}?skipped=1`);
