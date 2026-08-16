@@ -1,5 +1,5 @@
 import { caseStudies, getCaseStudiesByAddiction, type CaseStudyType } from "@/content/caseStudies";
-import { getProgrammeDocModules } from "@/content/programmeDocs/gambling";
+import { getProgrammeDocModules, listProgrammeDocSlugs } from "@/content/programmeDocs";
 import { programmes } from "@/content/programmes";
 import { DEFAULT_DAILY_HOMEWORK } from "@/lib/programme/homework";
 import { createServiceClient } from "@/lib/supabase/service";
@@ -313,6 +313,10 @@ export async function seedProgrammeTemplates() {
     }
 
     homeworkCreated += await seedHomeworkTasksForTemplate(templateId);
+  }
+
+  // Guide packs for every interactive programme (not only case-study slugs).
+  for (const addictionSlug of listProgrammeDocSlugs()) {
     docsCreated += await seedProgrammeDocsForAddiction(addictionSlug);
   }
 

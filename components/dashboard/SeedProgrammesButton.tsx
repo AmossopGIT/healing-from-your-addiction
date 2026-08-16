@@ -15,9 +15,14 @@ export function SeedProgrammesButton() {
       if (!response.ok) {
         setMessage(data.error ?? "Seed failed");
       } else {
+        const programmes = data.templatesUpserted ?? data.templatesCreated ?? 0;
+        const docs = data.docsCreated ?? 0;
         setMessage(
-          `Published ${data.templatesUpserted ?? data.templatesCreated ?? 0} interactive programmes` +
-            (data.homeworkUpserted ? ` · ${data.homeworkUpserted} homework tasks` : "") +
+          `Published ${programmes} interactive programmes` +
+            (docs ? ` · ${docs} guides` : "") +
+            (data.homeworkUpserted || data.homeworkCreated
+              ? ` · ${data.homeworkUpserted ?? data.homeworkCreated} homework tasks`
+              : "") +
             (data.sessionsCreated ? ` · ${data.sessionsCreated} legacy sessions` : "") +
             ".",
         );
@@ -31,14 +36,14 @@ export function SeedProgrammesButton() {
   }
 
   return (
-    <section className="dashboard-panel">
+    <div className="admin-programme-seed">
       <button type="button" className="button button-secondary" onClick={handleSeed} disabled={loading}>
-        {loading ? "Publishing..." : "Publish / refresh interactive programmes"}
+        {loading ? "Publishing…" : "Publish / refresh programmes & guides"}
       </button>
       <p className="dashboard-inline-note">
-        Loads all 23 structured journeys into programme templates with immutable content snapshots for new enrollments.
+        Loads all 23 journeys into templates and upserts the 3-guide pack (overview, Week 1, daily practice) for each.
       </p>
       {message ? <p className="dashboard-inline-note">{message}</p> : null}
-    </section>
+    </div>
   );
 }

@@ -30,5 +30,7 @@ export async function POST() {
     ok: true,
     templatesCreated: "templatesCreated" in legacy ? legacy.templatesCreated : 0,
     sessionsCreated: "sessionsCreated" in legacy ? legacy.sessionsCreated : 0,
+    docsCreated: "docsCreated" in legacy ? legacy.docsCreated : 0,
+    homeworkCreated: "homeworkCreated" in legacy ? legacy.homeworkCreated : 0,
   });
 }

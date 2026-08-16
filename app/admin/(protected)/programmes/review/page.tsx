@@ -54,54 +54,64 @@ export default async function AdminProgrammeReviewPage({ searchParams }: PagePro
 
       <section className="dashboard-panel">
         <h2>Queue</h2>
-        <ul className="dashboard-session-list">
+        <div className="admin-programme-review-grid">
           {queue.map(({ programme, template, reviewStatus, priority }) => {
             const live = getInteractiveProgramme(programme.slug) ?? programme;
             return (
-              <li key={programme.slug} className="dashboard-session-item">
-                <div>
-                  <strong>
-                    {live.title}
-                    {priority ? " · priority safety review" : ""}
-                  </strong>
-                  <p className="dashboard-inline-note">
-                    PDF: {live.sourceFile} · source {live.sourceStatus} · checksum{" "}
-                    {live.sourceChecksum ? `${live.sourceChecksum.slice(0, 12)}…` : "—"} · DB review {reviewStatus}
-                    {template?.reviewed_at ? ` · reviewed ${template.reviewed_at.slice(0, 10)}` : ""}
-                  </p>
-                  <p>{live.sourceExcerpt || "No source excerpt stored."}</p>
-                  {template?.review_notes ? <p className="dashboard-inline-note">Notes: {template.review_notes}</p> : null}
-                  <p>
-                    <Link href={`/admin/programmes/${programme.slug}/?tab=source`}>Open comparison</Link>
-                    {" · "}
-                    <Link href={`/admin/programmes/${programme.slug}/preview/${live.activities[0]?.id ?? ""}/`}>
-                      Preview first activity
-                    </Link>
-                  </p>
-                  <form action={setProgrammeReviewStatus} className="dashboard-form">
-                    <input type="hidden" name="slug" value={programme.slug} />
-                    <input type="hidden" name="redirectTo" value="/admin/programmes/review/" />
-                    <label className="form-field">
-                      <span>Status</span>
-                      <select name="reviewStatus" defaultValue={reviewStatus}>
-                        <option value="pending">Pending</option>
-                        <option value="approved">Approved</option>
-                        <option value="changes_requested">Changes requested</option>
-                      </select>
-                    </label>
-                    <label className="form-field">
-                      <span>Notes</span>
-                      <textarea name="reviewNotes" rows={2} defaultValue={template?.review_notes ?? ""} />
-                    </label>
-                    <button type="submit" className="button button-small button-secondary">
-                      Save review
-                    </button>
-                  </form>
+              <article key={programme.slug} className="admin-programme-review-card">
+                <div className="admin-programme-card-top">
+                  <h3>{live.title}</h3>
+                  <div className="admin-programme-card-chips">
+                    {priority ? <span className="admin-programme-chip admin-programme-chip-warn">Priority</span> : null}
+                    <span className="admin-programme-chip">{live.category}</span>
+                    <span
+                      className={`admin-programme-chip ${
+                        reviewStatus === "approved" ? "admin-programme-chip-ok" : "admin-programme-chip-warn"
+                      }`}
+                    >
+                      {reviewStatus.replace(/_/g, " ")}
+                    </span>
+                  </div>
                 </div>
-              </li>
+                <p className="admin-programme-card-meta">
+                  Source {live.sourceStatus}
+                  {live.sourceChecksum ? ` · ${live.sourceChecksum.slice(0, 12)}…` : ""}
+                  {template?.reviewed_at ? ` · reviewed ${template.reviewed_at.slice(0, 10)}` : ""}
+                </p>
+                <p className="admin-programme-review-excerpt">{live.sourceExcerpt || "No source excerpt stored."}</p>
+                {template?.review_notes ? (
+                  <p className="dashboard-inline-note">Notes: {template.review_notes}</p>
+                ) : null}
+                <p className="admin-programme-review-links">
+                  <Link href={`/admin/programmes/${programme.slug}/?tab=source`}>Open comparison</Link>
+                  {" · "}
+                  <Link href={`/admin/programmes/${programme.slug}/preview/${live.activities[0]?.id ?? ""}/`}>
+                    Preview first activity
+                  </Link>
+                </p>
+                <form action={setProgrammeReviewStatus} className="dashboard-form admin-programme-review-form">
+                  <input type="hidden" name="slug" value={programme.slug} />
+                  <input type="hidden" name="redirectTo" value="/admin/programmes/review/" />
+                  <label className="form-field">
+                    <span>Status</span>
+                    <select name="reviewStatus" defaultValue={reviewStatus}>
+                      <option value="pending">Pending</option>
+                      <option value="approved">Approved</option>
+                      <option value="changes_requested">Changes requested</option>
+                    </select>
+                  </label>
+                  <label className="form-field">
+                    <span>Notes</span>
+                    <textarea name="reviewNotes" rows={2} defaultValue={template?.review_notes ?? ""} />
+                  </label>
+                  <button type="submit" className="button button-small button-secondary">
+                    Save review
+                  </button>
+                </form>
+              </article>
             );
           })}
-        </ul>
+        </div>
       </section>
     </div>
   );

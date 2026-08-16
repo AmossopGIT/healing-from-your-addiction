@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { AdminClientConnectionFlowLazy } from "@/components/dashboard/AdminClientConnectionFlowLazy";
 import { AdminJourneySnapshot } from "@/components/dashboard/AdminJourneySnapshot";
+import { AdminProgrammeAssignSuggestions } from "@/components/dashboard/AdminProgrammeAssignSuggestions";
 import { ProgrammeCalendar } from "@/components/programme/ProgrammeCalendar";
 import { ProgrammeJourneyShell } from "@/components/programme/ProgrammeJourneyShell";
 import { ProgrammeProgressTimeline } from "@/components/programme/ProgrammeProgressTimeline";
@@ -481,6 +482,16 @@ export default async function AdminClientProgrammePage({ params, searchParams }:
           </p>
           <form action={assignInteractiveProgramme} className="dashboard-form">
             <input type="hidden" name="clientProfileId" value={id} />
+            <AdminProgrammeAssignSuggestions
+              templates={templates.map((item) => ({
+                id: item.id,
+                title: item.title,
+                addiction_slug: item.addiction_slug,
+                status: item.status,
+              }))}
+              preferredTemplateId={preferredTemplate?.id ?? null}
+              clientFocusSlug={clientProfile.addiction_slug}
+            />
             <label className="form-field">
               <span>Interactive programme template</span>
               <select name="templateId" required defaultValue={preferredTemplate?.id ?? ""}>

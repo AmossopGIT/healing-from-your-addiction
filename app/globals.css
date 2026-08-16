@@ -9597,3 +9597,219 @@ main,
   }
 }
 
+.admin-programme-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  margin-top: 0.85rem;
+}
+
+.admin-programme-seed-panel {
+  padding: 1rem 1.15rem;
+}
+
+.admin-programme-seed {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.admin-programme-filter-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin: 0.75rem 0 1rem;
+}
+
+.admin-programme-filter-chip {
+  background: #fffdfa;
+  border: 1px solid rgba(15, 91, 82, 0.18);
+  border-radius: 999px;
+  color: #0a3f39;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 0.35rem 0.8rem;
+}
+
+.admin-programme-filter-chip.is-active {
+  background: #0a3f39;
+  border-color: #0a3f39;
+  color: #fffdfa;
+}
+
+.admin-programme-card-grid,
+.admin-programme-review-grid,
+.admin-programme-suggest-grid {
+  display: grid;
+  gap: 0.85rem;
+  grid-template-columns: repeat(auto-fill, minmax(16.5rem, 1fr));
+}
+
+.admin-programme-card,
+.admin-programme-review-card,
+.admin-programme-suggest-card {
+  background: #fffdfa;
+  border: 1px solid rgba(15, 91, 82, 0.14);
+  border-radius: 16px;
+  color: inherit;
+  display: grid;
+  gap: 0.55rem;
+  padding: 0.95rem 1rem;
+  text-decoration: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.admin-programme-card:hover,
+.admin-programme-suggest-card:hover {
+  border-color: rgba(10, 63, 57, 0.35);
+  box-shadow: 0 8px 22px rgba(23, 35, 31, 0.06);
+}
+
+.admin-programme-card-top {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.admin-programme-card-top h3 {
+  font-size: 1rem;
+  line-height: 1.3;
+  margin: 0;
+}
+
+.admin-programme-card-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.admin-programme-chip {
+  background: #e2eeea;
+  border-radius: 999px;
+  color: #0a3f39;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  padding: 0.18rem 0.55rem;
+  text-transform: capitalize;
+}
+
+.admin-programme-chip-ok {
+  background: #e2eeea;
+}
+
+.admin-programme-chip-warn {
+  background: #f1e4cb;
+  color: #5c3d12;
+}
+
+.admin-programme-chip-error {
+  background: #f6d9d4;
+  color: #7a2e22;
+}
+
+.admin-programme-chip-muted {
+  background: #f7f3ea;
+  color: #5c5346;
+}
+
+.admin-programme-card-meta {
+  color: #5c5346;
+  font-size: 0.84rem;
+  margin: 0;
+}
+
+.admin-programme-map-details {
+  padding: 1rem 1.15rem;
+}
+
+.admin-programme-map-details > summary {
+  color: #0a3f39;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.admin-programme-map-details[open] > summary {
+  margin-bottom: 0.75rem;
+}
+
+.admin-programme-map-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+  list-style: none;
+  margin: 0 0 0.85rem;
+  padding: 0;
+}
+
+.admin-programme-map-legend li {
+  align-items: center;
+  display: inline-flex;
+  font-size: 0.85rem;
+  gap: 0.4rem;
+}
+
+.admin-programme-legend-swatch {
+  border-radius: 999px;
+  display: inline-block;
+  height: 0.7rem;
+  width: 0.7rem;
+}
+
+.admin-programme-legend-swatch.is-programme {
+  background: #0a3f39;
+}
+
+.admin-programme-legend-swatch.is-journey {
+  background: #7eb8b0;
+}
+
+.admin-programme-legend-swatch.is-guide {
+  background: #c4a574;
+}
+
+.admin-programme-review-excerpt {
+  font-size: 0.9rem;
+  line-height: 1.45;
+  margin: 0;
+}
+
+.admin-programme-review-links {
+  font-size: 0.88rem;
+  margin: 0;
+}
+
+.admin-programme-review-form {
+  border-top: 1px solid rgba(15, 91, 82, 0.1);
+  margin-top: 0.35rem;
+  padding-top: 0.65rem;
+}
+
+.admin-programme-assign-suggestions {
+  margin-bottom: 1rem;
+}
+
+.admin-programme-suggest-card {
+  background: #f7f3ea;
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+}
+
+.admin-programme-suggest-card.is-preferred {
+  border-color: #0a3f39;
+  box-shadow: inset 0 0 0 1px #0a3f39;
+}
+
+.admin-programme-suggest-card strong {
+  display: block;
+  font-size: 0.95rem;
+}
+
+@media (max-width: 700px) {
+  .admin-programme-card-grid,
+  .admin-programme-review-grid,
+  .admin-programme-suggest-grid {
+    grid-template-columns: 1fr;
+  }
+}
+

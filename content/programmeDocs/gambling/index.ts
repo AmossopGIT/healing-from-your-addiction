@@ -1,12 +1,6 @@
-export type ProgrammeDocModule = {
-  addictionSlug: string;
-  slug: string;
-  title: string;
-  summary: string;
-  weekNumber: number | null;
-  sortOrder: number;
-  bodyMarkdown: string;
-};
+import type { ProgrammeDocModule } from "@/content/programmeDocs/types";
+
+export type { ProgrammeDocModule } from "@/content/programmeDocs/types";
 
 export const gamblingProgrammeDocs: ProgrammeDocModule[] = [
   {
@@ -89,12 +83,3 @@ Each completed daily practice awards a small number of practice points. Points a
 `,
   },
 ];
-
-export function getProgrammeDocModules(addictionSlug: string) {
-  if (addictionSlug === "gambling") return gamblingProgrammeDocs;
-  return [];
-}
-
-export function getProgrammeDocModule(addictionSlug: string, slug: string) {
-  return getProgrammeDocModules(addictionSlug).find((doc) => doc.slug === slug) ?? null;
-}
