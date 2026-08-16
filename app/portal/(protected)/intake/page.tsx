@@ -41,7 +41,7 @@ export default async function PortalIntakePage({ searchParams }: PageProps) {
         <p>
           {submission?.completed_at
             ? "Thank you — your intake responses have been submitted. Gerald will review them before your intake conversation."
-            : "Answer these questions before your intake conversation. You can save your progress and return anytime."}
+            : "Tap through short steps. Most answers are quick choices — only add a note if you want to."}
         </p>
       </section>
 

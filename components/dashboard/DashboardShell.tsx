@@ -44,6 +44,7 @@ export async function DashboardShell({
       ? await getPortalNotificationSummary(currentProfile.id)
       : null;
   const mobileItems = mobileNavItems ?? navItems;
+  const surfaceLabel = variant === "admin" ? "Admin workspace" : "Private client portal";
 
   return (
     <div className={`dashboard-shell dashboard-shell-${variant}`}>
@@ -67,10 +68,14 @@ export async function DashboardShell({
       <div className="dashboard-main">
         <header className="dashboard-topbar">
           <div>
-            <p className="dashboard-topbar-label">{variant === "admin" ? "Admin workspace" : "Private client portal"}</p>
+            <p className="dashboard-topbar-label">{surfaceLabel}</p>
+            <p className="dashboard-topbar-title">{title}</p>
           </div>
           <div className="dashboard-topbar-actions">
             {variant === "portal" ? <PortalNotificationBell summary={notificationSummary} /> : null}
+            <div className="dashboard-topbar-signout">
+              <SignOutButton />
+            </div>
           </div>
         </header>
         <div id="main-content" className="dashboard-content">{children}</div>

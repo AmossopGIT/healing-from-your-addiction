@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   Background,
   Controls,
@@ -71,6 +71,19 @@ export function AdminClientConnectionFlow({
   outline,
 }: AdminClientConnectionFlowProps) {
   const [collapsed, setCollapsed] = useState(false);
+  const [isNarrow, setIsNarrow] = useState(false);
+
+  useEffect(() => {
+    const media = window.matchMedia("(max-width: 768px)");
+    const sync = () => {
+      const matches = media.matches;
+      setIsNarrow(matches);
+      if (matches) setCollapsed(true);
+    };
+    sync();
+    media.addEventListener("change", sync);
+    return () => media.removeEventListener("change", sync);
+  }, []);
 
   const initialNodes = useMemo<Node[]>(
     () => [
@@ -187,12 +200,14 @@ export function AdminClientConnectionFlow({
             >
               <Background color="#e2eeea" gap={18} />
               <Controls showInteractive={false} />
-              <MiniMap
-                pannable
-                zoomable
-                nodeColor={() => palette.teal}
-                maskColor="rgba(247, 243, 234, 0.7)"
-              />
+              {!isNarrow ? (
+                <MiniMap
+                  pannable
+                  zoomable
+                  nodeColor={() => palette.teal}
+                  maskColor="rgba(247, 243, 234, 0.7)"
+                />
+              ) : null}
             </ReactFlow>
           </ReactFlowProvider>
         </div>

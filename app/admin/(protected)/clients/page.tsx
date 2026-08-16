@@ -103,6 +103,70 @@ export default async function AdminClientsPage() {
     : { data: [] as { id: string; full_name: string | null; phone: string | null }[] };
   const profileMap = new Map((profiles ?? []).map((profile) => [profile.id, profile]));
 
+  const rows = (clients ?? []).map((client) => {
+    const profile = profileMap.get(client.user_id);
+    const intake = intakeByClientId.get(client.id);
+    const consultation = consultationByClientId.get(client.id);
+    const enrollment = enrollmentByClientId.get(client.id);
+    const hasSchedule = enrollment ? scheduleByEnrollmentId.has(enrollment.id) : false;
+    const openFlagCount = openFlagCountByClient.get(client.id) ?? 0;
+    const hasUrgent = urgentFlagByClient.has(client.id);
+
+    const questionSet = client.addiction_slug ? getIntakeQuestionSetForAddiction(client.addiction_slug) : null;
+    const intakeProgress =
+      intake && questionSet
+        ? countAnsweredQuestions(intake.responses ?? {}, questionSet)
+        : { answered: 0, total: questionSet?.sections.flatMap((section) => section.questions).length ?? 0 };
+
+    const snapshot = buildClientJourneySnapshot({
+      clientProfile: client,
+      passwordSet: null,
+      intakeAnswered: intakeProgress.answered,
+      intakeTotal: intakeProgress.total,
+      intakeComplete: Boolean(intake?.completed_at),
+      enrollment: enrollment
+        ? {
+            status: enrollment.status as Enrollment["status"],
+            last_activity_at: enrollment.last_activity_at,
+          }
+        : null,
+      weekNumber: enrollment ? 1 : null,
+      nextStepSentence: enrollment
+        ? hasSchedule
+          ? "Programme active — check This week on their portal."
+          : "Needs schedule slot."
+        : intake?.completed_at
+          ? "Ready to assign programme."
+          : "Waiting on intake / onboarding.",
+      lastActivityAt: enrollment?.last_activity_at ?? null,
+      openFlagCount,
+    });
+
+    let week1Label = "Not assigned";
+    let week1Class = "status-badge status-badge-intake-not-started";
+    if (enrollment && hasSchedule) {
+      week1Label = "Slot set";
+      week1Class = "status-badge status-badge-intake-complete";
+    } else if (enrollment) {
+      week1Label = "Needs slot";
+      week1Class = "status-badge status-badge-intake-in-progress";
+    }
+
+    return {
+      client,
+      profile,
+      intake,
+      consultation,
+      enrollment,
+      intakeProgress,
+      snapshot,
+      week1Label,
+      week1Class,
+      openFlagCount,
+      hasUrgent,
+    };
+  });
+
   return (
     <div className="dashboard-stack">
       <section className="dashboard-page-header">
@@ -115,150 +179,174 @@ export default async function AdminClientsPage() {
         </p>
       </section>
       <section className="dashboard-panel">
-        {clients?.length ? (
-          <div className="dashboard-table-wrap">
-            <table className="dashboard-table">
-              <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>Journey</th>
-                  <th>Addiction</th>
-                  <th>Intake</th>
-                  <th>Consultation</th>
-                  <th>Week 1</th>
-                  <th>Flags</th>
-                  <th>Contact</th>
-                  <th>Enrolled</th>
-                </tr>
-              </thead>
-              <tbody>
-                {clients.map((client) => {
-                  const profile = profileMap.get(client.user_id);
-                  const intake = intakeByClientId.get(client.id);
-                  const consultation = consultationByClientId.get(client.id);
-                  const enrollment = enrollmentByClientId.get(client.id);
-                  const hasSchedule = enrollment ? scheduleByEnrollmentId.has(enrollment.id) : false;
-                  const openFlagCount = openFlagCountByClient.get(client.id) ?? 0;
-                  const hasUrgent = urgentFlagByClient.has(client.id);
-
-                  const questionSet = client.addiction_slug
-                    ? getIntakeQuestionSetForAddiction(client.addiction_slug)
-                    : null;
-                  const intakeProgress =
-                    intake && questionSet
-                      ? countAnsweredQuestions(intake.responses ?? {}, questionSet)
-                      : { answered: 0, total: questionSet?.sections.flatMap((section) => section.questions).length ?? 0 };
-
-                  const snapshot = buildClientJourneySnapshot({
-                    clientProfile: client,
-                    passwordSet: null,
-                    intakeAnswered: intakeProgress.answered,
-                    intakeTotal: intakeProgress.total,
-                    intakeComplete: Boolean(intake?.completed_at),
-                    enrollment: enrollment
-                      ? {
-                          status: enrollment.status as Enrollment["status"],
-                          last_activity_at: enrollment.last_activity_at,
-                        }
-                      : null,
-                    weekNumber: enrollment ? 1 : null,
-                    nextStepSentence: enrollment
-                      ? hasSchedule
-                        ? "Programme active — check This week on their portal."
-                        : "Needs schedule slot."
-                      : intake?.completed_at
-                        ? "Ready to assign programme."
-                        : "Waiting on intake / onboarding.",
-                    lastActivityAt: enrollment?.last_activity_at ?? null,
-                    openFlagCount,
-                  });
-
-                  let week1Label = "Not assigned";
-                  let week1Class = "status-badge status-badge-intake-not-started";
-                  if (enrollment && hasSchedule) {
-                    week1Label = "Slot set";
-                    week1Class = "status-badge status-badge-intake-complete";
-                  } else if (enrollment) {
-                    week1Label = "Needs slot";
-                    week1Class = "status-badge status-badge-intake-in-progress";
-                  }
-
-                  return (
-                    <tr key={client.id}>
-                      <td>
-                        <Link href={`/admin/clients/${client.id}/`}>{profile?.full_name ?? "Client"}</Link>
-                      </td>
-                      <td>
-                        <span className="status-badge status-badge-intake-in-progress">{snapshot.stageLabel}</span>
-                        <p className="dashboard-table-hint">{snapshot.nextStepSentence}</p>
-                        <p className="dashboard-table-hint">
-                          {snapshot.inviteSent ? "Invite sent" : "Invite not sent"}
-                          {" · "}
-                          {snapshot.onboarded ? "Onboarded" : "Not onboarded"}
-                          {" · "}
-                          Last:{" "}
-                          {snapshot.lastActivityAt ? formatDashboardDate(snapshot.lastActivityAt) : "—"}
-                        </p>
-                      </td>
-                      <td>{client.addiction_slug ?? "—"}</td>
-                      <td>
-                        {intake?.completed_at ? (
-                          <span className="status-badge status-badge-intake-complete">
-                            Completed ({intakeProgress.answered}/{intakeProgress.total})
-                          </span>
-                        ) : intake ? (
-                          <Link href={`/admin/clients/${client.id}/intake/`} className="status-badge status-badge-intake-in-progress">
-                            {intakeProgress.answered}/{intakeProgress.total}
-                          </Link>
-                        ) : (
-                          <span className="status-badge status-badge-intake-not-started">Not started</span>
-                        )}
-                      </td>
-                      <td>
-                        {consultation ? (
-                          <Link
-                            href={`/admin/clients/${client.id}/consultation/`}
-                            className={`status-badge status-badge-consultation-${consultation.status}`}
-                          >
-                            {consultationStatusLabels[consultation.status]}
-                            {!isConsultationCompleteStatus(consultation.status) && consultation.percent_complete > 0
-                              ? ` ${consultation.percent_complete}%`
-                              : ""}
-                          </Link>
-                        ) : (
-                          <Link
-                            href={`/admin/clients/${client.id}/consultation/`}
-                            className="status-badge status-badge-consultation-not_sent"
-                          >
-                            Not sent
-                          </Link>
-                        )}
-                      </td>
-                      <td>
-                        <Link href={`/admin/clients/${client.id}/programme/`} className={week1Class}>
-                          {week1Label}
+        {rows.length ? (
+          <>
+            <ul className="admin-clients-mobile-list">
+              {rows.map(
+                ({
+                  client,
+                  profile,
+                  intake,
+                  consultation,
+                  intakeProgress,
+                  snapshot,
+                  week1Label,
+                  week1Class,
+                  openFlagCount,
+                  hasUrgent,
+                }) => (
+                  <li key={client.id} className="admin-clients-mobile-card">
+                    <div className="admin-clients-mobile-card-header">
+                      <Link href={`/admin/clients/${client.id}/`} className="admin-clients-mobile-name">
+                        {profile?.full_name ?? "Client"}
+                      </Link>
+                      <span className="status-badge status-badge-intake-in-progress">{snapshot.stageLabel}</span>
+                    </div>
+                    <p className="admin-clients-mobile-next">{snapshot.nextStepSentence}</p>
+                    <div className="admin-clients-mobile-meta">
+                      <span>{client.addiction_slug ?? "No focus"}</span>
+                      <span>
+                        {intake?.completed_at
+                          ? `Intake ${intakeProgress.answered}/${intakeProgress.total}`
+                          : intake
+                            ? `Intake ${intakeProgress.answered}/${intakeProgress.total}`
+                            : "Intake not started"}
+                      </span>
+                      <span>
+                        {consultation
+                          ? consultationStatusLabels[consultation.status]
+                          : "Consultation not sent"}
+                      </span>
+                    </div>
+                    <div className="admin-clients-mobile-actions">
+                      <Link href={`/admin/clients/${client.id}/programme/`} className={week1Class}>
+                        Week 1: {week1Label}
+                      </Link>
+                      {openFlagCount ? (
+                        <Link
+                          href={`/admin/clients/${client.id}/programme/#flags`}
+                          className={`status-badge${hasUrgent ? " status-badge-consultation-not_sent" : " status-badge-intake-in-progress"}`}
+                        >
+                          {hasUrgent ? "Urgent flag" : `${openFlagCount} flags`}
                         </Link>
-                      </td>
-                      <td>
-                        {openFlagCount ? (
-                          <Link
-                            href={`/admin/clients/${client.id}/programme/#flags`}
-                            className={`status-badge${hasUrgent ? " status-badge-consultation-not_sent" : " status-badge-intake-in-progress"}`}
-                          >
-                            {hasUrgent ? "Urgent" : `${openFlagCount} open`}
+                      ) : null}
+                      <Link href={`/admin/clients/${client.id}/`} className="button button-small button-secondary">
+                        Open
+                      </Link>
+                    </div>
+                  </li>
+                ),
+              )}
+            </ul>
+
+            <div className="dashboard-table-wrap admin-clients-desktop-table">
+              <table className="dashboard-table">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Journey</th>
+                    <th>Addiction</th>
+                    <th>Intake</th>
+                    <th>Consultation</th>
+                    <th>Week 1</th>
+                    <th>Flags</th>
+                    <th>Contact</th>
+                    <th>Enrolled</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {rows.map(
+                    ({
+                      client,
+                      profile,
+                      intake,
+                      consultation,
+                      intakeProgress,
+                      snapshot,
+                      week1Label,
+                      week1Class,
+                      openFlagCount,
+                      hasUrgent,
+                    }) => (
+                      <tr key={client.id}>
+                        <td>
+                          <Link href={`/admin/clients/${client.id}/`}>{profile?.full_name ?? "Client"}</Link>
+                        </td>
+                        <td>
+                          <span className="status-badge status-badge-intake-in-progress">{snapshot.stageLabel}</span>
+                          <p className="dashboard-table-hint">{snapshot.nextStepSentence}</p>
+                          <p className="dashboard-table-hint">
+                            {snapshot.inviteSent ? "Invite sent" : "Invite not sent"}
+                            {" · "}
+                            {snapshot.onboarded ? "Onboarded" : "Not onboarded"}
+                            {" · "}
+                            Last:{" "}
+                            {snapshot.lastActivityAt ? formatDashboardDate(snapshot.lastActivityAt) : "—"}
+                          </p>
+                        </td>
+                        <td>{client.addiction_slug ?? "—"}</td>
+                        <td>
+                          {intake?.completed_at ? (
+                            <span className="status-badge status-badge-intake-complete">
+                              Completed ({intakeProgress.answered}/{intakeProgress.total})
+                            </span>
+                          ) : intake ? (
+                            <Link
+                              href={`/admin/clients/${client.id}/intake/`}
+                              className="status-badge status-badge-intake-in-progress"
+                            >
+                              {intakeProgress.answered}/{intakeProgress.total}
+                            </Link>
+                          ) : (
+                            <span className="status-badge status-badge-intake-not-started">Not started</span>
+                          )}
+                        </td>
+                        <td>
+                          {consultation ? (
+                            <Link
+                              href={`/admin/clients/${client.id}/consultation/`}
+                              className={`status-badge status-badge-consultation-${consultation.status}`}
+                            >
+                              {consultationStatusLabels[consultation.status]}
+                              {!isConsultationCompleteStatus(consultation.status) && consultation.percent_complete > 0
+                                ? ` ${consultation.percent_complete}%`
+                                : ""}
+                            </Link>
+                          ) : (
+                            <Link
+                              href={`/admin/clients/${client.id}/consultation/`}
+                              className="status-badge status-badge-consultation-not_sent"
+                            >
+                              Not sent
+                            </Link>
+                          )}
+                        </td>
+                        <td>
+                          <Link href={`/admin/clients/${client.id}/programme/`} className={week1Class}>
+                            {week1Label}
                           </Link>
-                        ) : (
-                          <span className="dashboard-inline-note">—</span>
-                        )}
-                      </td>
-                      <td>{profile?.phone ?? client.preferred_contact_method ?? "—"}</td>
-                      <td>{formatDashboardDate(client.created_at)}</td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
+                        </td>
+                        <td>
+                          {openFlagCount ? (
+                            <Link
+                              href={`/admin/clients/${client.id}/programme/#flags`}
+                              className={`status-badge${hasUrgent ? " status-badge-consultation-not_sent" : " status-badge-intake-in-progress"}`}
+                            >
+                              {hasUrgent ? "Urgent" : `${openFlagCount} open`}
+                            </Link>
+                          ) : (
+                            <span className="dashboard-inline-note">—</span>
+                          )}
+                        </td>
+                        <td>{profile?.phone ?? client.preferred_contact_method ?? "—"}</td>
+                        <td>{formatDashboardDate(client.created_at)}</td>
+                      </tr>
+                    ),
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </>
         ) : (
           <p className="dashboard-empty">No clients yet. Invite a client from a qualified lead.</p>
         )}
