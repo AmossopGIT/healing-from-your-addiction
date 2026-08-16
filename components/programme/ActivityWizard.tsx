@@ -47,6 +47,7 @@ export function ActivityWizard({
   const [error, setError] = useState("");
   const [pending, setPending] = useState(false);
   const [previewSaved, setPreviewSaved] = useState(false);
+  const [justSaved, setJustSaved] = useState(false);
   const startedRef = useRef(false);
   const headingRef = useRef<HTMLHeadingElement>(null);
 
@@ -116,6 +117,7 @@ export function ActivityWizard({
 
     setPending(true);
     setError("");
+    setJustSaved(false);
 
     const formData = new FormData();
     formData.set("enrollmentId", enrollmentId);
@@ -143,9 +145,13 @@ export function ActivityWizard({
     });
 
     try {
+      if (!complete) {
+        setJustSaved(true);
+      }
       await saveActivityProgress(formData);
     } catch {
       setPending(false);
+      setJustSaved(false);
     }
   }
 
@@ -161,6 +167,18 @@ export function ActivityWizard({
           <span style={{ width: `${progressPercent}%` }} />
         </div>
         <p className="need-help-wizard-progress-label">{progressPercent}% complete</p>
+        <ol className="programme-activity-step-rail">
+          {steps.map((entry, index) => {
+            const label = entry === "content" ? "Content" : `Q${Number(entry) + 1}`;
+            const state = index < step ? "is-done" : index === step ? "is-current" : "is-upcoming";
+            return (
+              <li key={`${label}-${index}`} className={state}>
+                <span>{index + 1}</span>
+                <em>{label}</em>
+              </li>
+            );
+          })}
+        </ol>
       </div>
       <div className="programme-activity-header">
         <p className="eyebrow">
@@ -315,26 +333,39 @@ export function ActivityWizard({
       )}
 
       {error ? <p className="programme-activity-feedback dashboard-inline-note dashboard-error-note">{error}</p> : null}
+      {justSaved ? (
+        <p className="programme-activity-feedback dashboard-inline-note dashboard-success-note">
+          Progress saved — you can leave and continue later.
+        </p>
+      ) : null}
 
-      <div className="need-help-wizard-actions programme-activity-actions">
-        <button type="button" className="button button-secondary" disabled={step === 0 || pending} onClick={() => setStep((value) => Math.max(0, value - 1))}>
+      <div className="need-help-wizard-actions programme-activity-actions programme-activity-actions-sticky">
+        <button
+          type="button"
+          className="button button-secondary"
+          disabled={step === 0 || pending}
+          onClick={() => setStep((value) => Math.max(0, value - 1))}
+        >
           Back
         </button>
+        {!previewMode ? (
+          <button
+            type="button"
+            className="button button-secondary"
+            disabled={pending || status === "completed"}
+            onClick={() => submit(false)}
+          >
+            Save progress
+          </button>
+        ) : null}
         {step < steps.length - 1 ? (
           <button type="button" className="button button-primary" disabled={pending} onClick={goNext}>
             Continue
           </button>
         ) : (
-          <>
-            {!previewMode ? (
-              <button type="button" className="button button-secondary" disabled={pending || status === "completed"} onClick={() => submit(false)}>
-                Save progress
-              </button>
-            ) : null}
-            <button type="button" className="button button-primary" disabled={pending} onClick={() => submit(true)}>
-              {previewMode ? "Complete preview" : status === "completed" ? "Update & continue" : "Complete activity"}
-            </button>
-          </>
+          <button type="button" className="button button-primary" disabled={pending} onClick={() => submit(true)}>
+            {previewMode ? "Complete preview" : status === "completed" ? "Update & continue" : "Complete activity"}
+          </button>
         )}
       </div>
     </section>

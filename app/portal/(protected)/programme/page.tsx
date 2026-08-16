@@ -192,8 +192,24 @@ export default async function PortalProgrammePage({ searchParams }: PageProps) {
         </p>
       </section>
 
-      {thisWeek ? <PortalThisWeekCard thisWeek={thisWeek} /> : null}
-      {thisWeek ? <PortalWeekMap weekNumber={thisWeek.weekNumber} items={buildWeekMapItems(thisWeek)} /> : null}
+      <nav className="portal-programme-toc admin-programme-toc" aria-label="Programme sections">
+        <a href="#this-week">This week</a>
+        <a href="#week-map">Week map</a>
+        {definition ? <a href="#journey">Journey</a> : null}
+        <a href="#sessions">Sessions</a>
+        {releasedDocs.length > 0 ? <a href="#guides">Guides</a> : null}
+      </nav>
+
+      {thisWeek ? (
+        <div id="this-week">
+          <PortalThisWeekCard thisWeek={thisWeek} />
+        </div>
+      ) : null}
+      {thisWeek ? (
+        <div id="week-map">
+          <PortalWeekMap weekNumber={thisWeek.weekNumber} items={buildWeekMapItems(thisWeek)} />
+        </div>
+      ) : null}
 
       {bundle.enrollmentHistory.length > 1 ? (
         <section className="dashboard-panel">
@@ -233,7 +249,7 @@ export default async function PortalProgrammePage({ searchParams }: PageProps) {
       ) : null}
 
       {definition ? (
-        <>
+        <div id="journey">
           <ProgrammeJourneyShell
             definition={definition}
             progressRows={bundle.activityProgress ?? []}
@@ -246,11 +262,11 @@ export default async function PortalProgrammePage({ searchParams }: PageProps) {
             audience="client"
             definition={definition}
           />
-        </>
+        </div>
       ) : null}
 
       {!bundle.schedule ? (
-        <section className="dashboard-panel">
+        <section className="dashboard-panel" id="sessions">
           <h2>Choose your live session slot</h2>
           <p className="dashboard-inline-note">
             Your interactive journey can begin now. Live coaching sessions still need a Tuesday or Friday slot.
@@ -260,7 +276,7 @@ export default async function PortalProgrammePage({ searchParams }: PageProps) {
           </Link>
         </section>
       ) : (
-        <>
+        <div id="sessions">
           <NextSessionCard
             entry={nextSession}
             meetUrl={bundle.schedule.meet_url}
@@ -279,11 +295,11 @@ export default async function PortalProgrammePage({ searchParams }: PageProps) {
             </p>
             <ProgrammeCalendar entries={entries} nextSessionId={nextSession?.id} audience="client" />
           </section>
-        </>
+        </div>
       )}
 
       {releasedDocs.length > 0 ? (
-        <section className="dashboard-panel">
+        <section className="dashboard-panel" id="guides">
           <h2>Your programme guides</h2>
           <p className="dashboard-inline-note">Read these online or download them as a PDF to keep.</p>
           <ul className="dashboard-session-list">

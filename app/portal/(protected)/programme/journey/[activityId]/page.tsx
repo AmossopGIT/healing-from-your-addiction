@@ -107,8 +107,16 @@ export default async function PortalProgrammeActivityPage({ params, searchParams
         </p>
       </section>
 
-      {completed ? <p className="dashboard-inline-note dashboard-success-note">Activity completed. Keep going when you are ready.</p> : null}
-      {saved ? <p className="dashboard-inline-note dashboard-success-note">Progress saved.</p> : null}
+      {completed ? (
+        <p className="dashboard-inline-note dashboard-success-note">
+          Step complete — this is your next journey activity. Continue when you are ready.
+        </p>
+      ) : null}
+      {saved ? (
+        <p className="dashboard-inline-note dashboard-success-note">
+          Progress saved — you can leave and continue later.
+        </p>
+      ) : null}
       {error ? <p className="dashboard-inline-note dashboard-error-note">{decodeURIComponent(error)}</p> : null}
 
       <ActivityWizard

@@ -104,7 +104,7 @@ export function ConsultationWizard({ consultation, clientName, clientEmail }: Co
       }
 
       if (action === "save") {
-        setMessage("Progress saved.");
+        setMessage("Progress saved — you can leave and continue later.");
       }
 
       if (action === "continue" && result.nextStep) {
@@ -323,7 +323,7 @@ export function ConsultationWizard({ consultation, clientName, clientEmail }: Co
           })}
         </div>
 
-        <div className="need-help-wizard-nav">
+        <div className="need-help-wizard-nav readiness-wizard-nav consultation-wizard-nav-sticky">
           <button
             type="button"
             className="button button-secondary"

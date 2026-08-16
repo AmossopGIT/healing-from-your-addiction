@@ -35,6 +35,15 @@ export const adminNavItems = [
   { href: "/admin/docs/", label: "Docs" },
 ];
 
+/** Compact sticky bar for admin phones — full sidebar remains on desktop. */
+export const adminMobileNavItems = [
+  { href: "/admin/", label: "Overview" },
+  { href: "/admin/leads/", label: "Leads" },
+  { href: "/admin/clients/", label: "Clients" },
+  { href: "/admin/programmes/", label: "Programmes" },
+  { href: "/admin/docs/#more-links", label: "More" },
+];
+
 export const portalNavItems = [
   { href: "/portal/", label: "Home" },
   { href: "/portal/programme/", label: "Programme" },
@@ -60,7 +69,7 @@ export function resolvePortalMobileNavItems(stage: PortalNavStage) {
       { href: "/portal/", label: "Home" },
       { href: "/portal/programme/", label: "Programme" },
       { href: "/portal/messages/", label: "Messages" },
-      { href: "/portal/account/", label: "More" },
+      { href: "/portal/account/#more-links", label: "More" },
     ];
   }
 
@@ -70,7 +79,7 @@ export function resolvePortalMobileNavItems(stage: PortalNavStage) {
       { href: "/portal/intake/", label: "Intake" },
       { href: "/portal/consultation/", label: "Consultation" },
       { href: "/portal/messages/", label: "Messages" },
-      { href: "/portal/account/", label: "More" },
+      { href: "/portal/account/#more-links", label: "More" },
     ];
   }
 

@@ -4,7 +4,10 @@ import { createClient } from "@/lib/supabase/server";
 import { consultationStatusLabels, isConsultationCompleteStatus } from "@/lib/consultation/schema";
 import { formatDashboardDate } from "@/lib/dashboard/constants";
 import { getClientConsultations, getClientIntakeSubmissions } from "@/lib/dashboard/queries";
+import { countAnsweredQuestions, getIntakeQuestionSetForAddiction } from "@/lib/intake/questions";
+import { buildClientJourneySnapshot } from "@/lib/portal/courseLoop";
 import { createMetadata } from "@/lib/seo";
+import type { Enrollment } from "@/types/database";
 
 export const metadata: Metadata = createMetadata({
   title: "Clients | Admin",
@@ -28,10 +31,19 @@ export default async function AdminClientsPage() {
     clientIds.length
       ? supabase
           .from("enrollments")
-          .select("id, client_profile_id, status, created_at")
+          .select("id, client_profile_id, status, created_at, last_activity_at, current_activity_id")
           .in("client_profile_id", clientIds)
           .order("created_at", { ascending: false })
-      : Promise.resolve({ data: [] as { id: string; client_profile_id: string; status: string; created_at: string }[] }),
+      : Promise.resolve({
+          data: [] as {
+            id: string;
+            client_profile_id: string;
+            status: string;
+            created_at: string;
+            last_activity_at: string | null;
+            current_activity_id: string | null;
+          }[],
+        }),
     clientIds.length
       ? supabase
           .from("programme_admin_flags")
@@ -56,10 +68,23 @@ export default async function AdminClientsPage() {
 
   const intakeByClientId = new Map(intakeSubmissions.map((submission) => [submission.client_profile_id, submission]));
   const consultationByClientId = new Map(consultations.map((item) => [item.client_profile_id, item]));
-  const enrollmentByClientId = new Map<string, { id: string; status: string }>();
+  const enrollmentByClientId = new Map<
+    string,
+    {
+      id: string;
+      status: string;
+      last_activity_at: string | null;
+      current_activity_id: string | null;
+    }
+  >();
   for (const row of enrollments ?? []) {
     if (!enrollmentByClientId.has(row.client_profile_id)) {
-      enrollmentByClientId.set(row.client_profile_id, { id: row.id, status: row.status });
+      enrollmentByClientId.set(row.client_profile_id, {
+        id: row.id,
+        status: row.status,
+        last_activity_at: row.last_activity_at,
+        current_activity_id: row.current_activity_id,
+      });
     }
   }
   const scheduleByEnrollmentId = new Set((schedules ?? []).map((row) => row.enrollment_id));
@@ -96,6 +121,7 @@ export default async function AdminClientsPage() {
               <thead>
                 <tr>
                   <th>Name</th>
+                  <th>Journey</th>
                   <th>Addiction</th>
                   <th>Intake</th>
                   <th>Consultation</th>
@@ -115,6 +141,38 @@ export default async function AdminClientsPage() {
                   const openFlagCount = openFlagCountByClient.get(client.id) ?? 0;
                   const hasUrgent = urgentFlagByClient.has(client.id);
 
+                  const questionSet = client.addiction_slug
+                    ? getIntakeQuestionSetForAddiction(client.addiction_slug)
+                    : null;
+                  const intakeProgress =
+                    intake && questionSet
+                      ? countAnsweredQuestions(intake.responses ?? {}, questionSet)
+                      : { answered: 0, total: questionSet?.sections.flatMap((section) => section.questions).length ?? 0 };
+
+                  const snapshot = buildClientJourneySnapshot({
+                    clientProfile: client,
+                    passwordSet: null,
+                    intakeAnswered: intakeProgress.answered,
+                    intakeTotal: intakeProgress.total,
+                    intakeComplete: Boolean(intake?.completed_at),
+                    enrollment: enrollment
+                      ? {
+                          status: enrollment.status as Enrollment["status"],
+                          last_activity_at: enrollment.last_activity_at,
+                        }
+                      : null,
+                    weekNumber: enrollment ? 1 : null,
+                    nextStepSentence: enrollment
+                      ? hasSchedule
+                        ? "Programme active — check This week on their portal."
+                        : "Needs schedule slot."
+                      : intake?.completed_at
+                        ? "Ready to assign programme."
+                        : "Waiting on intake / onboarding.",
+                    lastActivityAt: enrollment?.last_activity_at ?? null,
+                    openFlagCount,
+                  });
+
                   let week1Label = "Not assigned";
                   let week1Class = "status-badge status-badge-intake-not-started";
                   if (enrollment && hasSchedule) {
@@ -130,13 +188,27 @@ export default async function AdminClientsPage() {
                       <td>
                         <Link href={`/admin/clients/${client.id}/`}>{profile?.full_name ?? "Client"}</Link>
                       </td>
+                      <td>
+                        <span className="status-badge status-badge-intake-in-progress">{snapshot.stageLabel}</span>
+                        <p className="dashboard-table-hint">{snapshot.nextStepSentence}</p>
+                        <p className="dashboard-table-hint">
+                          {snapshot.inviteSent ? "Invite sent" : "Invite not sent"}
+                          {" · "}
+                          {snapshot.onboarded ? "Onboarded" : "Not onboarded"}
+                          {" · "}
+                          Last:{" "}
+                          {snapshot.lastActivityAt ? formatDashboardDate(snapshot.lastActivityAt) : "—"}
+                        </p>
+                      </td>
                       <td>{client.addiction_slug ?? "—"}</td>
                       <td>
                         {intake?.completed_at ? (
-                          <span className="status-badge status-badge-intake-complete">Completed</span>
+                          <span className="status-badge status-badge-intake-complete">
+                            Completed ({intakeProgress.answered}/{intakeProgress.total})
+                          </span>
                         ) : intake ? (
                           <Link href={`/admin/clients/${client.id}/intake/`} className="status-badge status-badge-intake-in-progress">
-                            In progress
+                            {intakeProgress.answered}/{intakeProgress.total}
                           </Link>
                         ) : (
                           <span className="status-badge status-badge-intake-not-started">Not started</span>

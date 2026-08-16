@@ -32,7 +32,8 @@ export function getActiveNavHref(
   let activeHref: string | null = null;
 
   for (const item of navItems) {
-    const href = normalizeSurfacePath(item.href);
+    const hrefPath = item.href.split("#")[0] ?? item.href;
+    const href = normalizeSurfacePath(hrefPath);
     const isMatch = pathname === href || (href !== "/" && pathname.startsWith(href));
 
     if (!isMatch) {

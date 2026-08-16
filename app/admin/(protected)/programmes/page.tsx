@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { SeedProgrammesButton } from "@/components/dashboard/SeedProgrammesButton";
+import { AdminProgrammeCatalogGraphLazy } from "@/components/dashboard/AdminProgrammeCatalogGraphLazy";
+import type { CatalogueGraphEdge, CatalogueGraphNode } from "@/components/dashboard/AdminProgrammeCatalogGraph";
 import { catalogueSummary } from "@/lib/programme/interactive/content";
 import { getProgrammeReportingSummary } from "@/lib/programme/interactive/reporting";
 import { createClient } from "@/lib/supabase/server";
@@ -15,16 +17,63 @@ export const metadata: Metadata = createMetadata({
 
 export default async function AdminProgrammesPage() {
   const supabase = await createClient();
-  const [{ data: templates }, reporting] = await Promise.all([
+  const [{ data: templates }, reporting, { data: docs }] = await Promise.all([
     supabase.from("programme_templates").select("*").order("addiction_slug"),
     getProgrammeReportingSummary(),
+    supabase.from("programme_docs").select("id, addiction_slug, title, slug").order("sort_order"),
   ]);
   const templateBySlug = new Map((templates ?? []).map((template) => [template.addiction_slug, template]));
   const catalogue = catalogueSummary();
+  const enrollmentsBySlug = new Map(reporting.map((row) => [row.addictionSlug, row.enrollments]));
 
   const readyCount = catalogue.filter((item) => !item.issues.some((issue) => issue.level === "error")).length;
   const reviewCount = catalogue.filter((item) => item.needsManualReview).length;
   const publishedCount = (templates ?? []).filter((template) => template.status === "published").length;
+
+  const graphNodes: CatalogueGraphNode[] = [
+    { id: "hub", label: "Programme library", kind: "hub" },
+    ...catalogue.map((item) => ({
+      id: `prog-${item.slug}`,
+      label: item.title,
+      kind: "programme" as const,
+      href: `/admin/programmes/${item.slug}/`,
+      meta: `${enrollmentsBySlug.get(item.slug) ?? 0} enrolled`,
+    })),
+    ...catalogue.map((item) => ({
+      id: `json-${item.slug}`,
+      label: "Interactive JSON",
+      kind: "interactive" as const,
+      href: `/admin/programmes/${item.slug}/`,
+      meta: `${item.activityCount} activities`,
+    })),
+    ...(docs ?? []).map((doc) => ({
+      id: `doc-${doc.id}`,
+      label: doc.title,
+      kind: "doc" as const,
+      href: `/admin/programmes/${doc.addiction_slug}/`,
+    })),
+  ];
+
+  const graphEdges: CatalogueGraphEdge[] = [
+    ...catalogue.map((item) => ({
+      id: `hub-${item.slug}`,
+      source: "hub",
+      target: `prog-${item.slug}`,
+      label: `${enrollmentsBySlug.get(item.slug) ?? 0}`,
+    })),
+    ...catalogue.map((item) => ({
+      id: `json-edge-${item.slug}`,
+      source: `prog-${item.slug}`,
+      target: `json-${item.slug}`,
+      label: "content",
+    })),
+    ...(docs ?? []).map((doc) => ({
+      id: `doc-edge-${doc.id}`,
+      source: `prog-${doc.addiction_slug}`,
+      target: `doc-${doc.id}`,
+      label: "guide",
+    })),
+  ].filter((edge) => graphNodes.some((node) => node.id === edge.source) && graphNodes.some((node) => node.id === edge.target));
 
   return (
     <div className="dashboard-stack">
@@ -61,6 +110,16 @@ export default async function AdminProgrammesPage() {
       </section>
 
       <SeedProgrammesButton />
+
+      <section className="dashboard-panel" id="catalog-map">
+        <div className="dashboard-panel-header">
+          <h2>Catalog connection map</h2>
+        </div>
+        <p className="dashboard-inline-note">
+          Force-directed view of addiction programmes, interactive content, downloadable guides, and enrollment counts.
+        </p>
+        <AdminProgrammeCatalogGraphLazy nodes={graphNodes} edges={graphEdges} />
+      </section>
 
       <section className="dashboard-panel">
         <div className="dashboard-panel-header">

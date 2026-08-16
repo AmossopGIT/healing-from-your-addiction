@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { AdminClientConnectionFlowLazy } from "@/components/dashboard/AdminClientConnectionFlowLazy";
+import { AdminJourneySnapshot } from "@/components/dashboard/AdminJourneySnapshot";
 import { ProgrammeCalendar } from "@/components/programme/ProgrammeCalendar";
 import { ProgrammeJourneyShell } from "@/components/programme/ProgrammeJourneyShell";
 import { ProgrammeProgressTimeline } from "@/components/programme/ProgrammeProgressTimeline";
@@ -16,6 +18,7 @@ import {
 } from "@/lib/dashboard/interactiveProgrammeActions";
 import { adminSaveEnrollmentSchedule, adminSaveSessionRecording } from "@/lib/dashboard/scheduleActions";
 import { releaseProgrammeDoc } from "@/lib/dashboard/homeworkActions";
+import { getClientPasswordSetupStatus } from "@/lib/dashboard/clientAuthStatus";
 import {
   getAdminClientBundle,
   getClientConsultation,
@@ -23,11 +26,13 @@ import {
   getClientIntakeSubmission,
 } from "@/lib/dashboard/queries";
 import {
+  buildClientJourneySnapshot,
   buildThisWeekModel,
   buildWeek1LaunchChecklist,
   nextStepFromThisWeek,
   summarizeWeek1Launch,
 } from "@/lib/portal/courseLoop";
+import { countAnsweredQuestions, getIntakeQuestionSetForAddiction } from "@/lib/intake/questions";
 import { resolveProgrammeDefinition, findActivity } from "@/lib/programme/interactive/content";
 import { mergeAdminVisibleResponses, summarizeJourney } from "@/lib/programme/interactive/progress";
 import {
@@ -242,6 +247,36 @@ export default async function AdminClientProgrammePage({ params, searchParams }:
   })?.week_number;
   const tone = homeworkToneForProgrammeWeek(currentWeek);
 
+  const questionSet = clientProfile.addiction_slug
+    ? getIntakeQuestionSetForAddiction(clientProfile.addiction_slug)
+    : null;
+  const intakeProgress =
+    intakeSubmission && questionSet
+      ? countAnsweredQuestions(intakeSubmission.responses ?? {}, questionSet)
+      : {
+          answered: 0,
+          total: questionSet?.sections.flatMap((section) => section.questions).length ?? 0,
+        };
+  const passwordSet = await getClientPasswordSetupStatus(clientProfile.user_id);
+  const journeySnapshot = buildClientJourneySnapshot({
+    clientProfile,
+    passwordSet,
+    intakeAnswered: intakeProgress.answered,
+    intakeTotal: intakeProgress.total,
+    intakeComplete: Boolean(intakeSubmission?.completed_at),
+    enrollment,
+    weekNumber: thisWeek?.weekNumber ?? currentWeek ?? null,
+    nextStepSentence: clientNextStep
+      ? `${clientNextStep.title}: ${clientNextStep.description}`
+      : null,
+    lastActivityAt: enrollment?.last_activity_at ?? null,
+    openFlagCount: openFlags.length,
+  });
+
+  const releasedCount = releasedDocIds.size;
+  const lockedDocCount = Math.max(programmeDocs.length - releasedCount, 0);
+  const incompleteSessions = progress.filter((item) => item.status !== "completed").length;
+
   return (
     <div className="dashboard-stack">
       <section className="dashboard-page-header">
@@ -255,6 +290,62 @@ export default async function AdminClientProgrammePage({ params, searchParams }:
         </p>
       </section>
 
+      <section className="dashboard-panel">
+        <AdminJourneySnapshot snapshot={journeySnapshot} />
+      </section>
+
+      <AdminClientConnectionFlowLazy
+        clientName={clientName}
+        templateTitle={template?.title ?? null}
+        journeyLabel={currentActivity?.title ?? journey?.currentActivity?.title ?? null}
+        liveSessionsLabel={`${completedSessions} complete · ${incompleteSessions} remaining`}
+        docsLabel={`${releasedCount} released · ${lockedDocCount} locked`}
+        outline={[
+          {
+            id: "client",
+            label: clientName,
+            detail: "Client profile",
+            href: `/admin/clients/${id}/`,
+            status: "done",
+          },
+          {
+            id: "admin",
+            label: "Gerald",
+            detail: "Admin support",
+            href: `/admin/clients/${id}/messages/`,
+            status: "open",
+          },
+          {
+            id: "template",
+            label: template?.title ?? "Programme template",
+            detail: enrollment ? "Assigned" : "Not assigned",
+            href: "#assign",
+            status: enrollment ? "done" : "current",
+          },
+          {
+            id: "journey",
+            label: "Journey",
+            detail: currentActivity?.title ?? "No current activity",
+            href: "#journey",
+            status: currentActivity ? "current" : "open",
+          },
+          {
+            id: "sessions",
+            label: "Live sessions",
+            detail: `${completedSessions}/${sessions.length || 0}`,
+            href: "#sessions",
+            status: incompleteSessions ? "open" : "done",
+          },
+          {
+            id: "docs",
+            label: "Guides",
+            detail: `${releasedCount} released`,
+            href: "#docs",
+            status: lockedDocCount ? "open" : "done",
+          },
+        ]}
+      />
+
       <section className="dashboard-panel" id="week1-checklist">
         <h2>Week 1 launch checklist</h2>
         <p className="dashboard-inline-note">
@@ -262,6 +353,7 @@ export default async function AdminClientProgrammePage({ params, searchParams }:
           {week1Summary.completeCount}/{week1Summary.totalCount} complete.
         </p>
         <nav className="admin-programme-toc" aria-label="Programme sections">
+          <a href="#connection-map">Map</a>
           <a href="#week1-checklist">Week 1</a>
           <a href="#assign">Assign</a>
           <a href="#journey">Journey</a>

@@ -1,5 +1,5 @@
 import { caseStudyBySlug } from "@/content/caseStudies";
-import { buildIntakeQuestionSet } from "@/lib/intake/questions";
+import { buildIntakeQuestionSet, countAnsweredQuestions } from "@/lib/intake/questions";
 import { formatDashboardDate } from "@/lib/dashboard/constants";
 import type { ClientIntakeSubmission } from "@/types/database";
 
@@ -25,6 +25,12 @@ export function AdminIntakeView({ submission, addictionSlug }: AdminIntakeViewPr
 
   const questionSet = buildIntakeQuestionSet(study);
   const responses = submission.responses ?? {};
+  const progress = countAnsweredQuestions(
+    Object.fromEntries(
+      Object.entries(responses).map(([key, value]) => [key, typeof value === "string" ? value : String(value ?? "")]),
+    ),
+    questionSet,
+  );
 
   return (
     <div className="intake-form intake-form-readonly">
@@ -34,6 +40,9 @@ export function AdminIntakeView({ submission, addictionSlug }: AdminIntakeViewPr
           {submission.completed_at
             ? `Submitted ${formatDashboardDate(submission.completed_at)}`
             : `In progress — last saved ${formatDashboardDate(submission.updated_at)}`}
+        </p>
+        <p className="intake-progress-note">
+          {progress.answered} of {progress.total} questions answered
         </p>
         <span className={`status-badge ${submission.completed_at ? "status-badge-intake-complete" : "status-badge-intake-in-progress"}`}>
           {submission.completed_at ? "Completed" : "In progress"}
@@ -47,13 +56,13 @@ export function AdminIntakeView({ submission, addictionSlug }: AdminIntakeViewPr
             {section.questions.map((question) => (
               <article key={question.id} className="intake-answer-item">
                 <p className="intake-question-label">{question.text}</p>
-                  <p className="intake-answer-text">
-                    {typeof responses[question.id] === "string"
-                      ? responses[question.id].trim() || "—"
-                      : responses[question.id] == null
-                        ? "—"
-                        : String(responses[question.id])}
-                  </p>
+                <p className="intake-answer-text">
+                  {typeof responses[question.id] === "string"
+                    ? responses[question.id].trim() || "—"
+                    : responses[question.id] == null
+                      ? "—"
+                      : String(responses[question.id])}
+                </p>
               </article>
             ))}
           </div>

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { contactMethods } from "@/lib/constants";
 import { programmeBySlug } from "@/content/programmes";
 import { dashboardFieldMaxLengths } from "@/lib/dashboard/formValidation";
@@ -51,6 +52,32 @@ export default async function PortalAccountPage({ searchParams }: PageProps) {
         {saved ? <p className="dashboard-inline-note">Your details were saved.</p> : null}
         {goal && goalMessages[goal] ? <p className="dashboard-inline-note dashboard-success-note">{goalMessages[goal]}</p> : null}
         {error ? <p className="form-error" role="alert">{accountErrorMessages[error] ?? "Unable to save those details."}</p> : null}
+      </section>
+      <section className="dashboard-panel" id="more-links">
+        <h2>More in your portal</h2>
+        <p className="dashboard-inline-note">Shortcuts for routes that sit under More on your phone.</p>
+        <div className="portal-home-action-row">
+          <Link href="/portal/readiness/" className="portal-home-action-chip">
+            <span className="portal-home-action-label">Readiness</span>
+            <span className="portal-home-action-detail">Healing readiness check</span>
+          </Link>
+          <Link href="/portal/resources/" className="portal-home-action-chip">
+            <span className="portal-home-action-label">Resources</span>
+            <span className="portal-home-action-detail">Shared files</span>
+          </Link>
+          <Link href="/portal/intake/" className="portal-home-action-chip">
+            <span className="portal-home-action-label">Intake</span>
+            <span className="portal-home-action-detail">Pre-programme questions</span>
+          </Link>
+          <Link href="/portal/consultation/" className="portal-home-action-chip">
+            <span className="portal-home-action-label">Consultation</span>
+            <span className="portal-home-action-detail">Need-help form</span>
+          </Link>
+          <Link href="/portal/programme/" className="portal-home-action-chip">
+            <span className="portal-home-action-label">Programme</span>
+            <span className="portal-home-action-detail">This week and journey</span>
+          </Link>
+        </div>
       </section>
       <section className="dashboard-panel">
         <h2>Profile summary</h2>

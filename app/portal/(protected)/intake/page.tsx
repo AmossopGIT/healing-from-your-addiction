@@ -45,7 +45,11 @@ export default async function PortalIntakePage({ searchParams }: PageProps) {
         </p>
       </section>
 
-      {saved ? <p className="dashboard-inline-note dashboard-success-note">Your progress has been saved.</p> : null}
+      {saved ? (
+        <p className="dashboard-inline-note dashboard-success-note">
+          Progress saved — you can leave and continue later.
+        </p>
+      ) : null}
       {completed ? <p className="dashboard-inline-note dashboard-success-note">Your intake has been submitted successfully.</p> : null}
       {error ? <p className="form-error">{intakeErrorMessages[error] ?? "Unable to save your intake."}</p> : null}
 

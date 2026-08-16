@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { AdminJourneySnapshot } from "@/components/dashboard/AdminJourneySnapshot";
 import { consultationStatusLabels, isConsultationCompleteStatus } from "@/lib/consultation/schema";
 import { formatDashboardDate } from "@/lib/dashboard/constants";
+import { getClientPasswordSetupStatus } from "@/lib/dashboard/clientAuthStatus";
 import {
   getAdminClientBundle,
   getClientConsultation,
@@ -10,8 +12,9 @@ import {
   getClientIntakeSubmission,
   getClientReadinessAssessment,
 } from "@/lib/dashboard/queries";
+import { countAnsweredQuestions, getIntakeQuestionSetForAddiction } from "@/lib/intake/questions";
 import { getClientEngagementSummary } from "@/lib/portal/getClientEngagementSummary";
-import { buildWeek1LaunchChecklist, summarizeWeek1Launch } from "@/lib/portal/courseLoop";
+import { buildClientJourneySnapshot, buildWeek1LaunchChecklist, summarizeWeek1Launch } from "@/lib/portal/courseLoop";
 import { updateClientOperations } from "@/lib/dashboard/adminActions";
 import { createMetadata } from "@/lib/seo";
 
@@ -69,6 +72,36 @@ export default async function AdminClientDetailPage({ params, searchParams }: Pa
   const openFlags = (adminFlags ?? []).filter((flag) => !flag.resolved_at);
   const urgentOpenFlags = openFlags.filter((flag) => flag.severity === "urgent" || flag.flag_type === "safety");
 
+  const questionSet = clientProfile.addiction_slug
+    ? getIntakeQuestionSetForAddiction(clientProfile.addiction_slug)
+    : null;
+  const intakeProgress =
+    intakeSubmission && questionSet
+      ? countAnsweredQuestions(intakeSubmission.responses ?? {}, questionSet)
+      : {
+          answered: 0,
+          total: questionSet?.sections.flatMap((section) => section.questions).length ?? 0,
+        };
+  const passwordSet = await getClientPasswordSetupStatus(clientProfile.user_id);
+  const journeySnapshot = buildClientJourneySnapshot({
+    clientProfile,
+    passwordSet,
+    intakeAnswered: intakeProgress.answered,
+    intakeTotal: intakeProgress.total,
+    intakeComplete: Boolean(intakeSubmission?.completed_at),
+    enrollment,
+    weekNumber: enrollment ? 1 : null,
+    nextStepSentence: enrollment
+      ? schedule
+        ? "Programme assigned — review Week 1 checklist."
+        : "Assign schedule slot to unlock live sessions."
+      : intakeSubmission?.completed_at
+        ? "Intake complete — assign programme."
+        : "Complete intake and consultation before assignment.",
+    lastActivityAt: enrollment?.last_activity_at ?? null,
+    openFlagCount: openFlags.length,
+  });
+
   let engagement = {
     engagementStreak: 0,
     pauseCountThisWeek: 0,
@@ -90,6 +123,9 @@ export default async function AdminClientDetailPage({ params, searchParams }: Pa
         <p className="eyebrow">Client profile</p>
         <h1>{profile?.full_name ?? "Client"}</h1>
         <p>{clientProfile.addiction_slug ? `Focus: ${clientProfile.addiction_slug}` : "Addiction focus not set"}</p>
+      </section>
+      <section className="dashboard-panel">
+        <AdminJourneySnapshot snapshot={journeySnapshot} />
       </section>
       <div className="dashboard-quick-links">
         <Link href={`/admin/clients/${id}/readiness/`} className="button button-secondary">

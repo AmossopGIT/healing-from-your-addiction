@@ -109,7 +109,13 @@ export function buildPreCourseChecklist(input: {
       id: "programme",
       label: "Programme assigned",
       done: input.hasEnrollment,
-      href: admin && clientId ? `/admin/clients/${clientId}/programme/` : "/portal/programme/",
+      href: input.hasEnrollment
+        ? admin && clientId
+          ? `/admin/clients/${clientId}/programme/`
+          : "/portal/programme/"
+        : admin && clientId
+          ? `/admin/clients/${clientId}/programme/`
+          : "",
       detail: input.hasEnrollment
         ? "Programme is assigned."
         : admin
@@ -528,5 +534,97 @@ export function nextStepFromThisWeek(thisWeek: ThisWeekModel): PortalNextStep {
             ? "process-support"
             : "pattern-map",
     priority: 5.5,
+  };
+}
+
+export type ClientJourneyStage =
+  | "invite"
+  | "password"
+  | "onboarding"
+  | "intake"
+  | "assigned"
+  | "active"
+  | "maintenance";
+
+export type ClientJourneySnapshot = {
+  stage: ClientJourneyStage;
+  stageLabel: string;
+  inviteSent: boolean;
+  inviteSentAt: string | null;
+  invitationStatus: ClientProfile["invitation_status"] | null;
+  passwordSet: boolean | null;
+  onboarded: boolean;
+  intakeAnswered: number;
+  intakeTotal: number;
+  intakeComplete: boolean;
+  weekNumber: number | null;
+  nextStepSentence: string;
+  lastActivityAt: string | null;
+  openFlagCount: number;
+  enrollmentStatus: Enrollment["status"] | null;
+};
+
+export function buildClientJourneySnapshot(input: {
+  clientProfile: ClientProfile | null;
+  passwordSet?: boolean | null;
+  intakeAnswered?: number;
+  intakeTotal?: number;
+  intakeComplete?: boolean;
+  enrollment?: Pick<Enrollment, "status" | "last_activity_at"> | null;
+  weekNumber?: number | null;
+  nextStepSentence?: string | null;
+  lastActivityAt?: string | null;
+  openFlagCount?: number;
+}): ClientJourneySnapshot {
+  const profile = input.clientProfile;
+  const inviteSent = Boolean(profile?.invited_at) || profile?.invitation_status === "pending" || profile?.invitation_status === "accepted";
+  const onboarded = Boolean(profile?.onboarding_completed_at || profile?.invitation_accepted_at);
+  const intakeComplete = Boolean(input.intakeComplete);
+  const hasEnrollment = Boolean(input.enrollment);
+  const passwordSet = input.passwordSet ?? null;
+  const enrollmentStatus = input.enrollment?.status ?? null;
+
+  let stage: ClientJourneyStage = "invite";
+  if (enrollmentStatus === "completed") stage = "maintenance";
+  else if (hasEnrollment && (input.weekNumber || input.lastActivityAt)) stage = "active";
+  else if (hasEnrollment) stage = "assigned";
+  else if (intakeComplete) stage = "assigned";
+  else if (onboarded) stage = "intake";
+  else if (passwordSet === true || (passwordSet === null && inviteSent && onboarded)) stage = "onboarding";
+  else if (inviteSent && passwordSet === false) stage = "password";
+  else if (inviteSent) stage = "password";
+
+  const stageLabel: Record<ClientJourneyStage, string> = {
+    invite: "Invite",
+    password: "Password setup",
+    onboarding: "Onboarding",
+    intake: "Intake",
+    assigned: "Programme assigned",
+    active: "Active programme",
+    maintenance: "Maintenance",
+  };
+
+  return {
+    stage,
+    stageLabel: stageLabel[stage],
+    inviteSent,
+    inviteSentAt: profile?.invited_at ?? null,
+    invitationStatus: profile?.invitation_status ?? null,
+    passwordSet,
+    onboarded,
+    intakeAnswered: input.intakeAnswered ?? 0,
+    intakeTotal: input.intakeTotal ?? 0,
+    intakeComplete,
+    weekNumber: input.weekNumber ?? null,
+    nextStepSentence:
+      input.nextStepSentence?.trim() ||
+      (intakeComplete && !hasEnrollment
+        ? "Ready for programme assignment."
+        : !onboarded
+          ? "Waiting for onboarding."
+          : "Continue the course loop."),
+    lastActivityAt: input.lastActivityAt ?? input.enrollment?.last_activity_at ?? null,
+    openFlagCount: input.openFlagCount ?? 0,
+    enrollmentStatus,
   };
 }

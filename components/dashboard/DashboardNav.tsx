@@ -23,7 +23,7 @@ export function DashboardNav({ navItems, ariaLabel, className, linkClassName }: 
   return (
     <nav className={className} aria-label={ariaLabel}>
       {navItems.map((item) => {
-        const href = normalizeSurfacePath(item.href);
+        const href = normalizeSurfacePath(item.href.split("#")[0] ?? item.href);
         const isActive = activeHref === href;
 
         return (

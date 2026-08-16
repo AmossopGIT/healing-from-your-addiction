@@ -24,6 +24,33 @@ export default function AdminDocsHubPage() {
         <p>Runbooks and reference pages for the admin team. Add new pages in `content/admin-docs/` or register repo docs in `content/adminDocs.ts`.</p>
       </section>
 
+      <section className="dashboard-panel" id="more-links">
+        <h2>More admin tools</h2>
+        <p className="dashboard-inline-note">Destinations that sit under More on the phone nav.</p>
+        <div className="portal-home-action-row">
+          <Link href="/admin/analytics/" className="portal-home-action-chip">
+            <span className="portal-home-action-label">Analytics</span>
+            <span className="portal-home-action-detail">Funnels and activity</span>
+          </Link>
+          <Link href="/admin/clients/invite/" className="portal-home-action-chip">
+            <span className="portal-home-action-label">Invite client</span>
+            <span className="portal-home-action-detail">Send a portal invite</span>
+          </Link>
+          <Link href="/admin/content/" className="portal-home-action-chip">
+            <span className="portal-home-action-label">Content</span>
+            <span className="portal-home-action-detail">Blog and case studies</span>
+          </Link>
+          <Link href="/admin/notifications/" className="portal-home-action-chip">
+            <span className="portal-home-action-label">Notifications</span>
+            <span className="portal-home-action-detail">Push and alerts</span>
+          </Link>
+          <Link href="/admin/docs/" className="portal-home-action-chip">
+            <span className="portal-home-action-label">Docs hub</span>
+            <span className="portal-home-action-detail">Runbooks below</span>
+          </Link>
+        </div>
+      </section>
+
       <section className="dashboard-panel admin-doc-hub-highlight">
         <div className="admin-doc-hub-highlight-copy">
           <p className="eyebrow">Start here</p>
