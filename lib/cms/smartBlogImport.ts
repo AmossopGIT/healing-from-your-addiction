@@ -3,6 +3,7 @@ import { blogCategories, blogTags } from "@/content/blog";
 import { cmsFieldMaxLengths } from "@/lib/cms/formValidation";
 import { slugifyTitle } from "@/lib/cms/slugify";
 import { parseBlogTemplateDocument, type BlogTemplateImportData } from "@/lib/cms/templateImport";
+import { getUnsupportedImportError } from "@/lib/cms/unsupportedImportSource";
 
 export type SmartBlogImportKind = "template" | "article";
 
@@ -213,6 +214,11 @@ export function parseSmartBlogImport(source: string): {
   const trimmed = source.trim();
   if (!trimmed) {
     return { result: null, error: "Paste is empty." };
+  }
+
+  const unsupported = getUnsupportedImportError({ textPrefix: trimmed.slice(0, 16) });
+  if (unsupported) {
+    return { result: null, error: unsupported };
   }
 
   if (looksLikeBlogTemplate(trimmed)) {

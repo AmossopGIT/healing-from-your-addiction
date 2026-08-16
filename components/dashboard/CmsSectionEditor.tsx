@@ -129,6 +129,14 @@ export function CmsSectionEditor({
               })
             }
           />
+          {(section.paragraphs ?? []).some(
+            (paragraph) => paragraph.trim().length >= Math.floor(cmsFieldMaxLengths.sectionText * 0.9),
+          ) ? (
+            <p className="cms-field-help" role="status">
+              One or more paragraphs are near the {cmsFieldMaxLengths.sectionText.toLocaleString()}-character limit.
+              Split long blocks so save does not reject them.
+            </p>
+          ) : null}
           <CmsRichTextArea
             label="Bullets (one per line, optional)"
             rows={3}

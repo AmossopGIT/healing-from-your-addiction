@@ -84,10 +84,15 @@ function WorkflowActionForm({
     <form action={formAction} className={className}>
       <input type="hidden" name="id" value={contentId} />
       <input type="hidden" name="toStatus" value={toStatus} />
-      {state.error ? (
-        <p className="form-error" role="alert">
-          {state.error}
-        </p>
+      {state.error || state.errors?.length ? (
+        <div className="cms-publish-blockers" role="alert">
+          <p className="form-error">Could not update publishing status:</p>
+          <ul>
+            {(state.errors?.length ? state.errors : state.error ? [state.error] : []).map((message) => (
+              <li key={message}>{message}</li>
+            ))}
+          </ul>
+        </div>
       ) : null}
       {children}
     </form>

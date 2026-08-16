@@ -19,7 +19,7 @@ export type BackfillStaticContentResult = {
   caseStudyUpdated: number;
 };
 
-function buildBlogRow(post: (typeof blogPosts)[number], actorId: string | null) {
+export function buildBlogRow(post: (typeof blogPosts)[number], actorId: string | null) {
   const art = artGalleryById.get(post.heroArtId);
   return {
     slug: post.slug,

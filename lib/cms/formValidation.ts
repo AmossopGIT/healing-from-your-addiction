@@ -22,7 +22,7 @@ export const cmsFieldMaxLengths = {
   heroArtAlt: 240,
   workflowNotes: 500,
   sectionHeading: 160,
-  sectionText: 2000,
+  sectionText: 8000,
   /** Compact JSON payload size for sections (was 50k and blocked typical ChatGPT articles). */
   sectionsJson: 250000,
   uploadAlt: 240,
@@ -148,6 +148,44 @@ export function sanitizeScheduledFor(value: string | null | undefined) {
   return date.toISOString();
 }
 
+function collectSectionLengthErrors(sections: BlogSection[]): string[] {
+  const errors: string[] = [];
+  const maxText = cmsFieldMaxLengths.sectionText;
+  const maxHeading = cmsFieldMaxLengths.sectionHeading;
+
+  for (const [index, section] of sections.entries()) {
+    const label = `Section ${index + 1}`;
+    if (normalizeSingleLine(section.h2).length > maxHeading) {
+      errors.push(`${label} heading is too long (max ${maxHeading} characters).`);
+    }
+
+    for (const [pIndex, paragraph] of (section.paragraphs ?? []).entries()) {
+      if (normalizeMultiline(paragraph).length > maxText) {
+        errors.push(
+          `${label} paragraph ${pIndex + 1} is too long (max ${maxText} characters). Split it into shorter paragraphs.`,
+        );
+      }
+    }
+
+    for (const [bIndex, bullet] of (section.bullets ?? []).entries()) {
+      if (normalizeSingleLine(bullet).length > maxText) {
+        errors.push(`${label} bullet ${bIndex + 1} is too long (max ${maxText} characters).`);
+      }
+    }
+
+    for (const [hIndex, item] of (section.h3Items ?? []).entries()) {
+      if (normalizeSingleLine(item?.h3 ?? "").length > maxHeading) {
+        errors.push(`${label} H3 ${hIndex + 1} heading is too long (max ${maxHeading} characters).`);
+      }
+      if (normalizeMultiline(item?.body ?? "").length > maxText) {
+        errors.push(`${label} H3 ${hIndex + 1} body is too long (max ${maxText} characters).`);
+      }
+    }
+  }
+
+  return errors;
+}
+
 function sanitizeSection(section: BlogSection): BlogSection {
   const paragraphs = (section.paragraphs ?? [])
     .map((paragraph) => normalizeMultiline(paragraph).slice(0, cmsFieldMaxLengths.sectionText))
@@ -225,7 +263,7 @@ function sanitizeSection(section: BlogSection): BlogSection {
   };
 }
 
-export function sanitizeSectionsJson(raw: string): { sections: BlogSection[] } | { error: string } {
+export function sanitizeSectionsJson(raw: string): { sections: BlogSection[] } | { error: string; errors?: string[] } {
   if (raw.length > cmsFieldMaxLengths.sectionsJson) {
     return { error: "Sections content is too large." };
   }
@@ -235,7 +273,16 @@ export function sanitizeSectionsJson(raw: string): { sections: BlogSection[] } |
     return parsed;
   }
 
+  const limited = parsed.sections.slice(0, 20);
+  const lengthErrors = collectSectionLengthErrors(limited);
+  if (lengthErrors.length) {
+    return {
+      error: lengthErrors.join(" "),
+      errors: lengthErrors,
+    };
+  }
+
   return {
-    sections: parsed.sections.slice(0, 20).map(sanitizeSection),
+    sections: limited.map(sanitizeSection),
   };
 }

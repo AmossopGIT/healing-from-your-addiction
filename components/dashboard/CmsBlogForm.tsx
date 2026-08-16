@@ -42,6 +42,11 @@ export function CmsBlogForm({ post, initialError = null }: CmsBlogFormProps) {
     {},
   );
   const formError = actionState.error || initialError;
+  const formErrors = actionState.errors?.length
+    ? actionState.errors
+    : formError
+      ? [formError]
+      : [];
   const galleryItems = artGallery.filter((item) => item.id.startsWith("blog-") || item.category.includes("blog"));
   const titleInputRef = useRef<HTMLInputElement>(null);
 
@@ -135,10 +140,15 @@ export function CmsBlogForm({ post, initialError = null }: CmsBlogFormProps) {
       <form action={formAction} className="dashboard-form cms-content-form cms-blog-editor-main" noValidate>
         {post ? <input type="hidden" name="id" value={post.id} /> : null}
 
-        {formError ? (
-          <p className="form-error" role="alert">
-            {formError}
-          </p>
+        {formErrors.length ? (
+          <div className="cms-publish-blockers" role="alert">
+            <p className="form-error">Could not save. Fix these and try again:</p>
+            <ul>
+              {formErrors.map((message) => (
+                <li key={message}>{message}</li>
+              ))}
+            </ul>
+          </div>
         ) : null}
 
         <div className="cms-staff-guide">
@@ -372,10 +382,15 @@ export function CmsBlogForm({ post, initialError = null }: CmsBlogFormProps) {
         </fieldset>
 
         <div className="cms-form-actions">
-          {formError ? (
-            <p className="form-error" role="alert">
-              Could not save: {formError}
-            </p>
+          {formErrors.length ? (
+            <div className="cms-publish-blockers" role="alert">
+              <p className="form-error">Could not save:</p>
+              <ul>
+                {formErrors.map((message) => (
+                  <li key={`footer-${message}`}>{message}</li>
+                ))}
+              </ul>
+            </div>
           ) : null}
           <CmsFormSubmitButton
             idleLabel={post ? "Save changes" : "Save draft"}

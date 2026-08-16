@@ -11,6 +11,8 @@ Paste or upload a `.md` / `.txt` file in the **Smart Upload** panel. The importe
 1. **Labeled writer template** — `TITLE:`, `--- BODY ---`, etc. (download from the panel or `/templates/blog-post-template.md`)
 2. **Plain ChatGPT / Docs markdown** — `# Title` or a short first headline line, then `##` sections
 
+**Supported files:** `.txt` and `.md` only. PDF and Word (`.doc` / `.docx`) are rejected with a clear message — copy the article text or export as `.txt` / `.md` first. There is no OCR.
+
 Staff action: **Fill form from paste**. If the form already has content, confirm before overwrite.
 
 | Detected as | Fills |
@@ -21,6 +23,7 @@ Staff action: **Fill form from paste**. If the form already has content, confirm
 Plain articles use the title and body to make conservative SEO suggestions. Review the suggested keyword, category, and tags before saving; unmatched categories and tags are left blank rather than guessed.
 
 Parser: `lib/cms/smartBlogImport.ts` (+ `lib/cms/templateImport.ts` for labeled templates)  
+Unsupported detector: `lib/cms/unsupportedImportSource.ts`  
 UI: `components/dashboard/SmartBlogUpload.tsx`
 
 Supported template labels:
@@ -39,6 +42,19 @@ Supported template labels:
 | `--- BODY ---` … `--- END BODY ---` | Markdown body (`##` → sections, bullets, links) |
 | `INTERNAL NOTES` | Reviewer notes (not saved to CMS) |
 
+### Improve an existing live article
+
+Some articles are live from `content/blog*.ts` but not yet in the CMS table. On `/admin/content/blog/`:
+
+1. Find **Live on site, not in CMS yet**
+2. Click **Improve this article**
+3. A CMS **draft** is created from the static post (public page unchanged)
+4. Edit, then **Publish now** so the CMS version replaces the static one
+
+If you try to create a new post with a slug that already exists (CMS or static), save returns a friendly error pointing you back to Improve / edit instead of a raw database unique-constraint message.
+
+While a draft still has a static fallback, the edit page shows a banner: the public URL still shows the original until publish.
+
 ### Essentials-first form
 
 After upload, staff review:
@@ -47,6 +63,10 @@ After upload, staff review:
 2. **Body** — section count + H2 list; expand **Edit sections** only to fine-tune
 3. **Hero artwork**
 4. **SEO** — checklist + meta description + keywords; overrides behind **More SEO settings**
+
+### Paragraph length
+
+Each paragraph, bullet, and H3 body may be up to **8,000 characters**. The section editor warns when a paragraph is near the limit. Save rejects over-length blocks with a listed error instead of silently truncating.
 
 ### Live side preview
 
@@ -67,7 +87,7 @@ Live guidance panel (`components/dashboard/CmsBlogSeoChecklist.tsx`) powered by 
 - Category, tags, internal links, section structure
 - Pass / warning / error states
 
-Publish workflow still enforces hard gates via `lib/cms/validation.ts` (title length, meta length, hero alt, sections, etc.).
+Publish workflow still enforces hard gates via `lib/cms/validation.ts` (title length, meta length, hero alt, sections, etc.). Save and publish failures show as a **list** of blockers on the form and in the Publishing panel.
 
 ### Rich text formatting
 
@@ -129,7 +149,7 @@ After save, the edit page loads the row via `fetchCmsBlogPostById()` with normal
 
 | Route | Purpose |
 |-------|---------|
-| `/admin/content/blog/` | Blog post list |
+| `/admin/content/blog/` | Blog post list + improve-static table |
 | `/admin/content/blog/new/` | New post + Smart Upload |
 | `/admin/content/blog/[id]/` | Edit post + workflow panel |
 
@@ -141,7 +161,9 @@ npm test
 
 Coverage:
 
-- `lib/cms/smartBlogImport.test.ts` — smart detect (template vs ChatGPT article)
+- `lib/cms/smartBlogImport.test.ts` — smart detect (template vs ChatGPT article) + unsupported PDF/Word paste
+- `lib/cms/unsupportedImportSource.test.ts` — filename / magic-byte rejection
+- `lib/cms/formValidation.sections.test.ts` — long paragraphs survive; over-limit returns errors
 - `lib/cms/templateImport.test.ts` — template parsing, slug generation, body → sections
 - `lib/cms/seoChecklist.test.ts` — SEO checklist rules
 - `lib/cms/draftDefaults.test.ts` — draft default field filling
@@ -152,7 +174,7 @@ Config: `vitest.config.ts`
 
 | Area | Path |
 |------|------|
-| Server actions | `lib/cms/actions.ts` |
+| Server actions | `lib/cms/actions.ts` (`openBlogForImprovement`) |
 | Publish validation | `lib/cms/validation.ts` |
 | SEO record mapping | `lib/cms/seo.ts` |
 | Public blog render | `app/blog/[slug]/page.tsx` |

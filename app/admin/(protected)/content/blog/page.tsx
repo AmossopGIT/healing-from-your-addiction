@@ -1,9 +1,14 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { AdminTablePagination } from "@/components/dashboard/AdminTablePagination";
+import { blogPostBySlug } from "@/content/blog";
+import { openBlogForImprovement } from "@/lib/cms/actions";
 import { cmsWorkflowFilterStatuses, fetchCmsBlogList } from "@/lib/cms/listQueries";
 import { countInternalLinks } from "@/lib/cms/internalLinks";
 import { buildPageHref, paginateItems, parsePageParam } from "@/lib/cms/pagination";
+import { fetchAllCmsBlogPosts } from "@/lib/cms/queries";
+import { buildStaticInventory } from "@/lib/cms/staticInventory";
+import { safeDecodeURIComponent } from "@/lib/cms/safeQueryParam";
 import { formatDashboardDate } from "@/lib/dashboard/constants";
 import { createMetadata } from "@/lib/seo";
 import { cmsWorkflowStatusLabels } from "@/types/cms";
@@ -15,7 +20,9 @@ export const metadata: Metadata = createMetadata({
   noIndex: true,
 });
 
-type PageProps = { searchParams: Promise<{ status?: string; q?: string; links?: string; page?: string }> };
+type PageProps = {
+  searchParams: Promise<{ status?: string; q?: string; links?: string; page?: string; error?: string }>;
+};
 
 function buildBlogHref(params: { status?: string; q?: string; links?: string; page?: number }) {
   return buildPageHref(
@@ -27,12 +34,20 @@ function buildBlogHref(params: { status?: string; q?: string; links?: string; pa
 
 export default async function AdminBlogListPage({ searchParams }: PageProps) {
   const filters = await searchParams;
-  const { posts: rawPosts, totalCount } = await fetchCmsBlogList(filters);
+  const [{ posts: rawPosts, totalCount }, allCmsPosts] = await Promise.all([
+    fetchCmsBlogList(filters),
+    fetchAllCmsBlogPosts(true),
+  ]);
+  const inventory = buildStaticInventory(allCmsPosts, []);
+  const staticOnlyPosts = inventory.missingBlogSlugs
+    .map((slug) => blogPostBySlug.get(slug))
+    .filter((post): post is NonNullable<typeof post> => Boolean(post));
   const filteredPosts =
     filters.links === "missing" ? rawPosts.filter((post) => countInternalLinks(post.sections) < 2) : rawPosts;
   const paged = paginateItems(filteredPosts, parsePageParam(filters.page));
   const hasFilters = Boolean(filters.status || filters.q || filters.links);
   const displayCount = filters.links === "missing" ? filteredPosts.length : totalCount;
+  const listError = filters.error ? safeDecodeURIComponent(filters.error) : null;
 
   return (
     <div className="dashboard-stack">
@@ -47,6 +62,8 @@ export default async function AdminBlogListPage({ searchParams }: PageProps) {
           New blog post
         </Link>
       </section>
+
+      {listError ? <p className="form-error">{listError}</p> : null}
 
       <form className="dashboard-search-form" action="/admin/content/blog/" method="get">
         {filters.status ? <input type="hidden" name="status" value={filters.status} /> : null}
@@ -91,6 +108,47 @@ export default async function AdminBlogListPage({ searchParams }: PageProps) {
           </Link>
         ))}
       </section>
+
+      {staticOnlyPosts.length ? (
+        <section className="dashboard-panel">
+          <h2>Live on site, not in CMS yet</h2>
+          <p className="cms-field-help">
+            These articles are live from content files. Use <strong>Improve this article</strong> to open a CMS draft
+            without changing the public page until you publish.
+          </p>
+          <div className="dashboard-table-wrap">
+            <table className="dashboard-table">
+              <thead>
+                <tr>
+                  <th>Title</th>
+                  <th>Slug</th>
+                  <th>Category</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {staticOnlyPosts.map((post) => (
+                  <tr key={post.slug}>
+                    <td>{post.title}</td>
+                    <td>
+                      <code>{post.slug}</code>
+                    </td>
+                    <td>{post.categorySlug}</td>
+                    <td>
+                      <form action={openBlogForImprovement}>
+                        <input type="hidden" name="slug" value={post.slug} />
+                        <button type="submit" className="button button-secondary">
+                          Improve this article
+                        </button>
+                      </form>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </section>
+      ) : null}
 
       <section className="dashboard-panel">
         {paged.items.length ? (

@@ -115,4 +115,11 @@ Body copy.`);
     expect(result).toBeNull();
     expect(error).toContain("empty");
   });
+
+  it("rejects a pasted PDF header with a clear message", () => {
+    const { result, error } = parseSmartBlogImport("%PDF-1.7\n%âãÏÓ\n1 0 obj");
+    expect(result).toBeNull();
+    expect(error).toContain("PDF or Word");
+    expect(error).toContain(".txt");
+  });
 });

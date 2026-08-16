@@ -1,5 +1,6 @@
 import type { BlogSection } from "@/content/blog";
 import { bodyTextToSections, sectionsHaveContent } from "@/lib/cms/bodyToSections";
+import { getUnsupportedImportError } from "@/lib/cms/unsupportedImportSource";
 
 export type SmartBodyImportResult = {
   sections: BlogSection[];
@@ -55,6 +56,11 @@ export function parseSmartBodyImport(source: string): { result: SmartBodyImportR
   const trimmed = source.replace(/\r\n/g, "\n").trim();
   if (!trimmed) {
     return { result: null, error: "Paste article body text first." };
+  }
+
+  const unsupported = getUnsupportedImportError({ textPrefix: trimmed.slice(0, 16) });
+  if (unsupported) {
+    return { result: null, error: unsupported };
   }
 
   const fromMarkers = extractBodyBetweenMarkers(trimmed);

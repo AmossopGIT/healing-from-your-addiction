@@ -3,6 +3,10 @@
 import { useRef, useState } from "react";
 import type { BlogSection } from "@/content/blog";
 import { parseSmartBodyImport, type SmartBodyImportResult } from "@/lib/cms/smartBodyImport";
+import {
+  getUnsupportedImportError,
+  readFileMagicPrefix,
+} from "@/lib/cms/unsupportedImportSource";
 
 type SmartBodyUploadProps = {
   onImport: (sections: BlogSection[]) => void;
@@ -50,6 +54,20 @@ export function SmartBodyUpload({ onImport, hasExistingBody = false }: SmartBody
 
   const handleFile = async (file: File | null) => {
     if (!file) return;
+
+    const magic = await readFileMagicPrefix(file);
+    const unsupported = getUnsupportedImportError({
+      filename: file.name,
+      mimeType: file.type,
+      textPrefix: magic,
+    });
+    if (unsupported) {
+      setError(unsupported);
+      setStatus(null);
+      setPending(null);
+      return;
+    }
+
     const text = await file.text();
     setPaste(text);
     applySource(text);
@@ -105,6 +123,10 @@ export function SmartBodyUpload({ onImport, hasExistingBody = false }: SmartBody
           }}
         />
       </div>
+      <p className="cms-field-help">
+        PDF and Word files are not supported. Paste the article text, or export as <code>.txt</code> / <code>.md</code>{" "}
+        first.
+      </p>
 
       {pending ? (
         <div className="cms-import-confirm" role="alertdialog" aria-labelledby="cms-smart-body-confirm-title">

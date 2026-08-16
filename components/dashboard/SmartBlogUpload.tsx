@@ -2,6 +2,10 @@
 
 import { useRef, useState } from "react";
 import { parseSmartBlogImport, type SmartBlogImportResult } from "@/lib/cms/smartBlogImport";
+import {
+  getUnsupportedImportError,
+  readFileMagicPrefix,
+} from "@/lib/cms/unsupportedImportSource";
 
 type SmartBlogUploadProps = {
   onImport: (result: SmartBlogImportResult) => void;
@@ -45,6 +49,20 @@ export function SmartBlogUpload({ onImport, hasExistingContent = false }: SmartB
 
   const handleFile = async (file: File | null) => {
     if (!file) return;
+
+    const magic = await readFileMagicPrefix(file);
+    const unsupported = getUnsupportedImportError({
+      filename: file.name,
+      mimeType: file.type,
+      textPrefix: magic,
+    });
+    if (unsupported) {
+      setError(unsupported);
+      setStatus(null);
+      setPending(null);
+      return;
+    }
+
     const text = await file.text();
     setPaste(text);
     applySource(text);
@@ -104,6 +122,10 @@ export function SmartBlogUpload({ onImport, hasExistingContent = false }: SmartB
           }}
         />
       </div>
+      <p className="cms-field-help">
+        PDF and Word files are not supported. Paste the article text, or export as <code>.txt</code> / <code>.md</code>{" "}
+        first.
+      </p>
 
       {pending ? (
         <div className="cms-import-confirm" role="alertdialog" aria-labelledby="cms-smart-upload-confirm-title">

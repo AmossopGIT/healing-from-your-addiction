@@ -2,8 +2,9 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import type { BlogSection } from "@/content/blog";
+import { blogPostBySlug, type BlogSection } from "@/content/blog";
 import type { CaseStudyType } from "@/content/caseStudies";
+import { buildBlogRow } from "@/lib/cms/backfillStaticContent";
 import {
   cmsFieldMaxLengths,
   sanitizeAddictionSlug,
@@ -38,10 +39,24 @@ import type { CmsBlogPostRow, CmsCaseStudyRow, CmsWorkflowStatus } from "@/types
 
 export type CmsFormActionState = {
   error?: string;
+  errors?: string[];
 };
 
-type ParsedBlogForm = { error: string } | { input: PublishableBlogInput };
-type ParsedCaseStudyForm = { error: string } | { input: PublishableCaseStudyInput };
+type ParsedBlogForm =
+  | { error: string; errors?: string[] }
+  | { input: PublishableBlogInput };
+type ParsedCaseStudyForm =
+  | { error: string; errors?: string[] }
+  | { input: PublishableCaseStudyInput };
+
+function validationFailure(errors: string[]): CmsFormActionState {
+  return { error: errors.join(" "), errors };
+}
+
+function isUniqueSlugViolation(message: string) {
+  const lower = message.toLowerCase();
+  return lower.includes("duplicate key") || lower.includes("unique constraint") || lower.includes("cms_blog_posts_slug");
+}
 
 async function requireAdminUser() {
   const supabase = await createClient();
@@ -60,7 +75,10 @@ function parseBlogForm(formData: FormData): ParsedBlogForm {
   const sectionsRaw = String(formData.get("sectionsJson") ?? "[]");
   const sectionsResult = sanitizeSectionsJson(sectionsRaw);
   if ("error" in sectionsResult) {
-    return { error: sectionsResult.error } as const;
+    return {
+      error: sectionsResult.error,
+      errors: sectionsResult.errors ?? [sectionsResult.error],
+    } as const;
   }
 
   const slug = sanitizeSlug(String(formData.get("slug") ?? ""));
@@ -91,7 +109,7 @@ function parseBlogForm(formData: FormData): ParsedBlogForm {
 function parseCaseStudyForm(formData: FormData): ParsedCaseStudyForm {
   const blogParsed = parseBlogForm(formData);
   if ("error" in blogParsed) {
-    return { error: blogParsed.error };
+    return { error: blogParsed.error, errors: blogParsed.errors };
   }
 
   const input: PublishableCaseStudyInput = {
@@ -182,11 +200,11 @@ export async function saveBlogPostDraft(
 ): Promise<CmsFormActionState> {
   const { supabase, user } = await requireAdminUser();
   const parsed = parseBlogForm(formData);
-  if ("error" in parsed) return { error: parsed.error };
+  if ("error" in parsed) return { error: parsed.error, errors: parsed.errors };
 
   const validation = validateBlogDraft(parsed.input);
   if (!validation.ok) {
-    return { error: validation.errors.join(" ") };
+    return validationFailure(validation.errors);
   }
 
   const input = withDraftDefaults(parsed.input);
@@ -194,7 +212,7 @@ export async function saveBlogPostDraft(
   if (publishRequested) {
     const publishValidation = validateBlogPublish(input);
     if (!publishValidation.ok) {
-      return { error: publishValidation.errors.join(" ") };
+      return validationFailure(publishValidation.errors);
     }
   }
   const id = sanitizeUuid(String(formData.get("id") ?? ""));
@@ -206,7 +224,14 @@ export async function saveBlogPostDraft(
 
   if (id) {
     const { error } = await supabase.from("cms_blog_posts").update({ ...row, ...publishFields }).eq("id", id);
-    if (error) return { error: error.message };
+    if (error) {
+      if (isUniqueSlugViolation(error.message)) {
+        return validationFailure([
+          `The slug “${input.slug}” is already used by another CMS post. Open that post to improve it, or choose a different slug.`,
+        ]);
+      }
+      return { error: error.message };
+    }
     await logAuditEvent({ userId: user.id, action: "cms_blog_update_draft", resourceType: "cms_blog_post", resourceId: id });
     if (publishRequested) {
       await recordWorkflowEvent(supabase, "blog_post", id, "draft", "published", user.id);
@@ -215,13 +240,37 @@ export async function saveBlogPostDraft(
     redirect(`/admin/content/blog/${id}/?saved=1`);
   }
 
+  const { data: existingBySlug } = await supabase
+    .from("cms_blog_posts")
+    .select("id")
+    .eq("slug", input.slug)
+    .maybeSingle();
+  if (existingBySlug?.id) {
+    return validationFailure([
+      `A CMS post with slug “${input.slug}” already exists. Open /admin/content/blog/${existingBySlug.id}/ to improve it instead of creating a duplicate.`,
+    ]);
+  }
+
+  if (blogPostBySlug.has(input.slug)) {
+    return validationFailure([
+      `“${input.slug}” is already live from the site content files. Use Improve this article on the blog list instead of creating a new post.`,
+    ]);
+  }
+
   const { data, error } = await supabase
     .from("cms_blog_posts")
     .insert({ ...row, ...publishFields, created_by: user.id })
     .select("id")
     .single();
 
-  if (error) return { error: error.message };
+  if (error) {
+    if (isUniqueSlugViolation(error.message)) {
+      return validationFailure([
+        `The slug “${input.slug}” is already used. Open the existing post from the blog list, or choose a different slug.`,
+      ]);
+    }
+    return { error: error.message };
+  }
 
   await logAuditEvent({ userId: user.id, action: "cms_blog_create_draft", resourceType: "cms_blog_post", resourceId: data.id });
   if (publishRequested) {
@@ -237,11 +286,11 @@ export async function saveCaseStudyDraft(
 ): Promise<CmsFormActionState> {
   const { supabase, user } = await requireAdminUser();
   const parsed = parseCaseStudyForm(formData);
-  if ("error" in parsed) return { error: parsed.error };
+  if ("error" in parsed) return { error: parsed.error, errors: parsed.errors };
 
   const validation = validateCaseStudyDraft(parsed.input);
   if (!validation.ok) {
-    return { error: validation.errors.join(" ") };
+    return validationFailure(validation.errors);
   }
 
   const id = sanitizeUuid(String(formData.get("id") ?? ""));
@@ -266,6 +315,53 @@ export async function saveCaseStudyDraft(
   await logAuditEvent({ userId: user.id, action: "cms_case_study_create_draft", resourceType: "cms_case_study", resourceId: data.id });
   revalidateContentPaths();
   redirect(`/admin/content/case-studies/${data.id}/?saved=1`);
+}
+
+/** Open an existing CMS blog row, or create a draft clone from a static live post. */
+export async function openBlogForImprovement(formData: FormData): Promise<void> {
+  const { supabase, user } = await requireAdminUser();
+  const slug = sanitizeSlug(String(formData.get("slug") ?? ""));
+  if (!slug) {
+    redirect("/admin/content/blog/?error=" + encodeURIComponent("Missing blog slug."));
+  }
+
+  const { data: existing } = await supabase.from("cms_blog_posts").select("id").eq("slug", slug).maybeSingle();
+  if (existing?.id) {
+    redirect(`/admin/content/blog/${existing.id}/`);
+  }
+
+  const staticPost = blogPostBySlug.get(slug);
+  if (!staticPost) {
+    redirect(
+      "/admin/content/blog/?error=" +
+        encodeURIComponent(`No live article found for slug “${slug}”. Create a new post instead.`),
+    );
+  }
+
+  const row = buildBlogRow(staticPost, user.id);
+  const { data, error } = await supabase
+    .from("cms_blog_posts")
+    .insert({ ...row, created_by: user.id, updated_by: user.id })
+    .select("id")
+    .single();
+
+  if (error) {
+    if (isUniqueSlugViolation(error.message)) {
+      const { data: raced } = await supabase.from("cms_blog_posts").select("id").eq("slug", slug).maybeSingle();
+      if (raced?.id) redirect(`/admin/content/blog/${raced.id}/`);
+    }
+    redirect("/admin/content/blog/?error=" + encodeURIComponent(error.message));
+  }
+
+  await logAuditEvent({
+    userId: user.id,
+    action: "cms_blog_open_for_improvement",
+    resourceType: "cms_blog_post",
+    resourceId: data.id,
+    metadata: { slug },
+  });
+  revalidateContentPaths();
+  redirect(`/admin/content/blog/${data.id}/?imported=1`);
 }
 
 async function transitionContentWorkflow(
@@ -314,7 +410,7 @@ async function transitionContentWorkflow(
       });
 
       if (!publishValidation.ok) {
-        return { error: publishValidation.errors.join(" ") };
+        return validationFailure(publishValidation.errors);
       }
     }
 
@@ -392,7 +488,7 @@ async function transitionContentWorkflow(
     });
 
     if (!publishValidation.ok) {
-      return { error: publishValidation.errors.join(" ") };
+      return validationFailure(publishValidation.errors);
     }
   }
 
@@ -458,7 +554,7 @@ export async function updateBlogFromForm(
   const parsed = parseBlogForm(formData);
   const id = sanitizeUuid(String(formData.get("id") ?? ""));
   if ("error" in parsed) {
-    return { error: parsed.error };
+    return { error: parsed.error, errors: parsed.errors };
   }
 
   if (!id) {
@@ -467,7 +563,7 @@ export async function updateBlogFromForm(
 
   const validation = validateBlogDraft(parsed.input);
   if (!validation.ok) {
-    return { error: validation.errors.join(" ") };
+    return validationFailure(validation.errors);
   }
 
   const { data: existing } = await supabase.from("cms_blog_posts").select("workflow_status").eq("id", id).single();
@@ -477,7 +573,7 @@ export async function updateBlogFromForm(
   if (publishRequested) {
     const publishValidation = validateBlogPublish(input);
     if (!publishValidation.ok) {
-      return { error: publishValidation.errors.join(" ") };
+      return validationFailure(publishValidation.errors);
     }
   }
   const nextStatus: CmsWorkflowStatus = publishRequested ? "published" : existingStatus;
@@ -487,7 +583,14 @@ export async function updateBlogFromForm(
     : {};
 
   const { error } = await supabase.from("cms_blog_posts").update({ ...row, ...publishFields }).eq("id", id);
-  if (error) return { error: error.message };
+  if (error) {
+    if (isUniqueSlugViolation(error.message)) {
+      return validationFailure([
+        `The slug “${input.slug}” is already used by another CMS post. Choose a different slug.`,
+      ]);
+    }
+    return { error: error.message };
+  }
 
   await logAuditEvent({ userId: user.id, action: "cms_blog_update", resourceType: "cms_blog_post", resourceId: id });
   if (publishRequested && existingStatus !== "published") {
@@ -505,7 +608,7 @@ export async function updateCaseStudyFromForm(
   const parsed = parseCaseStudyForm(formData);
   const id = sanitizeUuid(String(formData.get("id") ?? ""));
   if ("error" in parsed) {
-    return { error: parsed.error };
+    return { error: parsed.error, errors: parsed.errors };
   }
 
   if (!id) {
@@ -514,7 +617,7 @@ export async function updateCaseStudyFromForm(
 
   const validation = validateCaseStudyDraft(parsed.input);
   if (!validation.ok) {
-    return { error: validation.errors.join(" ") };
+    return validationFailure(validation.errors);
   }
 
   const { data: existing } = await supabase.from("cms_case_studies").select("workflow_status").eq("id", id).single();
