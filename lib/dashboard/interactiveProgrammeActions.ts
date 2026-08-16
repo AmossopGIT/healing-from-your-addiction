@@ -4,6 +4,12 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { getInteractiveProgramme } from "@/content/interactiveProgrammes";
 import type { InteractiveProgrammeDefinition } from "@/content/interactiveProgrammes/types";
+import { validateInteractiveProgramme } from "@/content/interactiveProgrammes/validate";
+import {
+  applyActivityPatches,
+  parseActivityPatchesJson,
+  parseProgrammeImportJson,
+} from "@/lib/programme/interactive/adminDraft";
 import {
   dashboardFieldMaxLengths,
   normalizeMultiline,
@@ -23,6 +29,12 @@ import { recordProgrammeEvent } from "@/lib/programme/interactive/events";
 import { upsertClientContentReceipts } from "@/lib/dashboard/notifications";
 import { createClient } from "@/lib/supabase/server";
 import type { CheckInMood, ProgrammeReviewStatus } from "@/types/database";
+
+export type ProgrammeDraftActionState = {
+  error?: string;
+  errors?: string[];
+  warnings?: string[];
+};
 
 const CHECK_IN_MOODS = new Set<CheckInMood>(["calm", "steady", "low", "anxious", "irritable"]);
 
@@ -727,6 +739,220 @@ export async function saveProgrammeDraft(formData: FormData) {
   revalidatePath(redirectTo);
   revalidatePath("/admin/programmes/");
   redirect(`${redirectTo}?draftSaved=1`);
+}
+
+type PersistDraftArgs = {
+  supabase: Awaited<ReturnType<typeof createClient>>;
+  userId: string;
+  template: { id: string; version: number | null };
+  draft: InteractiveProgrammeDefinition;
+  resetReview: boolean;
+};
+
+async function persistProgrammeDraft({ supabase, userId, template, draft, resetReview }: PersistDraftArgs) {
+  const { data: existingDraftVersion } = await supabase
+    .from("programme_versions")
+    .select("id, version")
+    .eq("template_id", template.id)
+    .eq("status", "draft")
+    .order("version", { ascending: false })
+    .limit(1)
+    .maybeSingle();
+
+  const draftVersionNumber = existingDraftVersion?.version ?? Math.max(template.version ?? 1, draft.version) + 1;
+  draft.version = draftVersionNumber;
+  draft.status = "draft";
+
+  const { error: templateError } = await supabase
+    .from("programme_templates")
+    .update({
+      draft_content_json: draft,
+      title: draft.title,
+      description: draft.description,
+      safety_json: draft.safety,
+      cadence_json: draft.cadence ?? {},
+      week_count: draft.weekCount,
+      day_count: draft.dayCount,
+      source_checksum: draft.sourceChecksum ?? null,
+      ...(resetReview ? { review_status: "pending" as const } : {}),
+    })
+    .eq("id", template.id);
+  if (templateError) return { error: templateError.message };
+
+  if (existingDraftVersion) {
+    const { error } = await supabase
+      .from("programme_versions")
+      .update({
+        content_json: draft,
+        source_checksum: draft.sourceChecksum ?? null,
+        ...(resetReview ? { review_status: "pending" as const } : {}),
+      })
+      .eq("id", existingDraftVersion.id);
+    if (error) return { error: error.message };
+  } else {
+    const { error } = await supabase.from("programme_versions").insert({
+      template_id: template.id,
+      version: draftVersionNumber,
+      status: "draft",
+      content_json: draft,
+      source_checksum: draft.sourceChecksum ?? null,
+      review_status: "pending",
+      created_by: userId,
+    });
+    if (error) return { error: error.message };
+  }
+
+  return { ok: true as const };
+}
+
+export async function saveProgrammeActivitiesDraft(
+  _prevState: ProgrammeDraftActionState,
+  formData: FormData,
+): Promise<ProgrammeDraftActionState> {
+  const { supabase, user } = await requireAdmin();
+  const slug = String(formData.get("slug") ?? "").trim();
+  const redirectTo = slug ? `/admin/programmes/${slug}/?tab=activities` : "/admin/programmes/";
+  if (!slug) return { error: "Missing programme slug." };
+
+  const patchesRaw = String(formData.get("activitiesJson") ?? "");
+  const parsedPatches = parseActivityPatchesJson(patchesRaw);
+  if ("error" in parsedPatches) {
+    return { error: parsedPatches.error, errors: [parsedPatches.error] };
+  }
+
+  const source = getInteractiveProgramme(slug);
+  const { data: template } = await supabase
+    .from("programme_templates")
+    .select("*")
+    .eq("addiction_slug", slug)
+    .maybeSingle();
+  if (!template) return { error: "Programme template missing. Seed programmes first.", errors: ["Programme template missing. Seed programmes first."] };
+
+  const base =
+    asDefinition(template.draft_content_json) ??
+    asDefinition(template.content_json) ??
+    source;
+  if (!base) return { error: "Programme content missing.", errors: ["Programme content missing."] };
+
+  const patchResult = applyActivityPatches(base.activities, parsedPatches.patches);
+  if (!patchResult.ok) {
+    return { error: patchResult.errors[0], errors: patchResult.errors };
+  }
+
+  const draft: InteractiveProgrammeDefinition = {
+    ...base,
+    activities: patchResult.activities,
+    status: "draft",
+    reviewStatus: "pending",
+  };
+
+  const issues = validateInteractiveProgramme(draft);
+  const errors = issues.filter((issue) => issue.level === "error").map((issue) => issue.message);
+  if (errors.length) {
+    return { error: errors[0], errors };
+  }
+
+  const persist = await persistProgrammeDraft({
+    supabase,
+    userId: user.id,
+    template: { id: template.id, version: template.version },
+    draft,
+    resetReview: true,
+  });
+  if ("error" in persist && persist.error) {
+    return { error: persist.error, errors: [persist.error] };
+  }
+
+  const warnings = issues.filter((issue) => issue.level === "warning").map((issue) => issue.message);
+  revalidatePath(redirectTo);
+  revalidatePath(`/admin/programmes/${slug}/`);
+  revalidatePath("/admin/programmes/");
+  revalidatePath("/admin/programmes/review/");
+  redirect(`${redirectTo}&draftSaved=1${warnings.length ? `&warn=${encodeURIComponent(warnings[0])}` : ""}`);
+}
+
+export async function importProgrammeJsonDraft(
+  _prevState: ProgrammeDraftActionState,
+  formData: FormData,
+): Promise<ProgrammeDraftActionState> {
+  const { supabase, user } = await requireAdmin();
+  const source = String(formData.get("programmeJson") ?? "");
+  const filename = String(formData.get("filename") ?? "");
+  const parsed = parseProgrammeImportJson(source, { filename });
+  if (!parsed.ok) {
+    return { error: parsed.errors[0], errors: parsed.errors };
+  }
+
+  const programme = parsed.programme;
+  const slug = programme.slug;
+
+  const { data: existing } = await supabase
+    .from("programme_templates")
+    .select("*")
+    .eq("addiction_slug", slug)
+    .maybeSingle();
+
+  if (existing) {
+    const persist = await persistProgrammeDraft({
+      supabase,
+      userId: user.id,
+      template: { id: existing.id, version: existing.version },
+      draft: programme,
+      resetReview: true,
+    });
+    if ("error" in persist && persist.error) {
+      return { error: persist.error, errors: [persist.error] };
+    }
+  } else {
+    const { data: inserted, error: insertError } = await supabase
+      .from("programme_templates")
+      .insert({
+        addiction_slug: slug,
+        title: programme.title,
+        session_count: programme.cadence?.liveSessionCount ?? 8,
+        category: programme.category,
+        status: "draft",
+        version: Math.max(1, programme.version || 1),
+        published_at: null,
+        description: programme.description,
+        safety_json: programme.safety,
+        week_count: programme.weekCount,
+        day_count: programme.dayCount,
+        content_json: {},
+        draft_content_json: programme,
+        cadence_json: programme.cadence ?? {},
+        source_checksum: programme.sourceChecksum ?? null,
+        review_status: "pending",
+        source_case_study_slug: null,
+      })
+      .select("id, version")
+      .single();
+
+    if (insertError || !inserted) {
+      return {
+        error: insertError?.message ?? "Could not create programme template.",
+        errors: [insertError?.message ?? "Could not create programme template."],
+      };
+    }
+
+    const { error: versionError } = await supabase.from("programme_versions").insert({
+      template_id: inserted.id,
+      version: inserted.version ?? 1,
+      status: "draft",
+      content_json: programme,
+      source_checksum: programme.sourceChecksum ?? null,
+      review_status: "pending",
+      created_by: user.id,
+    });
+    if (versionError) {
+      return { error: versionError.message, errors: [versionError.message] };
+    }
+  }
+
+  revalidatePath("/admin/programmes/");
+  revalidatePath(`/admin/programmes/${slug}/`);
+  revalidatePath("/admin/programmes/review/");
+  redirect(`/admin/programmes/${slug}/?tab=activities&imported=1`);
 }
 
 export async function publishProgrammeVersion(formData: FormData) {

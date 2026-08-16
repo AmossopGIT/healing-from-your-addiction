@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { CmsCaseStudyForm } from "@/components/dashboard/CmsCaseStudyForm";
+import { safeDecodeURIComponent } from "@/lib/cms/safeQueryParam";
 import { createMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = createMetadata({
@@ -14,6 +15,7 @@ type PageProps = { searchParams: Promise<{ error?: string }> };
 
 export default async function NewCaseStudyPage({ searchParams }: PageProps) {
   const { error } = await searchParams;
+  const initialError = error ? safeDecodeURIComponent(error) : null;
 
   return (
     <div className="dashboard-stack">
@@ -24,9 +26,8 @@ export default async function NewCaseStudyPage({ searchParams }: PageProps) {
           Back to case study list
         </Link>
       </section>
-      {error ? <p className="form-error">{decodeURIComponent(error)}</p> : null}
       <section className="dashboard-panel">
-        <CmsCaseStudyForm />
+        <CmsCaseStudyForm initialError={initialError} />
       </section>
     </div>
   );

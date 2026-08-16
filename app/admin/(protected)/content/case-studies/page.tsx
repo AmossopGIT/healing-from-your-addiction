@@ -1,8 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { AdminTablePagination } from "@/components/dashboard/AdminTablePagination";
+import { caseStudyBySlug } from "@/content/caseStudies";
+import { openCaseStudyForImprovement } from "@/lib/cms/actions";
 import { cmsWorkflowFilterStatuses, fetchCmsCaseStudyList } from "@/lib/cms/listQueries";
 import { buildPageHref, paginateItems, parsePageParam } from "@/lib/cms/pagination";
+import { fetchAllCmsCaseStudies } from "@/lib/cms/queries";
+import { safeDecodeURIComponent } from "@/lib/cms/safeQueryParam";
+import { buildStaticInventory } from "@/lib/cms/staticInventory";
 import { formatDashboardDate } from "@/lib/dashboard/constants";
 import { createMetadata } from "@/lib/seo";
 import { cmsWorkflowStatusLabels } from "@/types/cms";
@@ -14,7 +19,7 @@ export const metadata: Metadata = createMetadata({
   noIndex: true,
 });
 
-type PageProps = { searchParams: Promise<{ status?: string; q?: string; page?: string }> };
+type PageProps = { searchParams: Promise<{ status?: string; q?: string; page?: string; error?: string }> };
 
 function buildCaseStudyHref(params: { status?: string; q?: string; page?: number }) {
   return buildPageHref("/admin/content/case-studies/", { status: params.status, q: params.q }, params.page ?? 1);
@@ -22,9 +27,17 @@ function buildCaseStudyHref(params: { status?: string; q?: string; page?: number
 
 export default async function AdminCaseStudyListPage({ searchParams }: PageProps) {
   const filters = await searchParams;
-  const { studies, totalCount } = await fetchCmsCaseStudyList(filters);
+  const [{ studies, totalCount }, allCmsStudies] = await Promise.all([
+    fetchCmsCaseStudyList(filters),
+    fetchAllCmsCaseStudies(true),
+  ]);
+  const inventory = buildStaticInventory([], allCmsStudies);
+  const staticOnlyStudies = inventory.missingCaseStudySlugs
+    .map((slug) => caseStudyBySlug.get(slug))
+    .filter((study): study is NonNullable<typeof study> => Boolean(study));
   const paged = paginateItems(studies, parsePageParam(filters.page));
   const hasFilters = Boolean(filters.status || filters.q);
+  const listError = filters.error ? safeDecodeURIComponent(filters.error) : null;
 
   return (
     <div className="dashboard-stack">
@@ -39,6 +52,8 @@ export default async function AdminCaseStudyListPage({ searchParams }: PageProps
           New case study
         </Link>
       </section>
+
+      {listError ? <p className="form-error">{listError}</p> : null}
 
       <form className="dashboard-search-form" action="/admin/content/case-studies/" method="get">
         {filters.status ? <input type="hidden" name="status" value={filters.status} /> : null}
@@ -73,6 +88,47 @@ export default async function AdminCaseStudyListPage({ searchParams }: PageProps
           </Link>
         ))}
       </section>
+
+      {staticOnlyStudies.length ? (
+        <section className="dashboard-panel">
+          <h2>Live on site, not in CMS yet</h2>
+          <p className="cms-field-help">
+            These case studies are live from content files. Use <strong>Improve this case study</strong> to open a CMS
+            draft without changing the public page until you publish.
+          </p>
+          <div className="dashboard-table-wrap">
+            <table className="dashboard-table">
+              <thead>
+                <tr>
+                  <th>Title</th>
+                  <th>Slug</th>
+                  <th>Type</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {staticOnlyStudies.map((study) => (
+                  <tr key={study.slug}>
+                    <td>{study.title}</td>
+                    <td>
+                      <code>{study.slug}</code>
+                    </td>
+                    <td>{study.caseStudyType}</td>
+                    <td>
+                      <form action={openCaseStudyForImprovement}>
+                        <input type="hidden" name="slug" value={study.slug} />
+                        <button type="submit" className="button button-secondary">
+                          Improve this case study
+                        </button>
+                      </form>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </section>
+      ) : null}
 
       <section className="dashboard-panel">
         {paged.items.length ? (

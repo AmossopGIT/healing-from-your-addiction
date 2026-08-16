@@ -3,8 +3,8 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { blogPostBySlug, type BlogSection } from "@/content/blog";
-import type { CaseStudyType } from "@/content/caseStudies";
-import { buildBlogRow } from "@/lib/cms/backfillStaticContent";
+import { caseStudyBySlug, type CaseStudyType } from "@/content/caseStudies";
+import { buildBlogRow, buildCaseStudyRow } from "@/lib/cms/backfillStaticContent";
 import {
   cmsFieldMaxLengths,
   sanitizeAddictionSlug,
@@ -293,15 +293,48 @@ export async function saveCaseStudyDraft(
     return validationFailure(validation.errors);
   }
 
+  const blogDefaults = withDraftDefaults(parsed.input);
+  const input: PublishableCaseStudyInput = {
+    ...blogDefaults,
+    legacySlug: parsed.input.legacySlug || blogDefaults.slug,
+    caseStudyType: parsed.input.caseStudyType,
+    addictionSlug: parsed.input.addictionSlug,
+    heroArtId: parsed.input.heroArtId.trim() || cmsCaseStudyHeroArtId(blogDefaults.slug),
+  };
+
   const id = sanitizeUuid(String(formData.get("id") ?? ""));
-  const row = caseStudyRowFromInput(parsed.input, user.id, "draft");
+  const row = caseStudyRowFromInput(input, user.id, "draft");
 
   if (id) {
     const { error } = await supabase.from("cms_case_studies").update(row).eq("id", id);
-    if (error) return { error: error.message };
+    if (error) {
+      if (isUniqueSlugViolation(error.message)) {
+        return validationFailure([
+          `The slug “${input.slug}” is already used by another CMS case study. Open that entry to improve it, or choose a different slug.`,
+        ]);
+      }
+      return { error: error.message };
+    }
     await logAuditEvent({ userId: user.id, action: "cms_case_study_update_draft", resourceType: "cms_case_study", resourceId: id });
     revalidateContentPaths();
     redirect(`/admin/content/case-studies/${id}/?saved=1`);
+  }
+
+  const { data: existingBySlug } = await supabase
+    .from("cms_case_studies")
+    .select("id")
+    .eq("slug", input.slug)
+    .maybeSingle();
+  if (existingBySlug?.id) {
+    return validationFailure([
+      `A CMS case study with slug “${input.slug}” already exists. Open /admin/content/case-studies/${existingBySlug.id}/ to improve it instead of creating a duplicate.`,
+    ]);
+  }
+
+  if (caseStudyBySlug.has(input.slug)) {
+    return validationFailure([
+      `“${input.slug}” is already live from the site content files. Use Improve this case study on the case study list instead of creating a new entry.`,
+    ]);
   }
 
   const { data, error } = await supabase
@@ -310,11 +343,65 @@ export async function saveCaseStudyDraft(
     .select("id")
     .single();
 
-  if (error) return { error: error.message };
+  if (error) {
+    if (isUniqueSlugViolation(error.message)) {
+      return validationFailure([
+        `The slug “${input.slug}” is already used. Open the existing case study from the list, or choose a different slug.`,
+      ]);
+    }
+    return { error: error.message };
+  }
 
   await logAuditEvent({ userId: user.id, action: "cms_case_study_create_draft", resourceType: "cms_case_study", resourceId: data.id });
   revalidateContentPaths();
   redirect(`/admin/content/case-studies/${data.id}/?saved=1`);
+}
+
+/** Open an existing CMS case study row, or create a draft clone from a static live study. */
+export async function openCaseStudyForImprovement(formData: FormData): Promise<void> {
+  const { supabase, user } = await requireAdminUser();
+  const slug = sanitizeSlug(String(formData.get("slug") ?? ""));
+  if (!slug) {
+    redirect("/admin/content/case-studies/?error=" + encodeURIComponent("Missing case study slug."));
+  }
+
+  const { data: existing } = await supabase.from("cms_case_studies").select("id").eq("slug", slug).maybeSingle();
+  if (existing?.id) {
+    redirect(`/admin/content/case-studies/${existing.id}/`);
+  }
+
+  const staticStudy = caseStudyBySlug.get(slug);
+  if (!staticStudy) {
+    redirect(
+      "/admin/content/case-studies/?error=" +
+        encodeURIComponent(`No live case study found for slug “${slug}”. Create a new case study instead.`),
+    );
+  }
+
+  const row = buildCaseStudyRow(staticStudy, user.id);
+  const { data, error } = await supabase
+    .from("cms_case_studies")
+    .insert({ ...row, created_by: user.id, updated_by: user.id })
+    .select("id")
+    .single();
+
+  if (error) {
+    if (isUniqueSlugViolation(error.message)) {
+      const { data: raced } = await supabase.from("cms_case_studies").select("id").eq("slug", slug).maybeSingle();
+      if (raced?.id) redirect(`/admin/content/case-studies/${raced.id}/`);
+    }
+    redirect("/admin/content/case-studies/?error=" + encodeURIComponent(error.message));
+  }
+
+  await logAuditEvent({
+    userId: user.id,
+    action: "cms_case_study_open_for_improvement",
+    resourceType: "cms_case_study",
+    resourceId: data.id,
+    metadata: { slug },
+  });
+  revalidateContentPaths();
+  redirect(`/admin/content/case-studies/${data.id}/?imported=1`);
 }
 
 /** Open an existing CMS blog row, or create a draft clone from a static live post. */
@@ -621,10 +708,25 @@ export async function updateCaseStudyFromForm(
   }
 
   const { data: existing } = await supabase.from("cms_case_studies").select("workflow_status").eq("id", id).single();
-  const row = caseStudyRowFromInput(parsed.input, user.id, (existing?.workflow_status as CmsWorkflowStatus) ?? "draft");
+  const blogDefaults = withDraftDefaults(parsed.input);
+  const input: PublishableCaseStudyInput = {
+    ...blogDefaults,
+    legacySlug: parsed.input.legacySlug || blogDefaults.slug,
+    caseStudyType: parsed.input.caseStudyType,
+    addictionSlug: parsed.input.addictionSlug,
+    heroArtId: parsed.input.heroArtId.trim() || cmsCaseStudyHeroArtId(blogDefaults.slug),
+  };
+  const row = caseStudyRowFromInput(input, user.id, (existing?.workflow_status as CmsWorkflowStatus) ?? "draft");
 
   const { error } = await supabase.from("cms_case_studies").update(row).eq("id", id);
-  if (error) return { error: error.message };
+  if (error) {
+    if (isUniqueSlugViolation(error.message)) {
+      return validationFailure([
+        `The slug “${input.slug}” is already used by another CMS case study. Choose a different slug.`,
+      ]);
+    }
+    return { error: error.message };
+  }
 
   await logAuditEvent({ userId: user.id, action: "cms_case_study_update", resourceType: "cms_case_study", resourceId: id });
   revalidateContentPaths();

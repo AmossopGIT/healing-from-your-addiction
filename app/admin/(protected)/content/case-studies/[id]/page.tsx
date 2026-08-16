@@ -13,7 +13,7 @@ export const dynamic = "force-dynamic";
 
 type PageProps = {
   params: Promise<{ id: string }>;
-  searchParams: Promise<{ error?: string; saved?: string }>;
+  searchParams: Promise<{ error?: string; saved?: string; imported?: string }>;
 };
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
@@ -28,7 +28,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function EditCaseStudyPage({ params, searchParams }: PageProps) {
   const { id } = await params;
-  const { error, saved } = await searchParams;
+  const { error, saved, imported } = await searchParams;
   const study = await fetchCmsCaseStudyById(id);
   if (!study) notFound();
 
@@ -47,6 +47,11 @@ export default async function EditCaseStudyPage({ params, searchParams }: PagePr
       </section>
       {error ? <p className="form-error">{safeDecodeURIComponent(error)}</p> : null}
       {saved ? <p className="cms-inline-status">Saved successfully.</p> : null}
+      {imported ? (
+        <p className="cms-inline-status">
+          Opened a CMS draft from the live case study. Public page stays unchanged until you publish.
+        </p>
+      ) : null}
       <CmsWorkflowPanel
         contentType="case-study"
         contentId={study.id}

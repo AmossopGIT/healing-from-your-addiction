@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { AdminProgrammeActivitiesEditor } from "@/components/dashboard/AdminProgrammeActivitiesEditor";
 import { getInteractiveProgramme } from "@/content/interactiveProgrammes";
 import type { InteractiveProgrammeDefinition } from "@/content/interactiveProgrammes/types";
 import { validateInteractiveProgramme } from "@/content/interactiveProgrammes/validate";
@@ -20,6 +21,8 @@ type PageProps = {
     draftSaved?: string;
     published?: string;
     reviewed?: string;
+    imported?: string;
+    warn?: string;
     error?: string;
     tab?: string;
   }>;
@@ -43,9 +46,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function AdminProgrammeDetailPage({ params, searchParams }: PageProps) {
   const { slug } = await params;
-  const { draftSaved, published, reviewed, error, tab } = await searchParams;
+  const { draftSaved, published, reviewed, imported, warn, error, tab } = await searchParams;
   const sourceProgramme = getInteractiveProgramme(slug);
-  if (!sourceProgramme) notFound();
 
   const supabase = await createClient();
   const { data: template } = await supabase
@@ -55,8 +57,13 @@ export default async function AdminProgrammeDetailPage({ params, searchParams }:
     .maybeSingle();
 
   const draft = asDefinition(template?.draft_content_json);
-  const publishedDefinition = asDefinition(template?.content_json) ?? sourceProgramme;
+  const publishedFromDb = asDefinition(template?.content_json);
+  // Prefer a real published definition; empty `{}` placeholders are ignored by asDefinition.
+  const publishedDefinition = publishedFromDb ?? sourceProgramme ?? null;
   const editable = draft ?? publishedDefinition;
+  if (!editable) notFound();
+  if (!sourceProgramme && !template) notFound();
+
   const issues = validateInteractiveProgramme(editable);
   const activeTab = tab ?? "content";
 
@@ -90,10 +97,17 @@ export default async function AdminProgrammeDetailPage({ params, searchParams }:
           <Link href="/admin/programmes/review/">Review queue</Link>
           {" · "}
           source {editable.sourceStatus}
+          {!sourceProgramme ? " · imported (DB draft)" : ""}
           {editable.needsManualReview ? " · needs manual review" : ""}
           {draft ? " · unpublished draft present" : ""}
         </p>
         {draftSaved ? <p className="dashboard-inline-note">Draft saved.</p> : null}
+        {imported ? (
+          <p className="dashboard-inline-note">
+            Programme JSON imported as an unpublished draft. Review on the Safety tab before publishing.
+          </p>
+        ) : null}
+        {warn ? <p className="dashboard-inline-note">Saved with warning: {decodeURIComponent(warn)}</p> : null}
         {published ? <p className="dashboard-inline-note">New version published. Existing client snapshots were not rewritten.</p> : null}
         {reviewed ? <p className="dashboard-inline-note">Review status updated.</p> : null}
         {error === "review-required" ? (
@@ -105,7 +119,7 @@ export default async function AdminProgrammeDetailPage({ params, searchParams }:
       <section className="admin-programme-summary">
         <article className="dashboard-stat-card">
           <p className="dashboard-stat-label">Published version</p>
-          <p className="admin-programme-stat-value">{template?.version ?? publishedDefinition.version}</p>
+          <p className="admin-programme-stat-value">{template?.version ?? editable.version}</p>
         </article>
         <article className="dashboard-stat-card">
           <p className="dashboard-stat-label">Days</p>
@@ -188,27 +202,14 @@ export default async function AdminProgrammeDetailPage({ params, searchParams }:
       {activeTab === "activities" ? (
         <section className="dashboard-panel">
           <h2>Activities</h2>
-          <ul className="dashboard-session-list">
-            {editable.activities
-              .slice()
-              .sort((a, b) => a.sortOrder - b.sortOrder)
-              .map((activity) => (
-                <li key={activity.id} className="dashboard-session-item">
-                  <div>
-                    <strong>{activity.title}</strong>
-                    <p className="dashboard-inline-note">
-                      {activity.origin === "source" ? "Source content" : "Additional interactive exercise"} · {activity.type} ·
-                      week {activity.weekNumber}
-                      {activity.dayNumber ? ` · day ${activity.dayNumber}` : ""} · {activity.points} pts
-                    </p>
-                    {activity.affirmation ? <p>{activity.affirmation}</p> : null}
-                    <p>
-                      <Link href={`/admin/programmes/${slug}/preview/${activity.id}/`}>Preview as client</Link>
-                    </p>
-                  </div>
-                </li>
-              ))}
-          </ul>
+          {template ? (
+            <AdminProgrammeActivitiesEditor slug={slug} activities={editable.activities} />
+          ) : (
+            <p className="dashboard-inline-note">
+              Seed this programme into the database before editing activities. Use Publish / refresh interactive
+              programmes on the library page.
+            </p>
+          )}
         </section>
       ) : null}
 
@@ -246,7 +247,7 @@ export default async function AdminProgrammeDetailPage({ params, searchParams }:
         <section className="dashboard-panel">
           <h2>Source comparison</h2>
           <p className="dashboard-inline-note">
-            Registry checksum: {sourceProgramme.sourceChecksum || "—"} · Draft/published checksum:{" "}
+            Registry checksum: {sourceProgramme?.sourceChecksum || "—"} · Draft/published checksum:{" "}
             {editable.sourceChecksum || "—"}
           </p>
           <p>

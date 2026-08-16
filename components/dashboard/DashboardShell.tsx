@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { DashboardMobileTables } from "@/components/dashboard/DashboardMobileTables";
 import { DashboardNav } from "@/components/dashboard/DashboardNav";
 import { PortalNotificationBell } from "@/components/dashboard/PortalNotificationBell";
 import { getPortalNotificationSummary } from "@/lib/dashboard/queries";
@@ -78,7 +79,9 @@ export async function DashboardShell({
             </div>
           </div>
         </header>
-        <div id="main-content" className="dashboard-content">{children}</div>
+        <div id="main-content" className="dashboard-content">
+          <DashboardMobileTables>{children}</DashboardMobileTables>
+        </div>
         <DashboardNav
           navItems={mobileItems}
           ariaLabel={`${title} quick navigation`}

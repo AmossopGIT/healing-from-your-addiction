@@ -52,7 +52,7 @@ export function buildBlogRow(post: (typeof blogPosts)[number], actorId: string |
   };
 }
 
-function buildCaseStudyRow(study: (typeof caseStudies)[number], actorId: string | null) {
+export function buildCaseStudyRow(study: (typeof caseStudies)[number], actorId: string | null) {
   const art = artGalleryById.get(study.heroArtId);
   return {
     slug: study.slug,

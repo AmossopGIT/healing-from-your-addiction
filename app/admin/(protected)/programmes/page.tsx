@@ -7,7 +7,10 @@ import {
   AdminProgrammeLibraryGrid,
   type ProgrammeLibraryCard,
 } from "@/components/dashboard/AdminProgrammeLibraryGrid";
+import { AdminProgrammeJsonImport } from "@/components/dashboard/AdminProgrammeJsonImport";
 import { expectedProgrammeDocCount } from "@/content/programmeDocs";
+import { validateInteractiveProgramme } from "@/content/interactiveProgrammes/validate";
+import type { InteractiveProgrammeDefinition } from "@/content/interactiveProgrammes/types";
 import { catalogueSummary } from "@/lib/programme/interactive/content";
 import { getProgrammeReportingSummary } from "@/lib/programme/interactive/reporting";
 import { createClient } from "@/lib/supabase/server";
@@ -20,6 +23,12 @@ export const metadata: Metadata = createMetadata({
   noIndex: true,
 });
 
+function asDefinition(value: unknown): InteractiveProgrammeDefinition | null {
+  if (!value || typeof value !== "object") return null;
+  if (!("slug" in value) || !("activities" in value)) return null;
+  return value as InteractiveProgrammeDefinition;
+}
+
 export default async function AdminProgrammesPage() {
   const supabase = await createClient();
   const [{ data: templates }, reporting, { data: docs }] = await Promise.all([
@@ -29,6 +38,31 @@ export default async function AdminProgrammesPage() {
   ]);
   const templateBySlug = new Map((templates ?? []).map((template) => [template.addiction_slug, template]));
   const catalogue = catalogueSummary();
+  const catalogueBySlug = new Map(catalogue.map((item) => [item.slug, item]));
+
+  // Merge registry catalogue with DB-only imported drafts.
+  for (const template of templates ?? []) {
+    if (catalogueBySlug.has(template.addiction_slug)) continue;
+    const definition =
+      asDefinition(template.draft_content_json) ?? asDefinition(template.content_json);
+    if (!definition) continue;
+    const issues = validateInteractiveProgramme(definition);
+    catalogueBySlug.set(template.addiction_slug, {
+      slug: definition.slug,
+      title: definition.title,
+      category: definition.category,
+      status: definition.status,
+      version: definition.version,
+      weekCount: definition.weekCount,
+      dayCount: definition.dayCount,
+      activityCount: definition.activities.length,
+      needsManualReview: definition.needsManualReview,
+      sourceStatus: definition.sourceStatus || "imported",
+      issues,
+    });
+  }
+  const mergedCatalogue = [...catalogueBySlug.values()].sort((a, b) => a.title.localeCompare(b.title));
+
   const enrollmentsBySlug = new Map(reporting.map((row) => [row.addictionSlug, row.enrollments]));
   const docsBySlug = new Map<string, number>();
   for (const doc of docs ?? []) {
@@ -36,17 +70,17 @@ export default async function AdminProgrammesPage() {
   }
   const expectedGuides = expectedProgrammeDocCount();
 
-  const readyCount = catalogue.filter((item) => !item.issues.some((issue) => issue.level === "error")).length;
-  const reviewCount = catalogue.filter((item) => item.needsManualReview).length;
+  const readyCount = mergedCatalogue.filter((item) => !item.issues.some((issue) => issue.level === "error")).length;
+  const reviewCount = mergedCatalogue.filter((item) => item.needsManualReview).length;
   const publishedCount = (templates ?? []).filter((template) => template.status === "published").length;
-  const guidesReadyCount = catalogue.filter((item) => (docsBySlug.get(item.slug) ?? 0) >= expectedGuides).length;
+  const guidesReadyCount = mergedCatalogue.filter((item) => (docsBySlug.get(item.slug) ?? 0) >= expectedGuides).length;
 
   const totalEnrolled = reporting.reduce((sum, row) => sum + row.enrollments, 0);
   const totalStarted = reporting.reduce((sum, row) => sum + row.started, 0);
   const totalInactive = reporting.reduce((sum, row) => sum + row.inactiveActiveClients, 0);
   const totalSafety = reporting.reduce((sum, row) => sum + row.safetyFlags, 0);
 
-  const cards: ProgrammeLibraryCard[] = catalogue.map((item) => {
+  const cards: ProgrammeLibraryCard[] = mergedCatalogue.map((item) => {
     const template = templateBySlug.get(item.slug);
     const errors = item.issues.filter((issue) => issue.level === "error").length;
     const warnings = item.issues.filter((issue) => issue.level === "warning").length;
@@ -79,23 +113,22 @@ export default async function AdminProgrammesPage() {
   };
 
   const graphNodes: CatalogueGraphNode[] = [
-    { id: "hub", label: `${catalogue.length} programmes`, kind: "hub" },
-    ...catalogue.map((item) => ({
+    { id: "hub", label: `${mergedCatalogue.length} programmes`, kind: "hub" },
+    ...mergedCatalogue.map((item) => ({
       id: `prog-${item.slug}`,
       label: shortProgrammeLabel(item.title),
       kind: "programme" as const,
       href: `/admin/programmes/${item.slug}/`,
       meta: `${enrollmentsBySlug.get(item.slug) ?? 0} enrolled · guides ${docsBySlug.get(item.slug) ?? 0}/${expectedGuides}`,
     })),
-    ...catalogue.map((item) => ({
+    ...mergedCatalogue.map((item) => ({
       id: `json-${item.slug}`,
       label: "Journey",
       kind: "interactive" as const,
       href: `/admin/programmes/${item.slug}/`,
       meta: `${item.activityCount} activities`,
     })),
-    // One guides node per programme (not 3 separate docs) — keeps the map readable.
-    ...catalogue.map((item) => {
+    ...mergedCatalogue.map((item) => {
       const count = docsBySlug.get(item.slug) ?? 0;
       return {
         id: `guides-${item.slug}`,
@@ -108,19 +141,19 @@ export default async function AdminProgrammesPage() {
   ];
 
   const graphEdges: CatalogueGraphEdge[] = [
-    ...catalogue.map((item) => ({
+    ...mergedCatalogue.map((item) => ({
       id: `hub-${item.slug}`,
       source: "hub",
       target: `prog-${item.slug}`,
       label: "",
     })),
-    ...catalogue.map((item) => ({
+    ...mergedCatalogue.map((item) => ({
       id: `json-edge-${item.slug}`,
       source: `prog-${item.slug}`,
       target: `json-${item.slug}`,
       label: "",
     })),
-    ...catalogue.map((item) => ({
+    ...mergedCatalogue.map((item) => ({
       id: `guides-edge-${item.slug}`,
       source: `prog-${item.slug}`,
       target: `guides-${item.slug}`,
@@ -134,7 +167,7 @@ export default async function AdminProgrammesPage() {
         <p className="eyebrow">Programmes</p>
         <h1>Interactive programme library</h1>
         <p>
-          {catalogue.length} journeys · one assigned per client · {guidesReadyCount} with full guide packs
+          {mergedCatalogue.length} journeys · one assigned per client · {guidesReadyCount} with full guide packs
         </p>
         <div className="admin-programme-actions">
           <Link className="button button-secondary" href="/admin/programmes/operations/">
@@ -149,7 +182,7 @@ export default async function AdminProgrammesPage() {
       <section className="admin-programme-summary">
         <article className="dashboard-stat-card">
           <p className="dashboard-stat-label">Definitions</p>
-          <p className="admin-programme-stat-value">{catalogue.length}</p>
+          <p className="admin-programme-stat-value">{mergedCatalogue.length}</p>
         </article>
         <article className="dashboard-stat-card">
           <p className="dashboard-stat-label">Ready</p>
@@ -168,6 +201,8 @@ export default async function AdminProgrammesPage() {
       <section className="dashboard-panel admin-programme-seed-panel">
         <SeedProgrammesButton />
       </section>
+
+      <AdminProgrammeJsonImport />
 
       <AdminProgrammeLibraryGrid cards={cards} />
 

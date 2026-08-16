@@ -32,7 +32,6 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 export default async function AdminProgrammePreviewPage({ params }: PageProps) {
   const { slug, activityId } = await params;
   const source = getInteractiveProgramme(slug);
-  if (!source) notFound();
 
   const supabase = await createClient();
   const { data: template } = await supabase
@@ -43,6 +42,7 @@ export default async function AdminProgrammePreviewPage({ params }: PageProps) {
 
   const definition =
     asDefinition(template?.draft_content_json) ?? asDefinition(template?.content_json) ?? source;
+  if (!definition) notFound();
   const activity = definition.activities.find((item) => item.id === activityId);
   if (!activity) notFound();
 

@@ -23,6 +23,15 @@ The admin programme view provides:
 - Admin flags for support, inactivity, notes, and safety follow-up.
 - Draft editing, source comparison, validation, review status, version history, and publish controls.
 - A source-review queue for human content and safety approval.
+- **Activities tab draft editor** — edit titles, affirmations, prompts, points, and field labels without changing activity id, origin, or type. Saves to `draft_content_json` only and resets review to pending.
+- **JSON import** on `/admin/programmes/` — paste or upload `.json` only (PDF/Word rejected). Creates or updates an unpublished draft; enrolled client snapshots are never rewritten. Imported programmes appear in the library even when they are not in the code registry.
+
+### Safe edit / import workflow
+
+1. Edit activities or import JSON → unpublished draft.
+2. Validation must pass (errors block save/import).
+3. Set review status on the Safety tab (`approved` required for substance / high-risk tracks before publish).
+4. Publish new version — previous published version archives; existing enrollments keep their snapshots.
 
 Private answers are stored separately and are only returned to admins when the client has explicitly shared them. Query failures are surfaced as data warnings so an empty panel is not mistaken for missing client activity.
 

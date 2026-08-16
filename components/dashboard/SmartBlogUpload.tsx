@@ -10,14 +10,24 @@ import {
 type SmartBlogUploadProps = {
   onImport: (result: SmartBlogImportResult) => void;
   hasExistingContent?: boolean;
+  /** Shown in helper copy — default “blog”. Use “case study” on the case study form. */
+  contentNoun?: string;
 };
 
-export function SmartBlogUpload({ onImport, hasExistingContent = false }: SmartBlogUploadProps) {
+export function SmartBlogUpload({
+  onImport,
+  hasExistingContent = false,
+  contentNoun = "blog",
+}: SmartBlogUploadProps) {
   const fileRef = useRef<HTMLInputElement>(null);
   const [paste, setPaste] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [status, setStatus] = useState<string | null>(null);
   const [pending, setPending] = useState<SmartBlogImportResult | null>(null);
+  const nextStep =
+    contentNoun === "case study"
+      ? "Next: set type and addiction focus, add hero art, then Save draft."
+      : "Next: pick tags and hero art, then Save draft.";
 
   const applySource = (source: string, force = false) => {
     const { result, error: parseError } = parseSmartBlogImport(source);
@@ -42,7 +52,7 @@ export function SmartBlogUpload({ onImport, hasExistingContent = false }: SmartB
 
     setError(null);
     setPending(null);
-    setStatus(`${kindLabel} Next: pick tags and hero art, then Save draft.`);
+    setStatus(`${kindLabel} ${nextStep}`);
     onImport(result);
     setPaste("");
   };
@@ -74,9 +84,8 @@ export function SmartBlogUpload({ onImport, hasExistingContent = false }: SmartB
         <div>
           <p className="cms-smart-upload-title">Smart Upload</p>
           <p className="cms-field-help">
-            Paste a ChatGPT / Docs article, or a labeled writer template. We detect the format and fill the form, including
-            safe SEO suggestions for plain articles.
-            Nothing is saved until you click Save draft.
+            Paste a ChatGPT / Docs {contentNoun}, or a labeled writer template. We detect the format and fill the form,
+            including safe SEO suggestions for plain articles. Nothing is saved until you click Save draft.
           </p>
         </div>
         <a className="button button-secondary" href="/templates/blog-post-template.md" download="blog-post-template.md">
@@ -85,7 +94,7 @@ export function SmartBlogUpload({ onImport, hasExistingContent = false }: SmartB
       </div>
 
       <label className="form-field">
-        <span>Paste full blog (article or template)</span>
+        <span>Paste full {contentNoun} (article or template)</span>
         <textarea
           className="cms-smart-upload-textarea"
           rows={10}
@@ -144,7 +153,7 @@ export function SmartBlogUpload({ onImport, hasExistingContent = false }: SmartB
                     ? "Detected full template — filled title, SEO, tags, and body sections."
                     : "Detected article body — filled title, SEO suggestions, excerpt, and body sections.";
                 setError(null);
-                setStatus(`${kindLabel} Next: pick tags and hero art, then Save draft.`);
+                setStatus(`${kindLabel} ${nextStep}`);
                 onImport(pending);
                 setPending(null);
                 setPaste("");
