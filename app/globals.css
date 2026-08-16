@@ -7121,8 +7121,8 @@ main,
   }
 
   .admin-catalog-graph-canvas {
-    height: min(18rem, 50vh);
-    min-height: 14rem;
+    height: min(22rem, 58vh);
+    min-height: 16rem;
   }
 
   .admin-connection-flow-canvas {
@@ -9719,8 +9719,8 @@ main,
   background: #f7f3ea;
   border: 1px solid rgba(15, 91, 82, 0.12);
   border-radius: 18px;
-  height: min(28rem, 70vh);
-  min-height: 18rem;
+  height: min(40rem, 78vh);
+  min-height: 26rem;
   width: 100%;
 }
 
@@ -9799,8 +9799,8 @@ main,
   }
 
   .admin-catalog-graph-canvas {
-    height: min(20rem, 55vh);
-    min-height: 15rem;
+    height: min(28rem, 65vh);
+    min-height: 20rem;
   }
 
   .admin-connection-flow-canvas {

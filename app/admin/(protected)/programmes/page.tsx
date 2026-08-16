@@ -68,11 +68,21 @@ export default async function AdminProgrammesPage() {
     };
   });
 
+  const shortProgrammeLabel = (title: string) => {
+    const cleaned = title
+      .replace(/\s*\([^)]*\)\s*/g, " ")
+      .replace(/\s*Addiction.*$/i, "")
+      .replace(/\s*Abuse.*$/i, "")
+      .replace(/\s*Dependence.*$/i, "")
+      .trim();
+    return cleaned.length > 22 ? `${cleaned.slice(0, 20)}…` : cleaned || title;
+  };
+
   const graphNodes: CatalogueGraphNode[] = [
     { id: "hub", label: `${catalogue.length} programmes`, kind: "hub" },
     ...catalogue.map((item) => ({
       id: `prog-${item.slug}`,
-      label: item.title,
+      label: shortProgrammeLabel(item.title),
       kind: "programme" as const,
       href: `/admin/programmes/${item.slug}/`,
       meta: `${enrollmentsBySlug.get(item.slug) ?? 0} enrolled · guides ${docsBySlug.get(item.slug) ?? 0}/${expectedGuides}`,
@@ -84,12 +94,17 @@ export default async function AdminProgrammesPage() {
       href: `/admin/programmes/${item.slug}/`,
       meta: `${item.activityCount} activities`,
     })),
-    ...(docs ?? []).map((doc) => ({
-      id: `doc-${doc.id}`,
-      label: doc.title,
-      kind: "doc" as const,
-      href: `/admin/programmes/${doc.addiction_slug}/`,
-    })),
+    // One guides node per programme (not 3 separate docs) — keeps the map readable.
+    ...catalogue.map((item) => {
+      const count = docsBySlug.get(item.slug) ?? 0;
+      return {
+        id: `guides-${item.slug}`,
+        label: count ? `Guides ${count}` : "No guides",
+        kind: "doc" as const,
+        href: `/admin/programmes/${item.slug}/`,
+        meta: `${count}/${expectedGuides} guides`,
+      };
+    }),
   ];
 
   const graphEdges: CatalogueGraphEdge[] = [
@@ -97,19 +112,19 @@ export default async function AdminProgrammesPage() {
       id: `hub-${item.slug}`,
       source: "hub",
       target: `prog-${item.slug}`,
-      label: `${enrollmentsBySlug.get(item.slug) ?? 0}`,
+      label: "",
     })),
     ...catalogue.map((item) => ({
       id: `json-edge-${item.slug}`,
       source: `prog-${item.slug}`,
       target: `json-${item.slug}`,
-      label: "journey",
+      label: "",
     })),
-    ...(docs ?? []).map((doc) => ({
-      id: `doc-edge-${doc.id}`,
-      source: `prog-${doc.addiction_slug}`,
-      target: `doc-${doc.id}`,
-      label: "guide",
+    ...catalogue.map((item) => ({
+      id: `guides-edge-${item.slug}`,
+      source: `prog-${item.slug}`,
+      target: `guides-${item.slug}`,
+      label: "",
     })),
   ].filter((edge) => graphNodes.some((node) => node.id === edge.source) && graphNodes.some((node) => node.id === edge.target));
 
@@ -186,7 +201,7 @@ export default async function AdminProgrammesPage() {
       <details className="dashboard-panel admin-programme-map-details">
         <summary>Connection map (optional)</summary>
         <p className="dashboard-inline-note">
-          Programme · journey · guide. Use the catalogue cards above for day-to-day browsing.
+          Programme · journey · guides (one node per programme). Use the catalogue cards above for day-to-day browsing.
         </p>
         <ul className="admin-programme-map-legend">
           <li>
@@ -196,7 +211,7 @@ export default async function AdminProgrammesPage() {
             <span className="admin-programme-legend-swatch is-journey" /> Journey
           </li>
           <li>
-            <span className="admin-programme-legend-swatch is-guide" /> Guide
+            <span className="admin-programme-legend-swatch is-guide" /> Guides pack
           </li>
         </ul>
         <AdminProgrammeCatalogGraphLazy nodes={graphNodes} edges={graphEdges} />
