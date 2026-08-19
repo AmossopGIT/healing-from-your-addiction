@@ -3,7 +3,7 @@ import { programmeStartGuideContent } from "@/lib/adminDocs/programmeStartGuideC
 import { adminDocPdfStyles as styles } from "@/lib/adminDocs/pdf/styles";
 import { siteConfig } from "@/lib/constants";
 
-function ProgrammePagePdfPreview() {
+function ProgrammeWeek1PdfPreview() {
   return (
     <View style={styles.screenFrame}>
       <Text style={styles.screenBar}>{programmeStartGuideContent.clientProgrammeUrl}</Text>
@@ -11,10 +11,26 @@ function ProgrammePagePdfPreview() {
         <View style={styles.screenCard}>
           <Text style={styles.screenEyebrow}>Programme</Text>
           <Text style={styles.screenHeading}>Week 1 launch checklist</Text>
-          <Text style={styles.screenMuted}>Assign interactive programme · Sessions 1–2 with receipts</Text>
+          <Text style={styles.screenMuted}>3/7 complete · Intake ✓ · Consultation ✓ · Assign programme…</Text>
           <Text style={styles.fieldLabel}>What the client sees next</Text>
           <Text style={styles.fieldBox}>Week 1 · Continue journey: Orientation</Text>
-          <Text style={styles.primaryButton}>Open client programme</Text>
+        </View>
+      </View>
+    </View>
+  );
+}
+
+function AssignProgrammePdfPreview() {
+  return (
+    <View style={styles.screenFrame}>
+      <Text style={styles.screenBar}>{`${programmeStartGuideContent.clientProgrammeUrl}#assign`}</Text>
+      <View style={styles.screenBody}>
+        <View style={styles.screenCard}>
+          <Text style={styles.screenEyebrow}>Assign</Text>
+          <Text style={styles.screenHeading}>Interactive programme</Text>
+          <Text style={styles.fieldLabel}>Template</Text>
+          <Text style={styles.fieldBox}>Gambling addiction support · matches client focus</Text>
+          <Text style={styles.primaryButton}>Assign interactive programme</Text>
         </View>
       </View>
     </View>
@@ -46,6 +62,13 @@ export function ProgrammeStartGuidePdfDocument() {
           </View>
         ))}
 
+        <Text style={styles.sectionTitle}>Journey map</Text>
+        {guide.journeyMap.map((item, index) => (
+          <Text key={item.stage} style={styles.checklistItem}>
+            {index + 1}. {item.stage} — {item.detail}
+          </Text>
+        ))}
+
         <Text style={styles.sectionTitle}>Week 1 steps</Text>
         {guide.steps.map((step, index) => (
           <View key={step.id} style={styles.stepCard} wrap={false}>
@@ -56,10 +79,12 @@ export function ProgrammeStartGuidePdfDocument() {
           </View>
         ))}
 
-        <ProgrammePagePdfPreview />
+        <ProgrammeWeek1PdfPreview />
       </Page>
 
       <Page size="A4" style={styles.page}>
+        <AssignProgrammePdfPreview />
+
         <Text style={styles.sectionTitle}>Week 1 launch checklist</Text>
         {guide.checklist.map((item) => (
           <Text key={item} style={styles.checklistItem}>

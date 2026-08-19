@@ -5,6 +5,7 @@ import { useState } from "react";
 import { AdminDocMarkdownPdfDocument } from "@/lib/adminDocs/pdf/AdminDocMarkdownPdfDocument";
 import { AdminLoginGuidePdfDocument } from "@/lib/adminDocs/pdf/AdminLoginGuidePdfDocument";
 import { LeadOnboardingGuidePdfDocument } from "@/lib/adminDocs/pdf/LeadOnboardingGuidePdfDocument";
+import { LeadTriagePlaybookPdfDocument } from "@/lib/adminDocs/pdf/LeadTriagePlaybookPdfDocument";
 import { ProgrammeStartGuidePdfDocument } from "@/lib/adminDocs/pdf/ProgrammeStartGuidePdfDocument";
 import type { AdminDocPdfPayload } from "@/lib/adminDocs/pdf/types";
 
@@ -19,6 +20,9 @@ function resolvePdfDocument(payload: AdminDocPdfPayload) {
   }
   if (payload.kind === "lead-onboarding-guide") {
     return <LeadOnboardingGuidePdfDocument />;
+  }
+  if (payload.kind === "lead-triage-playbook") {
+    return <LeadTriagePlaybookPdfDocument />;
   }
   if (payload.kind === "programme-start-guide") {
     return <ProgrammeStartGuidePdfDocument />;

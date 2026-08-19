@@ -50,6 +50,7 @@ describe("getAdminDocCatalog", () => {
     expect(docs.some((doc) => doc.slug === "how-to-add-pages")).toBe(true);
     expect(docs.some((doc) => doc.slug === "how-to-login-as-admin")).toBe(true);
     expect(docs.some((doc) => doc.slug === "lead-triage-playbook")).toBe(true);
+    expect(getAdminDocBySlug("lead-triage-playbook")?.customPage).toBe("lead-triage-playbook");
     expect(docs.some((doc) => doc.slug === "lead-to-client-onboarding-flow")).toBe(true);
     expect(docs.some((doc) => doc.slug === "after-invite-start-the-course")).toBe(true);
     expect(getAdminDocBySlug("how-to-add-pages")?.sourcePath).toBe("content/admin-docs/how-to-add-pages.md");

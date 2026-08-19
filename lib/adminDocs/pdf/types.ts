@@ -16,6 +16,10 @@ export type AdminDocPdfPayload =
       slug: string;
     }
   | {
+      kind: "lead-triage-playbook";
+      slug: string;
+    }
+  | {
       kind: "programme-start-guide";
       slug: string;
     };

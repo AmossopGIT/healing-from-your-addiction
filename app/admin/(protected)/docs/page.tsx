@@ -1,7 +1,23 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { AdminDocCard } from "@/components/dashboard/adminDocs/AdminDocCard";
+import { AdminDocQuickStart } from "@/components/dashboard/adminDocs/AdminDocQuickStart";
 import { getAdminDocCatalog, getAdminDocCategories } from "@/lib/adminDocs/catalog";
 import { createMetadata } from "@/lib/seo";
+
+const QUICK_START_SLUGS = [
+  "how-to-login-as-admin",
+  "lead-to-client-onboarding-flow",
+  "after-invite-start-the-course",
+] as const;
+
+const CATEGORY_INTRO: Partial<Record<string, string>> = {
+  Operations:
+    "Day-to-day runbooks for leads, invites, and client onboarding. Tap Open guide on any card — PDF download is on each guide page.",
+  Content: "Publishing and content workflows for the public site.",
+  Marketing: "Launch and marketing checklists.",
+  Technical: "Deploy and technical reference for developers.",
+};
 
 export const metadata: Metadata = createMetadata({
   title: "Internal docs | Admin",
@@ -15,14 +31,42 @@ export const dynamic = "force-dynamic";
 export default function AdminDocsHubPage() {
   const docs = getAdminDocCatalog();
   const categories = getAdminDocCategories(docs);
+  const quickStartDocs = QUICK_START_SLUGS.map((slug) => docs.find((doc) => doc.slug === slug)).filter(
+    (doc): doc is NonNullable<typeof doc> => Boolean(doc),
+  );
+  const quickStartSlugSet = new Set<string>(QUICK_START_SLUGS);
 
   return (
     <div className="dashboard-stack">
       <section className="dashboard-page-header">
         <p className="eyebrow">Internal docs</p>
         <h1>Admin documentation hub</h1>
-        <p>Runbooks and reference pages for the admin team. Add new pages in `content/admin-docs/` or register repo docs in `content/adminDocs.ts`.</p>
+        <p>Step-by-step guides and runbooks for the admin team. Open a guide below — each page includes a Download PDF button.</p>
       </section>
+
+      <AdminDocQuickStart docs={quickStartDocs} />
+
+      {categories.map((category) => {
+        const categoryDocs = docs.filter((doc) => doc.category === category);
+        const showQuickStartInGrid = category !== "Operations";
+        const gridDocs = showQuickStartInGrid
+          ? categoryDocs
+          : categoryDocs.filter((doc) => !quickStartSlugSet.has(doc.slug));
+
+        return (
+          <section key={category} className="dashboard-panel">
+            <h2>{category}</h2>
+            {CATEGORY_INTRO[category] ? (
+              <p className="dashboard-inline-note admin-doc-category-intro">{CATEGORY_INTRO[category]}</p>
+            ) : null}
+            <div className="admin-doc-card-grid">
+              {gridDocs.map((doc) => (
+                <AdminDocCard key={doc.slug} doc={doc} />
+              ))}
+            </div>
+          </section>
+        );
+      })}
 
       <section className="dashboard-panel" id="more-links">
         <h2>More admin tools</h2>
@@ -44,49 +88,8 @@ export default function AdminDocsHubPage() {
             <span className="portal-home-action-label">Notifications</span>
             <span className="portal-home-action-detail">Push and alerts</span>
           </Link>
-          <Link href="/admin/docs/" className="portal-home-action-chip">
-            <span className="portal-home-action-label">Docs hub</span>
-            <span className="portal-home-action-detail">Runbooks below</span>
-          </Link>
         </div>
       </section>
-
-      <section className="dashboard-panel admin-doc-hub-highlight">
-        <div className="admin-doc-hub-highlight-copy">
-          <p className="eyebrow">Start here</p>
-          <h2>How to log in as admin</h2>
-          <p>Step-by-step screens for the direct admin URL or the public header route via Staff admin sign in.</p>
-        </div>
-        <div className="cms-list-actions">
-          <Link className="button button-primary" href="/admin/docs/how-to-login-as-admin/">
-            Open guide
-          </Link>
-        </div>
-      </section>
-
-      {categories.map((category) => {
-        const categoryDocs = docs.filter((doc) => doc.category === category);
-        return (
-          <section key={category} className="dashboard-panel">
-            <h2>{category}</h2>
-            <div className="admin-doc-card-grid">
-              {categoryDocs.map((doc) => (
-                <article key={doc.slug} className="admin-doc-card">
-                  <h3>
-                    <Link href={`/admin/docs/${doc.slug}/`}>{doc.title}</Link>
-                  </h3>
-                  {doc.description ? <p>{doc.description}</p> : null}
-                  {doc.sourcePath ? (
-                    <p className="admin-doc-card-meta">
-                      <code>{doc.sourcePath}</code>
-                    </p>
-                  ) : null}
-                </article>
-              ))}
-            </div>
-          </section>
-        );
-      })}
 
       {!docs.length ? (
         <section className="dashboard-panel">

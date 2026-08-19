@@ -1,6 +1,10 @@
 export type AdminDocCategory = "Operations" | "Content" | "Technical" | "Marketing";
 
-export type AdminDocCustomPage = "admin-login-guide" | "lead-onboarding-guide" | "programme-start-guide";
+export type AdminDocCustomPage =
+  | "admin-login-guide"
+  | "lead-onboarding-guide"
+  | "lead-triage-playbook"
+  | "programme-start-guide";
 
 export type AdminDocRegistryEntry = {
   slug: string;
@@ -46,7 +50,7 @@ export const adminDocRegistry: AdminDocRegistryEntry[] = [
     description: "First-response targets, status workflow, and safety language for enquiries.",
     category: "Operations",
     order: 10,
-    sourcePath: "docs/LEAD_TRIAGE_PLAYBOOK.md",
+    customPage: "lead-triage-playbook",
   },
   {
     slug: "cms-blog-admin",
