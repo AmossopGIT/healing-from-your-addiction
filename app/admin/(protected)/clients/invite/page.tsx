@@ -1,8 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { AdminFieldLabel } from "@/components/dashboard/AdminFieldLabel";
+import { AdminHelpTooltip } from "@/components/dashboard/AdminHelpTooltip";
 import { programmes } from "@/content/programmes";
 import { contactMethods } from "@/lib/constants";
 import { inviteClient } from "@/lib/dashboard/inviteClient";
+import { adminTooltips } from "@/lib/dashboard/adminTooltips";
 import { leadFieldMaxLengths } from "@/lib/leads/constraints";
 import { createClient } from "@/lib/supabase/server";
 import { createMetadata } from "@/lib/seo";
@@ -64,7 +67,10 @@ export default async function InviteClientPage({ searchParams }: PageProps) {
 
       {!lead ? (
         <section className="dashboard-panel">
-          <h2>No lead selected</h2>
+          <h2>
+            No lead selected{" "}
+            <AdminHelpTooltip text={adminTooltips.invite.noLeadSelected} label="No lead selected" />
+          </h2>
           <p>
             This blank form is for phone or email enquiries that do not already have a lead row. Website form leads should
             be invited from the lead (Open the enquiry → <strong>Accept & invite client</strong>, or use{" "}
@@ -84,7 +90,10 @@ export default async function InviteClientPage({ searchParams }: PageProps) {
         </section>
       ) : (
         <section className="dashboard-panel">
-          <h2>Lead handoff summary</h2>
+          <h2>
+            Lead handoff summary{" "}
+            <AdminHelpTooltip text={adminTooltips.invite.leadHandoff} label="Lead handoff summary" />
+          </h2>
           <dl className="dashboard-dl">
             <div>
               <dt>Concern</dt>
@@ -151,7 +160,9 @@ export default async function InviteClientPage({ searchParams }: PageProps) {
             <span className="form-hint">They receive a secure invitation to set a password at /portal/set-password/.</span>
           </label>
           <label className="form-field">
-            <span>Addiction focus</span>
+            <span>
+              <AdminFieldLabel label="Addiction focus" tooltip={adminTooltips.invite.addictionFocus} />
+            </span>
             <select name="addictionSlug" defaultValue={defaultProgrammeSlug}>
               <option value="">Select programme focus</option>
               {programmes.map((programme) => (
@@ -163,7 +174,9 @@ export default async function InviteClientPage({ searchParams }: PageProps) {
             <span className="form-hint">Setting focus here unlocks pre-programme intake questions in the portal.</span>
           </label>
           <label className="form-field">
-            <span>Preferred contact method</span>
+            <span>
+              <AdminFieldLabel label="Preferred contact method" tooltip={adminTooltips.invite.preferredContact} />
+            </span>
             <select name="preferredContactMethod" defaultValue={lead?.preferred_contact_method ?? ""}>
               <option value="">Select method</option>
               {contactMethods.map((method) => (
@@ -173,9 +186,10 @@ export default async function InviteClientPage({ searchParams }: PageProps) {
               ))}
             </select>
           </label>
-          <button type="submit" className="button button-primary">
+          <button type="submit" className="button button-primary" title={adminTooltips.invite.sendInvitation}>
             Send invitation
-          </button>
+          </button>{" "}
+          <AdminHelpTooltip text={adminTooltips.invite.sendInvitation} label="Send invitation" />
         </form>
       </section>
     </div>

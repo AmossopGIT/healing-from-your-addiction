@@ -5123,6 +5123,89 @@ main,
   color: var(--muted);
 }
 
+.dashboard-th-label {
+  vertical-align: middle;
+}
+
+.admin-help-tooltip {
+  position: relative;
+  display: inline-flex;
+  vertical-align: middle;
+  margin-left: 0.25rem;
+}
+
+.admin-help-tooltip-trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.05rem;
+  height: 1.05rem;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--muted);
+  font-size: 0.68rem;
+  font-weight: 700;
+  line-height: 1;
+  cursor: help;
+}
+
+.admin-help-tooltip-trigger:hover,
+.admin-help-tooltip-trigger:focus-visible {
+  border-color: var(--teal);
+  color: var(--teal-dark);
+  background: var(--teal-soft);
+  outline: none;
+}
+
+.admin-help-tooltip-bubble {
+  position: absolute;
+  z-index: 20;
+  left: 50%;
+  bottom: calc(100% + 0.45rem);
+  transform: translateX(-50%);
+  width: max-content;
+  max-width: min(16rem, 70vw);
+  padding: 0.45rem 0.6rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--line);
+  background: var(--paper);
+  color: var(--ink);
+  font-size: 0.78rem;
+  font-weight: 400;
+  line-height: 1.4;
+  text-align: left;
+  white-space: normal;
+  box-shadow: 0 4px 14px rgba(23, 35, 31, 0.12);
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.12s ease, visibility 0.12s ease;
+}
+
+.admin-help-tooltip-bubble::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 5px solid transparent;
+  border-top-color: var(--paper);
+}
+
+.admin-help-tooltip:hover .admin-help-tooltip-bubble,
+.admin-help-tooltip:focus-within .admin-help-tooltip-bubble {
+  opacity: 1;
+  visibility: visible;
+}
+
+.dashboard-label-with-help {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.15rem;
+}
+
 .dashboard-empty {
   color: var(--muted);
   margin: 0;

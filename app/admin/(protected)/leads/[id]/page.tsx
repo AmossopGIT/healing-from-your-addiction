@@ -1,8 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { AdminFieldLabel } from "@/components/dashboard/AdminFieldLabel";
+import { AdminHelpTooltip } from "@/components/dashboard/AdminHelpTooltip";
 import { LeadSlaBadge } from "@/components/dashboard/LeadSlaBadge";
 import { addLeadNote, updateLeadFollowUpForm, updateLeadQuickActionForm, updateLeadStatusForm } from "@/lib/dashboard/adminActions";
+import { adminTooltips } from "@/lib/dashboard/adminTooltips";
 import { fetchAdminProfiles } from "@/lib/dashboard/adminOverview";
 import { formatDashboardDate, leadStatusLabels, leadStatusOptions } from "@/lib/dashboard/constants";
 import { dashboardFieldMaxLengths } from "@/lib/dashboard/formValidation";
@@ -125,7 +128,9 @@ export default async function AdminLeadDetailPage({ params, searchParams }: Page
               <dd>{formatLeadTriageLabel(lead)}</dd>
             </div>
             <div>
-              <dt>Risk flag</dt>
+              <dt>
+                <AdminFieldLabel label="Risk flag" tooltip={adminTooltips.leadDetail.riskFlag} />
+              </dt>
               <dd>{lead.risk_flag ?? "standard"}</dd>
             </div>
             <div>
@@ -137,7 +142,9 @@ export default async function AdminLeadDetailPage({ params, searchParams }: Page
               <dd>{lead.urgency_level ?? "—"}</dd>
             </div>
             <div>
-              <dt>Withdrawal support level</dt>
+              <dt>
+                <AdminFieldLabel label="Withdrawal support level" tooltip={adminTooltips.leadDetail.withdrawalRisk} />
+              </dt>
               <dd>{lead.withdrawal_risk ?? "—"}</dd>
             </div>
             <div>
@@ -153,7 +160,9 @@ export default async function AdminLeadDetailPage({ params, searchParams }: Page
               <dd>{lead.readiness_stage ?? "—"}</dd>
             </div>
             <div>
-              <dt>Follow-up consent</dt>
+              <dt>
+                <AdminFieldLabel label="Follow-up consent" tooltip={adminTooltips.leadDetail.followUpConsent} />
+              </dt>
               <dd>
                 WhatsApp: {lead.follow_up_consent_whatsapp ? "Yes" : "No"} · Email:{" "}
                 {lead.follow_up_consent_email ? "Yes" : "No"} · Phone: {lead.follow_up_consent_phone ? "Yes" : "No"}
@@ -188,7 +197,9 @@ export default async function AdminLeadDetailPage({ params, searchParams }: Page
           <h2>Follow-up operations</h2>
           <dl className="dashboard-dl">
             <div>
-              <dt>Assigned admin</dt>
+              <dt>
+                <AdminFieldLabel label="Assigned admin" tooltip={adminTooltips.leads.assigned} />
+              </dt>
               <dd>{assignedAdmin?.full_name ?? (lead.assigned_admin_id ? "Admin" : "Unassigned")}</dd>
             </div>
             {!lead.assigned_admin_id && profile?.id ? (
@@ -196,7 +207,7 @@ export default async function AdminLeadDetailPage({ params, searchParams }: Page
                 <input type="hidden" name="leadId" value={lead.id} />
                 <input type="hidden" name="redirectTo" value={detailRedirect} />
                 <input type="hidden" name="assignToMe" value="1" />
-                <button type="submit" className="button button-secondary">
+                <button type="submit" className="button button-secondary" title={adminTooltips.leads.assignToMe}>
                   Assign to me
                 </button>
               </form>
@@ -226,7 +237,9 @@ export default async function AdminLeadDetailPage({ params, searchParams }: Page
           <form action={updateLeadFollowUpForm} className="dashboard-note-form">
             <input type="hidden" name="leadId" value={lead.id} />
             <label className="form-field">
-              <span>Assign admin</span>
+              <span>
+                <AdminFieldLabel label="Assign admin" tooltip={adminTooltips.leadDetail.assignAdmin} />
+              </span>
               <select name="assignedAdminId" defaultValue={lead.assigned_admin_id ?? "none"}>
                 <option value="none">Unassigned</option>
                 {adminProfiles.map((profile) => (
@@ -237,7 +250,9 @@ export default async function AdminLeadDetailPage({ params, searchParams }: Page
               </select>
             </label>
             <label className="form-field">
-              <span>First response template</span>
+              <span>
+                <AdminFieldLabel label="First response template" tooltip={adminTooltips.leadDetail.firstResponseTemplate} />
+              </span>
               <select name="firstResponseTemplateId" defaultValue={selectedTemplateId}>
                 <option value="">Not selected</option>
                 {firstResponseTemplates.map((template) => (
@@ -248,7 +263,9 @@ export default async function AdminLeadDetailPage({ params, searchParams }: Page
               </select>
             </label>
             <label className="form-field">
-              <span>Follow-up due at</span>
+              <span>
+                <AdminFieldLabel label="Follow-up due at" tooltip={adminTooltips.leadDetail.followUpDueAt} />
+              </span>
               <input
                 type="datetime-local"
                 name="followUpDueAt"
@@ -260,7 +277,9 @@ export default async function AdminLeadDetailPage({ params, searchParams }: Page
               <textarea name="assignedAdminNotes" rows={3} defaultValue={lead.assigned_admin_notes ?? ""} maxLength={1000} />
             </label>
             <label className="form-field">
-              <span>Response marked sent at (optional)</span>
+              <span>
+                <AdminFieldLabel label="Response marked sent at (optional)" tooltip={adminTooltips.leadDetail.firstResponseSent} />
+              </span>
               <input
                 type="datetime-local"
                 name="firstResponseSentAt"
@@ -284,7 +303,8 @@ export default async function AdminLeadDetailPage({ params, searchParams }: Page
               Recommended status: <strong>{leadStatusLabels[recommendedStatus]}</strong>
               {recommendedStatus === "enrolled" && !lead.client_id ? " (via Accept & invite below)" : null}.
             </>
-          ) : null}
+          ) : null}{" "}
+          <AdminHelpTooltip text={adminTooltips.leadDetail.statusWorkflow} label="Status workflow" />
         </p>
         {error === "invite-required" ? (
           <p className="form-error">Use “Accept & invite client” to enrol this lead. Status alone cannot create portal access.</p>
@@ -311,9 +331,14 @@ export default async function AdminLeadDetailPage({ params, searchParams }: Page
         </div>
         {canInviteLead(lead) ? (
           <p className="dashboard-inline-note">
-            <Link href={`/admin/clients/invite/?leadId=${lead.id}`} className="button button-primary">
+            <Link
+              href={`/admin/clients/invite/?leadId=${lead.id}`}
+              className="button button-primary"
+              title={adminTooltips.leadDetail.acceptInvite}
+            >
               Accept & invite client
-            </Link>
+            </Link>{" "}
+            <AdminHelpTooltip text={adminTooltips.leadDetail.acceptInvite} label="Accept and invite" />
           </p>
         ) : lead.client_id ? (
           <p className="dashboard-inline-note">
@@ -325,7 +350,10 @@ export default async function AdminLeadDetailPage({ params, searchParams }: Page
         ) : null}
       </section>
       <section className="dashboard-panel">
-        <h2>Internal notes</h2>
+        <h2>
+          Internal notes{" "}
+          <AdminHelpTooltip text={adminTooltips.leadDetail.internalNotes} label="Internal notes" />
+        </h2>
         <form action={addLeadNote} className="dashboard-note-form">
           <input type="hidden" name="leadId" value={lead.id} />
           <label className="form-field">

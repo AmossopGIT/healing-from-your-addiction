@@ -8,7 +8,9 @@ type DashboardMobileTablesProps = {
 
 function applyTableLabels(root: HTMLElement) {
   root.querySelectorAll("table.dashboard-table").forEach((table) => {
-    const headers = [...table.querySelectorAll("thead th")].map((th) => th.textContent?.trim() ?? "");
+    const headers = [...table.querySelectorAll("thead th")].map(
+      (th) => th.getAttribute("data-column-label") ?? th.textContent?.trim() ?? "",
+    );
     table.querySelectorAll("tbody tr").forEach((row) => {
       [...row.children].forEach((cell, index) => {
         if (!(cell instanceof HTMLTableCellElement) || cell.tagName !== "TD") return;

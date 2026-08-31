@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { AdminTableHeader } from "@/components/dashboard/AdminTableHeader";
 import { AnalyticsOverviewStrip } from "@/components/dashboard/AnalyticsOverviewStrip";
 import { LeadSlaBadge } from "@/components/dashboard/LeadSlaBadge";
 import { getAdminOverviewBundle } from "@/lib/dashboard/adminOverview";
+import { adminTooltips } from "@/lib/dashboard/adminTooltips";
 import { formatDashboardDate, leadStatusLabels, leadStatusOptions } from "@/lib/dashboard/constants";
 import { canInviteLead, formatLeadTriageLabel } from "@/lib/dashboard/leadNextStep";
 import { isLeadOverdue } from "@/lib/dashboard/leadSla";
@@ -37,10 +39,14 @@ export default async function AdminOverviewPage() {
         <Link className="button button-secondary" href="/admin/leads/">
           All leads
         </Link>
-        <Link className="button button-primary" href="/admin/leads/?overdue=1">
+        <Link className="button button-primary" href="/admin/leads/?overdue=1" title={adminTooltips.leads.overdueFilter}>
           Overdue leads
         </Link>
-        <Link className="button button-secondary" href="/admin/clients/invite/">
+        <Link
+          className="button button-secondary"
+          href="/admin/clients/invite/"
+          title={adminTooltips.overview.inviteClientBlank}
+        >
           Invite client
         </Link>
         <Link className="button button-secondary" href="/admin/content/">
@@ -73,31 +79,31 @@ export default async function AdminOverviewPage() {
       <AnalyticsOverviewStrip />
 
       <section className="dashboard-stat-grid dashboard-stat-grid-4">
-        <Link href="/admin/leads/?status=new" className="dashboard-stat-card-link">
+        <Link href="/admin/leads/?status=new" className="dashboard-stat-card-link" title={adminTooltips.overview.newLeads}>
           <article className="dashboard-stat-card">
             <p className="dashboard-stat-label">New leads</p>
             <p className="dashboard-stat-value">{bundle.counts.newLeads}</p>
           </article>
         </Link>
-        <Link href="/admin/leads/?overdue=1" className="dashboard-stat-card-link">
+        <Link href="/admin/leads/?overdue=1" className="dashboard-stat-card-link" title={adminTooltips.overview.overdueLeads}>
           <article className="dashboard-stat-card dashboard-stat-card-alert">
             <p className="dashboard-stat-label">Overdue / action required</p>
             <p className="dashboard-stat-value">{bundle.counts.overdueLeads}</p>
           </article>
         </Link>
-        <Link href="/admin/leads/?overdue=1" className="dashboard-stat-card-link">
+        <Link href="/admin/leads/?overdue=1" className="dashboard-stat-card-link" title={adminTooltips.overview.awaitingFirstResponse}>
           <article className="dashboard-stat-card">
             <p className="dashboard-stat-label">Awaiting first response</p>
             <p className="dashboard-stat-value">{bundle.counts.awaitingFirstResponse}</p>
           </article>
         </Link>
-        <Link href="/admin/clients/" className="dashboard-stat-card-link">
+        <Link href="/admin/clients/" className="dashboard-stat-card-link" title={adminTooltips.overview.enrolledClients}>
           <article className="dashboard-stat-card">
             <p className="dashboard-stat-label">Enrolled clients</p>
             <p className="dashboard-stat-value">{bundle.counts.enrolledClients}</p>
           </article>
         </Link>
-        <Link href="/admin/clients/" className="dashboard-stat-card-link">
+        <Link href="/admin/clients/" className="dashboard-stat-card-link" title={adminTooltips.overview.pendingIntakes}>
           <article className="dashboard-stat-card">
             <p className="dashboard-stat-label">Pending intakes</p>
             <p className="dashboard-stat-value">{bundle.counts.pendingIntakes}</p>
@@ -117,11 +123,11 @@ export default async function AdminOverviewPage() {
             <table className="dashboard-table">
               <thead>
                 <tr>
-                  <th>Name</th>
-                  <th>Triage</th>
-                  <th>SLA</th>
-                  <th>Follow-up due</th>
-                  <th>Actions</th>
+                  <AdminTableHeader label="Name" />
+                  <AdminTableHeader label="Triage" tooltip={adminTooltips.leads.triage} />
+                  <AdminTableHeader label="SLA" tooltip={adminTooltips.leads.sla} />
+                  <AdminTableHeader label="Follow-up due" tooltip={adminTooltips.leads.followUpDue} />
+                  <AdminTableHeader label="Actions" tooltip={adminTooltips.leads.actions} />
                 </tr>
               </thead>
               <tbody>
@@ -137,13 +143,18 @@ export default async function AdminOverviewPage() {
                     <td>{lead.follow_up_due_at ? formatDashboardDate(lead.follow_up_due_at) : "—"}</td>
                     <td>
                       <div className="dashboard-lead-actions">
-                        <Link href={`/admin/leads/${lead.id}/`} className="button button-small button-secondary">
+                        <Link
+                          href={`/admin/leads/${lead.id}/`}
+                          className="button button-small button-secondary"
+                          title={adminTooltips.leads.open}
+                        >
                           Open
                         </Link>
                         {canInviteLead(lead) ? (
                           <Link
                             href={`/admin/clients/invite/?leadId=${lead.id}`}
                             className="button button-small button-primary"
+                            title={adminTooltips.leads.invite}
                           >
                             Invite
                           </Link>
@@ -253,13 +264,18 @@ export default async function AdminOverviewPage() {
                     <td>{formatDashboardDate(lead.created_at)}</td>
                     <td>
                       <div className="dashboard-lead-actions">
-                        <Link href={`/admin/leads/${lead.id}/`} className="button button-small button-secondary">
+                        <Link
+                          href={`/admin/leads/${lead.id}/`}
+                          className="button button-small button-secondary"
+                          title={adminTooltips.leads.open}
+                        >
                           Open
                         </Link>
                         {canInviteLead(lead) ? (
                           <Link
                             href={`/admin/clients/invite/?leadId=${lead.id}`}
                             className="button button-small button-primary"
+                            title={adminTooltips.leads.invite}
                           >
                             Invite
                           </Link>

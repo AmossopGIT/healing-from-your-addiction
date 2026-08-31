@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { AdminTableHeader } from "@/components/dashboard/AdminTableHeader";
 import { LeadSlaBadge } from "@/components/dashboard/LeadSlaBadge";
 import { updateLeadQuickActionForm } from "@/lib/dashboard/adminActions";
+import { adminTooltips } from "@/lib/dashboard/adminTooltips";
 import { formatDashboardDate, leadStatusLabels } from "@/lib/dashboard/constants";
 import { fetchLeadsList } from "@/lib/dashboard/leadsQueries";
 import { canInviteLead, formatLeadTriageLabel, getLeadNextStepCopy } from "@/lib/dashboard/leadNextStep";
@@ -76,6 +78,7 @@ export default async function AdminLeadsPage({ searchParams }: PageProps) {
         <Link
           href={buildLeadsHref({ overdue: "1", q: filters.q })}
           className={filters.overdue === "1" ? "dashboard-filter-active" : "dashboard-filter-link"}
+          title={adminTooltips.leads.overdueFilter}
         >
           Overdue
         </Link>
@@ -96,15 +99,15 @@ export default async function AdminLeadsPage({ searchParams }: PageProps) {
             <table className="dashboard-table">
               <thead>
                 <tr>
-                  <th>Name</th>
-                  <th>Concern</th>
-                  <th>Triage</th>
-                  <th>Assigned</th>
-                  <th>SLA</th>
-                  <th>Status</th>
-                  <th>Follow-up due</th>
-                  <th>Received</th>
-                  <th>Actions</th>
+                  <AdminTableHeader label="Name" tooltip={adminTooltips.leads.nameHint} />
+                  <AdminTableHeader label="Concern" />
+                  <AdminTableHeader label="Triage" tooltip={adminTooltips.leads.triage} />
+                  <AdminTableHeader label="Assigned" tooltip={adminTooltips.leads.assigned} />
+                  <AdminTableHeader label="SLA" tooltip={adminTooltips.leads.sla} />
+                  <AdminTableHeader label="Status" tooltip={adminTooltips.leads.status} />
+                  <AdminTableHeader label="Follow-up due" tooltip={adminTooltips.leads.followUpDue} />
+                  <AdminTableHeader label="Received" tooltip={adminTooltips.leads.received} />
+                  <AdminTableHeader label="Actions" tooltip={adminTooltips.leads.actions} />
                 </tr>
               </thead>
               <tbody>
@@ -129,13 +132,18 @@ export default async function AdminLeadsPage({ searchParams }: PageProps) {
                     <td>{formatDashboardDate(lead.created_at)}</td>
                     <td>
                       <div className="dashboard-lead-actions">
-                        <Link href={`/admin/leads/${lead.id}/`} className="button button-small button-secondary">
+                        <Link
+                          href={`/admin/leads/${lead.id}/`}
+                          className="button button-small button-secondary"
+                          title={adminTooltips.leads.open}
+                        >
                           Open
                         </Link>
                         {canInviteLead(lead) ? (
                           <Link
                             href={`/admin/clients/invite/?leadId=${lead.id}`}
                             className="button button-small button-primary"
+                            title={adminTooltips.leads.invite}
                           >
                             Invite
                           </Link>
@@ -145,7 +153,11 @@ export default async function AdminLeadsPage({ searchParams }: PageProps) {
                             <input type="hidden" name="leadId" value={lead.id} />
                             <input type="hidden" name="redirectTo" value={listRedirect} />
                             <input type="hidden" name="assignToMe" value="1" />
-                            <button type="submit" className="button button-small button-secondary">
+                            <button
+                              type="submit"
+                              className="button button-small button-secondary"
+                              title={adminTooltips.leads.assignToMe}
+                            >
                               Assign to me
                             </button>
                           </form>
@@ -161,8 +173,13 @@ export default async function AdminLeadsPage({ searchParams }: PageProps) {
                             type="datetime-local"
                             name="followUpDueAt"
                             defaultValue={formatDatetimeLocalValue(lead.follow_up_due_at)}
+                            title={adminTooltips.leads.followUpDue}
                           />
-                          <button type="submit" className="button button-small button-secondary">
+                          <button
+                            type="submit"
+                            className="button button-small button-secondary"
+                            title={adminTooltips.leads.followUpSave}
+                          >
                             Save
                           </button>
                         </form>
