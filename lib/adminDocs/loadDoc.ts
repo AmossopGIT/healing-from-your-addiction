@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { getAdminDocBySlug } from "@/lib/adminDocs/catalog";
+import { getBundledAdminDocMarkdown } from "@/lib/adminDocs/markdownSources";
 import { splitFrontmatter } from "@/lib/adminDocs/parseFrontmatter";
 
 export type AdminDocContent = {
@@ -17,14 +18,22 @@ function resolveProjectPath(...segments: string[]) {
   return path.join(/* turbopackIgnore: true */ process.cwd(), ...segments);
 }
 
+function readRawMarkdown(sourcePath: string): string | null {
+  const bundled = getBundledAdminDocMarkdown(sourcePath);
+  if (bundled != null) return bundled;
+
+  const absolutePath = resolveProjectPath(sourcePath);
+  if (!fs.existsSync(absolutePath)) return null;
+  return fs.readFileSync(absolutePath, "utf8");
+}
+
 export function loadAdminDocContent(slug: string): AdminDocContent | null {
   const meta = getAdminDocBySlug(slug);
   if (!meta?.sourcePath) return null;
 
-  const absolutePath = resolveProjectPath(meta.sourcePath);
-  if (!fs.existsSync(absolutePath)) return null;
+  const raw = readRawMarkdown(meta.sourcePath);
+  if (raw == null) return null;
 
-  const raw = fs.readFileSync(absolutePath, "utf8");
   const { body } = splitFrontmatter(raw);
 
   return {

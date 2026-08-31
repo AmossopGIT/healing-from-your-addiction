@@ -24,8 +24,9 @@ order: 5
 ```
 
 3. Write the page body using normal markdown headings, lists, links, and code blocks.
-4. Open `/admin/docs/` and confirm the new page appears in the hub.
-5. Use **Download PDF** on any doc page to save a printable copy.
+4. Register the page in `content/adminDocs.ts` **and** import the `.md` file in `lib/adminDocs/markdownSources.ts` (required for production on Vercel).
+5. Open `/admin/docs/` and confirm the new page appears in the hub.
+6. Use **Download PDF** on any doc page to save a printable copy.
 
 The filename becomes the URL slug. `client-onboarding.md` is served at `/admin/docs/client-onboarding/`.
 

@@ -9,8 +9,15 @@ const nextConfig: NextConfig = {
   assetPrefix: pagesAssetPrefix ? `${pagesAssetPrefix}/` : undefined,
   trailingSlash: true,
   poweredByHeader: false,
-  // Admin markdown docs are read at runtime via fs; NFT cannot see dynamic cwd paths,
-  // so include them explicitly. Do not exclude content/admin-docs or registry docs files.
+  // Inline .md as strings so admin docs ship inside the JS bundle (Vercel-safe).
+  webpack: (config) => {
+    config.module.rules.push({
+      test: /\.md$/,
+      type: "asset/source",
+    });
+    return config;
+  },
+  // Keep includes as a fallback for any fs-based discovery during local/dev.
   outputFileTracingIncludes: {
     "/admin/docs": [
       "./content/admin-docs/**/*",
@@ -19,6 +26,18 @@ const nextConfig: NextConfig = {
       "./docs/DEPLOY_PRODUCTION.md",
     ],
     "/admin/docs/[slug]": [
+      "./content/admin-docs/**/*",
+      "./docs/CMS_BLOG_ADMIN.md",
+      "./docs/MARKETING_GERALD_CHECKLIST.md",
+      "./docs/DEPLOY_PRODUCTION.md",
+    ],
+    "/admin/(protected)/docs": [
+      "./content/admin-docs/**/*",
+      "./docs/CMS_BLOG_ADMIN.md",
+      "./docs/MARKETING_GERALD_CHECKLIST.md",
+      "./docs/DEPLOY_PRODUCTION.md",
+    ],
+    "/admin/(protected)/docs/[slug]": [
       "./content/admin-docs/**/*",
       "./docs/CMS_BLOG_ADMIN.md",
       "./docs/MARKETING_GERALD_CHECKLIST.md",

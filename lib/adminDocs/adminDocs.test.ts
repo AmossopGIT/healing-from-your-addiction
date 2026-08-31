@@ -62,3 +62,13 @@ describe("getAdminDocCatalog", () => {
     expect(getAdminDocBySlug("after-invite-start-the-course")?.customPage).toBe("programme-start-guide");
   });
 });
+
+describe("loadAdminDocContent", () => {
+  it("loads meeting notes from the bundled markdown map", async () => {
+    const { loadAdminDocContent } = await import("@/lib/adminDocs/loadDoc");
+    const doc = loadAdminDocContent("meeting-notes-index");
+    expect(doc).not.toBeNull();
+    expect(doc?.title).toBe("Meeting notes index");
+    expect(doc?.body).toContain("Meeting notes index");
+  });
+});
