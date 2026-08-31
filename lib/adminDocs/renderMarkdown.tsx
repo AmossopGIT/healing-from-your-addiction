@@ -16,6 +16,34 @@ const UL_PATTERN = /^[-*]\s+(.+)$/;
 const OL_PATTERN = /^(\d+)\.\s+(.+)$/;
 const BLOCKQUOTE_PATTERN = /^>\s?(.+)$/;
 
+function isTableDivider(line: string) {
+  const trimmed = line.trim();
+  // Keep "-" at the end of the class so it is literal, not a range from ":" to "|".
+  return /^\|?[\s:|\-]+$/.test(trimmed) && trimmed.includes("-");
+}
+
+function splitTableRow(line: string): string[] {
+  const trimmed = line.trim().replace(/^\|/, "").replace(/\|$/, "");
+  const cells: string[] = [];
+  let current = "";
+  let depth = 0;
+
+  for (let index = 0; index < trimmed.length; index += 1) {
+    const char = trimmed[index];
+    if (char === "[") depth += 1;
+    if (char === "]" && depth > 0) depth -= 1;
+    if (char === "|" && depth === 0) {
+      cells.push(current.trim());
+      current = "";
+      continue;
+    }
+    current += char;
+  }
+
+  cells.push(current.trim());
+  return cells;
+}
+
 function parseBlocks(markdown: string): Block[] {
   const lines = markdown.replace(/\r\n/g, "\n").split("\n");
   const blocks: Block[] = [];
@@ -75,22 +103,20 @@ function parseBlocks(markdown: string): Block[] {
       continue;
     }
 
-    if (trimmed.includes("|") && index + 1 < lines.length && lines[index + 1].includes("|")) {
-      const headerCells = trimmed
-        .split("|")
-        .map((cell) => cell.trim())
-        .filter(Boolean);
+    if (trimmed.includes("|") && index + 1 < lines.length) {
       const divider = lines[index + 1].trim();
-      if (/^\|?[\s:-|]+\|?$/.test(divider)) {
+      if (isTableDivider(divider)) {
+        const headerCells = splitTableRow(trimmed);
         const rows: string[][] = [];
         index += 2;
         while (index < lines.length && lines[index].includes("|") && lines[index].trim()) {
-          rows.push(
-            lines[index]
-              .split("|")
-              .map((cell) => cell.trim())
-              .filter(Boolean),
-          );
+          const rowTrimmed = lines[index].trim();
+          // Skip accidental re-reads of divider-style rows.
+          if (isTableDivider(rowTrimmed)) {
+            index += 1;
+            continue;
+          }
+          rows.push(splitTableRow(lines[index]));
           index += 1;
         }
         blocks.push({ type: "table", headers: headerCells, rows });
@@ -133,6 +159,8 @@ function parseBlocks(markdown: string): Block[] {
     while (index < lines.length) {
       const next = lines[index];
       const nextTrimmed = next.trim();
+      const nextIsTableStart =
+        nextTrimmed.includes("|") && index + 1 < lines.length && isTableDivider(lines[index + 1]);
       if (
         !nextTrimmed ||
         nextTrimmed.startsWith("#") ||
@@ -141,8 +169,12 @@ function parseBlocks(markdown: string): Block[] {
         nextTrimmed === "---" ||
         UL_PATTERN.test(nextTrimmed) ||
         OL_PATTERN.test(nextTrimmed) ||
-        (nextTrimmed.includes("|") && index + 1 < lines.length && lines[index + 1].includes("|"))
+        nextIsTableStart
       ) {
+        break;
+      }
+      // Never absorb bare table rows into paragraphs.
+      if (nextTrimmed.startsWith("|") && nextTrimmed.endsWith("|")) {
         break;
       }
       paragraphLines.push(next);

@@ -30,6 +30,7 @@ export const adminNavItems = [
   { href: "/admin/clients/", label: "Clients" },
   { href: "/admin/clients/invite/", label: "Invite client" },
   { href: "/admin/programmes/", label: "Programmes" },
+  { href: "/admin/meetings/", label: "Meetings" },
   { href: "/admin/notifications/", label: "Notifications" },
   { href: "/admin/content/", label: "Content" },
   { href: "/admin/docs/", label: "Docs" },
@@ -40,7 +41,7 @@ export const adminMobileNavItems = [
   { href: "/admin/", label: "Home" },
   { href: "/admin/leads/", label: "Leads" },
   { href: "/admin/clients/", label: "Clients" },
-  { href: "/admin/programmes/", label: "Programmes" },
+  { href: "/admin/meetings/", label: "Meetings" },
   { href: "/admin/docs/#more-links", label: "More" },
 ];
 

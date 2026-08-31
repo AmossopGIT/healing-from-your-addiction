@@ -40,44 +40,9 @@ Client ads are bringing enquiries, but **getting people into the system** and **
 
 ## Action items
 
-### Gerald
+Track and update these in **[Admin → Meetings](/admin/meetings/)** (Today · Future · Archive). Mark Done as you complete them.
 
-| Status | Action | Due |
-| --- | --- | --- |
-| Open | Load all WhatsApp / phone / ad leads into [Admin → Leads](/admin/leads/) — clear the manual entry bottleneck | Ongoing — start this week |
-| Open | Review [Lead triage playbook](/admin/docs/lead-triage-playbook/) and [Lead to client onboarding flow](/admin/docs/lead-to-client-onboarding-flow/) | This week |
-| Open | Publish new blog drafts via [Admin → Content](/admin/content/blog/) | This week |
-| Open | Research competitor pricing; propose tiers (weekly, monthly, group R350, full programme) | Before next pricing sync |
-| Open | Set up bank account for payment gateway integration | When ready for Andy |
-| Open | Explore physical reward supplier (medals / coins / 3D-printed trophies) for milestone gifts | Open |
-| Open | Continue Wednesday group sessions as lower-cost entry offer | Weekly |
-| Open | Confirm ads land on addiction-specific pages (gambling, food) — not homepage only | Ongoing |
-
-### Andy (platform)
-
-| Status | Action | Due |
-| --- | --- | --- |
-| Open | Resend admin login instructions and portal consultation form link to Gerald | Immediate |
-| Open | Improve manual lead entry from WhatsApp / phone (faster path when no website form) | TBD |
-| Open | Lead segmentation — cold (free content) vs warm vs hot vs paying client | TBD |
-| Open | Auto-notify subscribers when blog content is published, filtered by addiction concern | TBD |
-| Open | Nurture sequences — e.g. quarterly “Are you ready?” for non-paying leads | TBD |
-| Open | Payment gateway once bank account ready — weekly instalments, monthly tier, group session booking | After bank setup |
-| Open | Post-session feedback email automation after group / individual sessions | TBD |
-| Open | Form completion tracking — % finishing intake and consultation | TBD |
-| Open | Group session invite flow from admin | TBD |
-| Open | Update programme landing copy — show per-week / per-month pricing, not R12,000 shock upfront | After pricing decision |
-
-### Joint / to decide
-
-| Status | Topic | Options discussed |
-| --- | --- | --- |
-| Open | Primary offer for cold leads | Free newsletter only vs low-cost group (R350) vs both |
-| Open | Monthly subscription price | R99 vs R199 — what content / access is included |
-| Open | Full programme payment structure | R3,000/week × 4 vs spread over 12 months vs hybrid |
-| Open | Notification channels | Email only vs push vs SMS vs all three |
-| Open | Content routing | By lead concern field vs explicit newsletter preference in settings |
-| Open | When to invite to portal | Only when paying vs also for free-tier leads (intake without programme) |
+Owners: Gerald, Andy, and Joint decisions from this meeting are listed there with filters.
 
 ## Open questions
 

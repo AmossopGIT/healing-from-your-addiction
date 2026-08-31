@@ -1,22 +1,15 @@
 ---
 title: Meeting notes index
-description: Chronological record of internal planning meetings — decisions, action items, and follow-ups.
+description: Chronological record of internal planning meetings — decisions and full write-ups.
 category: Meetings
 order: 1
 ---
 
 # Meeting notes index
 
-Use this page as the hub for internal meeting history. Each record captures what was said, what was decided, and who owns the next steps.
+Day-to-day actions live in **[Admin → Meetings](/admin/meetings/)** (Today · Future · Archive).
 
-## How to add a new meeting
-
-1. Duplicate [`meeting-notes-template`](/admin/docs/meeting-notes-template/) in `content/admin-docs/`.
-2. Name the file `meeting-YYYY-MM-DD-short-topic.md` (the filename becomes the URL slug).
-3. Set frontmatter `category: Meetings` and `order` to the date as a number (for example `20260831` for 31 Aug 2026).
-4. Fill in attendees, summary, decisions, and action items.
-5. Add a row to the table below (newest first).
-6. Open `/admin/docs/` and confirm the page appears under **Meetings**.
+Use this page only for full meeting write-ups and PDFs.
 
 ## Records
 
@@ -32,8 +25,8 @@ Use this page as the hub for internal meeting history. Each record captures what
 - [Marketing checklist (Gerald)](/admin/docs/marketing-checklist/) — ads, content, and weekly rhythm
 - [How to log in as admin](/admin/docs/how-to-login-as-admin/) — admin access reference
 
-## Status key for action items
+## For developers (adding a new meeting)
 
-- **Open** — not started
-- **In progress** — underway
-- **Done** — completed (note date in the meeting record or a follow-up meeting)
+1. Duplicate [`meeting-notes-template`](/admin/docs/meeting-notes-template/) in `content/admin-docs/`.
+2. Add structured actions in `content/meetings/catalog.ts` so they appear on Today / Future.
+3. Register the markdown file in `content/adminDocs.ts` and `scripts/generate-admin-doc-markdown.mjs`, then run `npm run admin-docs:bundle`.

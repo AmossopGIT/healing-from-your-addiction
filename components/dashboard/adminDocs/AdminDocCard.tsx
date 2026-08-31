@@ -11,6 +11,10 @@ function docFormat(doc: AdminDocMeta) {
     return { badge: "Step-by-step guide", detail: "Screen walkthrough + PDF download" };
   }
 
+  if (doc.category === "Meetings") {
+    return { badge: "Meeting record", detail: "Full notes — daily actions are in Admin → Meetings" };
+  }
+
   return { badge: "Runbook", detail: "Reference page + PDF download" };
 }
 

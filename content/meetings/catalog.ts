@@ -1,0 +1,308 @@
+import type { MeetingAction, MeetingRecord } from "@/content/meetings/types";
+
+export const meetingRecords: MeetingRecord[] = [
+  {
+    id: "2026-08-31-pricing",
+    date: "31 Aug 2026",
+    dateIso: "2026-08-31",
+    title: "Pricing, lead nurture, and platform automation",
+    summary:
+      "Ads bring leads but R12,000 upfront blocks conversion. Keep unpaid prospects as leads, nurture with free content, and restructure pricing into smaller first steps.",
+    docHref: "/admin/docs/meeting-2026-08-31-pricing-lead-nurture/",
+  },
+  {
+    id: "2026-08-31-ladder",
+    date: "31 Aug 2026",
+    dateIso: "2026-08-31",
+    title: "Payment ladder and 30-day commercial test",
+    summary:
+      "Product ladder: free → R350 group → assessment → membership/group programme → R12,000 private. Test four offers for 30 days before building full subscriptions.",
+    docHref: "/admin/docs/plan-2026-08-31-product-ladder/",
+  },
+];
+
+export const meetingActions: MeetingAction[] = [
+  // Gerald — today / this week
+  {
+    id: "g-load-leads",
+    meetingId: "2026-08-31-pricing",
+    owner: "gerald",
+    title: "Load all WhatsApp / phone / ad leads into Admin → Leads",
+    dueLabel: "This week",
+    bucket: "today",
+    href: "/admin/leads/",
+    hrefLabel: "Open Leads",
+  },
+  {
+    id: "g-review-docs",
+    meetingId: "2026-08-31-pricing",
+    owner: "gerald",
+    title: "Review Lead triage playbook and Lead to client onboarding flow",
+    dueLabel: "This week",
+    bucket: "today",
+    href: "/admin/docs/lead-triage-playbook/",
+    hrefLabel: "Open playbook",
+  },
+  {
+    id: "g-publish-blogs",
+    meetingId: "2026-08-31-pricing",
+    owner: "gerald",
+    title: "Publish new blog drafts in Admin → Content",
+    dueLabel: "This week",
+    bucket: "today",
+    href: "/admin/content/blog/",
+    hrefLabel: "Open Content",
+  },
+  {
+    id: "g-confirm-ads",
+    meetingId: "2026-08-31-pricing",
+    owner: "gerald",
+    title: "Confirm ads land on gambling / food pages — not homepage only",
+    dueLabel: "Ongoing",
+    bucket: "today",
+  },
+  {
+    id: "g-wednesday-group",
+    meetingId: "2026-08-31-pricing",
+    owner: "gerald",
+    title: "Continue Wednesday group sessions as lower-cost entry offer",
+    dueLabel: "Weekly",
+    bucket: "today",
+  },
+  {
+    id: "g-confirm-30day-offers",
+    meetingId: "2026-08-31-ladder",
+    owner: "gerald",
+    title: "Confirm which of the four 30-day offers are clinically ready",
+    dueLabel: "This week",
+    bucket: "today",
+  },
+  {
+    id: "g-assessment-price",
+    meetingId: "2026-08-31-ladder",
+    owner: "gerald",
+    title: "Fix assessment price (suggested R850) and credit-toward-programme rules",
+    dueLabel: "This week",
+    bucket: "today",
+  },
+  {
+    id: "g-whatsapp-script",
+    meetingId: "2026-08-31-ladder",
+    owner: "gerald",
+    title: "Draft WhatsApp first-response with the four choice buttons",
+    dueLabel: "This week",
+    bucket: "today",
+  },
+
+  // Gerald — future
+  {
+    id: "g-research-pricing",
+    meetingId: "2026-08-31-pricing",
+    owner: "gerald",
+    title: "Research competitor pricing; propose tiers (weekly, monthly, group, full)",
+    dueLabel: "Before next pricing sync",
+    bucket: "future",
+  },
+  {
+    id: "g-bank-account",
+    meetingId: "2026-08-31-pricing",
+    owner: "gerald",
+    title: "Set up bank account for payment gateway integration",
+    dueLabel: "When ready for Andy",
+    bucket: "future",
+  },
+  {
+    id: "g-physical-rewards",
+    meetingId: "2026-08-31-pricing",
+    owner: "gerald",
+    title: "Explore physical reward supplier (medals / coins / trophies)",
+    dueLabel: "Later",
+    bucket: "future",
+  },
+  {
+    id: "g-session-capacity",
+    meetingId: "2026-08-31-ladder",
+    owner: "gerald",
+    title: "Confirm Wednesday session capacity and booking rules",
+    dueLabel: "Before R350 go-live",
+    bucket: "future",
+  },
+  {
+    id: "g-sponsor-language",
+    meetingId: "2026-08-31-ladder",
+    owner: "gerald",
+    title: "Decide whether family-sponsor language can go live in week 1",
+    dueLabel: "Before ad copy update",
+    bucket: "future",
+  },
+
+  // Andy — today
+  {
+    id: "a-resend-login",
+    meetingId: "2026-08-31-pricing",
+    owner: "andy",
+    title: "Resend admin login instructions and portal consultation form link to Gerald",
+    dueLabel: "Immediate",
+    bucket: "today",
+    href: "/admin/docs/how-to-login-as-admin/",
+    hrefLabel: "Login guide",
+  },
+  {
+    id: "a-form-choices",
+    meetingId: "2026-08-31-ladder",
+    owner: "andy",
+    title: "Post-form “what would help you most” choices into the lead record",
+    dueLabel: "This week",
+    bucket: "today",
+    href: "/admin/leads/",
+    hrefLabel: "Open Leads",
+  },
+  {
+    id: "a-landing-copy",
+    meetingId: "2026-08-31-ladder",
+    owner: "andy",
+    title: "Update ads / thank-you / lead path copy to offer first paid step + free nurture",
+    dueLabel: "This week",
+    bucket: "today",
+  },
+
+  // Andy — future
+  {
+    id: "a-manual-lead-entry",
+    meetingId: "2026-08-31-pricing",
+    owner: "andy",
+    title: "Improve manual lead entry from WhatsApp / phone",
+    dueLabel: "TBD",
+    bucket: "future",
+  },
+  {
+    id: "a-lead-segmentation",
+    meetingId: "2026-08-31-pricing",
+    owner: "andy",
+    title: "Lead segmentation — cold / warm / hot / paying",
+    dueLabel: "TBD",
+    bucket: "future",
+  },
+  {
+    id: "a-content-notify",
+    meetingId: "2026-08-31-pricing",
+    owner: "andy",
+    title: "Auto-notify subscribers when blog content is published (by concern)",
+    dueLabel: "TBD",
+    bucket: "future",
+  },
+  {
+    id: "a-nurture",
+    meetingId: "2026-08-31-pricing",
+    owner: "andy",
+    title: "Nurture sequences — e.g. quarterly “Are you ready?” for non-paying leads",
+    dueLabel: "TBD",
+    bucket: "future",
+  },
+  {
+    id: "a-payment-gateway",
+    meetingId: "2026-08-31-pricing",
+    owner: "andy",
+    title: "Payment gateway once bank account ready",
+    dueLabel: "After bank setup",
+    bucket: "future",
+  },
+  {
+    id: "a-post-session-email",
+    meetingId: "2026-08-31-pricing",
+    owner: "andy",
+    title: "Post-session feedback email after group / individual sessions",
+    dueLabel: "TBD",
+    bucket: "future",
+  },
+  {
+    id: "a-form-completion",
+    meetingId: "2026-08-31-pricing",
+    owner: "andy",
+    title: "Form completion tracking — % finishing intake and consultation",
+    dueLabel: "TBD",
+    bucket: "future",
+  },
+  {
+    id: "a-group-invite",
+    meetingId: "2026-08-31-pricing",
+    owner: "andy",
+    title: "Group session invite flow from admin",
+    dueLabel: "TBD",
+    bucket: "future",
+  },
+  {
+    id: "a-pricing-copy",
+    meetingId: "2026-08-31-pricing",
+    owner: "andy",
+    title: "Update programme landing copy — weekly / monthly pricing, not R12,000 shock",
+    dueLabel: "After pricing decision",
+    bucket: "future",
+  },
+  {
+    id: "a-payment-links",
+    meetingId: "2026-08-31-ladder",
+    owner: "andy",
+    title: "Payment links or gateway for R350 and R850 (pilot-first)",
+    dueLabel: "After bank setup",
+    bucket: "future",
+  },
+  {
+    id: "a-ladder-tags",
+    meetingId: "2026-08-31-ladder",
+    owner: "andy",
+    title: "Track which ladder stage each lead is on",
+    dueLabel: "TBD",
+    bucket: "future",
+  },
+
+  // Joint — future (decisions)
+  {
+    id: "j-cold-offer",
+    meetingId: "2026-08-31-pricing",
+    owner: "joint",
+    title: "Decide primary offer for cold leads (free vs R350 group vs both)",
+    dueLabel: "Next pricing sync",
+    bucket: "future",
+  },
+  {
+    id: "j-subscription-price",
+    meetingId: "2026-08-31-pricing",
+    owner: "joint",
+    title: "Decide monthly subscription price (R99 vs R199) and what’s included",
+    dueLabel: "Next pricing sync",
+    bucket: "future",
+  },
+  {
+    id: "j-programme-structure",
+    meetingId: "2026-08-31-pricing",
+    owner: "joint",
+    title: "Decide full programme payment structure (weekly vs 12-month vs hybrid)",
+    dueLabel: "Next pricing sync",
+    bucket: "future",
+  },
+  {
+    id: "j-notify-channels",
+    meetingId: "2026-08-31-pricing",
+    owner: "joint",
+    title: "Decide notification channels (email / push / SMS)",
+    dueLabel: "Later",
+    bucket: "future",
+  },
+  {
+    id: "j-portal-invite-when",
+    meetingId: "2026-08-31-pricing",
+    owner: "joint",
+    title: "Decide when to invite to portal (paying only vs free-tier too)",
+    dueLabel: "Later",
+    bucket: "future",
+  },
+];
+
+export function getMeetingById(id: string) {
+  return meetingRecords.find((meeting) => meeting.id === id) ?? null;
+}
+
+export function getMeetingActionById(id: string) {
+  return meetingActions.find((action) => action.id === id) ?? null;
+}

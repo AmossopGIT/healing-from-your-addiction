@@ -18,7 +18,7 @@ const CATEGORY_INTRO: Partial<Record<string, string>> = {
   Marketing: "Launch and marketing checklists.",
   Technical: "Deploy and technical reference for developers.",
   Meetings:
-    "Internal meeting records — decisions, action items, and plans. Start from the meeting notes index; add new records using the template.",
+    "Full meeting write-ups for the record. Day-to-day actions live in Admin → Meetings (Today / Future / Archive).",
 };
 
 export const metadata: Metadata = createMetadata({
@@ -74,6 +74,10 @@ export default function AdminDocsHubPage() {
         <h2>More admin tools</h2>
         <p className="dashboard-inline-note">Destinations that sit under More on the phone nav.</p>
         <div className="portal-home-action-row">
+          <Link href="/admin/meetings/" className="portal-home-action-chip">
+            <span className="portal-home-action-label">Meetings</span>
+            <span className="portal-home-action-detail">Today, future, archive</span>
+          </Link>
           <Link href="/admin/analytics/" className="portal-home-action-chip">
             <span className="portal-home-action-label">Analytics</span>
             <span className="portal-home-action-detail">Funnels and activity</span>

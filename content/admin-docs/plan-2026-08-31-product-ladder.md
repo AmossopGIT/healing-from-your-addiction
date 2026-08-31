@@ -215,24 +215,23 @@ Manual payment links + admin notes are enough for the **30-day pilot**; automate
 
 ## Action items from this plan
 
+Track these in **[Admin → Meetings](/admin/meetings/)**.
+
 ### Gerald
 
-| Status | Action |
-| --- | --- |
-| Open | Confirm which of the four 30-day offers are clinically ready |
-| Open | Fix assessment price (suggested R850) and credit-toward-programme rules |
-| Open | Confirm Wednesday session capacity and booking rules |
-| Open | Draft WhatsApp first-response with the four choice buttons |
-| Open | Decide whether family-sponsor language can go live in week 1 |
+- Confirm which of the four 30-day offers are clinically ready
+- Fix assessment price (suggested R850) and credit-toward-programme rules
+- Confirm Wednesday session capacity and booking rules
+- Draft WhatsApp first-response with the four choice buttons
+- Decide whether family-sponsor language can go live in week 1
 
 ### Andy
 
-| Status | Action |
-| --- | --- |
-| Open | Update ads / thank-you / lead path copy to offer first paid step + free nurture |
-| Open | Payment links or gateway for R350 and R850 (pilot-first, then automate) |
-| Open | Post-form “what would help you most” choices into lead record |
-| Open | Track which ladder stage each lead is on |
+- Update ads / thank-you / lead path copy to offer first paid step + free nurture
+- Payment links or gateway for R350 and R850 (pilot-first, then automate)
+- Post-form “what would help you most” choices into lead record
+- Track which ladder stage each lead is on
+
 
 ## Follow-up
 
