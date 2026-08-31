@@ -24,7 +24,7 @@ order: 5
 ```
 
 3. Write the page body using normal markdown headings, lists, links, and code blocks.
-4. Register the page in `content/adminDocs.ts` **and** import the `.md` file in `lib/adminDocs/markdownSources.ts` (required for production on Vercel).
+4. Register the page in `content/adminDocs.ts`, add the file path to `scripts/generate-admin-doc-markdown.mjs`, then run `npm run admin-docs:bundle` (or rely on `prebuild`) so production can load it on Vercel.
 5. Open `/admin/docs/` and confirm the new page appears in the hub.
 6. Use **Download PDF** on any doc page to save a printable copy.
 

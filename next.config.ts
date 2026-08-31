@@ -9,14 +9,6 @@ const nextConfig: NextConfig = {
   assetPrefix: pagesAssetPrefix ? `${pagesAssetPrefix}/` : undefined,
   trailingSlash: true,
   poweredByHeader: false,
-  // Inline .md as strings so admin docs ship inside the JS bundle (Vercel-safe).
-  webpack: (config) => {
-    config.module.rules.push({
-      test: /\.md$/,
-      type: "asset/source",
-    });
-    return config;
-  },
   // Keep includes as a fallback for any fs-based discovery during local/dev.
   outputFileTracingIncludes: {
     "/admin/docs": [
