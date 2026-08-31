@@ -9,6 +9,22 @@ const nextConfig: NextConfig = {
   assetPrefix: pagesAssetPrefix ? `${pagesAssetPrefix}/` : undefined,
   trailingSlash: true,
   poweredByHeader: false,
+  // Admin markdown docs are read at runtime via fs; NFT cannot see dynamic cwd paths,
+  // so include them explicitly. Do not exclude content/admin-docs or registry docs files.
+  outputFileTracingIncludes: {
+    "/admin/docs": [
+      "./content/admin-docs/**/*",
+      "./docs/CMS_BLOG_ADMIN.md",
+      "./docs/MARKETING_GERALD_CHECKLIST.md",
+      "./docs/DEPLOY_PRODUCTION.md",
+    ],
+    "/admin/docs/[slug]": [
+      "./content/admin-docs/**/*",
+      "./docs/CMS_BLOG_ADMIN.md",
+      "./docs/MARKETING_GERALD_CHECKLIST.md",
+      "./docs/DEPLOY_PRODUCTION.md",
+    ],
+  },
   outputFileTracingExcludes: {
     "*": [
       "public/**",
@@ -21,11 +37,21 @@ const nextConfig: NextConfig = {
       "content/blogArchive*.ts",
       "content/caseStudyArchive*.ts",
     ],
+    "/admin/docs": [
+      "public/**",
+      "tools/**",
+      "boilerplate/**",
+      "supabase/**",
+      ".git/**",
+      "content/interactiveProgrammes/**",
+      "content/artGallery.ts",
+      "content/blog*.ts",
+      "content/caseStud*.ts",
+    ],
     "/admin/docs/[slug]": [
       "public/**",
       "tools/**",
       "boilerplate/**",
-      "docs/**",
       "supabase/**",
       ".git/**",
       "content/interactiveProgrammes/**",
