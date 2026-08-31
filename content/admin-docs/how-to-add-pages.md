@@ -41,6 +41,7 @@ Use one of these category values in frontmatter:
 - `Content`
 - `Marketing`
 - `Technical`
+- `Meetings` — internal meeting records and planning history (see [Meeting notes index](/admin/docs/meeting-notes-index/))
 
 If you omit `category`, the page defaults to **Technical**.
 

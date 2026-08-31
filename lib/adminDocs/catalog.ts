@@ -24,7 +24,7 @@ function resolveProjectPath(...segments: string[]) {
 }
 
 const ADMIN_DOCS_DIR = resolveProjectPath("content", "admin-docs");
-const VALID_CATEGORIES = new Set<AdminDocCategory>(["Operations", "Content", "Technical", "Marketing"]);
+const VALID_CATEGORIES = new Set<AdminDocCategory>(["Operations", "Content", "Technical", "Marketing", "Meetings"]);
 
 function normalizeCategory(value: string | undefined, fallback: AdminDocCategory): AdminDocCategory {
   if (value && VALID_CATEGORIES.has(value as AdminDocCategory)) {

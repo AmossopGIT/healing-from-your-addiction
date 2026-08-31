@@ -17,6 +17,8 @@ const CATEGORY_INTRO: Partial<Record<string, string>> = {
   Content: "Publishing and content workflows for the public site.",
   Marketing: "Launch and marketing checklists.",
   Technical: "Deploy and technical reference for developers.",
+  Meetings:
+    "Internal meeting records — decisions, action items, and plans. Start from the meeting notes index; add new records using the template.",
 };
 
 export const metadata: Metadata = createMetadata({

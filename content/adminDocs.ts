@@ -1,4 +1,4 @@
-export type AdminDocCategory = "Operations" | "Content" | "Technical" | "Marketing";
+export type AdminDocCategory = "Operations" | "Content" | "Technical" | "Marketing" | "Meetings";
 
 export type AdminDocCustomPage =
   | "admin-login-guide"
