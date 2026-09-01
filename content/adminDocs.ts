@@ -1,4 +1,4 @@
-export type AdminDocCategory = "Operations" | "Content" | "Technical" | "Marketing" | "Meetings";
+export type AdminDocCategory = "Operations" | "Content" | "Technical" | "Marketing" | "Planning records";
 
 export type AdminDocCustomPage =
   | "admin-login-guide"
@@ -31,7 +31,7 @@ export const adminDocRegistry: AdminDocRegistryEntry[] = [
     slug: "meeting-notes-index",
     title: "Meeting notes index",
     description: "Chronological record of internal planning meetings — decisions, action items, and follow-ups.",
-    category: "Meetings",
+    category: "Planning records",
     order: 1,
     sourcePath: "content/admin-docs/meeting-notes-index.md",
   },
@@ -40,7 +40,7 @@ export const adminDocRegistry: AdminDocRegistryEntry[] = [
     title: "Meeting: pricing, lead nurture, and platform automation",
     description:
       "31 Aug 2026 — ads are working but many leads cannot pay R12,000 now; plan free content nurture, pricing rethink, and automation.",
-    category: "Meetings",
+    category: "Planning records",
     order: 20260831,
     sourcePath: "content/admin-docs/meeting-2026-08-31-pricing-lead-nurture.md",
   },
@@ -49,7 +49,7 @@ export const adminDocRegistry: AdminDocRegistryEntry[] = [
     title: "Plan: payment ladder and 30-day commercial test",
     description:
       "Product ladder so leads can take a safe first paid step (R350) instead of jumping from an ad to R12,000 — plus what to test first.",
-    category: "Meetings",
+    category: "Planning records",
     order: 20260832,
     sourcePath: "content/admin-docs/plan-2026-08-31-product-ladder.md",
   },
@@ -57,7 +57,7 @@ export const adminDocRegistry: AdminDocRegistryEntry[] = [
     slug: "meeting-notes-template",
     title: "Meeting notes template",
     description: "Copy this template when adding a new internal meeting record to the admin docs hub.",
-    category: "Meetings",
+    category: "Planning records",
     order: 9999,
     sourcePath: "content/admin-docs/meeting-notes-template.md",
   },

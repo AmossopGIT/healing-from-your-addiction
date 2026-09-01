@@ -1,7 +1,7 @@
 ---
 title: Meeting notes template
 description: Copy this template when adding a new internal meeting record to the admin docs hub.
-category: Meetings
+category: Planning records
 order: 9999
 ---
 

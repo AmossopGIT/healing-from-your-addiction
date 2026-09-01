@@ -1,15 +1,15 @@
 ---
 title: Meeting notes index
 description: Chronological record of internal planning meetings — decisions and full write-ups.
-category: Meetings
+category: Planning records
 order: 1
 ---
 
-# Meeting notes index
+# Planning records index
 
-Day-to-day actions live in **[Admin → Meetings](/admin/meetings/)** (Today · Future · Archive).
+Day-to-day actions live in **[Admin → Team planning](/admin/planning/)** (Do now · Later · Done & history).
 
-Use this page only for full meeting write-ups and PDFs.
+Use this page only for full planning write-ups and PDFs.
 
 ## Records
 
@@ -25,8 +25,8 @@ Use this page only for full meeting write-ups and PDFs.
 - [Marketing checklist (Gerald)](/admin/docs/marketing-checklist/) — ads, content, and weekly rhythm
 - [How to log in as admin](/admin/docs/how-to-login-as-admin/) — admin access reference
 
-## For developers (adding a new meeting)
+## For developers (adding a new record)
 
 1. Duplicate [`meeting-notes-template`](/admin/docs/meeting-notes-template/) in `content/admin-docs/`.
-2. Add structured actions in `content/meetings/catalog.ts` so they appear on Today / Future.
+2. Add structured actions in `content/meetings/catalog.ts` so they appear on Team planning.
 3. Register the markdown file in `content/adminDocs.ts` and `scripts/generate-admin-doc-markdown.mjs`, then run `npm run admin-docs:bundle`.

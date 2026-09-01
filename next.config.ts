@@ -78,6 +78,11 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       {
+        source: "/admin/meetings/",
+        destination: "/admin/planning/",
+        permanent: true,
+      },
+      {
         source: "/cravings/urge-surfing/",
         destination: "/eft-tapping-for-cravings/",
         permanent: true,

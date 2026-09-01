@@ -1,7 +1,7 @@
 ---
 title: "Meeting: pricing, lead nurture, and platform automation"
 description: "31 Aug 2026 — ads are working but many leads cannot pay R12,000 now; plan free content nurture, pricing rethink, and automation."
-category: Meetings
+category: Planning records
 order: 20260831
 ---
 
@@ -40,7 +40,7 @@ Client ads are bringing enquiries, but **getting people into the system** and **
 
 ## Action items
 
-Track and update these in **[Admin → Meetings](/admin/meetings/)** (Today · Future · Archive). Mark Done as you complete them.
+Track and update these in **[Admin → Team planning](/admin/planning/)** (Do now · Later · Done & history). Mark done as you complete them.
 
 Owners: Gerald, Andy, and Joint decisions from this meeting are listed there with filters.
 

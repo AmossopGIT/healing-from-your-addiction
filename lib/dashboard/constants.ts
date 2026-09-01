@@ -23,25 +23,60 @@ export function statusBadgeClass(status: LeadStatus) {
   return `status-badge status-badge-${status}`;
 }
 
-export const adminNavItems = [
-  { href: "/admin/", label: "Overview" },
-  { href: "/admin/analytics/", label: "Analytics" },
-  { href: "/admin/leads/", label: "Leads" },
-  { href: "/admin/clients/", label: "Clients" },
-  { href: "/admin/clients/invite/", label: "Invite client" },
-  { href: "/admin/programmes/", label: "Programmes" },
-  { href: "/admin/meetings/", label: "Meetings" },
-  { href: "/admin/notifications/", label: "Notifications" },
-  { href: "/admin/content/", label: "Content" },
-  { href: "/admin/docs/", label: "Docs" },
+export type DashboardNavItem = {
+  href: string;
+  label: string;
+};
+
+export type AdminNavSection = {
+  id: string;
+  label: string;
+  items: DashboardNavItem[];
+};
+
+export const adminNavSections: AdminNavSection[] = [
+  {
+    id: "client-work",
+    label: "Client work",
+    items: [
+      { href: "/admin/", label: "Overview" },
+      { href: "/admin/analytics/", label: "Analytics" },
+      { href: "/admin/leads/", label: "Leads" },
+      { href: "/admin/clients/", label: "Clients" },
+      { href: "/admin/clients/invite/", label: "Invite client" },
+      { href: "/admin/programmes/", label: "Programmes" },
+    ],
+  },
+  {
+    id: "operations",
+    label: "Operations",
+    items: [
+      { href: "/admin/notifications/", label: "Notifications" },
+      { href: "/admin/content/", label: "Content" },
+    ],
+  },
+  {
+    id: "team-internal",
+    label: "Team & internal",
+    items: [
+      { href: "/admin/planning/", label: "Team planning" },
+      { href: "/admin/docs/", label: "Docs" },
+    ],
+  },
 ];
 
-/** Compact sticky bar for admin phones — full sidebar remains on desktop. */
-export const adminMobileNavItems = [
+export function flattenNavSections(sections: AdminNavSection[]): DashboardNavItem[] {
+  return sections.flatMap((section) => section.items);
+}
+
+/** Flat list for active-link matching and legacy callers. */
+export const adminNavItems = flattenNavSections(adminNavSections);
+
+/** Compact sticky bar for admin phones — client work first; Team planning under Docs → More. */
+export const adminMobileNavItems: DashboardNavItem[] = [
   { href: "/admin/", label: "Home" },
   { href: "/admin/leads/", label: "Leads" },
   { href: "/admin/clients/", label: "Clients" },
-  { href: "/admin/meetings/", label: "Meetings" },
   { href: "/admin/docs/#more-links", label: "More" },
 ];
 

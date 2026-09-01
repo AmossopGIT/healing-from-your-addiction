@@ -9,6 +9,7 @@ import { formatDashboardDate, leadStatusLabels, leadStatusOptions } from "@/lib/
 import { canInviteLead, formatLeadTriageLabel } from "@/lib/dashboard/leadNextStep";
 import { isLeadOverdue } from "@/lib/dashboard/leadSla";
 import { getUnreadAdminNotifications } from "@/lib/dashboard/queries";
+import { getGeraldDoNowCount } from "@/lib/meetings/planningPageData";
 import { createMetadata } from "@/lib/seo";
 import { cmsWorkflowStatusLabels } from "@/types/cms";
 
@@ -20,7 +21,11 @@ export const metadata: Metadata = createMetadata({
 });
 
 export default async function AdminOverviewPage() {
-  const [bundle, notifications] = await Promise.all([getAdminOverviewBundle(), getUnreadAdminNotifications(8)]);
+  const [bundle, notifications, geraldDoNowCount] = await Promise.all([
+    getAdminOverviewBundle(),
+    getUnreadAdminNotifications(8),
+    getGeraldDoNowCount(),
+  ]);
 
   return (
     <div className="dashboard-stack">
@@ -55,10 +60,26 @@ export default async function AdminOverviewPage() {
         <Link className="button button-secondary" href="/admin/docs/">
           Internal docs
         </Link>
+        <Link
+          className="button button-secondary"
+          href="/admin/planning/?tab=today&owner=gerald"
+          title="Internal business planning — not client therapy sessions"
+        >
+          Team planning{geraldDoNowCount ? ` (${geraldDoNowCount} do now)` : ""}
+        </Link>
         <Link className="button button-secondary" href="/admin/docs/lead-to-client-onboarding-flow/">
           Onboarding guide
         </Link>
       </section>
+
+      {geraldDoNowCount > 0 ? (
+        <section className="dashboard-panel">
+          <p className="dashboard-inline-note">
+            <strong>{geraldDoNowCount}</strong> open item{geraldDoNowCount === 1 ? "" : "s"} on your Do now list.{" "}
+            <Link href="/admin/planning/?tab=today&owner=gerald">Open Team planning</Link>
+          </p>
+        </section>
+      ) : null}
 
       {notifications.length ? (
         <section className="dashboard-panel">

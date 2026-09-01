@@ -2,19 +2,16 @@ import type { ReactNode } from "react";
 import { DashboardMobileTables } from "@/components/dashboard/DashboardMobileTables";
 import { DashboardNav } from "@/components/dashboard/DashboardNav";
 import { PortalNotificationBell } from "@/components/dashboard/PortalNotificationBell";
+import type { AdminNavSection, DashboardNavItem } from "@/lib/dashboard/constants";
 import { getPortalNotificationSummary } from "@/lib/dashboard/queries";
 import type { AuthProfile } from "@/lib/supabase/auth";
-
-type DashboardNavItem = {
-  href: string;
-  label: string;
-};
 
 type DashboardShellProps = {
   title: string;
   subtitle: string;
-  navItems: DashboardNavItem[];
-  /** Optional shorter nav for sticky mobile bar. Defaults to navItems. */
+  navItems?: DashboardNavItem[];
+  navSections?: AdminNavSection[];
+  /** Optional shorter nav for sticky mobile bar. Defaults to navItems or flattened sections. */
   mobileNavItems?: DashboardNavItem[];
   children: ReactNode;
   variant: "admin" | "portal";
@@ -35,6 +32,7 @@ export async function DashboardShell({
   title,
   subtitle,
   navItems,
+  navSections,
   mobileNavItems,
   children,
   variant,
@@ -56,7 +54,8 @@ export async function DashboardShell({
           <p className="dashboard-brand-subtitle">{subtitle}</p>
         </div>
         <DashboardNav
-          navItems={navItems}
+          navItems={navSections ? undefined : navItems}
+          navSections={navSections}
           ariaLabel={`${title} navigation`}
           className="dashboard-nav"
           linkClassName="dashboard-nav-link"
@@ -82,12 +81,14 @@ export async function DashboardShell({
         <div id="main-content" className="dashboard-content">
           <DashboardMobileTables>{children}</DashboardMobileTables>
         </div>
-        <DashboardNav
-          navItems={mobileItems}
-          ariaLabel={`${title} quick navigation`}
-          className="dashboard-mobile-nav"
-          linkClassName="dashboard-mobile-nav-link"
-        />
+        {mobileItems ? (
+          <DashboardNav
+            navItems={mobileItems}
+            ariaLabel={`${title} quick navigation`}
+            className="dashboard-mobile-nav"
+            linkClassName="dashboard-mobile-nav-link"
+          />
+        ) : null}
       </div>
     </div>
   );

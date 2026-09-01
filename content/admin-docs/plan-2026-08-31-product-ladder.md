@@ -1,7 +1,7 @@
 ---
 title: "Plan: payment ladder and 30-day commercial test"
 description: "Product ladder so leads can take a safe first paid step (R350) instead of jumping from an ad to R12,000 — plus what to test first."
-category: Meetings
+category: Planning records
 order: 20260832
 ---
 
@@ -215,7 +215,7 @@ Manual payment links + admin notes are enough for the **30-day pilot**; automate
 
 ## Action items from this plan
 
-Track these in **[Admin → Meetings](/admin/meetings/)**.
+Track these in **[Admin → Team planning](/admin/planning/)**.
 
 ### Gerald
 
