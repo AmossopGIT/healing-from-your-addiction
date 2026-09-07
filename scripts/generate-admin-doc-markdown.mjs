@@ -10,6 +10,7 @@ const files = [
   "content/admin-docs/meeting-2026-08-31-pricing-lead-nurture.md",
   "content/admin-docs/meeting-notes-template.md",
   "content/admin-docs/plan-2026-08-31-product-ladder.md",
+  "content/admin-docs/plan-2026-09-07-five-package-ladder.md",
   "docs/CMS_BLOG_ADMIN.md",
   "docs/MARKETING_GERALD_CHECKLIST.md",
   "docs/DEPLOY_PRODUCTION.md",

@@ -34,7 +34,7 @@ export const gamblingContent: LandingPageContent = {
   programme: {
     title: "A structured 8-session stop gambling support process",
     body:
-      "The gambling programme is a 4-week, 8-session support process at R12,000. It is designed to support people who want to stop gambling, understand the urge cycle, interrupt automatic responses and build practical reinforcement between sessions. It is supportive, confidential and focused on behaviour patterns rather than judgement.",
+      "The gambling programme can be entered through the progressive healing packages path — from free tools and monthly support through to the Complete Healing Plan (R12,000 or R3,000 × 4) or the 30-day Master Plan fast-track. It is designed to support people who want to stop gambling, understand the urge cycle, interrupt automatic responses and build practical reinforcement between sessions. It is supportive, confidential and focused on behaviour patterns rather than judgement.",
     points: [
       "Identify the trigger-to-bet loop",
       "Create pause before action",

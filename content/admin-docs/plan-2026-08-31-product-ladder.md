@@ -1,13 +1,16 @@
 ---
 title: "Plan: payment ladder and 30-day commercial test"
-description: "Product ladder so leads can take a safe first paid step (R350) instead of jumping from an ad to R12,000 — plus what to test first."
+description: "SUPERSEDED — historical R350 / R199 / R850 ladder proposal. Use the five-package plan instead."
 category: Planning records
 order: 20260832
 ---
 
 # Plan: payment ladder and 30-day commercial test
 
-**Status:** Proposal for Gerald to confirm clinically and commercially. Prices are positioning ideas, not final.
+> **Superseded (7 Sep 2026).** The current commercial model is the **five-package ladder** (Free Start → Foundation → Transformation → Complete Healing → Master Plan).  
+> Open the current plan: [Plan: five-package healing ladder](/admin/docs/plan-2026-09-07-five-package-ladder/) · Public page: [/programs/healing-packages/](/programs/healing-packages/)
+
+**Status:** Historical proposal only. Kept for meeting context.
 
 **Related:** [31 Aug 2026 meeting](/admin/docs/meeting-2026-08-31-pricing-lead-nurture/)
 

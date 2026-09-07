@@ -91,9 +91,10 @@ export function ProgrammeLandingPage({ content }: ProgrammeLandingPageProps) {
       </section>
 
       <CTASection
-        title="4 weeks. 8 sessions. R12,000."
-        body="The programme is structured to map the pattern, work with cravings and triggers, reinforce daily change and prepare for high-risk moments."
-        button={content.hero.primaryCta}
+        title="Choose the level of support that fits"
+        body="Start free, build with monthly support, complete a four-month journey, or fast-track eight sessions in 30 days. Compare packages before you enquire."
+        button="Compare healing packages"
+        href="/programs/healing-packages/"
       />
 
       <section className="section" aria-labelledby="education-heading">

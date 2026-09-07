@@ -15,7 +15,8 @@ Use this page only for full planning write-ups and PDFs.
 
 | Date | Topic | Doc |
 | --- | --- | --- |
-| 31 Aug 2026 | Payment ladder and 30-day commercial test (plan) | [Open plan](/admin/docs/plan-2026-08-31-product-ladder/) |
+| 7 Sep 2026 | Five-package healing ladder (current plan) | [Open plan](/admin/docs/plan-2026-09-07-five-package-ladder/) |
+| 31 Aug 2026 | Payment ladder and 30-day commercial test (superseded) | [Open archived plan](/admin/docs/plan-2026-08-31-product-ladder/) |
 | 31 Aug 2026 | Pricing, lead nurture, and platform automation | [Open meeting record](/admin/docs/meeting-2026-08-31-pricing-lead-nurture/) |
 
 ## Related operational docs

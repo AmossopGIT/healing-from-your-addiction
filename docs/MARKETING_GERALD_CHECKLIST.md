@@ -39,6 +39,8 @@ Items for Gerald to complete outside the codebase. Andy handles dev/content in t
 
 No online payment on the site. Arrange payment directly with clients after enquiry — do not expect checkout in portal yet.
 
+Commercial packages (current): Free Start → Foundation (R550/mo) → Transformation (R1,800/mo) → Complete Healing (R12,000) → Master Plan fast-track (price on enquiry). Public page: `/programs/healing-packages/`. Internal plan: [Admin → Docs → five-package ladder](/admin/docs/plan-2026-09-07-five-package-ladder/).
+
 ## Video playlist
 
 YouTube playlist: **When You Decide**

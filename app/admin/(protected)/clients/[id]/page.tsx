@@ -331,6 +331,16 @@ export default async function AdminClientDetailPage({ params, searchParams }: Pa
                 <option key={value} value={value}>{label}</option>
               ))}
             </select>
+            <span className="form-hint">
+              Commercial path (note in ops as needed): A Free Start · B Foundation R550/mo · C Transformation R1,800/mo ·
+              D Complete Healing R12,000 · E Master Plan (on enquiry).{" "}
+              <Link href="/admin/docs/plan-2026-09-07-five-package-ladder/">Admin package plan</Link>
+              {" · "}
+              <Link href="/programs/healing-packages/" target="_blank" rel="noreferrer">
+                Public packages page
+              </Link>
+              . Programme library templates remain delivery content — not package SKUs.
+            </span>
           </label>
           <button type="submit" className="button button-secondary">Save operations</button>
         </form>

@@ -146,6 +146,25 @@ export const seoPages = {
     ogImage: defaultOgImage,
     ogImageAlt: "4-week addiction healing program with structured sessions and daily support",
   },
+  healingPackages: {
+    path: "/programs/healing-packages/",
+    title: "Addiction Healing Packages South Africa | Healing From Your Addiction",
+    description:
+      "Compare free tools, monthly hypnotherapy support, comprehensive four-month healing, and a 30-day fast-track Master Plan — a progressive path without a single R12,000 doorway.",
+    primaryKeyword: "addiction healing packages South Africa",
+    secondaryKeywords: [
+      "affordable addiction support South Africa",
+      "hypnotherapy addiction packages",
+      "addiction healing programme pricing",
+      "free addiction healing resources",
+      "fast track addiction hypnotherapy",
+    ],
+    searchIntent: "Compare addiction healing package levels and choose an affordable starting point.",
+    pageType: "programme-overview",
+    conversionGoal: "Start a confidential enquiry about the package that fits.",
+    ogImage: "/art/watercolor/art-watercolor-programme-overview.png",
+    ogImageAlt: "Minimal watercolor pathway cards suggesting progressive addiction healing package options",
+  },
   addictions: {
     path: "/addictions/",
     title: "Addiction Help South Africa | Types of Addiction Support",

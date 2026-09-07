@@ -55,6 +55,7 @@ export const gamblingSupportLinks: PageLink[] = [
   { label: "Stop Chasing Losses", href: seoPages.stopChasingLosses.path },
   { label: "Gambling Urges Help", href: seoPages.gamblingUrges.path },
   { label: "Hypnotherapy for Addiction", href: seoPages.hypnotherapyForAddiction.path },
+  { label: "Addiction Healing Packages", href: seoPages.healingPackages.path },
   { label: "4-Week Addiction Healing Program", href: seoPages.fourWeekProgram.path },
 ];
 
@@ -63,6 +64,7 @@ export const foodSupportLinks: PageLink[] = [
   { label: "Emotional Eating Help", href: seoPages.emotionalEatingHelp.path },
   { label: "Sugar Cravings Help", href: seoPages.sugarCravingsHelp.path },
   { label: "EFT Tapping for Cravings", href: seoPages.eftTappingForCravings.path },
+  { label: "Addiction Healing Packages", href: seoPages.healingPackages.path },
   { label: "4-Week Addiction Healing Program", href: seoPages.fourWeekProgram.path },
 ];
 
@@ -104,10 +106,10 @@ export const phase1Pages: Record<string, Phase1Page> = {
       eyebrow: "4-week custom healing program",
       title: "A structured 8-session addiction healing program",
       description:
-        "The core programme runs over 4 weeks with 8 support sessions, daily reinforcement and careful safety boundaries. The current programme price is R12,000.",
+        "The intensive Master Plan path concentrates eight support sessions into about 30 days, with daily reinforcement and careful safety boundaries. Compare free tools, monthly plans and comprehensive four-month options on the healing packages page.",
       primaryCta: "Start Your Healing Program",
-      secondaryCta: "Compare Addiction Pages",
-      secondaryHref: seoPages.addictions.path,
+      secondaryCta: "Compare healing packages",
+      secondaryHref: seoPages.healingPackages.path,
     },
     artId: "programme-overview",
     sections: [
@@ -115,7 +117,7 @@ export const phase1Pages: Record<string, Phase1Page> = {
         eyebrow: "Programme rhythm",
         title: "8 sessions over 4 weeks",
         body:
-          "The programme is designed to repeat and reinforce change. Early sessions map the pattern, middle sessions work with cravings and emotional triggers, and later sessions focus on integration and relapse prevention.",
+          "The fast-track rhythm is designed to repeat and reinforce change. Early sessions map the pattern, middle sessions work with cravings and emotional triggers, and later sessions focus on integration and relapse prevention.",
         bullets: ["Pattern mapping", "Craving and trigger support", "Hypnotherapy and EFT-informed work", "Daily reinforcement", "Relapse prevention planning"],
       },
       {
@@ -126,12 +128,13 @@ export const phase1Pages: Record<string, Phase1Page> = {
       },
       {
         eyebrow: "Investment",
-        title: "Program price",
+        title: "Choose a level on the healing path",
         body:
-          "The current 4-week, 8-session programme is positioned at R12,000. The enquiry step is confidential and helps clarify whether the programme is appropriate before starting.",
+          "Support is no longer a single R12,000 doorway. Compare Free Start tools, Foundation (R550/month), Transformation (R1,800/month), Complete Healing (R12,000 or R3,000 × 4), and the Master Plan fast-track (investment on enquiry). The enquiry step stays confidential.",
       },
     ],
     links: [
+      { label: "Addiction Healing Packages", href: seoPages.healingPackages.path, linkArtId: "programme-overview" },
       { label: seoPages.gambling.title.replace(" | Healing From Your Addiction", ""), href: seoPages.gambling.path, artSlug: "gambling" },
       { label: seoPages.food.title.replace(" | Healing From Your Addiction", ""), href: seoPages.food.path, artSlug: "food-binge-eating" },
       { label: seoPages.hypnotherapyForAddiction.title.replace(" | Healing From Your Addiction", ""), href: seoPages.hypnotherapyForAddiction.path, linkArtId: "approach-subconscious" },

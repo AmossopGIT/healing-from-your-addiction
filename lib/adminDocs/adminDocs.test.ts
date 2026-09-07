@@ -55,7 +55,9 @@ describe("getAdminDocCatalog", () => {
     expect(docs.some((doc) => doc.slug === "after-invite-start-the-course")).toBe(true);
     expect(docs.some((doc) => doc.slug === "meeting-notes-index")).toBe(true);
     expect(docs.some((doc) => doc.slug === "meeting-2026-08-31-pricing-lead-nurture")).toBe(true);
+    expect(docs.some((doc) => doc.slug === "plan-2026-09-07-five-package-ladder")).toBe(true);
     expect(getAdminDocBySlug("meeting-2026-08-31-pricing-lead-nurture")?.category).toBe("Planning records");
+    expect(getAdminDocBySlug("plan-2026-09-07-five-package-ladder")?.category).toBe("Planning records");
     expect(getAdminDocBySlug("how-to-add-pages")?.sourcePath).toBe("content/admin-docs/how-to-add-pages.md");
     expect(getAdminDocBySlug("how-to-login-as-admin")?.customPage).toBe("admin-login-guide");
     expect(getAdminDocBySlug("lead-to-client-onboarding-flow")?.customPage).toBe("lead-onboarding-guide");

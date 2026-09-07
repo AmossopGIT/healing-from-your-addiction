@@ -34,7 +34,7 @@ export const foodContent: LandingPageContent = {
   programme: {
     title: "A structured 8-session food and eating support process",
     body:
-      "The food and binge eating programme is a 4-week, 8-session support process at R12,000. It is designed to support emotional eating awareness, food-craving control, emotional regulation, subconscious pattern work and a healthier relationship with food. The goal is not restriction. The goal is control, balance and rebuilding a healthier relationship with food. It is not a diet plan and it does not replace specialist eating disorder or medical care.",
+      "The food and binge eating programme can be entered through the progressive healing packages path — from free tools and monthly support through to the Complete Healing Plan (R12,000 or R3,000 × 4) or the 30-day Master Plan fast-track. It is designed to support emotional eating awareness, food-craving control, emotional regulation, subconscious pattern work and a healthier relationship with food. The goal is not restriction. The goal is control, balance and rebuilding a healthier relationship with food. It is not a diet plan and it does not replace specialist eating disorder or medical care.",
     points: [
       "Separate physical hunger from emotional urge",
       "Work with cravings and trigger foods",

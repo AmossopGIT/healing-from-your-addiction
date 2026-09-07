@@ -46,12 +46,21 @@ export const adminDocRegistry: AdminDocRegistryEntry[] = [
   },
   {
     slug: "plan-2026-08-31-product-ladder",
-    title: "Plan: payment ladder and 30-day commercial test",
+    title: "Plan: payment ladder and 30-day commercial test (superseded)",
     description:
-      "Product ladder so leads can take a safe first paid step (R350) instead of jumping from an ad to R12,000 — plus what to test first.",
+      "SUPERSEDED — historical R350 / R199 / R850 ladder. Use the five-package plan instead.",
     category: "Planning records",
     order: 20260832,
     sourcePath: "content/admin-docs/plan-2026-08-31-product-ladder.md",
+  },
+  {
+    slug: "plan-2026-09-07-five-package-ladder",
+    title: "Plan: five-package healing ladder",
+    description:
+      "Current commercial path A–E — Free Start through Master Plan — with C vs D differentiation and platform backlog.",
+    category: "Planning records",
+    order: 20260907,
+    sourcePath: "content/admin-docs/plan-2026-09-07-five-package-ladder.md",
   },
   {
     slug: "meeting-notes-template",
