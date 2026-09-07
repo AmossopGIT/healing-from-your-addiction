@@ -50,7 +50,7 @@ export const healingPackages: HealingPackage[] = [
     differentiation: "Removes the financial barrier so anyone can begin the healing journey.",
     ctaLabel: "Explore free resources",
     ctaHref: seoPages.blog.path,
-    artId: "process-enquiry",
+    artId: "package-free-start",
     tone: "free",
   },
   {
@@ -82,7 +82,7 @@ export const healingPackages: HealingPackage[] = [
     extrasBeyondLabel: "Beyond the Free Start",
     ctaLabel: "Enquire about Foundation Plan",
     ctaHref: "#enquiry",
-    artId: "process-understand",
+    artId: "package-foundation",
     tone: "paid",
   },
   {
@@ -115,7 +115,7 @@ export const healingPackages: HealingPackage[] = [
     extrasBeyondLabel: "Beyond the Foundation Plan",
     ctaLabel: "Enquire about Transformation Plan",
     ctaHref: "#enquiry",
-    artId: "process-support",
+    artId: "package-transformation",
     tone: "paid",
   },
   {
@@ -152,7 +152,7 @@ export const healingPackages: HealingPackage[] = [
     extrasBeyondLabel: "Included beyond Package C",
     ctaLabel: "Enquire about Complete Healing Plan",
     ctaHref: "#enquiry",
-    artId: "process-integration",
+    artId: "package-complete-healing",
     tone: "paid",
   },
   {
@@ -186,7 +186,7 @@ export const healingPackages: HealingPackage[] = [
     extrasBeyondLabel: "What makes Fast Track different",
     ctaLabel: "Enquire about Master Plan",
     ctaHref: "#enquiry",
-    artId: "approach-practical",
+    artId: "package-master-fast-track",
     tone: "fast-track",
   },
 ];

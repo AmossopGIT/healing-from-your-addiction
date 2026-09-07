@@ -145,17 +145,28 @@ export function HealingPackagesPage() {
 
           <nav className="healing-path-nav" aria-label="Healing package path">
             <ol className="healing-path-list">
-              {healingPackages.map((pkg, index) => (
-                <li key={pkg.id}>
-                  <RevealDiv delay={index * 0.04} className="healing-path-item">
-                    <a href={`#${pkg.id}`} className={`healing-path-step healing-path-step-${pkg.tone}`}>
-                      <span className="healing-path-letter">{pkg.letter}</span>
-                      <span className="healing-path-verb">{pkg.stepVerb}</span>
-                      <span className="healing-path-support">{pkg.supportLevel}</span>
-                    </a>
-                  </RevealDiv>
-                </li>
-              ))}
+              {healingPackages.map((pkg, index) => {
+                const artwork = artGalleryById.get(pkg.artId);
+
+                return (
+                  <li key={pkg.id}>
+                    <RevealDiv delay={index * 0.04} className="healing-path-item">
+                      <a href={`#${pkg.id}`} className={`healing-path-step healing-path-step-${pkg.tone}`}>
+                        {artwork ? (
+                          <WatercolorArtwork
+                            item={artwork}
+                            className="healing-path-art"
+                            sizes="(min-width: 1100px) 10vw, (min-width: 720px) 18vw, 40vw"
+                          />
+                        ) : null}
+                        <span className="healing-path-letter">{pkg.letter}</span>
+                        <span className="healing-path-verb">{pkg.stepVerb}</span>
+                        <span className="healing-path-support">{pkg.supportLevel}</span>
+                      </a>
+                    </RevealDiv>
+                  </li>
+                );
+              })}
             </ol>
           </nav>
         </div>
@@ -170,41 +181,52 @@ export function HealingPackagesPage() {
           </div>
 
           <div className="healing-compare-grid">
-            {healingPackages.map((pkg, index) => (
-              <RevealArticle
-                key={pkg.id}
-                className={`healing-compare-card healing-package-${pkg.tone}`}
-                delay={Math.min(index * 0.04, 0.16)}
-              >
-                <p className="eyebrow">
-                  {pkg.letter} · {pkg.stepVerb}
-                </p>
-                <h3>{pkg.name}</h3>
-                <dl className="healing-compare-dl">
-                  <div>
-                    <dt>Duration</dt>
-                    <dd>{pkg.duration}</dd>
-                  </div>
-                  <div>
-                    <dt>Sessions</dt>
-                    <dd>{pkg.sessions === "—" ? "None" : pkg.sessions.replace(" hypnotherapy sessions", "")}</dd>
-                  </div>
-                  <div>
-                    <dt>Support</dt>
-                    <dd>
-                      <strong>{pkg.supportLevel}</strong>
-                    </dd>
-                  </div>
-                  <div>
-                    <dt>Investment</dt>
-                    <dd>{pkg.investment}</dd>
-                  </div>
-                </dl>
-                <a href={`#${pkg.id}`} className="text-link">
-                  Details
-                </a>
-              </RevealArticle>
-            ))}
+            {healingPackages.map((pkg, index) => {
+              const artwork = artGalleryById.get(pkg.artId);
+
+              return (
+                <RevealArticle
+                  key={pkg.id}
+                  className={`healing-compare-card healing-package-${pkg.tone}`}
+                  delay={Math.min(index * 0.04, 0.16)}
+                >
+                  {artwork ? (
+                    <WatercolorArtwork
+                      item={artwork}
+                      className="healing-compare-art"
+                      sizes="(min-width: 1100px) 10vw, (min-width: 720px) 18vw, 40vw"
+                    />
+                  ) : null}
+                  <p className="eyebrow">
+                    {pkg.letter} · {pkg.stepVerb}
+                  </p>
+                  <h3>{pkg.name}</h3>
+                  <dl className="healing-compare-dl">
+                    <div>
+                      <dt>Duration</dt>
+                      <dd>{pkg.duration}</dd>
+                    </div>
+                    <div>
+                      <dt>Sessions</dt>
+                      <dd>{pkg.sessions === "—" ? "None" : pkg.sessions.replace(" hypnotherapy sessions", "")}</dd>
+                    </div>
+                    <div>
+                      <dt>Support</dt>
+                      <dd>
+                        <strong>{pkg.supportLevel}</strong>
+                      </dd>
+                    </div>
+                    <div>
+                      <dt>Investment</dt>
+                      <dd>{pkg.investment}</dd>
+                    </div>
+                  </dl>
+                  <a href={`#${pkg.id}`} className="text-link">
+                    Details
+                  </a>
+                </RevealArticle>
+              );
+            })}
           </div>
         </div>
       </section>
