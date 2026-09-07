@@ -2,6 +2,7 @@
 import { Disclaimer } from "@/components/Disclaimer";
 import { FAQSection } from "@/components/FAQSection";
 import { Hero } from "@/components/Hero";
+import { HealingPackagesPathPreview } from "@/components/HealingPackagesPathPreview";
 import { LeadForm } from "@/components/LeadForm";
 import { RevealArticle, RevealDiv } from "@/components/MotionReveal";
 import { ProcessSteps } from "@/components/ProcessSteps";
@@ -66,8 +67,9 @@ export default function HomePage() {
       <Hero
         eyebrow="Confidential addiction pattern support in South Africa"
         title="Heal the pattern behind the addiction"
-        description="Addiction is often a loop of trigger, craving, behaviour, relief and repetition. Healing From Your Addiction helps you work with that pattern through a structured 4-week, 8-session programme, hypnotherapy, EFT-informed support and daily reinforcement."
-        primaryCta="Start Your Healing Program"
+        description="Addiction is often a loop of trigger, craving, behaviour, relief and repetition. Healing From Your Addiction offers a progressive path — from free tools to monthly support, comprehensive healing, or a 30-day fast-track — with hypnotherapy, EFT-informed support and daily reinforcement."
+        primaryCta="Compare healing packages"
+        primaryHref="/programs/healing-packages/"
         secondaryCta="Explore Addiction Support"
         secondaryHref="/addictions/"
       />
@@ -124,6 +126,15 @@ export default function HomePage() {
       </section>
 
       <TrustSection />
+
+      <HealingPackagesPathPreview
+        eyebrow="Healing packages"
+        title="A progressive path to healing"
+        description="Nobody should be blocked from starting because they cannot pay for intensive support today. Choose Free Start, Foundation, Transformation, Complete Healing, or Master Plan fast-track."
+        muted
+        trackingLocation="home_packages_path"
+      />
+
       <ProcessSteps steps={processSteps} />
 
       <section className="section" aria-labelledby="addiction-types-heading">
@@ -192,7 +203,12 @@ export default function HomePage() {
           </RevealDiv>
         </div>
       </section>
-      <CTASection title="Prefer to start with the programme structure?" body="The 4-week, 8-session programme explains the support rhythm, daily reinforcement and safety boundaries before you enquire." button="View the 4-Week Program" href="/programs/4-week-addiction-healing-program/" />
+      <CTASection
+        title="Prefer to compare packages first?"
+        body="See Free Start tools, monthly plans, the Complete Healing Plan, and the 30-day Master Plan — then enquire at the level that fits."
+        button="Compare healing packages"
+        href="/programs/healing-packages/"
+      />
     </>
   );
 }

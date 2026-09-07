@@ -57,7 +57,7 @@ export const blogPostsChunk4: BlogPost[] = [
       {
         h2: "A structured option worth considering",
         paragraphs: [
-          "Hypnotherapy and EFT-informed support aim to calm the trigger response and strengthen choice before action. The [4-week addiction healing programme](/programs/4-week-addiction-healing-program/) offers a clear structure for people who want guided support rather than another round of white-knuckling.",
+          "Hypnotherapy and EFT-informed support aim to calm the trigger response and strengthen choice before action. The [healing packages path](/programs/healing-packages/) offers Free Start tools through to intensive Master Plan support for people who want guided change rather than another round of white-knuckling.",
           "You can [submit a confidential gambling enquiry](/addictions/gambling-addiction-help/) when you are ready to talk privately about fit and next steps.",
         ],
       },
@@ -150,7 +150,7 @@ export const blogPostsChunk4: BlogPost[] = [
       {
         h2: "Preparation and programme fit",
         paragraphs: [
-          "If the [4-week programme](/programs/4-week-addiction-healing-program/) is a fit, preparation may include intake questions, EFT practice, and affirmations before sessions begin. Payment is arranged directly—there is no online checkout on the site.",
+          "If a [healing package](/programs/healing-packages/) is a fit, preparation may include intake questions, EFT practice, and affirmations before sessions begin. Payment is arranged directly—there is no online checkout on the site.",
           "Common questions are answered on the [FAQs page](/faqs/) if you want to read more before enquiring.",
         ],
       },
@@ -242,7 +242,7 @@ export const blogPostsChunk4: BlogPost[] = [
       {
         h2: "Finding support that fits",
         paragraphs: [
-          "The [4-week addiction healing programme](/programs/4-week-addiction-healing-program/) applies structured hypnotherapy and EFT-informed support to food patterns as well as gambling.",
+          "The [healing packages path](/programs/healing-packages/) applies structured hypnotherapy and EFT-informed support to food patterns as well as gambling.",
           "Questions? See [FAQs](/faqs/) or [contact Gerald confidentially](/contact/).",
         ],
       },
@@ -298,7 +298,7 @@ export const blogPostsChunk4: BlogPost[] = [
         h2: "Why preparation matters",
         paragraphs: [
           "The first weeks of change can feel intense—especially when eating has been your main regulator for years. Preparation helps your nervous system enter the programme steadier, not from a place of panic.",
-          "Review the full structure on the [4-week addiction healing programme](/programs/4-week-addiction-healing-program/) page.",
+          "Review package levels on the [healing packages](/programs/healing-packages/) page.",
         ],
       },
       {

@@ -61,6 +61,7 @@ export function Footer() {
               <li><SiteLink href="/addictions/gambling-addiction-help/">Gambling Addiction</SiteLink></li>
               <li><SiteLink href="/addictions/food-addiction-binge-eating-help/">Food Addiction / Binge Eating</SiteLink></li>
               <li><SiteLink href="/addictions/">All Addiction Support</SiteLink></li>
+              <li><SiteLink href="/programs/healing-packages/">Healing Packages</SiteLink></li>
               <li><SiteLink href="/programs/">Programs</SiteLink></li>
             </ul>
           </div>

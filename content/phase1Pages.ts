@@ -22,6 +22,7 @@ export type Phase1Page = {
     title: string;
     description: string;
     primaryCta?: string;
+    primaryHref?: string;
     secondaryCta?: string;
     secondaryHref?: string;
   };
@@ -56,7 +57,7 @@ export const gamblingSupportLinks: PageLink[] = [
   { label: "Gambling Urges Help", href: seoPages.gamblingUrges.path },
   { label: "Hypnotherapy for Addiction", href: seoPages.hypnotherapyForAddiction.path },
   { label: "Addiction Healing Packages", href: seoPages.healingPackages.path },
-  { label: "4-Week Addiction Healing Program", href: seoPages.fourWeekProgram.path },
+  { label: "Master Plan intensive rhythm", href: seoPages.fourWeekProgram.path },
 ];
 
 export const foodSupportLinks: PageLink[] = [
@@ -65,7 +66,7 @@ export const foodSupportLinks: PageLink[] = [
   { label: "Sugar Cravings Help", href: seoPages.sugarCravingsHelp.path },
   { label: "EFT Tapping for Cravings", href: seoPages.eftTappingForCravings.path },
   { label: "Addiction Healing Packages", href: seoPages.healingPackages.path },
-  { label: "4-Week Addiction Healing Program", href: seoPages.fourWeekProgram.path },
+  { label: "Master Plan intensive rhythm", href: seoPages.fourWeekProgram.path },
 ];
 
 export const phase1Pages: Record<string, Phase1Page> = {
@@ -75,10 +76,11 @@ export const phase1Pages: Record<string, Phase1Page> = {
       eyebrow: "Addiction support hub",
       title: "Addiction help that starts with the pattern",
       description:
-        "Explore support pages for gambling, food, alcohol, cannabis, nicotine, pornography, social media and gaming addiction patterns. Each page connects the condition, triggers, programme structure and next enquiry step.",
-      primaryCta: "Start Your Healing Program",
-      secondaryCta: "View the 4-Week Program",
-      secondaryHref: seoPages.fourWeekProgram.path,
+        "Explore support pages for gambling, food, alcohol, cannabis, nicotine, pornography, social media and gaming addiction patterns. Each page connects the condition, triggers, healing packages and next enquiry step.",
+      primaryCta: "Compare healing packages",
+      primaryHref: seoPages.healingPackages.path,
+      secondaryCta: "Start a confidential enquiry",
+      secondaryHref: "#enquiry",
     },
     heroArtId: "pattern-map",
     artId: "pattern-map",
@@ -91,46 +93,57 @@ export const phase1Pages: Record<string, Phase1Page> = {
           "Healing From Your Addiction treats addiction as a repeated pattern that can involve stress, anticipation, emotional relief, reward and automatic response. The goal is to understand the loop and build more choice before action.",
       },
       {
-        eyebrow: "Commercial pages",
-        title: "Start with the addiction type",
+        eyebrow: "Support path",
+        title: "Packages first, then the addiction page that fits",
         body:
-          "The strongest current programmes are gambling addiction and food addiction / binge eating. Other addiction pages are structured for enquiry and future campaign expansion.",
+          "Compare Free Start, Foundation, Transformation, Complete Healing and Master Plan, then open the addiction type that matches your concern. Gambling and food / binge eating are the strongest current commercial pages.",
       },
     ],
-    links: addictionMoneyLinks,
+    links: [
+      { label: "Addiction Healing Packages", href: seoPages.healingPackages.path, linkArtId: "programme-overview" },
+      ...addictionMoneyLinks,
+    ],
     showLeadForm: true,
+    finalCta: {
+      title: "Choose a package level before you enquire",
+      body: "Start free or with monthly support if R12,000 feels too far right now. Intensive options remain available when you are ready.",
+      button: "Compare healing packages",
+      href: seoPages.healingPackages.path,
+    },
   },
   fourWeekProgram: {
     seo: seoPages.fourWeekProgram,
     hero: {
-      eyebrow: "4-week custom healing program",
-      title: "A structured 8-session addiction healing program",
+      eyebrow: "Master Plan intensive rhythm",
+      title: "Eight concentrated sessions for fast-track healing",
       description:
-        "The intensive Master Plan path concentrates eight support sessions into about 30 days, with daily reinforcement and careful safety boundaries. Compare free tools, monthly plans and comprehensive four-month options on the healing packages page.",
-      primaryCta: "Start Your Healing Program",
-      secondaryCta: "Compare healing packages",
-      secondaryHref: seoPages.healingPackages.path,
+        "This page explains the intensive session rhythm used in the Master Plan fast-track (about 30 days / 8 sessions). For Free Start, monthly plans and the Complete Healing Plan, compare the full package ladder first.",
+      primaryCta: "Compare healing packages",
+      primaryHref: seoPages.healingPackages.path,
+      secondaryCta: "Enquire about Master Plan",
+      secondaryHref: "#enquiry",
     },
-    artId: "programme-overview",
+    artId: "package-master-fast-track",
     sections: [
       {
-        eyebrow: "Programme rhythm",
-        title: "8 sessions over 4 weeks",
+        eyebrow: "Where this sits on the ladder",
+        title: "Master Plan is Package E — not the only doorway",
         body:
-          "The fast-track rhythm is designed to repeat and reinforce change. Early sessions map the pattern, middle sessions work with cravings and emotional triggers, and later sessions focus on integration and relapse prevention.",
+          "Most people should start by comparing packages. Master Plan is the intensive option: eight sessions compressed into about 30 days. Complete Healing offers eight sessions across four months with more between-session support.",
+        bullets: ["Compare packages first", "Master Plan = fast-track intensity", "Complete Healing = comprehensive four-month path"],
+      },
+      {
+        eyebrow: "Programme rhythm",
+        title: "8 sessions in a concentrated window",
+        body:
+          "Early sessions map the pattern, middle sessions work with cravings and emotional triggers, and later sessions focus on integration and relapse prevention.",
         bullets: ["Pattern mapping", "Craving and trigger support", "Hypnotherapy and EFT-informed work", "Daily reinforcement", "Relapse prevention planning"],
       },
       {
-        eyebrow: "Fit",
-        title: "Who this may support",
-        body:
-          "This is for people seeking structured support for psychological and behavioural patterns. It is not emergency care, medical detox, psychiatric treatment or a replacement for rehabilitation where those services are required.",
-      },
-      {
         eyebrow: "Investment",
-        title: "Choose a level on the healing path",
+        title: "See the full package path",
         body:
-          "Support is no longer a single R12,000 doorway. Compare Free Start tools, Foundation (R550/month), Transformation (R1,800/month), Complete Healing (R12,000 or R3,000 × 4), and the Master Plan fast-track (investment on enquiry). The enquiry step stays confidential.",
+          "Master Plan investment is on enquiry. Complete Healing is R12,000 (or R3,000 × 4). Foundation and Transformation offer monthly entry points at R550 and R1,800.",
       },
     ],
     links: [
@@ -141,6 +154,12 @@ export const phase1Pages: Record<string, Phase1Page> = {
       { label: seoPages.eftTappingForCravings.title.replace(" | Healing From Your Addiction", ""), href: seoPages.eftTappingForCravings.path, linkArtId: "approach-emotional" },
     ],
     showLeadForm: true,
+    finalCta: {
+      title: "Not sure Master Plan is right?",
+      body: "Compare Free Start, Foundation, Transformation and Complete Healing before you decide on fast-track intensity.",
+      button: "Compare healing packages",
+      href: seoPages.healingPackages.path,
+    },
   },
   hypnotherapyForAddiction: {
     seo: seoPages.hypnotherapyForAddiction,

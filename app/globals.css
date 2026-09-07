@@ -11204,6 +11204,25 @@ main,
   padding-top: 0.35rem;
 }
 
+.healing-path-price {
+  color: var(--teal-dark, #0a3f39);
+  font-size: 0.82rem;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.healing-packages-preview-note {
+  margin-top: 1rem;
+}
+
+.healing-packages-preview-cta {
+  margin-top: 1rem;
+}
+
+.healing-compare-grid-preview {
+  margin-top: 1rem;
+}
+
 .healing-compare-grid {
   display: grid;
   gap: 0.75rem;

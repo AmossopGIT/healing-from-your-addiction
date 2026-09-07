@@ -27,10 +27,11 @@ export default function FaqsPage() {
       <Hero
         eyebrow="Frequently asked questions"
         title="Addiction hypnotherapy FAQs"
-        description="Answers about confidentiality, safety, gambling addiction support, food addiction support, the 4-week programme and when medical care may be required."
-        primaryCta="Start a Confidential Enquiry"
-        secondaryCta="Terms and Medical Disclaimer"
-        secondaryHref="/terms-and-conditions-of-use/"
+        description="Answers about confidentiality, safety, gambling addiction support, food addiction support, healing packages and when medical care may be required."
+        primaryCta="Compare healing packages"
+        primaryHref="/programs/healing-packages/"
+        secondaryCta="Start a Confidential Enquiry"
+        secondaryHref="/contact/"
       />
       <FAQSection title="Common questions" faqs={faqs} />
     </>

@@ -32,9 +32,9 @@ export const gamblingContent: LandingPageContent = {
     ],
   },
   programme: {
-    title: "A structured 8-session stop gambling support process",
+    title: "Stop gambling support through the healing packages path",
     body:
-      "The gambling programme can be entered through the progressive healing packages path — from free tools and monthly support through to the Complete Healing Plan (R12,000 or R3,000 × 4) or the 30-day Master Plan fast-track. It is designed to support people who want to stop gambling, understand the urge cycle, interrupt automatic responses and build practical reinforcement between sessions. It is supportive, confidential and focused on behaviour patterns rather than judgement.",
+      "Gambling support can start at Free Start tools, Foundation or Transformation monthly plans, the Complete Healing Plan (R12,000 or R3,000 × 4), or the Master Plan 30-day fast-track. The work helps people stop gambling, understand the urge cycle, interrupt automatic responses and build practical reinforcement between sessions — confidential and focused on behaviour patterns rather than judgement.",
     points: [
       "Identify the trigger-to-bet loop",
       "Create pause before action",

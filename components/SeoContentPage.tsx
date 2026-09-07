@@ -35,7 +35,7 @@ export function SeoContentPage({ page, breadcrumbs, useProgrammeCards = false }:
         title={page.hero.title}
         description={page.hero.description}
         primaryCta={page.hero.primaryCta}
-        primaryHref="#enquiry"
+        primaryHref={page.hero.primaryHref ?? "#enquiry"}
         secondaryCta={page.hero.secondaryCta}
         secondaryHref={page.hero.secondaryHref}
       >
@@ -172,9 +172,9 @@ export function SeoContentPage({ page, breadcrumbs, useProgrammeCards = false }:
       ) : (
         <CTASection
           title="Ready to ask about support?"
-          body="Start with a private enquiry and choose your preferred contact method."
-          button="Start Your Healing Program"
-          href="/contact/"
+          body="Compare Free Start, monthly plans, Complete Healing and Master Plan — then send a confidential enquiry."
+          button="Compare healing packages"
+          href="/programs/healing-packages/"
         />
       )}
     </>

@@ -1,6 +1,7 @@
 ﻿import { CTASection } from "@/components/CTASection";
 import { Disclaimer } from "@/components/Disclaimer";
 import { FAQSection } from "@/components/FAQSection";
+import { HealingPackagesPathPreview } from "@/components/HealingPackagesPathPreview";
 import { Hero } from "@/components/Hero";
 import { LeadForm } from "@/components/LeadForm";
 import { SchemaMarkup } from "@/components/SchemaMarkup";
@@ -90,11 +91,12 @@ export function ProgrammeLandingPage({ content }: ProgrammeLandingPageProps) {
         </div>
       </section>
 
-      <CTASection
+      <HealingPackagesPathPreview
+        eyebrow="Healing packages"
         title="Choose the level of support that fits"
-        body="Start free, build with monthly support, complete a four-month journey, or fast-track eight sessions in 30 days. Compare packages before you enquire."
-        button="Compare healing packages"
-        href="/programs/healing-packages/"
+        description="This addiction page explains the pattern. Packages explain Free Start, monthly plans, Complete Healing and Master Plan options."
+        muted
+        trackingLocation="programme_landing_packages_path"
       />
 
       <section className="section" aria-labelledby="education-heading">
@@ -124,8 +126,9 @@ export function ProgrammeLandingPage({ content }: ProgrammeLandingPageProps) {
       <section className="section section-muted" aria-labelledby="sessions-heading">
         <div className="container">
           <div className="section-heading">
-            <p className="eyebrow">8 sessions / 4 weeks</p>
-            <h2 id="sessions-heading">What the sessions focus on</h2>
+            <p className="eyebrow">Session focus examples</p>
+            <h2 id="sessions-heading">What intensive session work can focus on</h2>
+            <p>These themes appear across Complete Healing and Master Plan intensive work. Package level changes how often you meet and how much between-session support you receive.</p>
           </div>
           <div className="session-grid">
             {content.sessionFocus.map((session) => (
